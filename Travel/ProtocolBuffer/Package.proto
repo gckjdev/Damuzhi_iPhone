@@ -23,20 +23,17 @@ message Package {
   required LanguageType language = 4 [default=ZH_HANS];            // 语言类型
 }
 
-// 用于用户资料
+// 用于会员资料
 message UserInfo {
-  optional string userId = 1;		// 用户id，与设备id绑定
-  required string memberId = 2;		// 用户名，即会员的登陆时的用户名
-  optional string password = 3;		// 密码
+  required string userId = 1;		// 用户id，与设备id绑定
+  required int32  loginType = 2;    // 当前登录类型，1：手机；2：邮箱
+  required string telephone = 3;	// 电话
+  required string email = 4; 		// 邮箱
+  required string password = 5;		// 密码
 
-  optional string nickName = 4;		// 昵称
-  optional int32 gender = 5; 		// 性别
-
-  optional int32 type = 6;          // 会员类型
-
-  optional string fullName = 7;		// 姓名
-  optional string telephone = 8;	// 电话
-  optional string email = 9; 		// 邮箱
+  optional string nickName = 6;		// 昵称
+  optional int32  gender = 7; 		// 性别
+  optional string fullName = 8;		// 姓名
 }
 
 // 用于获取线路反馈列表
@@ -47,11 +44,11 @@ message RouteFeekbackList
 
 // 用于路线反馈
 message RouteFeekback {
-  optional int32  routeId = 1;		// 线路编号
-  optional string memberId = 2;		// 用户名，即会员的登陆时的用户名。只有会员才能评价路线。
+  required int32  routeId = 1;		// 线路编号
+  required string userId = 2;		// 用户名，即会员的登陆时的用户名。只有会员才能评价路线。
   required string nickName = 3;		// 用户昵称
-  optional string date = 4;         // 评价时间，从1970年1月1日0时0分0秒算起，经过的秒数。
-  optional int32 rank = 5;          // 评级
+  required int32 date = 4;          // 评价时间，从1970年1月1日0时0分0秒算起，经过的秒数。
+  required int32 rank = 5;          // 评级
   optional string content = 6;      // 反馈内容
 }
 
@@ -75,4 +72,7 @@ message TravelResponse{
   optional RouteFeekbackList routeFeekbackList= 30;     // 线路反馈
   
   optional OrderList orderList = 35;                    // 订单列表
+  
+    optional int32 totalCount = 99;                               // 用于列表查询时，返回总记录条数
+
 }

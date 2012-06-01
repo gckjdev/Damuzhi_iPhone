@@ -21,7 +21,7 @@ message TouristRoute {
   optional int32 averageRank = 7;			// 用户综合评级
 
   // 简要数据
-  optional string image = 10;                       // 线路列表中显示的小图片的绝对URL地址
+  optional string thumbImage = 10;                  // 线路列表中显示的小图片的绝对URL地址
   optional string tour = 11;                        // 线路列表中显示经过的地方
   optional int32 days = 12;                         // 线路游览天数
   repeated int32 themeIds = 13;                     // 线路主题id：赏花，登山。基础数据
@@ -30,7 +30,7 @@ message TouristRoute {
 
   // 路线详情
   optional string customerServiceTelephone = 20;	// 客服电话
-  repeated string images = 21;                      // 线路详情中滑动图片的绝对URL地址
+  repeated string detailImages = 21;                // 线路详情中滑动图片的绝对URL地址
   optional string characteristic =  22;       		// 线路特色
   repeated DailySchedule dailySchedules = 23;		// 线路行程安排，跟团游特有字段
   repeated TravelPackage packages= 24;              // 线路套餐，自由行特有字段
