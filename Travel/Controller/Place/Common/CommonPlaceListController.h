@@ -32,7 +32,7 @@
 - (int)getCategoryId;
 - (NSString*)getCategoryName;
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds*)selectedItemIds;
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds*)selectedItemIds;
 
 @end
 

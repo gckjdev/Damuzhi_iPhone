@@ -13,7 +13,7 @@
 
 @class PlaceListController;
 
-@interface FavoriteController : PPViewController <DeletePlaceDelegate, PlaceServiceDelegate>
+@interface FavoriteController : PPViewController <PlaceListControllerDelegate, PlaceServiceDelegate>
 
 @property (retain, nonatomic) IBOutlet UIView *buttonHolderView;
 @property (retain, nonatomic) IBOutlet UIView *myFavPlaceListView;

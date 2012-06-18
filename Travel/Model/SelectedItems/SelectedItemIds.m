@@ -10,7 +10,7 @@
 #import "CommonPlace.h"
 #import "Item.h"
 
-@implementation SelectedItemIds
+@implementation PlaceSelectedItemIds
 
 @synthesize subCategoryItemIds = _subCategoryItemIds;
 @synthesize sortItemIds = _sortItemIds;
@@ -26,6 +26,7 @@
     [_priceRankItemIds release];
     [_serviceItemIds release];
     [_cuisineItemIds release];
+
     [super dealloc];
 }
 
@@ -51,7 +52,7 @@
     return self;
 }
 
-- (void)resetAll
+- (void)reset
 {
     [self.subCategoryItemIds removeAllObjects];
     [self.sortItemIds removeAllObjects];
@@ -68,3 +69,58 @@
 }
 
 @end
+
+
+
+
+@implementation RouteSelectedItemIds
+
+@synthesize departCityIds = _departCityIds;
+@synthesize destinationCityIds = _destinationCityIds;
+@synthesize agencyIds = _agencyIds;
+@synthesize themeIds = _themeIds;
+@synthesize routeTypeIds = _routeTypeIds;
+
+- (void)dealloc {
+    [_departCityIds release];
+    [_destinationCityIds release];
+    [_agencyIds release];
+    [_themeIds release];
+    [_routeTypeIds release];
+    [super dealloc];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        
+        self.departCityIds = [[[NSMutableArray alloc] init] autorelease];
+        self.destinationCityIds = [[[NSMutableArray alloc] init] autorelease];
+        self.agencyIds = [[[NSMutableArray alloc] init] autorelease];
+        self.themeIds = [[[NSMutableArray alloc] init] autorelease];
+        self.routeTypeIds = [[[NSMutableArray alloc] init] autorelease];
+        
+        [self.agencyIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+        [self.themeIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+        [self.routeTypeIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+    }
+    
+    return self;
+}
+
+- (void)reset
+{
+    [self.departCityIds removeAllObjects];
+    [self.destinationCityIds removeAllObjects];
+    [self.agencyIds removeAllObjects];
+    [self.themeIds removeAllObjects];
+    [self.routeTypeIds removeAllObjects];
+    
+    [self.agencyIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+    [self.themeIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+    [self.routeTypeIds addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+}
+
+@end
+

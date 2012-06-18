@@ -28,4 +28,6 @@
 + (NSArray*)getPlaceList:(NSArray*)placeList inSameSubcategory:(int)subcategoryId;
 + (NSArray*)getPlaceList:(NSArray*)placeList hasSameService:(int)serviceId;
 + (NSArray*)getPlaceList:(NSArray*)placeList inSameArea:(int)areaId;
+
++ (NSArray*)getPlaceList:(NSArray *)placeList ofCategory:(int)categoryId;
 @end

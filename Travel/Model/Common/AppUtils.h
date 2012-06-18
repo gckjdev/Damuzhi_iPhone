@@ -120,6 +120,8 @@
 
 + (UIAlertView*)showAlertViewWhenLookingMapWithoutNetwork;
 
++ (UIAlertView*)showAlertViewWhenUserDenyLocatedService;
+
 // for other ...
 + (NSString*)getAbsolutePath:(NSString*)absoluteDir string:(NSString*)string;
 + (NSURL*)getNSURLFromHtmlFileOrURL:(NSString*)fileOrURL;

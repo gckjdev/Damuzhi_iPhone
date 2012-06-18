@@ -18,6 +18,10 @@
 #import "PPNetworkRequest.h"
 #import "PPDebug.h"
 #import "PlaceUtils.h"
+#import "ImageManager.h"
+#import "AppService.h"
+
+#define TAG_PLACE_COUNT_LABEL 1
 
 @interface CommonPlaceListController ()
 
@@ -27,7 +31,7 @@
 
 @property (retain, nonatomic) NSArray *allPlaceList;
 @property (retain, nonatomic) NSArray *placeList;
-@property (retain, nonatomic) SelectedItemIds *selectedItemIds;
+@property (retain, nonatomic) PlaceSelectedItemIds *selectedItemIds;
 
 @end
 
@@ -112,10 +116,9 @@
 
     [_filterHandler createFilterButtons:self.buttonHolderView controller:self];
     
-    UIImage *image = [UIImage imageNamed:@"select_tr_bg.png"];
-    _buttonHolderView.backgroundColor = [UIColor colorWithPatternImage:image];
+    _buttonHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] filterBtnsHolderViewBgImage]];
 
-    self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getSelectedItems:[_filterHandler getCategoryId]];
+    self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getPlaceSelectedItems:[_filterHandler getCategoryId]];
     
     self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:YES pullDownDelegate:self] autorelease];
         
@@ -126,7 +129,7 @@
 
 - (void)clickBack:(id)sender
 {
-    [[SelectedItemIdsManager defaultManager] resetAllSelectedItems];
+    [_selectedItemIds reset];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -143,7 +146,7 @@
     placeCountLabel.font = [UIFont systemFontOfSize:12];
     placeCountLabel.textColor = [UIColor colorWithRed:183 green:222 blue:243 alpha:1];
     placeCountLabel.backgroundColor = [UIColor clearColor];
-    placeCountLabel.tag = 1;
+    placeCountLabel.tag = TAG_PLACE_COUNT_LABEL;
 
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 30, 8)];
     [view addSubview:categoryNameLabel];
@@ -157,7 +160,7 @@
 
 - (void)updateNavigationBarTitle:(int)count
 {
-    UILabel *placeCountLabel = (UILabel*)[self.navigationItem.titleView viewWithTag:1];
+    UILabel *placeCountLabel = (UILabel*)[self.navigationItem.titleView viewWithTag:TAG_PLACE_COUNT_LABEL];
     [placeCountLabel setText:[NSString stringWithFormat:NSLS(@"(%d)"), count]];
 }
 
@@ -174,7 +177,7 @@
 
 - (void)findRequestDone:(int)result placeList:(NSArray *)placeList
 {
-    [_placeListController hideRefreshHeaderViewAfterLoading];
+    [_placeListController dataSourceDidFinishLoadingNewData];
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];

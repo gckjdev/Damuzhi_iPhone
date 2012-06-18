@@ -14,13 +14,14 @@
 #import "LocaleUtils.h"
 #import "ImageName.h"
 #import "PlaceUtils.h"
+#import "ImageManager.h"
 
 @implementation CommonPlaceListFilter
 
 + (UIButton*)createFilterButton:(CGRect)frame title:(NSString*)title
 {
-    UIImage *bgImageForNormal = [UIImage imageNamed:IMAGE_SELECT_DOWN];
-    UIImage *bgImageForHeightlight = [UIImage imageNamed:IMAGE_SELECT_DOWN];
+    UIImage *bgImageForNormal = [[ImageManager defaultManager] filgerBtnBgImage];
+    UIImage *bgImageForHeightlight = [[ImageManager defaultManager] filgerBtnBgImage];
     
     UIButton *button  = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = frame;

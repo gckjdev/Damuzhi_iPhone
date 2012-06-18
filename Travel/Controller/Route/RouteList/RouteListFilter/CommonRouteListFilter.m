@@ -8,18 +8,17 @@
 
 #import "CommonRouteListFilter.h"
 #import "TouristRoute.pb.h"
+#import "ImageManager.h"
 
 @implementation CommonRouteListFilter
 
-+ (UIButton*)createFilterButton:(CGRect)frame title:(NSString*)title
++ (UIButton*)createFilterButton:(CGRect)frame title:(NSString*)title 
 {
-    UIImage *bgImageForNormal = [UIImage imageNamed:@""];
-    UIImage *bgImageForHeightlight = [UIImage imageNamed:@""];
-    
     UIButton *button  = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = frame;
+    UIImage *bgImageForNormal = [[ImageManager defaultManager] filgerBtnBgImage];   
+    
     [button setBackgroundImage:bgImageForNormal forState:UIControlStateNormal];
-    [button setBackgroundImage:bgImageForHeightlight forState:UIControlStateHighlighted];
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button.titleLabel setFont:[UIFont systemFontOfSize: 12]];
@@ -57,12 +56,12 @@
     return retArray;
 }
 
-+ (NSArray *)filterRouteList:(NSArray *)routeList byTypeIdList:(NSArray *)typteIdList
++ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList
 {
     NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
     for (TouristRoute *route in routeList) {
-        NSNumber *typeId = [NSNumber numberWithInt:route.typeId];
-        if (NSNotFound != [typteIdList indexOfObject:typeId]) {
+        NSNumber *categoryId = [NSNumber numberWithInt:route.categoryId];
+        if (NSNotFound != [categoryIdList indexOfObject:categoryId]) {
             [retArray addObject:route];
         }
     }
@@ -88,8 +87,13 @@
     NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (TouristRoute *route in routeList) {
-        if (route.destinationCityId == destinationCityId) {
-            [retArray addObject:route];
+//        if (route.destinationCityId == destinationCityId) {
+//            [retArray addObject:route];
+//        }
+        for (NSNumber *cityId in route.destinationCityIdsList) {
+            if ([cityId intValue] == destinationCityId) {
+                [retArray addObject:route];
+            }
         }
     }
     

@@ -20,6 +20,19 @@
     [super dealloc];
 }
 
++ (Item *)itemWithId:(int)itemId
+            itemName:(NSString *)itemName
+               count:(int)count
+{
+    return [[[Item alloc] initWithItemId:itemId itemName:itemName count:count] autorelease];;
+}
+
++ (Item *)itemWithNameIdPair:(NameIdPair *)pair
+                       count:(int)count
+{
+    return [[[Item alloc] initWithNameIdPair:pair count:count] autorelease];
+}
+
 - (Item*)initWithItemId:(int)itemId
                itemName:(NSString *)itemName
                   count:(int)count

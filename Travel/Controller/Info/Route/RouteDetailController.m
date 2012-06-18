@@ -28,7 +28,9 @@
     // Do any additional setup after loading the view from its nib.
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     
-    [self setNavigationLeftButton:@" 返回" imageName:@"back.png" action:@selector(clickBack:)];
+    [self setNavigationLeftButton:@" 返回" 
+                        imageName:@"back.png"
+                           action:@selector(clickBack:)];
 
     [self addSlideImageView];
     

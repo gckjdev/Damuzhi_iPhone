@@ -20,6 +20,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "UIUtils.h"
 #import "PlaceUtils.h"
+#import "AppUtils.h"
 
 //#define TEST_FOR_SIMULATE__LOCATION
 
@@ -48,7 +49,7 @@
 #endif
 
 - (void)setSelectedBtn:(int)categoryId;
-- (NSArray*)filterByDistanceAndSort:(NSArray*)list distance:(int)distance;
+- (NSArray*)filterAndSortWithPlaceList:(NSArray *)placeList;
 
 @end
 
@@ -140,10 +141,11 @@
     [self setSelectedBtn:_categoryId];
     
     self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:YES pullDownDelegate:self] autorelease];
+    _placeListController.aDelegate = self;
     
     [_placeListController showInView:placeListHolderView];
     
-    [[PlaceService defaultService] findPlaces:_categoryId viewController:self];
+    [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
     
 #ifdef TEST_FOR_SIMULATE__LOCATION
     self.testLocation = [[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease];
@@ -222,7 +224,8 @@ UITextField * alertTextField;
             double lat = [latitude doubleValue];
             self.testLocation = [[[CLLocation alloc] initWithLatitude:lat longitude:log] autorelease];
             [[AppService defaultService] setCurrentLocation:testLocation];
-            [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+//            [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+            [self findPlaces];
         }
             break;  
         default:
@@ -235,11 +238,16 @@ UITextField * alertTextField;
 #endif
 
 
-- (NSArray*)filterByDistanceAndSort:(NSArray*)list distance:(int)distance
+- (NSArray*)filterAndSortWithPlaceList:(NSArray *)list
 {
+    if ([[AppService defaultService] currentLocation] == nil) {
+        return nil;
+    }
+    
     NSMutableArray *placeList = [[[NSMutableArray alloc] init] autorelease];
     
-    for (Place *place in list) {
+    NSArray *array = [PlaceUtils getPlaceList:list ofCategory:_categoryId];
+    for (Place *place in array) {
         CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:[place latitude] longitude:[place longitude]];
         
         CLLocationDistance distance = [[[AppService defaultService] currentLocation] distanceFromLocation:placeLocation];
@@ -301,7 +309,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_500M 
               needAnimation:YES];
         
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -313,7 +322,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_1KM 
               needAnimation:YES];
         
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }   
 }
 
@@ -325,7 +335,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_5KM 
               needAnimation:YES];
         
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];  
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }    
 }
 
@@ -337,7 +348,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_10KM 
               needAnimation:YES];
         
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -345,7 +357,8 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceSpot) {
         self.categoryId = PlaceCategoryTypePlaceSpot;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];    
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -353,7 +366,8 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceHotel) {
         self.categoryId = PlaceCategoryTypePlaceHotel;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -361,7 +375,9 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceAll) {
         self.categoryId = PlaceCategoryTypePlaceAll;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
+
     }
 }
 
@@ -369,7 +385,8 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceRestraurant) {
         self.categoryId = PlaceCategoryTypePlaceRestraurant;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -377,7 +394,8 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceShopping) {
         self.categoryId = PlaceCategoryTypePlaceShopping;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -385,7 +403,8 @@ UITextField * alertTextField;
     if (_categoryId != PlaceCategoryTypePlaceEntertainment) {
         self.categoryId = PlaceCategoryTypePlaceEntertainment;
         [self setSelectedBtn:_categoryId];
-        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+        [self updateDataSorce];
     }
 }
 
@@ -408,15 +427,27 @@ UITextField * alertTextField;
 }
 
 - (void)findRequestDone:(int)result placeList:(NSArray*)placeList
-{
-    [_placeListController hideRefreshHeaderViewAfterLoading];
+{    
+    [_placeListController dataSourceDidFinishLoadingNewData];
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }
     
     self.allPlaceList = placeList;
-    self.placeList = [self filterByDistanceAndSort:_allPlaceList distance:_distance];
+//    self.placeList = [self filterByDistanceAndSort:_allPlaceList distance:_distance];
+//    
+//    // Update place count in navigation bar.
+//    self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
+//    
+//    // Reload place list.
+//    [_placeListController setPlaceList:_placeList];
+    [self updateDataSorce];
+}
+
+- (void)updateDataSorce
+{
+    self.placeList = [self filterAndSortWithPlaceList:_allPlaceList];
     
     // Update place count in navigation bar.
     self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
@@ -425,10 +456,19 @@ UITextField * alertTextField;
     [_placeListController setPlaceList:_placeList];
 }
 
-
 - (void)didPullDown
 {
-    [[PlaceService defaultService] findPlaces:_categoryId viewController:self];
+    [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+}
+
+- (void)didUpdateToLocation
+{
+    [self updateDataSorce];
+}
+
+- (void)didFailUpdateLocation
+{
+    [self updateDataSorce];
 }
 
 @end

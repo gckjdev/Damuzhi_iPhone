@@ -14,9 +14,12 @@
 @class PlaceMapViewController;
 @class Place;
 
-@protocol DeletePlaceDelegate <NSObject>
+@protocol PlaceListControllerDelegate <NSObject>
+
 @optional
 - (void)deletedPlace:(Place *)place;
+- (void)didUpdateToLocation;
+- (void)didFailUpdateLocation;
 
 @end
 
@@ -29,14 +32,12 @@
 @interface PlaceListController : PPTableViewController <CityOverviewServiceDelegate>
 
 @property (retain, nonatomic) IBOutlet UIView *mapHolderView;
-@property (assign, nonatomic) id<DeletePlaceDelegate> deletePlaceDelegate;
+@property (assign, nonatomic) id<PlaceListControllerDelegate> aDelegate;
 @property (assign, nonatomic) id<PullToRefrshDelegate> pullDownDelegate;
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
-                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh 
+                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh
                        pullDownDelegate:(id<PullToRefrshDelegate>)pullDownDelegate;
-
-- (void)hideRefreshHeaderViewAfterLoading;
 
 - (void)showInView:(UIView*)superView;
 - (void)setPlaceList:(NSArray*)placeList;
@@ -44,6 +45,6 @@
 - (void)switchToMapMode;
 - (void)switchToListMode;
 
-- (void)canDeletePlace:(BOOL)isCan delegate:(id<DeletePlaceDelegate>)delegate;
+- (void)canDeletePlace:(BOOL)isCan delegate:(id<PlaceListControllerDelegate>)delegate;
 
 @end

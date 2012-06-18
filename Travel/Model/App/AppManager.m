@@ -17,11 +17,27 @@
 #import "SelectedItemIdsManager.h"
 #import "Item.h"
 #import "PlaceUtils.h"
+#import "RouteUtils.h"
+
+#define TEST_CITY
+#ifdef TEST_CITY
+#define CITY_LIST [self allCities]
+#else
+#define CITY_LIST _app.citiesList
+#endif
+
+@interface AppManager ()
+
+@property (retain, nonatomic) NSArray *allCities;
+
+@end
 
 @implementation AppManager
 
 static AppManager* _defaultAppManager = nil;
+
 @synthesize app = _app;
+@synthesize allCities = _allCities;
 
 + (id)defaultManager
 {
@@ -32,9 +48,40 @@ static AppManager* _defaultAppManager = nil;
     return _defaultAppManager;
 }
 
+- (NSArray *)allCities
+{
+//    if (_allCities == nil) {
+        self.allCities = [self mergeAllCities];
+//    }
+    
+    return _allCities;
+}
+
+- (NSArray *)mergeAllCities
+{
+    NSMutableArray *allCity = [[[NSMutableArray alloc] init] autorelease];
+    
+    [allCity addObjectsFromArray: _app.citiesList];
+    [allCity addObjectsFromArray:_app.testCitiesList];
+    
+//    for (City *city in _app.citiesList) {
+//        [allCity addObject:city];
+////        PPDebug(@"city_ = %@", city.cityName);
+//    }
+//    
+//    for (City *city in _app.testCitiesList) {
+//        [allCity addObject:city];
+////        PPDebug(@"testCity_ = %@", city.cityName);
+//
+//    }
+    
+    return allCity;
+}
+
 -(void)dealloc
 {
     [_app release];
+    [_allCities release];
     [super dealloc];
 }
 
@@ -58,28 +105,28 @@ static AppManager* _defaultAppManager = nil;
 - (void)updateAppData:(App*)appData
 {
     PPDebug(@"Updating app data and save!");
+    
     self.app = appData;    
+    
+    NSArray *cityList = [self.app citiesList];
+    for (City *city in cityList) {
+        PPDebug(@"city = %@", city.cityName);
+    }
+    
+    NSArray *testCityList = [self.app testCitiesList];
+    for (City *city in testCityList) {
+        PPDebug(@"testcity = %@", city.cityName);
+    }
+    
     [[appData data] writeToFile:[AppUtils getAppFilePath] atomically:YES];
 }
 
 - (City*)getCity:(int)cityId
 {
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if(city.cityId == cityId)
         {
             return city;
-        }
-    }
-    
-    return nil;
-}
-
-- (City*)getTestCity:(int)cityId
-{
-    for (City *testCity in _app.testCitiesList) {
-        if(testCity.cityId == cityId)
-        {
-            return testCity;
         }
     }
     
@@ -93,13 +140,13 @@ static AppManager* _defaultAppManager = nil;
 
 - (NSArray*)getCityList
 {
-    return _app.citiesList;
+    return CITY_LIST;
 }
 
 - (NSArray*)getCityIdList
 {
     NSMutableArray *cityIdList = [[[NSMutableArray alloc] init] autorelease];
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         NSNumber *cityId = [[[NSNumber alloc] initWithInt:city.cityId] autorelease];
         [cityIdList addObject:cityId]; 
     }
@@ -110,17 +157,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSArray*)getCityNameList
 {
     NSMutableArray *cityNameList = [[[NSMutableArray alloc] init] autorelease];
-    for (City *city in _app.citiesList) {
-        [cityNameList addObject:city.cityName]; 
-    }
-    
-    return cityNameList;
-}
-
-- (NSArray*)getTestCityNameList
-{
-    NSMutableArray *cityNameList = [[[NSMutableArray alloc] init] autorelease];
-    for (City *city in _app.testCitiesList) {
+    for (City *city in CITY_LIST) {
         [cityNameList addObject:city.cityName]; 
     }
     
@@ -130,7 +167,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSString*)getCityName:(int)cityId
 {
     NSString *cityName = NSLS(@"");;
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             cityName = city.cityName;
             break;
@@ -143,7 +180,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSString*)getCityLatestVersion:(int)cityId
 {
     NSString *cityName = NSLS(@"");;
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             cityName = city.cityName;
             break;
@@ -156,7 +193,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSString*)getCountryName:(int)cityId
 {
     NSString *countryName = NSLS(@"");;
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             countryName = city.countryName;
             break;
@@ -169,7 +206,7 @@ static AppManager* _defaultAppManager = nil;
 - (int)getCityDataSize:(int)cityId
 {
     int dataSize = 0;
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             dataSize = city.dataSize;
             break;
@@ -182,7 +219,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSString*)getCityDownloadUrl:(int)cityId
 {
     NSString *url = NSLS(@"");;
-    for (City *city in _app.citiesList) {
+    for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             url = city.downloadUrl;
             break;
@@ -343,6 +380,16 @@ static AppManager* _defaultAppManager = nil;
     return providedServiceIcon;
 }
 
+- (NSArray *)getProvidedServiceList:(int)categoryId
+{
+    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
+    if (placeMeta !=nil) {
+        return placeMeta.providedServiceListList;
+    }
+    
+    return nil;
+}
+
 - (int)getCurrentCityId
 {
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults];
@@ -371,7 +418,7 @@ static AppManager* _defaultAppManager = nil;
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
     [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
     [userDefault synchronize];
-    [[SelectedItemIdsManager defaultManager] resetAllSelectedItems];
+//    [[SelectedItemIdsManager defaultManager] resetAllSelectedItems];
 }
 
 
@@ -379,14 +426,16 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *subCategoryItemList = [[[NSMutableArray alloc] init] autorelease];    
     
-    [subCategoryItemList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY itemName:NSLS(@"全部") count:[placeList count]] autorelease]];
+    [subCategoryItemList addObject:[Item itemWithId:ALL_CATEGORY
+                                           itemName:NSLS(@"全部")
+                                              count:[placeList count]]];
     
     PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
     if (placeMeta !=nil) {
         for (NameIdPair *subCategory in [placeMeta subCategoryListList]) {
             int count = [[PlaceUtils getPlaceList:placeList inSameSubcategory:subCategory.id] count];
             if (count != 0) {
-                [subCategoryItemList addObject:[[[Item alloc] initWithNameIdPair:subCategory count:count] autorelease]];
+                [subCategoryItemList addObject:[Item itemWithNameIdPair:subCategory count:count]];
             }
         }
     }
@@ -396,38 +445,37 @@ static AppManager* _defaultAppManager = nil;
 
 - (NSArray*)getServiceItemList:(int)categoryId placeList:(NSArray *)placeList
 {
-    NSMutableArray *serviceList = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *serviceItemList = [[[NSMutableArray alloc] init] autorelease];
     
-    [serviceList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY 
-                                                itemName:NSLS(@"全部") 
-                                                   count:[placeList count]] autorelease]];
-        
-    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
-    if (placeMeta !=nil) {
-        for (NameIdPair *providedService in [placeMeta providedServiceListList]) {
-            int count = [[PlaceUtils getPlaceList:placeList hasSameService:providedService.id] count];
-            if (count != 0) {
-                [serviceList addObject:[[[Item alloc] initWithNameIdPair:providedService
-                                                                   count:count] autorelease]];
-            }
+    [serviceItemList addObject:[Item itemWithId:ALL_CATEGORY 
+                                       itemName:NSLS(@"全部") 
+                                          count:[placeList count]]];
+
+    
+    NSArray *serviceList = [self getProvidedServiceList:categoryId];
+    for (NameIdPair *service in serviceList) {
+        int count = [[PlaceUtils getPlaceList:placeList hasSameService:service.id] count];
+        if (count != 0) {
+            [serviceItemList addObject:[Item itemWithNameIdPair:service count:count]];
         }
-    }
+    }    
     
-    return serviceList;
+    return serviceItemList;
 }
 
 - (NSArray *)getAreaItemList:(int)cityId placeList:(NSArray *)placeList
 {
     NSMutableArray *areaList = [[[NSMutableArray alloc] init] autorelease];
     
-    [areaList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY itemName:NSLS(@"全部")
-                                                count:[placeList count]] autorelease]];
+    [areaList addObject:[Item itemWithId:ALL_CATEGORY 
+                                itemName:NSLS(@"全部") 
+                                   count:[placeList count]]];
     
     
     for (CityArea* area in [[self getCity:cityId] areaListList]) {
         int count = [[PlaceUtils getPlaceList:placeList inSameArea:area.areaId] count];
         if (count != 0) {
-            [areaList addObject:[[[Item alloc] initWithItemId:area.areaId itemName:area.areaName count:count] autorelease]];
+            [areaList addObject:[Item itemWithId:area.areaId itemName:area.areaName count:count]];
         }
     }
     
@@ -437,18 +485,15 @@ static AppManager* _defaultAppManager = nil;
 - (NSArray *)getPriceRankItemList:(int)cityId
 {
     NSMutableArray *priceList = [[[NSMutableArray alloc] init] autorelease];
-    
-    [priceList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY 
-                                              itemName:NSLS(@"全部")
-                                                count:0] autorelease]];
-    
-    
+        
+    [priceList addObject:[Item itemWithId:ALL_CATEGORY 
+                                 itemName:NSLS(@"全部") 
+                                    count:0]];
+
     
     for (int rank = 1; rank <= [self getPriceRank:cityId]; rank ++) {
-        NSString *priceRankString = [self getPriceRankString:rank];
-        [priceList addObject:[[[Item alloc] initWithItemId:rank 
-                                                  itemName:priceRankString 
-                                                     count:0] autorelease]];
+        NSString *priceRankString = [self getPriceRankString:rank];        
+        [priceList addObject:[Item itemWithId:rank itemName:priceRankString count:0]];
     }
     
     return priceList;
@@ -513,17 +558,17 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *spotSortItems = [[[NSMutableArray alloc] init] autorelease];    
     
-    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
-                                                  itemName:NSLS(@"大拇指推荐高至低") 
-                                                     count:0] autorelease]];
+    [spotSortItems addObject:[Item itemWithId:SORT_BY_RECOMMEND
+                                      itemName:NSLS(@"大拇指推荐高至低") 
+                                        count:0]];
     
-    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
-                                                  itemName:NSLS(@"距离近至远") 
-                                                     count:0] autorelease]];
+    [spotSortItems addObject:[Item itemWithId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                      itemName:NSLS(@"距离近至远") 
+                                         count:0]];
     
-    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
-                                                  itemName:NSLS(@"门票价格高到低") 
-                                                     count:0] autorelease]];
+    [spotSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                      itemName:NSLS(@"门票价格高到低") 
+                                         count:0]];
     
     return spotSortItems;
 }
@@ -532,25 +577,25 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *hotelSortItems = [[[NSMutableArray alloc] init] autorelease];    
     
-    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
-                                                   itemName:NSLS(@"大拇指推荐高至低") 
-                                                      count:0] autorelease]];
+    [hotelSortItems addObject:[Item itemWithId:SORT_BY_RECOMMEND
+                                      itemName:NSLS(@"大拇指推荐高至低") 
+                                         count:0]];
     
-    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_STARTS
-                                                   itemName:NSLS(@"星级高至低") 
-                                                      count:0] autorelease]];
+    [hotelSortItems addObject:[Item itemWithId:SORT_BY_STARTS
+                                      itemName:NSLS(@"星级高至低") 
+                                         count:0]];
     
-    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
-                                                   itemName:NSLS(@"价格高至低") 
-                                                      count:0] autorelease]];
+    [hotelSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                      itemName:NSLS(@"价格高至低") 
+                                         count:0]];
     
-    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
-                                                   itemName:NSLS(@"价格低至高") 
-                                                      count:0] autorelease]];
+    [hotelSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                      itemName:NSLS(@"价格低至高") 
+                                         count:0]];
     
-    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
-                                                   itemName:NSLS(@"距离近至远") 
-                                                      count:0] autorelease]];
+    [hotelSortItems addObject:[Item itemWithId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                      itemName:NSLS(@"距离近至远") 
+                                         count:0]];
     
     return hotelSortItems;
 }
@@ -559,21 +604,21 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *hestaurantSortItems = [[[NSMutableArray alloc] init] autorelease];  
     
-    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
-                                                        itemName:NSLS(@"大拇指推荐高至低") 
-                                                           count:0] autorelease]];
+    [hestaurantSortItems addObject:[Item itemWithId:SORT_BY_RECOMMEND
+                                           itemName:NSLS(@"大拇指推荐高至低") 
+                                              count:0]];
     
-    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
-                                                        itemName:NSLS(@"价格高至低") 
-                                                           count:0] autorelease]];
+    [hestaurantSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                           itemName:NSLS(@"价格高至低") 
+                                              count:0]];
     
-    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
-                                                        itemName:NSLS(@"价格低至高") 
-                                                           count:0] autorelease]];
+    [hestaurantSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                           itemName:NSLS(@"价格低至高") 
+                                              count:0]];
     
-    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
-                                                        itemName:NSLS(@"距离近至远") 
-                                                           count:0] autorelease]];
+    [hestaurantSortItems addObject:[Item itemWithId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                           itemName:NSLS(@"距离近至远") 
+                                              count:0]];
     
     return hestaurantSortItems;
 }
@@ -582,13 +627,13 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *shoppingtSortItems = [[[NSMutableArray alloc] init] autorelease];
     
-    [shoppingtSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
-                                                       itemName:NSLS(@"大拇指推荐高至低") 
-                                                          count:0] autorelease]];
+    [shoppingtSortItems addObject:[Item itemWithId:SORT_BY_RECOMMEND
+                                            itemName:NSLS(@"大拇指推荐高至低") 
+                                               count:0]];
     
-    [shoppingtSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
-                                                       itemName:NSLS(@"距离近至远") 
-                                                          count:0] autorelease]];
+    [shoppingtSortItems addObject:[Item itemWithId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                          itemName:NSLS(@"距离近至远") 
+                                             count:0]];
     
     return shoppingtSortItems;
 }
@@ -597,28 +642,135 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *entertainmentSortItems = [[[NSMutableArray alloc] init] autorelease];    
     
-    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
-                                                           itemName:NSLS(@"大拇指推荐高至低") 
-                                                              count:0] autorelease]];
+    [entertainmentSortItems addObject:[Item itemWithId:SORT_BY_RECOMMEND
+                                              itemName:NSLS(@"大拇指推荐高至低") 
+                                                 count:0]];
     
-    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
-                                                           itemName:NSLS(@"价格高至低") 
-                                                              count:0] autorelease]];
+    [entertainmentSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                              itemName:NSLS(@"价格高至低") 
+                                                 count:0]];
     
-    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
-                                                           itemName:NSLS(@"价格低至高") 
-                                                              count:0] autorelease]];
+    [entertainmentSortItems addObject:[Item itemWithId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                              itemName:NSLS(@"价格低至高") 
+                                                 count:0]];
     
-    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
-                                                           itemName:NSLS(@"距离近至远") 
-                                                              count:0] autorelease]];
+    [entertainmentSortItems addObject:[Item itemWithId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                              itemName:NSLS(@"距离近至远") 
+                                                 count:0]];
     
     return entertainmentSortItems;
 }
 
-
-- (NSString*)getRouteCityName:(int)routeCityId
+// Get angency list 
+- (NSArray *)getDepartCityItemList:(NSArray *)routeList
 {
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (RouteCity *city in _app.departCitiesList) {
+        int count = [[RouteUtils getRouteList:routeList departFromCity:city.routeCityId] count];
+        if (count != 0) {
+            [retArray addObject:[Item itemWithId:city.routeCityId
+                                        itemName:city.cityName 
+                                           count:count]];
+        }
+    }
+    
+    return retArray;
+}
+
+- (NSArray *)getDestinationCityItemList:(NSArray *)routeList
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (RouteCity *city in _app.destinationCitiesList) {
+        int count = [[RouteUtils getRouteList:routeList headForCity:city.routeCityId] count];
+        if (count != 0) {
+            [retArray addObject:[Item itemWithId:city.routeCityId 
+                                        itemName:city.cityName
+                                           count:count]];
+        }
+    }
+    
+    return retArray; 
+}
+
+- (NSArray *)getRouteThemeItemList:(NSArray *)routeList;
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    [retArray addObject:[Item itemWithId:ALL_CATEGORY 
+                                itemName:NSLS(@"全部") 
+                                   count:[routeList count]]];
+    
+    for ( NameIdPair *theme in _app.routeThemesList) {
+        int count = [[RouteUtils getRouteList:routeList inTheme:theme.id] count];
+//        if (count != 0) {
+            [retArray addObject:[Item itemWithNameIdPair:theme count:count]];
+//        }
+    }
+    
+    return retArray; 
+}
+
+- (NSArray *)getRouteCategoryItemList:(NSArray *)routeList
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    [retArray addObject:[Item itemWithId:ALL_CATEGORY 
+                                itemName:NSLS(@"全部") 
+                                   count:[routeList count]]];
+
+    
+    for ( NameIdPair *category in _app.routeCategorysList) {
+        int count = [[RouteUtils getRouteList:routeList inCategory:category.id] count];
+//        if (count != 0) {
+            [retArray addObject:[Item itemWithNameIdPair:category count:count]];
+//        }
+    }
+    
+    return retArray; 
+}
+
+- (NSArray *)getAgencyItemList:(NSArray *)routeList
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    [retArray addObject:[Item itemWithId:ALL_CATEGORY 
+                                itemName:NSLS(@"全部") 
+                                   count:[routeList count]]];
+    
+    for (Agency *agency in _app.agenciesList) {
+        int count = [[RouteUtils getRouteList:routeList providedByAngency:agency.agencyId] count];
+        if (count != 0) {
+            [retArray addObject:[Item itemWithId:agency.agencyId
+                                        itemName:agency.name
+                                           count:count]];
+        }
+    }
+    
+    return retArray;
+}
+
+
+- (NSString*)getDepartCityName:(int)routeCityId
+{
+    for (RouteCity *city in _app.departCitiesList) {
+        if (city.routeCityId == routeCityId) {
+            return city.cityName;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString*)getAgencyName:(int)agencyId
+{
+    for (Agency *agency in _app.agenciesList) {
+        if (agency.agencyId == agencyId) {
+            return agency.name;
+        }
+    }
+    
     return nil;
 }
 

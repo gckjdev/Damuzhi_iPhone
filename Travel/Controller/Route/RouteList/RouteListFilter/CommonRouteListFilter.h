@@ -20,7 +20,7 @@
 
 + (NSArray *)filterRouteList:(NSArray *)routeList byAgencyIdList:(NSArray *)agencyIdList;
 + (NSArray *)filterRouteList:(NSArray *)routeList byThemeIdList:(NSArray *)themeIdList;
-+ (NSArray *)filterRouteList:(NSArray *)routeList byTypeIdList:(NSArray *)typteIdList;
++ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList;
 + (NSArray *)filterRouteList:(NSArray *)routeList byDepartCityId:(int)departCityId;
 + (NSArray *)filterRouteList:(NSArray *)routeList byDestinationCityId:(int)destinationCityId;
 

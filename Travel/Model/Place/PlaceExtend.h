@@ -10,7 +10,7 @@
 #import "Place.pb.h"
 
 @interface Place (PlaceExtend)
-
+- (BOOL)isKindOfCategory:(int)categoryId;
 - (BOOL)isKindOfSubCategory:(int)subcategoryId;
 - (BOOL)isInPriceRank:(int)priceRank;
 - (BOOL)isInArea:(int)areaId;

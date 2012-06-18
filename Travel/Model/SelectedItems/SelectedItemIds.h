@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SelectedItemIds : NSObject
+@interface PlaceSelectedItemIds : NSObject
 
 @property (retain, nonatomic) NSMutableArray *subCategoryItemIds;
 @property (retain, nonatomic) NSMutableArray *sortItemIds;
@@ -17,6 +17,18 @@
 @property (retain, nonatomic) NSMutableArray *serviceItemIds;
 @property (retain, nonatomic) NSMutableArray *cuisineItemIds;
 
-- (void)resetAll;
+- (void)reset;
+
+@end
+
+@interface RouteSelectedItemIds : NSObject
+
+@property (retain, nonatomic) NSMutableArray *departCityIds;
+@property (retain, nonatomic) NSMutableArray *destinationCityIds;
+@property (retain, nonatomic) NSMutableArray *agencyIds;
+@property (retain, nonatomic) NSMutableArray *themeIds;
+@property (retain, nonatomic) NSMutableArray *routeTypeIds;
+
+- (void)reset;
 
 @end

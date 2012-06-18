@@ -14,8 +14,8 @@
 @class Place;
 @class CommonPlaceDetailController;
 
-#define SEGAMENT_TITLE_FONT [UIFont systemFontOfSize:14]
-#define SEGAMENT_DESCRIPTION_FONT [UIFont systemFontOfSize:13]
+#define SEGAMENT_TITLE_FONT [UIFont systemFontOfSize:15]
+#define SEGAMENT_DESCRIPTION_FONT [UIFont systemFontOfSize:14]
 
 #define TITLE_VIEW_HEIGHT 34
 #define MIDDLE_LINE_HEIGHT 2

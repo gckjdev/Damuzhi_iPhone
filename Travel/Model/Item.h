@@ -15,11 +15,18 @@
 @property (copy, nonatomic) NSString *itemName;
 @property (assign, nonatomic) int count;
 
-- (Item*)initWithItemId:(int)itemId
-               itemName:(NSString *)itemName
-                  count:(int)count;
++ (Item *)itemWithId:(int)itemId
+            itemName:(NSString *)itemName
+               count:(int)count;
 
-- (Item*)initWithNameIdPair:(NameIdPair*)nameIdPair
-                      count:(int)count;
++ (Item *)itemWithNameIdPair:(NameIdPair *)pair
+                       count:(int)count;
+
+//- (Item*)initWithItemId:(int)itemId
+//               itemName:(NSString *)itemName
+//                  count:(int)count;
+//
+//- (Item*)initWithNameIdPair:(NameIdPair*)nameIdPair
+//                      count:(int)count;
 
 @end

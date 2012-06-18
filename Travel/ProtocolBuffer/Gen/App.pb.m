@@ -2268,7 +2268,7 @@ static RecommendedApp* defaultRecommendedAppInstance = nil;
 
 @interface Agency ()
 @property int32_t agencyId;
-@property int32_t name;
+@property (retain) NSString* name;
 @end
 
 @implementation Agency
@@ -2288,12 +2288,13 @@ static RecommendedApp* defaultRecommendedAppInstance = nil;
 }
 @synthesize name;
 - (void) dealloc {
+  self.name = nil;
   [super dealloc];
 }
 - (id) init {
   if ((self = [super init])) {
     self.agencyId = 0;
-    self.name = 0;
+    self.name = @"";
   }
   return self;
 }
@@ -2323,7 +2324,7 @@ static Agency* defaultAgencyInstance = nil;
     [output writeInt32:1 value:self.agencyId];
   }
   if (self.hasName) {
-    [output writeInt32:2 value:self.name];
+    [output writeString:2 value:self.name];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2338,7 +2339,7 @@ static Agency* defaultAgencyInstance = nil;
     size += computeInt32Size(1, self.agencyId);
   }
   if (self.hasName) {
-    size += computeInt32Size(2, self.name);
+    size += computeStringSize(2, self.name);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -2446,8 +2447,8 @@ static Agency* defaultAgencyInstance = nil;
         [self setAgencyId:[input readInt32]];
         break;
       }
-      case 16: {
-        [self setName:[input readInt32]];
+      case 18: {
+        [self setName:[input readString]];
         break;
       }
     }
@@ -2472,17 +2473,17 @@ static Agency* defaultAgencyInstance = nil;
 - (BOOL) hasName {
   return result.hasName;
 }
-- (int32_t) name {
+- (NSString*) name {
   return result.name;
 }
-- (Agency_Builder*) setName:(int32_t) value {
+- (Agency_Builder*) setName:(NSString*) value {
   result.hasName = YES;
   result.name = value;
   return self;
 }
 - (Agency_Builder*) clearName {
   result.hasName = NO;
-  result.name = 0;
+  result.name = @"";
   return self;
 }
 @end
@@ -2760,7 +2761,7 @@ static RouteCity* defaultRouteCityInstance = nil;
 @property (retain) NSMutableArray* mutableDepartCitiesList;
 @property (retain) NSMutableArray* mutableDestinationCitiesList;
 @property (retain) NSMutableArray* mutableRouteThemesList;
-@property (retain) NSMutableArray* mutableRouteTypesList;
+@property (retain) NSMutableArray* mutableRouteCategorysList;
 @property (retain) NSMutableArray* mutableAgenciesList;
 @end
 
@@ -2780,7 +2781,7 @@ static RouteCity* defaultRouteCityInstance = nil;
 @synthesize mutableDepartCitiesList;
 @synthesize mutableDestinationCitiesList;
 @synthesize mutableRouteThemesList;
-@synthesize mutableRouteTypesList;
+@synthesize mutableRouteCategorysList;
 @synthesize mutableAgenciesList;
 - (void) dealloc {
   self.dataVersion = nil;
@@ -2791,7 +2792,7 @@ static RouteCity* defaultRouteCityInstance = nil;
   self.mutableDepartCitiesList = nil;
   self.mutableDestinationCitiesList = nil;
   self.mutableRouteThemesList = nil;
-  self.mutableRouteTypesList = nil;
+  self.mutableRouteCategorysList = nil;
   self.mutableAgenciesList = nil;
   [super dealloc];
 }
@@ -2862,11 +2863,11 @@ static App* defaultAppInstance = nil;
   id value = [mutableRouteThemesList objectAtIndex:index];
   return value;
 }
-- (NSArray*) routeTypesList {
-  return mutableRouteTypesList;
+- (NSArray*) routeCategorysList {
+  return mutableRouteCategorysList;
 }
-- (NameIdPair*) routeTypesAtIndex:(int32_t) index {
-  id value = [mutableRouteTypesList objectAtIndex:index];
+- (NameIdPair*) routeCategorysAtIndex:(int32_t) index {
+  id value = [mutableRouteCategorysList objectAtIndex:index];
   return value;
 }
 - (NSArray*) agenciesList {
@@ -2915,7 +2916,7 @@ static App* defaultAppInstance = nil;
       return NO;
     }
   }
-  for (NameIdPair* element in self.routeTypesList) {
+  for (NameIdPair* element in self.routeCategorysList) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -2952,7 +2953,7 @@ static App* defaultAppInstance = nil;
   for (NameIdPair* element in self.routeThemesList) {
     [output writeMessage:25 value:element];
   }
-  for (NameIdPair* element in self.routeTypesList) {
+  for (NameIdPair* element in self.routeCategorysList) {
     [output writeMessage:26 value:element];
   }
   for (Agency* element in self.agenciesList) {
@@ -2991,7 +2992,7 @@ static App* defaultAppInstance = nil;
   for (NameIdPair* element in self.routeThemesList) {
     size += computeMessageSize(25, element);
   }
-  for (NameIdPair* element in self.routeTypesList) {
+  for (NameIdPair* element in self.routeCategorysList) {
     size += computeMessageSize(26, element);
   }
   for (Agency* element in self.agenciesList) {
@@ -3117,11 +3118,11 @@ static App* defaultAppInstance = nil;
     }
     [result.mutableRouteThemesList addObjectsFromArray:other.mutableRouteThemesList];
   }
-  if (other.mutableRouteTypesList.count > 0) {
-    if (result.mutableRouteTypesList == nil) {
-      result.mutableRouteTypesList = [NSMutableArray array];
+  if (other.mutableRouteCategorysList.count > 0) {
+    if (result.mutableRouteCategorysList == nil) {
+      result.mutableRouteCategorysList = [NSMutableArray array];
     }
-    [result.mutableRouteTypesList addObjectsFromArray:other.mutableRouteTypesList];
+    [result.mutableRouteCategorysList addObjectsFromArray:other.mutableRouteCategorysList];
   }
   if (other.mutableAgenciesList.count > 0) {
     if (result.mutableAgenciesList == nil) {
@@ -3199,7 +3200,7 @@ static App* defaultAppInstance = nil;
       case 210: {
         NameIdPair_Builder* subBuilder = [NameIdPair builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addRouteTypes:[subBuilder buildPartial]];
+        [self addRouteCategorys:[subBuilder buildPartial]];
         break;
       }
       case 242: {
@@ -3430,33 +3431,33 @@ static App* defaultAppInstance = nil;
   [result.mutableRouteThemesList addObject:value];
   return self;
 }
-- (NSArray*) routeTypesList {
-  if (result.mutableRouteTypesList == nil) { return [NSArray array]; }
-  return result.mutableRouteTypesList;
+- (NSArray*) routeCategorysList {
+  if (result.mutableRouteCategorysList == nil) { return [NSArray array]; }
+  return result.mutableRouteCategorysList;
 }
-- (NameIdPair*) routeTypesAtIndex:(int32_t) index {
-  return [result routeTypesAtIndex:index];
+- (NameIdPair*) routeCategorysAtIndex:(int32_t) index {
+  return [result routeCategorysAtIndex:index];
 }
-- (App_Builder*) replaceRouteTypesAtIndex:(int32_t) index with:(NameIdPair*) value {
-  [result.mutableRouteTypesList replaceObjectAtIndex:index withObject:value];
+- (App_Builder*) replaceRouteCategorysAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableRouteCategorysList replaceObjectAtIndex:index withObject:value];
   return self;
 }
-- (App_Builder*) addAllRouteTypes:(NSArray*) values {
-  if (result.mutableRouteTypesList == nil) {
-    result.mutableRouteTypesList = [NSMutableArray array];
+- (App_Builder*) addAllRouteCategorys:(NSArray*) values {
+  if (result.mutableRouteCategorysList == nil) {
+    result.mutableRouteCategorysList = [NSMutableArray array];
   }
-  [result.mutableRouteTypesList addObjectsFromArray:values];
+  [result.mutableRouteCategorysList addObjectsFromArray:values];
   return self;
 }
-- (App_Builder*) clearRouteTypesList {
-  result.mutableRouteTypesList = nil;
+- (App_Builder*) clearRouteCategorysList {
+  result.mutableRouteCategorysList = nil;
   return self;
 }
-- (App_Builder*) addRouteTypes:(NameIdPair*) value {
-  if (result.mutableRouteTypesList == nil) {
-    result.mutableRouteTypesList = [NSMutableArray array];
+- (App_Builder*) addRouteCategorys:(NameIdPair*) value {
+  if (result.mutableRouteCategorysList == nil) {
+    result.mutableRouteCategorysList = [NSMutableArray array];
   }
-  [result.mutableRouteTypesList addObject:value];
+  [result.mutableRouteCategorysList addObject:value];
   return self;
 }
 - (NSArray*) agenciesList {

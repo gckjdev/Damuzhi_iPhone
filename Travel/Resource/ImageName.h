@@ -49,11 +49,6 @@
 #define     IMAGE_CITY_CELL_BG          @"td_bg.png"
 
 
-#define     IMAGE_NAVIGATIONBAR_BACK_BTN   @"back.png"
-
-
-#define     IMAGE_SELECT_DOWN           @"select_down.png"
-
 #pragma mark -
 #pragma mark favorite
 #define     IMAGE_FAVORITE_DELETE_BTN   @"delete.png"

@@ -605,12 +605,12 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   BOOL hasAgencyId_:1;
   BOOL hasName_:1;
   int32_t agencyId;
-  int32_t name;
+  NSString* name;
 }
 - (BOOL) hasAgencyId;
 - (BOOL) hasName;
 @property (readonly) int32_t agencyId;
-@property (readonly) int32_t name;
+@property (readonly, retain) NSString* name;
 
 + (Agency*) defaultInstance;
 - (Agency*) defaultInstance;
@@ -652,8 +652,8 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (Agency_Builder*) clearAgencyId;
 
 - (BOOL) hasName;
-- (int32_t) name;
-- (Agency_Builder*) setName:(int32_t) value;
+- (NSString*) name;
+- (Agency_Builder*) setName:(NSString*) value;
 - (Agency_Builder*) clearName;
 @end
 
@@ -734,7 +734,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   NSMutableArray* mutableDepartCitiesList;
   NSMutableArray* mutableDestinationCitiesList;
   NSMutableArray* mutableRouteThemesList;
-  NSMutableArray* mutableRouteTypesList;
+  NSMutableArray* mutableRouteCategorysList;
   NSMutableArray* mutableAgenciesList;
 }
 - (BOOL) hasDataVersion;
@@ -753,8 +753,8 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (RouteCity*) destinationCitiesAtIndex:(int32_t) index;
 - (NSArray*) routeThemesList;
 - (NameIdPair*) routeThemesAtIndex:(int32_t) index;
-- (NSArray*) routeTypesList;
-- (NameIdPair*) routeTypesAtIndex:(int32_t) index;
+- (NSArray*) routeCategorysList;
+- (NameIdPair*) routeCategorysAtIndex:(int32_t) index;
 - (NSArray*) agenciesList;
 - (Agency*) agenciesAtIndex:(int32_t) index;
 
@@ -846,12 +846,12 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (App_Builder*) addAllRouteThemes:(NSArray*) values;
 - (App_Builder*) clearRouteThemesList;
 
-- (NSArray*) routeTypesList;
-- (NameIdPair*) routeTypesAtIndex:(int32_t) index;
-- (App_Builder*) replaceRouteTypesAtIndex:(int32_t) index with:(NameIdPair*) value;
-- (App_Builder*) addRouteTypes:(NameIdPair*) value;
-- (App_Builder*) addAllRouteTypes:(NSArray*) values;
-- (App_Builder*) clearRouteTypesList;
+- (NSArray*) routeCategorysList;
+- (NameIdPair*) routeCategorysAtIndex:(int32_t) index;
+- (App_Builder*) replaceRouteCategorysAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addRouteCategorys:(NameIdPair*) value;
+- (App_Builder*) addAllRouteCategorys:(NSArray*) values;
+- (App_Builder*) clearRouteCategorysList;
 
 - (NSArray*) agenciesList;
 - (Agency*) agenciesAtIndex:(int32_t) index;

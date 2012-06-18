@@ -18,6 +18,7 @@
 #import "MobClick.h"
 #import "AppUtils.h"
 #import "ResendService.h"
+#import "ImageManager.h"
 
 
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
@@ -41,6 +42,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
 //    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
     [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
@@ -48,7 +50,7 @@
     [MobClick updateOnlineConfig];
     
     if ([DeviceDetection isOS5]){
-        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"topmenu_bg.png"] forBarMetrics:UIBarMetricsDefault];
+        [[UINavigationBar appearance] setBackgroundImage:[[ImageManager defaultManager] navigationBgImage] forBarMetrics:UIBarMetricsDefault];
     }
     else{
         GlobalSetNavBarBackground(@"topmenu_bg.png");        

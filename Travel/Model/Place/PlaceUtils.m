@@ -110,9 +110,9 @@
 + (NSString*)getDistanceStringFrom:(float)distance
 {    
     // 单位统一为KM，大于1KM的，采用四舍五入，不用小数点; 22. 小于1KM的用M，精确到十位。
-    if (distance > 200.0*1000.0) {
-        return NSLS(@"");
-    }else if (distance >1000.0) {
+    if (distance > 100.0*1000.0) {
+        return NSLS(@">100km");
+    }else if (distance >=1000.0) {
         long long temp = distance/1000.0 + 0.5;
         return [NSString stringWithFormat:NSLS(@"%lldkm"), temp];
     }
@@ -269,6 +269,18 @@
     return retArray;
 }
 
++ (NSArray*)getPlaceList:(NSArray *)placeList ofCategory:(int)categoryId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (Place *place in placeList) {
+        if ([place isKindOfCategory:categoryId]) {
+            [retArray addObject:place];
+        };
+    }
+    
+    return retArray;
+}
 
 
 @end

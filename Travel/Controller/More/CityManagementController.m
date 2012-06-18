@@ -67,7 +67,7 @@ static CityManagementController *_instance;
     self.downloadTableView.hidden = YES;
         
     [self setNavigationLeftButton:NSLS(@" 返回") 
-                        imageName:IMAGE_NAVIGATIONBAR_BACK_BTN
+                        imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)];

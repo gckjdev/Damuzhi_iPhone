@@ -252,7 +252,6 @@
 
 - (void)addMyLocationBtnTo:(UIView*)view
 {
-    //    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(view.frame.size.width-31, view.frame.size.height-31, 31, 31)];    
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-35, self.view.frame.size.height-35, 31, 31)];            
     
     [button setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];

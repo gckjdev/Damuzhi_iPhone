@@ -408,4 +408,15 @@
     return alert;
 }
 
+// alert when user denies your application’s use of the location service.
+
++ (UIAlertView*)showAlertViewWhenUserDenyLocatedService
+{
+    NSString *message = NSLS(@"您没有开启定位功能，请到手机设置里开启");
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLS(@"提示") message:message delegate:nil cancelButtonTitle:NSLS(@"我知道了") otherButtonTitles:nil,nil] autorelease];
+    [alert show];
+    
+    return alert;
+}
+
 @end

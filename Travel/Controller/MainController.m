@@ -36,6 +36,10 @@
 #import "MobClick.h"
 #import "PPDebug.h"
 
+#import "CommonRouteListController.h"
+#import "PackageTourListFilter.h"
+#import "UnPackageTourListFilter.h"
+
 @implementation MainController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -93,37 +97,19 @@
     [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
     
     self.navigationItem.titleView = button;
-    
+        
     [button release];
 }
 
 #define TAG_CITY_UPDATE_ALERT 123
+#define TAG_USER_LOCATION_SEVICE_DENY 124
+
 - (void)viewDidLoad
 {
     [self setBackgroundImageName:@"index_bg.png"];
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
-
-    [self initLocationManager];
-    [self startUpdatingLocation];
-    
+        
     [self checkCurrentCityVersion];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    // save to current location
-    self.currentLocation = newLocation;
-	
-	// we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:kTimeOutObjectString];
-	
-	// IMPORTANT!!! Minimize power usage by stopping the location manager as soon as possible.
-	[self stopUpdatingLocation:NSLocalizedString(@"Acquired Location", @"Acquired Location")];
-	
-    // TODO:
-    PPDebug(@"current location: %f, %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
-    [[AppService defaultService] setCurrentLocation:newLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -246,6 +232,13 @@
     controller.navigationItem.title = NSLS(@"帮助");
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
+//    NSObject<RouteListFilterProtocol>* filter = [PackageTourListFilter createFilter];
+//    CommonRouteListController *controller = [[CommonRouteListController alloc] initWithFilterHandler:filter DepartCityId:1 destinationCityId:0 hasStatisticsLabel:YES];
+//    
+//    controller.navigationItem.title = [filter getRouteTypeName];
+//    
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
 }
 
 - (IBAction)clickShare:(id)sender

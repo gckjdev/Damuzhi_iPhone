@@ -20,6 +20,7 @@
 #import "PPApplication.h"
 #import "Reachability.h"
 #import "AppUtils.h"
+#import "ImageManager.h"
 
 @interface PlaceListController () 
 {
@@ -41,7 +42,7 @@
 @synthesize superNavigationController = _superNavigationController;
 @synthesize mapViewController = _mapViewController;
 @synthesize canDelete = _canDelete;
-@synthesize deletePlaceDelegate = _deletePlaceDelegate;
+@synthesize aDelegate = _aDelegate;
 @synthesize pullDownDelegate = _pullDownDelegate;
 
 - (void)dealloc
@@ -76,10 +77,58 @@
 {
     [super viewDidLoad];
     
+    [self initLocationManager];
+    [self startUpdatingLocation];
+    
     self.mapViewController = [[[PlaceMapViewController alloc] initWithSuperNavigationController:_superNavigationController] autorelease];
     [_mapViewController showInView:_mapHolderView];
 
     [self switchToListMode];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    // save to current location
+    self.currentLocation = newLocation;
+	
+	// we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:kTimeOutObjectString];
+	
+	// IMPORTANT!!! Minimize power usage by stopping the location manager as soon as possible.
+	[self stopUpdatingLocation:NSLocalizedString(@"Acquired Location", @"Acquired Location")];
+	
+    // TODO:
+    PPDebug(@"current location: %f, %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+    [[AppService defaultService] setCurrentLocation:newLocation];
+    
+    
+    if ([_aDelegate respondsToSelector:@selector(didUpdateToLocation)]) {
+        [_aDelegate didUpdateToLocation];
+    }
+    
+    [self.dataTableView reloadData];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{   
+    // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:kTimeOutObjectString];
+    
+    // IMPORTANT!!! Minimize power usage by stopping the location manager as soon as possible.
+    [self stopUpdatingLocation:NSLocalizedString(@"Acquired Location", @"Acquired Location")];
+    
+    [self.dataTableView reloadData];
+    
+    [[AppService defaultService] setCurrentLocation:nil];
+    
+    if ([_aDelegate respondsToSelector:@selector(didFailUpdateLocation)]) {
+        [_aDelegate didFailUpdateLocation];
+    }
+    
+    if (error.code == kCLErrorDenied) {
+        [AppUtils showAlertViewWhenUserDenyLocatedService];
+    }else {
+        [self popupMessage:NSLS(@"未能获取您的位置") title:nil];
+    }
 }
 
 #pragma mark For Sub Class to override and implement
@@ -91,11 +140,11 @@
     }
 }
 
-- (void)canDeletePlace:(BOOL)isCan delegate:(id<DeletePlaceDelegate>)deleteDelegate
+- (void)canDeletePlace:(BOOL)isCan delegate:(id<PlaceListControllerDelegate>)delegate
 {
     self.canDelete = isCan;
     [self.dataTableView setEditing:isCan animated:YES];
-    self.deletePlaceDelegate = deleteDelegate;
+    self.aDelegate = delegate;
     [self.dataTableView reloadData];
 }
 
@@ -112,13 +161,14 @@
 }
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
-                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh 
-                       pullDownDelegate:(id<PullToRefrshDelegate>)pullDownDelegate
+                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh
+                       pullDownDelegate:(id<PullToRefrshDelegate>)pullDownDelegate;
 {
     self = [super init];
     if (self) {
         self.superNavigationController = superNavigationController;
         self.supportRefreshHeader = wantPullDownToRefresh;
+//        self.supportRefreshFooter = YES;
         self.pullDownDelegate = pullDownDelegate;
     }
     
@@ -162,10 +212,10 @@
     return 1;		// default implementation
 }
 
-// Customize the number of rows in the table view.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [dataList count];			// default implementation
-}
+//// Customize the number of rows in the table view.
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//	return [dataList count];			// default implementation
+//}
 
 
 - (Class)getClassByPlace:(Place*)place
@@ -198,7 +248,7 @@
 		cell = [placeClass createCell:self];
 
         UIImageView *view = [[UIImageView alloc] init];
-        [view setImage:[UIImage strectchableImageName:@"li_bg.png"]];
+        [view setImage:[[ImageManager defaultManager] listBgImage]];
         [cell setBackgroundView:view];
         [view release];
 	}
@@ -245,8 +295,8 @@
     
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     
-    if (_deletePlaceDelegate && [_deletePlaceDelegate respondsToSelector:@selector(deletedPlace:)]){
-        [_deletePlaceDelegate deletedPlace:delPlace];
+    if ([_aDelegate respondsToSelector:@selector(deletedPlace:)]){
+        [_aDelegate deletedPlace:delPlace];
     }
 }
 
@@ -293,15 +343,6 @@
         [self showTipsOnTableView:NSLS(@"未找到相关信息")];
     }else {
         [self hideTipsOnTableView];
-    }
-}
-
-- (void)hideRefreshHeaderViewAfterLoading
-{
-    if (self.superNavigationController) {
-        // after finish loading data, please call the following codes
-//        [refreshHeaderView setCurrentDate];  	
-        [self dataSourceDidFinishLoadingNewData];
     }
 }
 

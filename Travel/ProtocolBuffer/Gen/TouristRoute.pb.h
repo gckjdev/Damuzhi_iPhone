@@ -81,11 +81,10 @@
 @interface TouristRoute : PBGeneratedMessage {
 @private
   BOOL hasFollowUserCount_:1;
-  BOOL hasTypeId_:1;
+  BOOL hasCategoryId_:1;
   BOOL hasDays_:1;
   BOOL hasAverageRank_:1;
   BOOL hasAgencyId_:1;
-  BOOL hasDestinationCityId_:1;
   BOOL hasDepartCityId_:1;
   BOOL hasRouteId_:1;
   BOOL hasBookingNotice_:1;
@@ -97,13 +96,11 @@
   BOOL hasTour_:1;
   BOOL hasThumbImage_:1;
   BOOL hasPrice_:1;
-  BOOL hasBooking_:1;
   int32_t followUserCount;
-  int32_t typeId;
+  int32_t categoryId;
   int32_t days;
   int32_t averageRank;
   int32_t agencyId;
-  int32_t destinationCityId;
   int32_t departCityId;
   int32_t routeId;
   NSString* bookingNotice;
@@ -115,49 +112,48 @@
   NSString* tour;
   NSString* thumbImage;
   NSString* price;
-  Booking* booking;
   NSMutableArray* mutableThemeIdsList;
+  NSMutableArray* mutableDestinationCityIdsList;
   NSMutableArray* mutableDetailImagesList;
   NSMutableArray* mutableDailySchedulesList;
   NSMutableArray* mutablePackagesList;
+  NSMutableArray* mutableBookingsList;
   NSMutableArray* mutableRelatedplacesList;
 }
 - (BOOL) hasRouteId;
 - (BOOL) hasName;
 - (BOOL) hasDepartCityId;
-- (BOOL) hasDestinationCityId;
 - (BOOL) hasPrice;
 - (BOOL) hasAgencyId;
 - (BOOL) hasAverageRank;
 - (BOOL) hasThumbImage;
 - (BOOL) hasTour;
 - (BOOL) hasDays;
-- (BOOL) hasTypeId;
+- (BOOL) hasCategoryId;
 - (BOOL) hasFollowUserCount;
 - (BOOL) hasCustomerServiceTelephone;
 - (BOOL) hasCharacteristic;
-- (BOOL) hasBooking;
 - (BOOL) hasReference;
 - (BOOL) hasFee;
 - (BOOL) hasBookingNotice;
 @property (readonly) int32_t routeId;
 @property (readonly, retain) NSString* name;
 @property (readonly) int32_t departCityId;
-@property (readonly) int32_t destinationCityId;
 @property (readonly, retain) NSString* price;
 @property (readonly) int32_t agencyId;
 @property (readonly) int32_t averageRank;
 @property (readonly, retain) NSString* thumbImage;
 @property (readonly, retain) NSString* tour;
 @property (readonly) int32_t days;
-@property (readonly) int32_t typeId;
+@property (readonly) int32_t categoryId;
 @property (readonly) int32_t followUserCount;
 @property (readonly, retain) NSString* customerServiceTelephone;
 @property (readonly, retain) NSString* characteristic;
-@property (readonly, retain) Booking* booking;
 @property (readonly, retain) NSString* reference;
 @property (readonly, retain) NSString* fee;
 @property (readonly, retain) NSString* bookingNotice;
+- (NSArray*) destinationCityIdsList;
+- (int32_t) destinationCityIdsAtIndex:(int32_t) index;
 - (NSArray*) themeIdsList;
 - (int32_t) themeIdsAtIndex:(int32_t) index;
 - (NSArray*) detailImagesList;
@@ -166,6 +162,8 @@
 - (DailySchedule*) dailySchedulesAtIndex:(int32_t) index;
 - (NSArray*) packagesList;
 - (TravelPackage*) packagesAtIndex:(int32_t) index;
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
 - (NSArray*) relatedplacesList;
 - (PlaceTour*) relatedplacesAtIndex:(int32_t) index;
 
@@ -218,10 +216,12 @@
 - (TouristRoute_Builder*) setDepartCityId:(int32_t) value;
 - (TouristRoute_Builder*) clearDepartCityId;
 
-- (BOOL) hasDestinationCityId;
-- (int32_t) destinationCityId;
-- (TouristRoute_Builder*) setDestinationCityId:(int32_t) value;
-- (TouristRoute_Builder*) clearDestinationCityId;
+- (NSArray*) destinationCityIdsList;
+- (int32_t) destinationCityIdsAtIndex:(int32_t) index;
+- (TouristRoute_Builder*) replaceDestinationCityIdsAtIndex:(int32_t) index with:(int32_t) value;
+- (TouristRoute_Builder*) addDestinationCityIds:(int32_t) value;
+- (TouristRoute_Builder*) addAllDestinationCityIds:(NSArray*) values;
+- (TouristRoute_Builder*) clearDestinationCityIdsList;
 
 - (BOOL) hasPrice;
 - (NSString*) price;
@@ -260,10 +260,10 @@
 - (TouristRoute_Builder*) addAllThemeIds:(NSArray*) values;
 - (TouristRoute_Builder*) clearThemeIdsList;
 
-- (BOOL) hasTypeId;
-- (int32_t) typeId;
-- (TouristRoute_Builder*) setTypeId:(int32_t) value;
-- (TouristRoute_Builder*) clearTypeId;
+- (BOOL) hasCategoryId;
+- (int32_t) categoryId;
+- (TouristRoute_Builder*) setCategoryId:(int32_t) value;
+- (TouristRoute_Builder*) clearCategoryId;
 
 - (BOOL) hasFollowUserCount;
 - (int32_t) followUserCount;
@@ -301,12 +301,12 @@
 - (TouristRoute_Builder*) addAllPackages:(NSArray*) values;
 - (TouristRoute_Builder*) clearPackagesList;
 
-- (BOOL) hasBooking;
-- (Booking*) booking;
-- (TouristRoute_Builder*) setBooking:(Booking*) value;
-- (TouristRoute_Builder*) setBookingBuilder:(Booking_Builder*) builderForValue;
-- (TouristRoute_Builder*) mergeBooking:(Booking*) value;
-- (TouristRoute_Builder*) clearBooking;
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
+- (TouristRoute_Builder*) replaceBookingsAtIndex:(int32_t) index with:(Booking*) value;
+- (TouristRoute_Builder*) addBookings:(Booking*) value;
+- (TouristRoute_Builder*) addAllBookings:(NSArray*) values;
+- (TouristRoute_Builder*) clearBookingsList;
 
 - (BOOL) hasReference;
 - (NSString*) reference;
@@ -338,30 +338,29 @@
   BOOL hasBreakfast_:1;
   BOOL hasLunch_:1;
   BOOL hasDinner_:1;
-  BOOL hasPlaceTours_:1;
   BOOL hasAccommodation_:1;
   int32_t day;
   NSString* title;
   NSString* breakfast;
   NSString* lunch;
   NSString* dinner;
-  PlaceTour* placeTours;
   Accommodation* accommodation;
+  NSMutableArray* mutablePlaceToursList;
 }
 - (BOOL) hasDay;
 - (BOOL) hasTitle;
-- (BOOL) hasPlaceTours;
 - (BOOL) hasBreakfast;
 - (BOOL) hasLunch;
 - (BOOL) hasDinner;
 - (BOOL) hasAccommodation;
 @property (readonly) int32_t day;
 @property (readonly, retain) NSString* title;
-@property (readonly, retain) PlaceTour* placeTours;
 @property (readonly, retain) NSString* breakfast;
 @property (readonly, retain) NSString* lunch;
 @property (readonly, retain) NSString* dinner;
 @property (readonly, retain) Accommodation* accommodation;
+- (NSArray*) placeToursList;
+- (PlaceTour*) placeToursAtIndex:(int32_t) index;
 
 + (DailySchedule*) defaultInstance;
 - (DailySchedule*) defaultInstance;
@@ -407,12 +406,12 @@
 - (DailySchedule_Builder*) setTitle:(NSString*) value;
 - (DailySchedule_Builder*) clearTitle;
 
-- (BOOL) hasPlaceTours;
-- (PlaceTour*) placeTours;
-- (DailySchedule_Builder*) setPlaceTours:(PlaceTour*) value;
-- (DailySchedule_Builder*) setPlaceToursBuilder:(PlaceTour_Builder*) builderForValue;
-- (DailySchedule_Builder*) mergePlaceTours:(PlaceTour*) value;
-- (DailySchedule_Builder*) clearPlaceTours;
+- (NSArray*) placeToursList;
+- (PlaceTour*) placeToursAtIndex:(int32_t) index;
+- (DailySchedule_Builder*) replacePlaceToursAtIndex:(int32_t) index with:(PlaceTour*) value;
+- (DailySchedule_Builder*) addPlaceTours:(PlaceTour*) value;
+- (DailySchedule_Builder*) addAllPlaceTours:(NSArray*) values;
+- (DailySchedule_Builder*) clearPlaceToursList;
 
 - (BOOL) hasBreakfast;
 - (NSString*) breakfast;

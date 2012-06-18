@@ -7,12 +7,70 @@
 //
 
 #import "RouteUtils.h"
+#import "TouristRoute.pb.h"
+#import "RouteExtend.h"
 
 @implementation RouteUtils
 
-+ (NSDictionary*)getAngencyDicWithRouteList:(NSArray*)routeList
++ (NSArray *)getRouteList:(NSArray *)routeList departFromCity:(int)departCityId
 {
-    return nil;
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    for (TouristRoute *route in routeList) {
+        if ([route isDepartFromCity:departCityId]) {
+            [retArray addObject:route];
+        }
+    }
+    
+    return retArray;
 }
+
++ (NSArray *)getRouteList:(NSArray *)routeList headForCity:(int)departCityId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    for (TouristRoute *route in routeList) {
+        if ([route isHeadForCity:departCityId]) {
+            [retArray addObject:route];
+        }
+    }
+    
+    return retArray; 
+}
+
++ (NSArray *)getRouteList:(NSArray *)routeList providedByAngency:(int)angencyId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    for (TouristRoute *route in routeList) {
+        if ([route isProvidedByAngency:angencyId]) {
+            [retArray addObject:route];
+        }
+    }
+    
+    return retArray; 
+}
+
++ (NSArray *)getRouteList:(NSArray *)routeList inTheme:(int)themeId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    for (TouristRoute *route in routeList) {
+        if ([route isKindOfTheme:themeId]) {
+            [retArray addObject:route];
+        }
+    }
+    
+    return retArray; 
+}
+
++ (NSArray *)getRouteList:(NSArray *)routeList inCategory:(int)categoryId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    for (TouristRoute *route in routeList) {
+        if ([route isKindOfCategory:categoryId]) {
+            [retArray addObject:route];
+        }
+    }
+    
+    return retArray; 
+}
+
 
 @end

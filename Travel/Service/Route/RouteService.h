@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CommonService.h"
+#import "Package.pb.h"
 
 #define ROUTE_TYPE_PACKAGE_TOUR  OBJECT_LIST_ROUTE_PACKAGE_TOUR         // 跟团游
 #define ROUTE_TYPE_UNPACKAGE_TOUR OBJECT_LIST_ROUTE_UNPACKAGE_TOUR      // 自由行(旅行社路线)
@@ -19,7 +20,7 @@
 
 @optional
 - (void)findRequestDone:(int)result totalCount:(int)totalCount routeList:(NSArray*)routeList;
-
+- (void)findRequestDone:(int)result route:(TouristRoute *)route;
 @end
 
 @interface RouteService : CommonService
@@ -32,5 +33,8 @@
                      start:(int)start
                      count:(int)count
             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+                
 
 @end

@@ -12,13 +12,19 @@
 
 @interface SelectedItemIdsManager : NSObject <CommonManagerProtocol>
 
-@property (retain, nonatomic) SelectedItemIds *spotSelectedItems;
-@property (retain, nonatomic) SelectedItemIds *hotelSelectedItems;
-@property (retain, nonatomic) SelectedItemIds *restaurantSelectedItems;
-@property (retain, nonatomic) SelectedItemIds *shoppingSelectedItems;
-@property (retain, nonatomic) SelectedItemIds *entertainmentSelectedItems;
+@property (retain, nonatomic) PlaceSelectedItemIds *spotSelectedItems;
+@property (retain, nonatomic) PlaceSelectedItemIds *hotelSelectedItems;
+@property (retain, nonatomic) PlaceSelectedItemIds *restaurantSelectedItems;
+@property (retain, nonatomic) PlaceSelectedItemIds *shoppingSelectedItems;
+@property (retain, nonatomic) PlaceSelectedItemIds *entertainmentSelectedItems;
 
-- (SelectedItemIds*)getSelectedItems:(int)categoryId;
-- (void)resetAllSelectedItems;
+@property (retain, nonatomic) RouteSelectedItemIds *packageTourSelectedItems;
+@property (retain, nonatomic) RouteSelectedItemIds *unPackageTourSelectedItems;
+
+- (PlaceSelectedItemIds*)getPlaceSelectedItems:(int)categoryId;
+//- (void)resetPlaceSelectedItems:(int)categoryId;
+
+- (RouteSelectedItemIds*)getRouteSelectedItems:(int)routeType;
+//- (void)resetRouteSelectedItems:(int)routeType;
 
 @end

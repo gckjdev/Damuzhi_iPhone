@@ -8,8 +8,19 @@
 
 #import "PlaceExtend.h"
 #import "CommonPlace.h"
+#import "Place.pb.h"
+#import "App.pb.h"
 
 @implementation Place (PlaceExtend)
+
+- (BOOL)isKindOfCategory:(int)categoryId_
+{
+    if (categoryId_ == PlaceCategoryTypePlaceAll || self.categoryId == categoryId_) {
+        return YES;
+    }
+    
+    return NO;
+}
 
 - (BOOL)isKindOfSubCategory:(int)subCategoryId_
 {    
@@ -39,13 +50,18 @@
 }
 
 - (BOOL)hasService:(int)serviceId_
-{
-    NSNumber *providedServceId = [NSNumber numberWithInt:serviceId_];
-    if (serviceId_ == ALL_CATEGORY || NSNotFound != [self.providedServiceIdList indexOfObject:providedServceId]) {
+{    
+    if (serviceId_ == ALL_CATEGORY) {
         return YES;
     }
     
-    return NO ;
+    for (NSNumber *servicId in self.providedServiceIdList) {
+        if ([servicId intValue] == serviceId_) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

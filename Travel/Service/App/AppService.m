@@ -49,7 +49,7 @@ static AppService* _defaultAppService = nil;
 {
     self = [super init];
     if (self) {
-        [self setCurrentLocation:[[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease]];
+//        [self setCurrentLocation:[[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease]];
     }
     
     return self;

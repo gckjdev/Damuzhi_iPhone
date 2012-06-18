@@ -8,7 +8,6 @@
 
 #import "RouteService.h"
 #import "TravelNetworkRequest.h"
-#import "Package.pb.h"
 
 @interface RouteService ()
 
@@ -76,5 +75,33 @@ static RouteService *_defaultRouteService = nil;
         }
     });    
 }
+
+- (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController
+
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput* output = [TravelNetworkRequest queryObject:OBJECT_TYPE_ROUTE_DETAIL
+                                                                  objId:routeId  
+                                                                 lang:LanguageTypeZhHans];
+        
+        TravelResponse *travelResponse = nil;
+        if (output.resultCode == ERROR_SUCCESS){
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+                TouristRoute *route = [travelResponse route];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([viewController respondsToSelector:@selector(findRequestDone:route:)]) {
+                        [viewController findRequestDone:travelResponse.resultCode 
+                                                  route:route];
+                    }
+                });
+            }
+            @catch (NSException *exception){
+            }
+        }
+    }); 
+}
+
 
 @end

@@ -70,7 +70,7 @@
     return NSLS(@"餐馆");
 }
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds *)selectedItemIds
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds *)selectedItemIds
 {
     CLLocation *currentLocation = [[AppService defaultService] currentLocation];
     

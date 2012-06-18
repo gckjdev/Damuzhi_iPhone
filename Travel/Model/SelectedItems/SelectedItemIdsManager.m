@@ -9,6 +9,7 @@
 #import "SelectedItemIdsManager.h"
 #import "CommonPlace.h"
 #import "App.pb.h"
+#import "TravelNetworkConstants.h" 
 
 @implementation SelectedItemIdsManager
 
@@ -17,6 +18,9 @@
 @synthesize restaurantSelectedItems = _restaurantSelectedItems;
 @synthesize shoppingSelectedItems = _shoppingSelectedItems;
 @synthesize entertainmentSelectedItems = _entertainmentSelectedItems;
+
+@synthesize packageTourSelectedItems  = _packageTourSelectedItems;
+@synthesize unPackageTourSelectedItems = _unPackageTourSelectedItems;
 
 static SelectedItemIdsManager *_instance = nil;
 
@@ -33,11 +37,15 @@ static SelectedItemIdsManager *_instance = nil;
 {
     self = [super init];
     if (self) {
-        self.spotSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
-        self.hotelSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
-        self.restaurantSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
-        self.shoppingSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
-        self.entertainmentSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
+        self.spotSelectedItems = [[[PlaceSelectedItemIds alloc] init] autorelease];
+        self.hotelSelectedItems = [[[PlaceSelectedItemIds alloc] init] autorelease];
+        self.restaurantSelectedItems = [[[PlaceSelectedItemIds alloc] init] autorelease];
+        self.shoppingSelectedItems = [[[PlaceSelectedItemIds alloc] init] autorelease];
+        self.entertainmentSelectedItems = [[[PlaceSelectedItemIds alloc] init] autorelease];
+        
+        self.packageTourSelectedItems = [[[RouteSelectedItemIds alloc] init] autorelease];
+        self.unPackageTourSelectedItems = [[[RouteSelectedItemIds alloc] init] autorelease];
+
     }
     
     return self;
@@ -50,12 +58,15 @@ static SelectedItemIdsManager *_instance = nil;
     [_restaurantSelectedItems release];
     [_shoppingSelectedItems release];
     [_entertainmentSelectedItems release];
+    
+    [_packageTourSelectedItems release];
+    [_unPackageTourSelectedItems release];
     [super dealloc];
 }
 
-- (SelectedItemIds*)getSelectedItems:(int)categoryId
+- (PlaceSelectedItemIds*)getPlaceSelectedItems:(int)categoryId
 {
-    SelectedItemIds *selectedItems = nil;
+    PlaceSelectedItemIds *selectedItems = nil;
     switch (categoryId) {
         case PlaceCategoryTypePlaceSpot:
             selectedItems = _spotSelectedItems;
@@ -84,13 +95,68 @@ static SelectedItemIdsManager *_instance = nil;
     return selectedItems;
 }
 
-- (void)resetAllSelectedItems
+//- (void)resetPlaceSelectedItems:(int)categoryId
+//{
+//    switch (categoryId) {
+//        case PlaceCategoryTypePlaceSpot:
+//            [_spotSelectedItems reset];
+//            break;
+//            
+//        case PlaceCategoryTypePlaceHotel:
+//            [_hotelSelectedItems reset];
+//            break;
+//            
+//        case PlaceCategoryTypePlaceRestraurant:
+//            [_restaurantSelectedItems reset];
+//            break;
+//            
+//        case PlaceCategoryTypePlaceShopping:
+//            [_shoppingSelectedItems reset];
+//            break;
+//            
+//        case PlaceCategoryTypePlaceEntertainment:
+//            [_entertainmentSelectedItems release];
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//}
+
+- (RouteSelectedItemIds*)getRouteSelectedItems:(int)routeType
 {
-    [_spotSelectedItems resetAll];
-    [_hotelSelectedItems resetAll];
-    [_restaurantSelectedItems resetAll];
-    [_shoppingSelectedItems resetAll];
-    [_entertainmentSelectedItems resetAll];
+    RouteSelectedItemIds *selectedItems = nil;
+    switch (routeType) {
+        case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
+            selectedItems = _packageTourSelectedItems;
+            break;
+            
+        case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+            selectedItems = _unPackageTourSelectedItems;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return selectedItems;
 }
+
+//- (void)resetRouteSelectedItems:(int)routeType
+//{
+//    switch (routeType) {
+//        case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
+//            [_packageTourSelectedItems reset];
+//            break;
+//            
+//        case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+//            [_unPackageTourSelectedItems reset];
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//}
+
 
 @end

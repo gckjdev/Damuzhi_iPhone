@@ -61,7 +61,7 @@
     return NSLS(@"购物");
 }
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds *)selectedItemIds
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds *)selectedItemIds
 { 
     CLLocation *currentLocation = [[AppService defaultService] currentLocation];
     

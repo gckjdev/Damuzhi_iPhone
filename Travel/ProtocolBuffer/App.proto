@@ -63,7 +63,7 @@ message HelpInfo {
 message RecommendedApp {
   required string name = 1;                 // app名字
   required int32 id = 2;                    // app的id，全局唯一
-  optional string appId = 3;                 // appId，给iOS系统用
+  optional string appId = 3;                // appId，给iOS系统用
   optional string description = 4;          // app描述
   optional string icon = 5;                 // app图标的网络URL地址，每次启动时从服务器上下载
   optional string url = 6;                  // app的链接，给安卓系统用
@@ -72,7 +72,7 @@ message RecommendedApp {
 // 旅行社
 message Agency {
   required int32 agencyId = 1;	// 旅行社id
-  required int32 name = 2;		// 旅行社名称
+  required string name = 2;		// 旅行社名称
 }
 
 // 线路出发/目的城市
@@ -93,7 +93,7 @@ message App {
   repeated RouteCity departCities = 20;             // 路线出发城市
   repeated RouteCity destinationCities  = 21;       // 路线目的城市
   repeated NameIdPair routeThemes = 25;             // 路线主题
-  repeated NameIdPair routeTypes = 26;              // 路线类型
+  repeated NameIdPair routeCategorys = 26;          // 路线分类
   
   repeated Agency agencies = 30;                   // 旅行社
 }

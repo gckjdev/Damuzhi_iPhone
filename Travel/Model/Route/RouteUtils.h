@@ -10,6 +10,10 @@
 
 @interface RouteUtils : NSObject
 
-+ (NSDictionary*)getAngencyDicWithRouteList:(NSArray*)routeList;
++ (NSArray *)getRouteList:(NSArray *)routeList departFromCity:(int)departCityId;
++ (NSArray *)getRouteList:(NSArray *)routeList headForCity:(int)departCityId;
++ (NSArray *)getRouteList:(NSArray *)routeList providedByAngency:(int)angencyId;
++ (NSArray *)getRouteList:(NSArray *)routeList inTheme:(int)themeId;
++ (NSArray *)getRouteList:(NSArray *)routeList inCategory:(int)categoryId;
 
 @end

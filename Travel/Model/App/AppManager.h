@@ -12,9 +12,6 @@
 #import "LocalCity.h"
 
 @interface AppManager : NSObject<CommonManagerProtocol>
-{
-    App* _app;    
-}
 
 @property (retain, nonatomic) App *app;
 
@@ -22,7 +19,6 @@
 - (void)updateAppData:(App*)appData;
 
 - (City*)getCity:(int)cityId;
-- (City*)getTestCity:(int)cityId;
 
 - (NSString*)getAppDataVersion;
 
@@ -30,7 +26,6 @@
 - (NSArray*)getCityList;
 - (NSArray*)getCityIdList;
 - (NSArray*)getCityNameList;
-- (NSArray*)getTestCityNameList;
 
 - (NSString*)getCityName:(int)cityId;
 - (NSString*)getCityLatestVersion:(int)cityId;
@@ -40,17 +35,12 @@
 
 - (NSString*)getAreaName:(int)cityId areaId:(int)areaId;
 - (NSString*)getCurrencySymbol:(int)cityId;
-//- (NSString*)getCurrencyId:(int)cityId;
 - (NSString*)getCurrencyName:(int)cityId;
 
-
-
-//- (NSArray*)getProvidedServiceNameList:(int)categoryId;
 - (NSArray*)getProvidedServiceIconList:(int)categoryId;
-
 - (NSString*)getSubCategotyName:(int)categoryId subCategoryId:(int)subCategoryId;
-//- (NSString*)getProvidedServiceName:(int)categoryId providedServiceId:(int)providedServiceId;
 - (NSString*)getProvidedServiceIcon:(int)categoryId providedServiceId:(int)providedServiceId;
+- (NSArray *)getProvidedServiceList:(int)categoryId;
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
@@ -63,6 +53,15 @@
 - (NSArray *)getPriceRankItemList:(int)cityId;
 - (NSArray *)getSortItemList:(int)categoryId;
 
-- (NSString*)getRouteCityName:(int)routeCityId;
+// Get angency list 
+- (NSArray *)getDepartCityItemList:(NSArray *)routeList;
+- (NSArray *)getDestinationCityItemList:(NSArray *)routeList;
+- (NSArray *)getRouteThemeItemList:(NSArray *)routeList;
+- (NSArray *)getRouteCategoryItemList:(NSArray *)routeList;
+- (NSArray *)getAgencyItemList:(NSArray *)routeList;
+
+- (NSString*)getDepartCityName:(int)routeCityId;
+- (NSString*)getAgencyName:(int)agencyId;
+
 
 @end

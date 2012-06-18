@@ -15,7 +15,7 @@ message TouristRoute {
   required int32  routeId = 1;				// 线路编号
   required string name = 2;                 // 线路名称
   required int32 departCityId = 3;			// 线路出发城市id。基础数据
-  required int32 destinationCityId = 4;		// 线路目的城市id。基础数据
+  repeated int32 destinationCityIds = 4;	// 线路目的城市id。基础数据
   optional string price = 5;				// 线路价格
   optional int32 agencyId = 6;				// 旅行社id。基础数据
   optional int32 averageRank = 7;			// 用户综合评级
@@ -25,7 +25,7 @@ message TouristRoute {
   optional string tour = 11;                        // 线路列表中显示经过的地方
   optional int32 days = 12;                         // 线路游览天数
   repeated int32 themeIds = 13;                     // 线路主题id：赏花，登山。基础数据
-  optional int32 typeId = 14;                      // 线路类型id：国内游，东南亚，欧洲。基础数据
+  optional int32 categoryId = 14;                   // 线路分类id：国内游，东南亚，欧洲。基础数据
   optional int32 followUserCount = 15;              // 线路关注的用户总数	
 
   // 路线详情
@@ -34,7 +34,7 @@ message TouristRoute {
   optional string characteristic =  22;       		// 线路特色
   repeated DailySchedule dailySchedules = 23;		// 线路行程安排，跟团游特有字段
   repeated TravelPackage packages= 24;              // 线路套餐，自由行特有字段
-  optional Booking booking = 25;                    // 线路预订情况
+  repeated Booking bookings = 25;                   // 线路预订情况
   optional string reference = 26;                   // 线路参考行程，返回html的绝对url
   repeated PlaceTour relatedplaces = 27;            // 线路相关景点
 
@@ -45,7 +45,7 @@ message TouristRoute {
 message DailySchedule {
   required int32 day = 1;                       // 第几天
   required string title = 2;                    // 每日行程标题
-  optional PlaceTour placeTours = 3;            // 景点游览
+  repeated PlaceTour placeTours = 3;            // 景点游览
   optional string breakfast = 4;                // 早餐
   optional string lunch = 5;                    // 午餐
   optional string dinner = 6;                   // 晚餐
@@ -54,9 +54,10 @@ message DailySchedule {
 
 message TravelPackage {
   required int32 packageId = 1;                 // 套餐编号
-  optional Flight departFlight = 2;             // 出发航班
-  optional Flight returnFlight = 3;             // 回程航班
-  repeated Accommodation accommodations = 4;	// 入住
+  optional string price = 2;                    // 套餐价格
+  optional Flight departFlight = 3;             // 出发航班
+  optional Flight returnFlight = 4;             // 回程航班
+  repeated Accommodation accommodations = 5;	// 入住
 }
 
 message Booking {

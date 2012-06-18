@@ -10,6 +10,7 @@
 #import "LocaleUtils.h"
 #import "AppUtils.h"
 #import "PPApplication.h"
+#import "ImageManager.h"
 
 #define TAG_BEGIN_RANK_IMAGE_VIEW 18
 
@@ -37,12 +38,12 @@
 
 + (NSString*)getCellIdentifier
 {
-    return NSLS(@"RouteListCell");
+    return @"RouteListCell";
 }
 
 + (CGFloat)getCellHeight
 {
-    return 77.0;
+    return 76.0;
 }
 
 - (void)setCellData:(TouristRoute *)route
@@ -92,14 +93,14 @@
         int tag = TAG_BEGIN_RANK_IMAGE_VIEW + i;
         
         UIImageView *rankImageView = (UIImageView*)[rankHolderView viewWithTag:tag];
-        [rankImageView setImage:[UIImage imageNamed:@""]];
+        [rankImageView setImage:[[ImageManager defaultManager] routeRankGoodImage]];
     }
     
     for ( ; i < 5; i ++) {
         int tag = TAG_BEGIN_RANK_IMAGE_VIEW + i;
         
         UIImageView *rankImageView = (UIImageView*)[rankHolderView viewWithTag:tag];
-        [rankImageView setImage:[UIImage imageNamed:@""]];
+        [rankImageView setImage:[[ImageManager defaultManager] routeRankBadImage]];
     }
 }
 

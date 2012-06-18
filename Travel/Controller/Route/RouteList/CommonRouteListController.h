@@ -8,12 +8,15 @@
 
 #import "PPTableViewController.h"
 #import "RouteService.h"
+#import "SelectController.h"
 
 @protocol RouteListFilterProtocol <NSObject>
 
 + (NSObject<RouteListFilterProtocol>*)createFilter;
 
 - (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController*)controller;
+
+- (int)getRouteType;
 
 - (NSString*)getRouteTypeName;
 
@@ -25,11 +28,11 @@
 
 @end
 
-@interface CommonRouteListController : PPTableViewController <RouteServiceDelegate>
+@interface CommonRouteListController : PPTableViewController <RouteServiceDelegate, SelectControllerDelegate>
 
 - (id)initWithFilterHandler:(NSObject<RouteListFilterProtocol>*)filterHandler
                DepartCityId:(int)departCityId
           destinationCityId:(int)destinationCityId
-         hsaStatisticsLabel:(BOOL)hasStatisticsLabel;
+         hasStatisticsLabel:(BOOL)hasStatisticsLabel;
 
 @end

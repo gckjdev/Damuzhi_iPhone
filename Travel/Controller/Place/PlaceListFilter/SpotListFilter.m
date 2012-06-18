@@ -64,7 +64,7 @@
     return [[PlaceService defaultService] findPlaces:[self getCategoryId]  viewController:viewController];
 }
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds *)selectedItemIds
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds *)selectedItemIds
 {
     CLLocation *currentLocation = [[AppService defaultService] currentLocation];
     
