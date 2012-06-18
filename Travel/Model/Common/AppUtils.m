@@ -329,30 +329,30 @@
     return nil;
 }
 
-+ (NSString*)getCategoryIndicatorIcon:(int)categoryId
-{
-    switch (categoryId) {
-        case PlaceCategoryTypePlaceSpot:
-            return @"pin_jd2";
-            break;
-        case PlaceCategoryTypePlaceHotel:
-            return @"pin_ht2";
-            break;
-        case PlaceCategoryTypePlaceRestraurant:
-            return @"pin_cg2";
-            break;
-        case PlaceCategoryTypePlaceShopping:
-            return @"pin_gw2";
-            break;
-        case PlaceCategoryTypePlaceEntertainment:
-            return @"pin_yl2";
-            break;
-        default:
-            break;
-    }
-    return nil;
-
-}
+//+ (NSString*)getCategoryIndicatorIcon:(int)categoryId
+//{
+//    switch (categoryId) {
+//        case PlaceCategoryTypePlaceSpot:
+//            return @"pin_jd2";
+//            break;
+//        case PlaceCategoryTypePlaceHotel:
+//            return @"pin_ht2";
+//            break;
+//        case PlaceCategoryTypePlaceRestraurant:
+//            return @"pin_cg2";
+//            break;
+//        case PlaceCategoryTypePlaceShopping:
+//            return @"pin_gw2";
+//            break;
+//        case PlaceCategoryTypePlaceEntertainment:
+//            return @"pin_yl2";
+//            break;
+//        default:
+//            break;
+//    }
+//    return nil;
+//
+//}
 
 + (NSString*)getCategoryPinIcon:(int)categoryId
 {

@@ -22,7 +22,7 @@
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") imageName:@"back.png" action:@selector(clickBack:)];
     
-    [self.navigationItem setTitle:TITLE_RECOMMENDED_APP];
+    [self.navigationItem setTitle:RECOMMENDED_APP];
     
     self.dataList = [[[AppManager defaultManager] app] recommendedAppsList];
 }

@@ -10,7 +10,7 @@
 #import "PPViewController.h"
 #import "PlaceListController.h"
 
-#define TITLE_HISTORY             NSLS(@"浏览记录")
+#define HISTORY             NSLS(@"浏览记录")
 
 @interface HistoryController : PPViewController
 

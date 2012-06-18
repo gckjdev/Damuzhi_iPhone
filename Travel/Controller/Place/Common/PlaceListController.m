@@ -300,7 +300,7 @@
 {
     if (self.superNavigationController) {
         // after finish loading data, please call the following codes
-        [refreshHeaderView setCurrentDate];  	
+//        [refreshHeaderView setCurrentDate];  	
         [self dataSourceDidFinishLoadingNewData];
     }
 }

@@ -13,78 +13,67 @@
 #import "CommonPlace.h"
 #import "UIImageUtil.h"
 #import "PlaceUtils.h"
+#import "Item.h"
 
 @interface SelectController ()
+
+@property (copy, nonatomic) NSString *navigationTitle;
+@property (retain, nonatomic) NSArray *itemList;
+@property (retain, nonatomic) NSMutableArray *selectedItemIds;
+@property (retain, nonatomic) NSMutableArray *selectedItemIdsBeforConfirm;
+
+@property (assign, nonatomic) BOOL multiOptions;
+@property (assign, nonatomic) BOOL needConfirm;
+@property (assign, nonatomic) BOOL needShowCount;
 
 @end
 
 @implementation SelectController
-@synthesize tableView;
-@synthesize delegate;
-@synthesize type = _type;
-@synthesize selectedIds = _selectedIds;
-@synthesize beforeSelectedIds = _beforeSelectedIds;
+
+@synthesize navigationTitle = _navigationTitle;
+@synthesize itemList = _itemList;
+@synthesize selectedItemIds = _selectedItemIds;
+@synthesize selectedItemIdsBeforConfirm = _selectedItemIdsBeforConfirm;
+
 @synthesize multiOptions = _multiOptinos;
 @synthesize needConfirm = _needConfirm;
-@synthesize placeList = _placeList;
-@synthesize allItems = _allItems;
-@synthesize meaningfulItems = _meaningfulItems;
+@synthesize needShowCount = _needShowCount;
+
+@synthesize tableView;
+@synthesize delegate;
 
 - (void)dealloc {
+    [_navigationTitle release];
+    [_itemList release];
+    [_selectedItemIds release];
+    [_selectedItemIdsBeforConfirm release];
+    
     [tableView release];
-    [_selectedIds release];
-    [_beforeSelectedIds release];
-    [_placeList release];
-    [_allItems release];
-    [_meaningfulItems release];
+
     [super dealloc];
 }
 
-+ (SelectController*)createController:(NSArray*)list selectedIds:(NSMutableArray*)selectedIds multiOptions:(BOOL)multiOptions needConfirm:(BOOL)needConfirm type:(int)type
+- (SelectController*)initWithTitle:(NSString *)title
+                          itemList:(NSArray *)itemList
+                   selectedItemIds:(NSMutableArray *)selectedItemIds
+                      multiOptions:(BOOL)multiOptions
+                       needConfirm:(BOOL)needConfirm
+                     needShowCount:(BOOL)needShowCount;
 {
-    SelectController* controller = [[[SelectController alloc] init] autorelease];  
-    
-    controller.type = type;
-    
-    controller.allItems = list;
-    
-    controller.beforeSelectedIds = selectedIds;
-
-    controller.selectedIds = [NSMutableArray arrayWithArray:selectedIds];
-    
-    controller.multiOptions = multiOptions;
-    
-    controller.needConfirm = needConfirm;
+    self = [super init];
+    if (self) {
+        self.navigationTitle = title;
+        self.itemList = itemList;
         
-    return controller;
-}
-
-- (void)setAndReload:(NSArray*)placeList
-{
-    self.placeList = placeList;
-
-    if (_type == TYPE_SUBCATEGORY || _type == TYPE_PROVIDED_SERVICE || _type == TYPE_AREA) {
-        [self setMeaningfulItemsAccordingToPlaceList];
-    }else {
-        self.meaningfulItems = _allItems;
+        self.selectedItemIds = selectedItemIds;
+        self.selectedItemIdsBeforConfirm = [NSMutableArray arrayWithArray:selectedItemIds];
+        
+        self.multiOptions = multiOptions;
+        self.needConfirm = needConfirm;
+        self.needShowCount = needShowCount;
     }
     
-    [tableView reloadData];
-}
-
-- (void)setMeaningfulItemsAccordingToPlaceList
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    for (NSDictionary *dic in _allItems) {
-        int typeId =  [[[dic allKeys] objectAtIndex:0] intValue];
-        int count = [PlaceUtils getPlacesCountInSameType:_type typeId:typeId  placeList:_placeList];
-        if (count != 0) {
-            [array addObject:dic];
-        }
-    }
-    
-    self.meaningfulItems = array;
-    [array release];
+    return self;
 }
 
 - (void)viewDidLoad
@@ -100,6 +89,8 @@
                              imageName:@"topmenu_btn_right.png" 
                                 action:@selector(clickFinish:)];
     }
+    
+    [self setTitle:_navigationTitle];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
 }
@@ -130,58 +121,46 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [_meaningfulItems count];			// default implementation
-}
-
-- (void)setCellTextLabel:(UITableViewCell*)cell typeId:(int)typeId typeName:(NSString*)name
-{
-    NSString *text = nil;
-    switch (_type) {
-        case TYPE_SUBCATEGORY:
-        case TYPE_PROVIDED_SERVICE:
-        case TYPE_AREA:
-            text = [name stringByAppendingFormat:@" (%d)", [PlaceUtils getPlacesCountInSameType:_type typeId:typeId placeList:_placeList]];
-            break;
-            
-        default:
-            text = name;
-            break;
-    }
-    
-    [[cell textLabel] setText:text];
+	return [_itemList count];			// default implementation
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     int row = [indexPath row];	
-	int count = [_meaningfulItems count];
+	int count = [_itemList count];
 	if (row >= count){
 		PPDebug(@"[WARN] cellForRowAtIndexPath, row(%d) > data list total number(%d)", row, count);
 		return nil;
 	}
     
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellForCategory"] autorelease];
+
+    Item *item = [_itemList objectAtIndex:row];
+
+    if (_needShowCount) {
+        NSString *text = [NSString stringWithFormat:@"%@ (%d)", item.itemName, item.count];
+        [[cell textLabel] setText:text];
+    }else {
+        NSString *text = [NSString stringWithFormat:@"%@", item.itemName];
+        [[cell textLabel] setText:text];
+    }
+
     
-    NSString *currentName = [[[_meaningfulItems objectAtIndex:row] allValues] objectAtIndex:0];
-    NSNumber *currentId = [[[_meaningfulItems objectAtIndex:row] allKeys] objectAtIndex:0];
-    
-//    [[cell textLabel] setText:currentName];
-    [self setCellTextLabel:cell typeId:[currentId intValue] typeName:currentName];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     
-    if ([_selectedIds containsObject:currentId]) {
+    if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];
         cell.backgroundView = [self getBackgoundImageView:row];
         if (!_multiOptinos) {
             cell.accessoryView =[self getCheckedImageView];
         }
-    }else 
-    {
+    }else {
         [cell.imageView setImage:[self getUnselectedImage]];
         cell.accessoryView = nil;
     }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	return cell;	
 }
@@ -202,7 +181,7 @@
     if (row == 0) {
         [view setImage:[UIImage imageNamed:@"select_bg_top.png"]];
     }
-    else if(row == [_meaningfulItems count]-1){
+    else if(row == [_itemList count]-1){
         [view setImage:[UIImage imageNamed:@"select_bg_down.png"]];
     }
     else {
@@ -224,68 +203,49 @@
 
 - (void)tableView:(UITableView *)tableView1 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *selectedDictionary = [_meaningfulItems objectAtIndex:indexPath.row];
-    NSNumber *currentSelectedId = [[selectedDictionary allKeys] objectAtIndex:0];
+    Item *item = [_itemList objectAtIndex:indexPath.row];
 
-    if(self.multiOptions == YES){
-//        BOOL found = NO;
-//        for(NSNumber *selectedId in self.selectedIds)
-//        {
-//            if ([currentSelectedId intValue] == [selectedId intValue]) {
-//                found = YES;
-//                break;
-//            }
-//        }
-//        
-//        if(!found)
-        if (![_selectedIds containsObject:currentSelectedId])
-        {
-            if([currentSelectedId intValue] == ALL_CATEGORY)
-            {
-                [self.selectedIds removeAllObjects];
+    if(self.multiOptions == YES){          
+        if (item.itemId == ALL_CATEGORY) {
+            if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
+                [_selectedItemIdsBeforConfirm removeObject:[NSNumber numberWithInt:item.itemId]];
+            }else {
+                [_selectedItemIdsBeforConfirm removeAllObjects];
+                [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
             }
-            for (NSNumber *selectedId in self.selectedIds) {
-                if ([selectedId intValue]== ALL_CATEGORY) {
-                    [self.selectedIds removeObject:selectedId];
-                }
+        }else {
+            if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:ALL_CATEGORY]) {
+                [_selectedItemIdsBeforConfirm removeObject:[NSNumber numberWithInt:ALL_CATEGORY]];
             }
             
-            [self.selectedIds addObject:currentSelectedId];
-        }
-        else {
-            [self.selectedIds removeObject:currentSelectedId];
+            if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
+                [_selectedItemIdsBeforConfirm removeObject:[NSNumber numberWithInt:item.itemId]];
+            }else {
+                [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
+            }
         }
         
         [tableView1 reloadData];
-    }
-    else{
-        [self.selectedIds removeAllObjects];
-        [self.selectedIds addObject:currentSelectedId];
+        
+    } else {
+        [_selectedItemIdsBeforConfirm removeAllObjects];
+        [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
         
         [tableView1 reloadData];
     }
     
     if (!_needConfirm) {
-        
-        [_beforeSelectedIds removeAllObjects];
-        for (NSNumber *selectId in _selectedIds) {
-            [_beforeSelectedIds addObject:selectId];
-        }
-        
         [self.navigationController popViewControllerAnimated:YES];
+        [self copyItemIdsForm:_selectedItemIdsBeforConfirm To:_selectedItemIds];
         if (delegate && [delegate respondsToSelector:@selector(didSelectFinish:)]) {
-            [delegate didSelectFinish:self.selectedIds];
-        }
-        else {
-            PPDebug(@"[delegate respondsToSelector:@selector(didSelectFinish:)]");
+            [delegate didSelectFinish:_selectedItemIdsBeforConfirm];
         }
     }
 }
 
 - (void)clickFinish:(id)sender
 {
-    if ([self.selectedIds count] == 0) {
-        
+    if ([_selectedItemIdsBeforConfirm count] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"亲，您还没有选择哦！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
         
         [alert show];
@@ -293,19 +253,30 @@
     }
     else{
         [self.navigationController popViewControllerAnimated:YES];
-        
-        [_beforeSelectedIds removeAllObjects];
-        for (NSNumber *selectId in _selectedIds) {
-            [_beforeSelectedIds addObject:selectId];
-        }
-        
+        [self copyItemIdsForm:_selectedItemIdsBeforConfirm To:_selectedItemIds];
         if (delegate && [delegate respondsToSelector:@selector(didSelectFinish:)]) {
-            [delegate didSelectFinish:self.selectedIds];
-        }
-        else {
-            PPDebug(@"[delegate respondsToSelector:@selector(didSelectFinish:)]");
+            [delegate didSelectFinish:_selectedItemIdsBeforConfirm];
         }
     }
+}
+
+- (void)copyItemIdsForm:(NSMutableArray *)itemIdsScr To:(NSMutableArray *)itemIdsDes
+{
+    [itemIdsDes removeAllObjects];
+    for (NSNumber *itemId in itemIdsScr) {
+        [itemIdsDes addObject:itemId];
+    }
+}
+
+- (BOOL)isSelectedItemIds:(NSArray *)selectedItemIds containItemId:(int)itemId
+{
+    for (NSNumber *selectedItemId in selectedItemIds) {
+        if ([selectedItemId intValue] == itemId) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 

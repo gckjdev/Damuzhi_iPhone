@@ -27,7 +27,7 @@
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self.navigationItem setTitle:TITLE_FEEDBACK];
+    [self.navigationItem setTitle:FEEDBACK];
     
     // Set feekback text view delegate.
     self.feekbackTextView.delegate = self;

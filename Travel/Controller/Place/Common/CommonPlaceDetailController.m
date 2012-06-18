@@ -162,10 +162,6 @@
     }
 
     [self.navigationController pushViewController:_nearbyRecommendController animated:YES];
-    
-//    NearByRecommendController *controller = [[NearByRecommendController alloc] initWithPlace:_place];
-//    [self.navigationController pushViewController:controller animated:YES];
-//    PPRelease(controller);
 }
 
 - (void)clickTelephone:(id)sender
@@ -470,7 +466,10 @@
     }
 
     [dataScrollView setContentSize:CGSizeMake(self.view.frame.size.width, _detailHeight)];
-    
+}
+
+- (void)addBottomImage
+{
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, dataScrollView.contentSize.height, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
     [dataScrollView addSubview:imageView];
@@ -896,6 +895,8 @@
     [self addBottomView];
     
     [dataScrollView setContentSize:CGSizeMake(self.view.frame.size.width, _detailHeight)];
+    
+    [self addBottomImage];
     
     [[PlaceStorage historyManager] addPlace:self.place];
 }

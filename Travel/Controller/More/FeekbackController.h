@@ -10,7 +10,7 @@
 #import "UserService.h"
 #import "UIPlaceholderTextView.h"
 
-#define TITLE_FEEDBACK            NSLS(@"意见反馈")
+#define FEEDBACK            NSLS(@"意见反馈")
 
 @interface FeekbackController : PPViewController <UITextViewDelegate, UITextFieldDelegate, UserServiceDelegate>
 

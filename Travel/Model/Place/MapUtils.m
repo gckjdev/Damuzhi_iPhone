@@ -41,35 +41,35 @@
     [mapView setRegion:region animated:YES];
 }
 
-+ (UIButton*)createAnnotationViewWith:(Place*)place placeList:(NSArray*)placeList
-{
-    UIFont *font = [UIFont boldSystemFontOfSize:15];
-    CGSize withinSize = CGSizeMake(300, CGFLOAT_MAX);
-    CGSize size = [[place name] sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeWordWrap];
-    UIButton *customizeView = [[[UIButton alloc] initWithFrame:CGRectMake(0,0,size.width+45,37)] autorelease];
-    
-    NSString *fileName = [AppUtils getCategoryIndicatorIcon:place.categoryId];
-    UIImage *icon = [UIImage imageNamed:fileName];
-    
-    UIButton *leftIndicatorButton = [[UIButton alloc]initWithFrame:CGRectMake(7, 4, 17, 17)];            
-    [leftIndicatorButton setBackgroundImage:icon forState:UIControlStateNormal];
-    [leftIndicatorButton setUserInteractionEnabled:NO];
-    [customizeView addSubview:leftIndicatorButton];
-    [leftIndicatorButton release];
-    
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(26, 4, size.width, 17)];
-    label.font = font;
-    label.text  = [place name];
-    NSInteger value = [placeList indexOfObject:place];
-    label.textColor = [UIColor colorWithWhite:255.0 alpha:1.0];
-    label.backgroundColor = [UIColor clearColor];
-    [customizeView addSubview:label];
-    [label release];
-    
-    customizeView.tag = value;
-    
-    return customizeView;
-}
+//+ (UIButton*)createAnnotationViewWith:(Place*)place placeList:(NSArray*)placeList
+//{
+//    UIFont *font = [UIFont boldSystemFontOfSize:15];
+//    CGSize withinSize = CGSizeMake(300, CGFLOAT_MAX);
+//    CGSize size = [[place name] sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeWordWrap];
+//    UIButton *customizeView = [[[UIButton alloc] initWithFrame:CGRectMake(0,0,size.width+45,37)] autorelease];
+//    
+//    NSString *fileName = [AppUtils getCategoryIndicatorIcon:place.categoryId];
+//    UIImage *icon = [UIImage imageNamed:fileName];
+//    
+//    UIButton *leftIndicatorButton = [[UIButton alloc]initWithFrame:CGRectMake(7, 4, 17, 17)];            
+//    [leftIndicatorButton setBackgroundImage:icon forState:UIControlStateNormal];
+//    [leftIndicatorButton setUserInteractionEnabled:NO];
+//    [customizeView addSubview:leftIndicatorButton];
+//    [leftIndicatorButton release];
+//    
+//    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(26, 4, size.width, 17)];
+//    label.font = font;
+//    label.text  = [place name];
+//    NSInteger value = [placeList indexOfObject:place];
+//    label.textColor = [UIColor colorWithWhite:255.0 alpha:1.0];
+//    label.backgroundColor = [UIColor clearColor];
+//    [customizeView addSubview:label];
+//    [label release];
+//    
+//    customizeView.tag = value;
+//    
+//    return customizeView;
+//}
 
 + (void) showCallout:(MKAnnotationView*)annotationView imageName:(NSString*)imageName tag:(NSInteger)tag target:(id)target
 {

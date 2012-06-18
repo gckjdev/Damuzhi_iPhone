@@ -14,7 +14,9 @@
 #import "LocaleUtils.h"
 #import "AppConstants.h"
 #import "AppUtils.h"
-#import "SelectedItemsManager.h"
+#import "SelectedItemIdsManager.h"
+#import "Item.h"
+#import "PlaceUtils.h"
 
 @implementation AppManager
 
@@ -215,11 +217,11 @@ static AppManager* _defaultAppManager = nil;
     return city.currencySymbol;
 }
 
-- (NSString*)getCurrencyId:(int)cityId
-{
-    City *city = [self getCity:cityId];
-    return city.currencyId;
-}
+//- (NSString*)getCurrencyId:(int)cityId
+//{
+//    City *city = [self getCity:cityId];
+//    return city.currencyId;
+//}
 
 - (NSString*)getCurrencyName:(int)cityId
 {
@@ -270,18 +272,18 @@ static AppManager* _defaultAppManager = nil;
     return subCategoryNameList;
 }
 
-- (NSArray*)getProvidedServiceNameList:(int)categoryId
-{
-    NSMutableArray *providedServiceNameList = [[[NSMutableArray alloc] init] autorelease];
-    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
-    if (placeMeta !=nil) {
-        for (NameIdPair *providedServiceName in placeMeta.subCategoryListList) {
-            [providedServiceNameList addObject:providedServiceName.name];
-        }
-    }
-    
-    return providedServiceNameList;
-}
+//- (NSArray*)getProvidedServiceNameList:(int)categoryId
+//{
+//    NSMutableArray *providedServiceNameList = [[[NSMutableArray alloc] init] autorelease];
+//    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
+//    if (placeMeta !=nil) {
+//        for (NameIdPair *providedServiceName in placeMeta.subCategoryListList) {
+//            [providedServiceNameList addObject:providedServiceName.name];
+//        }
+//    }
+//    
+//    return providedServiceNameList;
+//}
 
 - (NSArray*)getProvidedServiceIconList:(int)categoryId
 {
@@ -311,20 +313,20 @@ static AppManager* _defaultAppManager = nil;
     return subCategoryName;
 }
 
-- (NSString*)getProvidedServiceName:(int)categoryId providedServiceId:(int)providedServiceId;
-{
-    NSString *providedServiceName = NSLS(@"");
-    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
-    if (placeMeta !=nil) {
-        for (NameIdPair *providedService in placeMeta.providedServiceListList) {
-            if (providedService.id == providedServiceId) {
-                providedServiceName = providedService.name;
-            }
-        }
-    }
-    
-    return providedServiceName;
-}
+//- (NSString*)getProvidedServiceName:(int)categoryId providedServiceId:(int)providedServiceId;
+//{
+//    NSString *providedServiceName = NSLS(@"");
+//    PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
+//    if (placeMeta !=nil) {
+//        for (NameIdPair *providedService in placeMeta.providedServiceListList) {
+//            if (providedService.id == providedServiceId) {
+//                providedServiceName = providedService.name;
+//            }
+//        }
+//    }
+//    
+//    return providedServiceName;
+//}
 
 - (NSString*)getProvidedServiceIcon:(int)categoryId providedServiceId:(int)providedServiceId;
 {
@@ -369,131 +371,111 @@ static AppManager* _defaultAppManager = nil;
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
     [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
     [userDefault synchronize];
-    [[SelectedItemsManager defaultManager] resetAllSelectedItems];
+    [[SelectedItemIdsManager defaultManager] resetAllSelectedItems];
 }
 
-- (NSArray*)buildSpotSortOptionList
+
+- (NSArray*)getSubCategoryItemList:(int)categoryId placeList:(NSArray*)placeList
 {
-    NSMutableArray *spotSortOptions = [[[NSMutableArray alloc] init] autorelease];    
-    [spotSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"大拇指推荐高至低") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_RECOMMEND]]];
-    [spotSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"距离近至远") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR]]];
-    [spotSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"门票价格高到低") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP]]];
+    NSMutableArray *subCategoryItemList = [[[NSMutableArray alloc] init] autorelease];    
     
-    return spotSortOptions;
-}
-
-- (NSArray*)buildHotelSortOptionList
-{
-    NSMutableArray *hotelSortOptions = [[[NSMutableArray alloc] init] autorelease];    
-    [hotelSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"大拇指推荐高至低") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_RECOMMEND]]];
-    [hotelSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"星级高至低") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_STARTS]]];
-    [hotelSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格高至低") 
-                                                           forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP]]];
-    [hotelSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格低至高") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE]]];
-    [hotelSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"距离近至远") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR]]];
-    return hotelSortOptions;
-}
-
-- (NSArray*)buildRestaurantSortOptionList
-{
-    NSMutableArray *hestaurantSortOptions = [[[NSMutableArray alloc] init] autorelease];    
-    [hestaurantSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"大拇指推荐高至低") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_RECOMMEND]]];
-    [hestaurantSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格高至低") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP]]];
-    [hestaurantSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格低至高") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE]]];
-    [hestaurantSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"距离近至远") 
-                                                            forKey:[NSNumber numberWithInt:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR]]];
-    return hestaurantSortOptions;
-}
-
-- (NSArray*)buildShoppingSortOptionList
-{
-    NSMutableArray *shoppingtSortOptions = [[[NSMutableArray alloc] init] autorelease];    
-    [shoppingtSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"大拇指推荐高至低") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_RECOMMEND]]];;
-    [shoppingtSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"距离近至远") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR]]];
-    return shoppingtSortOptions;
-}
-
-- (NSArray*)buildEntertainmentSortOptionList
-{
-    NSMutableArray *entertainmentSortOptions = [[[NSMutableArray alloc] init] autorelease];    
-    [entertainmentSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"大拇指推荐高至低") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_RECOMMEND]]];
-    [entertainmentSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格高至低") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP]]];
-    [entertainmentSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"价格低至高") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE]]];
-    [entertainmentSortOptions addObject:[NSDictionary dictionaryWithObject:NSLS(@"距离近至远") 
-                                                                 forKey:[NSNumber numberWithInt:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR]]];
-    return entertainmentSortOptions;
-}
-
-- (NSArray*)getSubCategoryList:(int)categoryId
-{
-    NSMutableArray *subCategoryList = [[[NSMutableArray alloc] init] autorelease];    
-    [subCategoryList addObject:[NSDictionary dictionaryWithObject:NSLS(@"全部") forKey:[NSNumber numberWithInt:ALL_CATEGORY]]];
+    [subCategoryItemList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY itemName:NSLS(@"全部") count:[placeList count]] autorelease]];
     
     PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
     if (placeMeta !=nil) {
         for (NameIdPair *subCategory in [placeMeta subCategoryListList]) {
-            [subCategoryList addObject:[NSDictionary dictionaryWithObject:subCategory.name 
-                                                                   forKey:[NSNumber numberWithInt:subCategory.id]]];
+            int count = [[PlaceUtils getPlaceList:placeList inSameSubcategory:subCategory.id] count];
+            if (count != 0) {
+                [subCategoryItemList addObject:[[[Item alloc] initWithNameIdPair:subCategory count:count] autorelease]];
+            }
         }
     }
     
-    return subCategoryList;
+    return subCategoryItemList;
 }
 
-- (NSArray*)getProvidedServiceList:(int)categoryId
+- (NSArray*)getServiceItemList:(int)categoryId placeList:(NSArray *)placeList
 {
-    NSMutableArray *providedServiceList = [[[NSMutableArray alloc] init] autorelease];
-    [providedServiceList addObject:[NSDictionary dictionaryWithObject:NSLS(@"全部")
-                                                               forKey:[NSNumber numberWithInt:ALL_CATEGORY]]];
+    NSMutableArray *serviceList = [[[NSMutableArray alloc] init] autorelease];
     
+    [serviceList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY 
+                                                itemName:NSLS(@"全部") 
+                                                   count:[placeList count]] autorelease]];
+        
     PlaceMeta *placeMeta = [self getPlaceMeta:categoryId];
     if (placeMeta !=nil) {
         for (NameIdPair *providedService in [placeMeta providedServiceListList]) {
-            [providedServiceList addObject:[NSDictionary dictionaryWithObject:providedService.name 
-                                                                   forKey:[NSNumber numberWithInt:providedService.id]]];
+            int count = [[PlaceUtils getPlaceList:placeList hasSameService:providedService.id] count];
+            if (count != 0) {
+                [serviceList addObject:[[[Item alloc] initWithNameIdPair:providedService
+                                                                   count:count] autorelease]];
+            }
         }
     }
     
-    return providedServiceList;
+    return serviceList;
 }
 
-- (NSArray*)getSortOptionList:(int32_t)categoryId
+- (NSArray *)getAreaItemList:(int)cityId placeList:(NSArray *)placeList
+{
+    NSMutableArray *areaList = [[[NSMutableArray alloc] init] autorelease];
+    
+    [areaList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY itemName:NSLS(@"全部")
+                                                count:[placeList count]] autorelease]];
+    
+    
+    for (CityArea* area in [[self getCity:cityId] areaListList]) {
+        int count = [[PlaceUtils getPlaceList:placeList inSameArea:area.areaId] count];
+        if (count != 0) {
+            [areaList addObject:[[[Item alloc] initWithItemId:area.areaId itemName:area.areaName count:count] autorelease]];
+        }
+    }
+    
+    return areaList;
+}
+
+- (NSArray *)getPriceRankItemList:(int)cityId
+{
+    NSMutableArray *priceList = [[[NSMutableArray alloc] init] autorelease];
+    
+    [priceList addObject:[[[Item alloc] initWithItemId:ALL_CATEGORY 
+                                              itemName:NSLS(@"全部")
+                                                count:0] autorelease]];
+    
+    
+    
+    for (int rank = 1; rank <= [self getPriceRank:cityId]; rank ++) {
+        NSString *priceRankString = [self getPriceRankString:rank];
+        [priceList addObject:[[[Item alloc] initWithItemId:rank 
+                                                  itemName:priceRankString 
+                                                     count:0] autorelease]];
+    }
+    
+    return priceList;
+}
+
+- (NSArray*)getSortItemList:(int32_t)categoryId
 {
     NSArray *array = nil;
     switch (categoryId) {
         case PlaceCategoryTypePlaceSpot:            
-            array = [self buildSpotSortOptionList];
+            array = [self buildSpotSortItemList];
             break;
             
         case PlaceCategoryTypePlaceHotel:
-            array = [self buildHotelSortOptionList];
+            array = [self buildHotelSortItemList];
             break;
             
         case PlaceCategoryTypePlaceRestraurant:
-            array = [self buildRestaurantSortOptionList];
+            array = [self buildRestaurantSortItemList];
             break;
             
         case PlaceCategoryTypePlaceShopping:
-            array = [self buildShoppingSortOptionList];
+            array = [self buildShoppingSortItemList];
             break;
             
         case PlaceCategoryTypePlaceEntertainment:
-            array = [self buildEntertainmentSortOptionList];
+            array = [self buildEntertainmentSortItemList];
             break;
             
         default:
@@ -503,49 +485,142 @@ static AppManager* _defaultAppManager = nil;
     return array;
 }
 
-- (NSArray *)getAreaNameList:(int)cityId
+- (NSString *)getPriceRankString:(int)priceRank
 {
-    NSMutableArray *areaList = [[[NSMutableArray alloc] init] autorelease];
-    [areaList addObject:[NSDictionary dictionaryWithObject:NSLS(@"全部")
-                                                       forKey:[NSNumber numberWithInt:ALL_CATEGORY]]];
-    for (CityArea* area in [[self getCity:cityId] areaListList]) {
-        [areaList addObject:[NSDictionary dictionaryWithObject:area.areaName
-                                                           forKey:[NSNumber numberWithInt:area.areaId]]];
+    NSString *rankString = nil;
+    switch (priceRank) {
+        case 1:
+            rankString = @"$";
+            break;
+        case 2:
+            rankString = @"$$";
+            break;
+        case 3:
+            rankString = @"$$$";
+            break;
+        case 4:
+            rankString = @"$$$$";
+            break;
+            
+        default:
+            break;
     }
     
-    return areaList;
+    return rankString;
 }
 
-- (NSArray *)getPriceList:(int)cityId
+- (NSArray*)buildSpotSortItemList
 {
-    NSMutableArray *priceList = [[[NSMutableArray alloc] init] autorelease];
-    [priceList addObject:[NSDictionary dictionaryWithObject:NSLS(@"全部")
-                                                     forKey:[NSNumber numberWithInt:ALL_CATEGORY]]];
+    NSMutableArray *spotSortItems = [[[NSMutableArray alloc] init] autorelease];    
     
-    for (int rank = 1; rank <= [self getPriceRank:cityId]; rank ++) {
-        NSString *rankString = nil;
-        switch (rank) {
-            case 1:
-                rankString = @"$";
-                break;
-            case 2:
-                rankString = @"$$";
-                break;
-            case 3:
-                rankString = @"$$$";
-                break;
-            case 4:
-                rankString = @"$$$$";
-                break;
-                
-            default:
-                break;
-        }
-        [priceList addObject:[NSDictionary dictionaryWithObject:rankString
-                                                           forKey:[NSNumber numberWithInt:rank]]];
-    }
+    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
+                                                  itemName:NSLS(@"大拇指推荐高至低") 
+                                                     count:0] autorelease]];
     
-    return priceList;
+    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                                  itemName:NSLS(@"距离近至远") 
+                                                     count:0] autorelease]];
+    
+    [spotSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                                  itemName:NSLS(@"门票价格高到低") 
+                                                     count:0] autorelease]];
+    
+    return spotSortItems;
 }
+
+- (NSArray*)buildHotelSortItemList
+{
+    NSMutableArray *hotelSortItems = [[[NSMutableArray alloc] init] autorelease];    
+    
+    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
+                                                   itemName:NSLS(@"大拇指推荐高至低") 
+                                                      count:0] autorelease]];
+    
+    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_STARTS
+                                                   itemName:NSLS(@"星级高至低") 
+                                                      count:0] autorelease]];
+    
+    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                                   itemName:NSLS(@"价格高至低") 
+                                                      count:0] autorelease]];
+    
+    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                                   itemName:NSLS(@"价格低至高") 
+                                                      count:0] autorelease]];
+    
+    [hotelSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                                   itemName:NSLS(@"距离近至远") 
+                                                      count:0] autorelease]];
+    
+    return hotelSortItems;
+}
+
+- (NSArray*)buildRestaurantSortItemList
+{
+    NSMutableArray *hestaurantSortItems = [[[NSMutableArray alloc] init] autorelease];  
+    
+    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
+                                                        itemName:NSLS(@"大拇指推荐高至低") 
+                                                           count:0] autorelease]];
+    
+    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                                        itemName:NSLS(@"价格高至低") 
+                                                           count:0] autorelease]];
+    
+    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                                        itemName:NSLS(@"价格低至高") 
+                                                           count:0] autorelease]];
+    
+    [hestaurantSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                                        itemName:NSLS(@"距离近至远") 
+                                                           count:0] autorelease]];
+    
+    return hestaurantSortItems;
+}
+
+- (NSArray*)buildShoppingSortItemList
+{
+    NSMutableArray *shoppingtSortItems = [[[NSMutableArray alloc] init] autorelease];
+    
+    [shoppingtSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
+                                                       itemName:NSLS(@"大拇指推荐高至低") 
+                                                          count:0] autorelease]];
+    
+    [shoppingtSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                                       itemName:NSLS(@"距离近至远") 
+                                                          count:0] autorelease]];
+    
+    return shoppingtSortItems;
+}
+
+- (NSArray*)buildEntertainmentSortItemList
+{
+    NSMutableArray *entertainmentSortItems = [[[NSMutableArray alloc] init] autorelease];    
+    
+    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_RECOMMEND
+                                                           itemName:NSLS(@"大拇指推荐高至低") 
+                                                              count:0] autorelease]];
+    
+    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_EXPENSIVE_TO_CHEAP
+                                                           itemName:NSLS(@"价格高至低") 
+                                                              count:0] autorelease]];
+    
+    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_PRICE_FORM_CHEAP_TO_EXPENSIVE
+                                                           itemName:NSLS(@"价格低至高") 
+                                                              count:0] autorelease]];
+    
+    [entertainmentSortItems addObject:[[[Item alloc] initWithItemId:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR
+                                                           itemName:NSLS(@"距离近至远") 
+                                                              count:0] autorelease]];
+    
+    return entertainmentSortItems;
+}
+
+
+- (NSString*)getRouteCityName:(int)routeCityId
+{
+    return nil;
+}
+
 
 @end

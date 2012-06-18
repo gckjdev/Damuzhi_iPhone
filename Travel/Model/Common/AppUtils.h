@@ -100,7 +100,7 @@
 // For getting icon file path.
 + (NSString*)getProvidedServiceIconPath:(int)providedServiceId;
 + (NSString*)getCategoryIcon:(int)categoryId;
-+ (NSString*)getCategoryIndicatorIcon:(int)categoryId;
+//+ (NSString*)getCategoryIndicatorIcon:(int)categoryId;
 + (NSString*)getCategoryPinIcon:(int)categoryId;
 + (NSString*)getRecommendedAppIconPath:(int)appId;
 

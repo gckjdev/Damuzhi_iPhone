@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "PPApplication.h"
+#import "UserService.h"
 
 #define kAppId			@"531266294"
 
 @class MainController;
 
-@interface AppDelegate : PPApplication <UIApplicationDelegate>
+@interface AppDelegate : PPApplication <UIApplicationDelegate, UserServiceDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

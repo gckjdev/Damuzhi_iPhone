@@ -14,14 +14,14 @@
 #import "NSURL+QAdditions.h"
 #import "UIUtils.h"
 #import "AppDelegate.h"
+#include "MobClick.h"
 
-//#define kQQWeiBoAppKey        @"801124726"
-//#define kQQWeiBoAppSecret     @"4cd1cd1882f68fe7a7a43df7761d30d9"
-#define kQQWeiBoAppKey        @"801157911"
-#define kQQWeiBoAppSecret     @"78eb11cc37feb6325c8d5e4409b598a9"
 #define kQQAccessTokenKey       @"QQAccessTokenKey"
 #define kQQAccessTokenSecret	@"QQAccessTokenSecret"
 #define VERIFY_URL      @"http://open.t.qq.com/cgi-bin/authorize?oauth_token="
+
+#define UMENG_ONLINE_QQ_WEIBO_APP_KEY       @"qq_weibo_app_key"
+#define UMENG_ONLINE_QQ_WEIBO_APP_SECRET    @"qq_weibo_app_secret"
 
 @interface ShareToQQController ()
 @property (nonatomic, retain) NSString *accessTokenKey;
@@ -32,6 +32,8 @@
 @property (nonatomic, retain) UITextView *contentTextView;
 @property (nonatomic, retain) UILabel *wordsNumberLabel;
 @property (nonatomic, retain) NSURLConnection	*connection;
+@property (nonatomic, retain) NSString *qqWeiBoAppKey;
+@property (nonatomic, retain) NSString *qqWeiBoAppSecret;
 
 - (void)createSendView;
 - (void)sendQQWeibo:(id)sender;
@@ -49,6 +51,8 @@
 @synthesize contentTextView;
 @synthesize wordsNumberLabel;
 @synthesize connection;
+@synthesize qqWeiBoAppKey;
+@synthesize qqWeiBoAppSecret;
 
 - (void)dealloc
 {
@@ -60,6 +64,8 @@
     [contentTextView release];
     [wordsNumberLabel release];
     [connection release];
+    [qqWeiBoAppKey release];
+    [qqWeiBoAppSecret release];
     [super dealloc];
 }
 
@@ -76,7 +82,10 @@
 {
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
-    //self.view.backgroundColor = [UIColor colorWithRed:84.0/255.0 green:154.0/255.0 blue:182.0/255.0 alpha:1.0];
+    
+    self.qqWeiBoAppKey = [MobClick getConfigParams:@"qq_weibo_app_key"];
+    self.qqWeiBoAppSecret = [MobClick getConfigParams:@"qq_weibo_app_secret"];
+    
     [self loadDefaultKey];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
@@ -95,7 +104,7 @@
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
         //获取request_token
         QWeiboSyncApi *api = [[[QWeiboSyncApi alloc] init] autorelease];
-        NSString *retString = [api getRequestTokenWithConsumerKey:kQQWeiBoAppKey consumerSecret:kQQWeiBoAppSecret];
+        NSString *retString = [api getRequestTokenWithConsumerKey:qqWeiBoAppKey consumerSecret:qqWeiBoAppSecret];
         NSDictionary *params = [NSURL parseURLQueryString:retString];
         self.requestTokenKey = [params objectForKey:@"oauth_token"];
         self.requestTokenSecret = [params objectForKey:@"oauth_token_secret"];
@@ -170,7 +179,7 @@
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake((320-CONTENT_WIDTH)/2, WEIBO_LOGO_HEIGHT, CONTENT_WIDTH, CONTENT_HEIGHT)];
     textView.delegate = self;
     textView.font = [UIFont systemFontOfSize:14];
-    textView.text = [NSString stringWithFormat:NSLS(@"kShareContent"),[UIUtils getAppLink:kAppId]];
+    textView.text = [NSString stringWithFormat:NSLS(@"kShareContent"),[MobClick getConfigParams:@"download_website"]];
     textView.backgroundColor = [UIColor clearColor];
     self.contentTextView = textView;
     [textView release];
@@ -186,8 +195,8 @@
     [contentTextView resignFirstResponder];
     [self showActivity];
     QWeiboAsyncApi *api = [[[QWeiboAsyncApi alloc] init] autorelease];
-	self.connection	= [api publishMsgWithConsumerKey:kQQWeiBoAppKey
-									  consumerSecret:kQQWeiBoAppSecret
+	self.connection	= [api publishMsgWithConsumerKey:qqWeiBoAppKey
+									  consumerSecret:qqWeiBoAppSecret
 									  accessTokenKey:accessTokenKey
 								   accessTokenSecret:accessTokenSecret
 											 content:contentTextView.text 
@@ -238,8 +247,8 @@
 	
 	if (verifier && ![verifier isEqualToString:@""]) {
 		QWeiboSyncApi *api = [[[QWeiboSyncApi alloc] init] autorelease];
-		NSString *retString = [api getAccessTokenWithConsumerKey:kQQWeiBoAppKey 
-												  consumerSecret:kQQWeiBoAppSecret
+		NSString *retString = [api getAccessTokenWithConsumerKey:qqWeiBoAppKey 
+												  consumerSecret:qqWeiBoAppSecret
 												 requestTokenKey:requestTokenKey
 											  requestTokenSecret:requestTokenSecret
 														  verify:verifier];

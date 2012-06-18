@@ -27,13 +27,15 @@ message Package {
 message UserInfo {
   required string userId = 1;		// 用户id，与设备id绑定
   required int32  loginType = 2;    // 当前登录类型，1：手机；2：邮箱
-  required string telephone = 3;	// 电话
-  required string email = 4; 		// 邮箱
-  required string password = 5;		// 密码
+  required string password = 3;		// 密码
 
-  optional string nickName = 6;		// 昵称
-  optional int32  gender = 7; 		// 性别
-  optional string fullName = 8;		// 姓名
+  required string telephone = 10;	// 电话
+  required string email = 11; 		// 邮箱
+
+  optional string nickName = 20;	// 昵称
+  optional int32  gender = 21; 		// 性别
+  optional string fullName = 22;	// 姓名
+  optional string address = 23;     // 住址
 }
 
 // 用于获取线路反馈列表
@@ -64,6 +66,8 @@ message TravelResponse{
   optional App appInfo = 9;   
   optional CommonTravelTipList travelTipList = 10;
   
+  optional int32 totalCount = 13;                       // 用于返回符合查询条件的列表的行总数
+  
   optional UserInfo userInfo = 15;                      // 用户资料
   
   optional TouristRoute route = 20;                     // 线路详情
@@ -72,7 +76,4 @@ message TravelResponse{
   optional RouteFeekbackList routeFeekbackList= 30;     // 线路反馈
   
   optional OrderList orderList = 35;                    // 订单列表
-  
-    optional int32 totalCount = 99;                               // 用于列表查询时，返回总记录条数
-
 }

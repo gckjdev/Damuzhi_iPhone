@@ -6,11 +6,11 @@
 //  Copyright (c) 2012年 甘橙软件. All rights reserved.
 //
 
-#import "SelectedItemsManager.h"
+#import "SelectedItemIdsManager.h"
 #import "CommonPlace.h"
 #import "App.pb.h"
 
-@implementation SelectedItemsManager
+@implementation SelectedItemIdsManager
 
 @synthesize spotSelectedItems = _spotSelectedItems;
 @synthesize hotelSelectedItems = _hotelSelectedItems;
@@ -18,12 +18,12 @@
 @synthesize shoppingSelectedItems = _shoppingSelectedItems;
 @synthesize entertainmentSelectedItems = _entertainmentSelectedItems;
 
-static SelectedItemsManager *_instance = nil;
+static SelectedItemIdsManager *_instance = nil;
 
 +(id)defaultManager
 {
     if (_instance == nil) {
-        _instance = [[SelectedItemsManager alloc] init];
+        _instance = [[SelectedItemIdsManager alloc] init];
     }
     
     return _instance;
@@ -33,11 +33,11 @@ static SelectedItemsManager *_instance = nil;
 {
     self = [super init];
     if (self) {
-        self.spotSelectedItems = [[[SelectedItems alloc] init] autorelease];
-        self.hotelSelectedItems = [[[SelectedItems alloc] init] autorelease];
-        self.restaurantSelectedItems = [[[SelectedItems alloc] init] autorelease];
-        self.shoppingSelectedItems = [[[SelectedItems alloc] init] autorelease];
-        self.entertainmentSelectedItems = [[[SelectedItems alloc] init] autorelease];
+        self.spotSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
+        self.hotelSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
+        self.restaurantSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
+        self.shoppingSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
+        self.entertainmentSelectedItems = [[[SelectedItemIds alloc] init] autorelease];
     }
     
     return self;
@@ -53,9 +53,9 @@ static SelectedItemsManager *_instance = nil;
     [super dealloc];
 }
 
-- (SelectedItems*)getSelectedItems:(int)categoryId
+- (SelectedItemIds*)getSelectedItems:(int)categoryId
 {
-    SelectedItems *selectedItems = nil;
+    SelectedItemIds *selectedItems = nil;
     switch (categoryId) {
         case PlaceCategoryTypePlaceSpot:
             selectedItems = _spotSelectedItems;

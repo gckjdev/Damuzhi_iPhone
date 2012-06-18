@@ -10,7 +10,7 @@
 #import "CommonPlace.h"
 #import "PlaceService.h"
 #import "LogUtil.h"
-#import "CommonListFilter.h"
+#import "CommonPlaceListFilter.h"
 #import "App.pb.h"
 #import "AppService.h"
 
@@ -29,18 +29,18 @@
     CGRect frame = CGRectMake(0, superView.frame.size.height/2-HEIGHT_OF_FILTER_BUTTON/2, WIDTH_OF_FILTER_BUTTON, HEIGHT_OF_FILTER_BUTTON);
     
     frame.origin.x += 10;
-    UIButton *button1 = [CommonListFilter createFilterButton:frame title:NSLS(@"分类")];
+    UIButton *button1 = [CommonPlaceListFilter createFilterButton:frame title:NSLS(@"分类")];
     [button1 addTarget:commonPlaceController action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
     [superView addSubview:button1];
     button1.tag = 1;
     
     frame.origin.x += WIDTH_OF_FILTER_BUTTON+DISTANCE_BETWEEN_BUTTONS;
-    UIButton *button2 = [CommonListFilter createFilterButton:frame title:NSLS(@"区域")];
+    UIButton *button2 = [CommonPlaceListFilter createFilterButton:frame title:NSLS(@"区域")];
     [button2 addTarget:commonPlaceController action:@selector(clickArea:) forControlEvents:UIControlEventTouchUpInside];
     [superView addSubview:button2];
     
     frame.origin.x += WIDTH_OF_FILTER_BUTTON+DISTANCE_BETWEEN_BUTTONS;
-    UIButton *button3 = [CommonListFilter createFilterButton:frame title:NSLS(@"排序")];
+    UIButton *button3 = [CommonPlaceListFilter createFilterButton:frame title:NSLS(@"排序")];
     [button3 addTarget:commonPlaceController action:@selector(clickSortButton:) forControlEvents:UIControlEventTouchUpInside];
     button3.tag = SORT_BUTTON_TAG;
     [superView addSubview:button3];
@@ -67,13 +67,16 @@
     return NSLS(@"娱乐");
 }
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItems *)selectedItems
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds *)selectedItemIds
 {
     CLLocation *currentLocation = [[AppService defaultService] currentLocation];
     
-    NSArray *afterCategoryFilter = [CommonListFilter filterBySelectedSubCategoryIdList:placeList selectedSubCategoryIdList:selectedItems.selectedSubCategoryIdList ];
-    NSArray *afterAreaFilter = [CommonListFilter filterBySelectedAreaIdList:afterCategoryFilter selectedAreaIdList:selectedItems.selectedAreaIdList];
-    NSArray *resultList = [CommonListFilter sortBySelectedSortId:afterAreaFilter selectedSortId:[selectedItems.selectedSortIdList objectAtIndex:0] currentLocation:currentLocation];
+    NSArray *placeList1 = [CommonPlaceListFilter filterPlaceList:placeList bySubCategoryIdList:selectedItemIds.subCategoryItemIds];
+    
+    NSArray *placeList2 = [CommonPlaceListFilter filterPlaceList:placeList1 byAreaIdList:selectedItemIds.areaItemIds];
+    
+    NSArray *resultList = [CommonPlaceListFilter sortPlaceList:placeList2 bySortId:[selectedItemIds.sortItemIds objectAtIndex:0] currentLocation:currentLocation];
+    
     return resultList;
 }
 

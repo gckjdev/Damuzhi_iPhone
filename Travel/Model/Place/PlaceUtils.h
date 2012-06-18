@@ -24,4 +24,8 @@
 + (NSString*)getDistanceString:(Place*)place currentLocation:(CLLocation*)currentLocation;
 + (int)getPlacesCountInSameType:(int)type typeId:(int)typeId placeList:(NSArray*)placeList;
 + (NSArray*)sortedByDistance:(CLLocation*)location array:(NSArray*)array type:(int)type;
+
++ (NSArray*)getPlaceList:(NSArray*)placeList inSameSubcategory:(int)subcategoryId;
++ (NSArray*)getPlaceList:(NSArray*)placeList hasSameService:(int)serviceId;
++ (NSArray*)getPlaceList:(NSArray*)placeList inSameArea:(int)areaId;
 @end

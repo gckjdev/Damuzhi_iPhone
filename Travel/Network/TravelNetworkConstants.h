@@ -60,6 +60,11 @@
 #define PARA_TRAVEL_NUM             @"num"
 #define PARA_TRAVEL_DISTANCE        @"distance"
 
+#define PARA_TRAVEL_DEPART_CITY_ID          @"departCityId"
+#define PARA_TRAVEL_DESTINATION_CITY_ID     @"destinationCityId"
+#define PARA_TRAVEL_START                   @"start"
+#define PARA_TRAVEL_COUNT                   @"count"
+
 
 #define PARA_TRAVEL_PLACE_FAVORITE_COUNT  @"placeFavoriteCount"
 #define PARA_TRAVEL_APP_VERSION           @"app_version"
@@ -97,13 +102,18 @@
 #define OBJECT_LIST_TOP_FAVORITE_SHOPPING           44
 #define OBJECT_LIST_TOP_FAVORITE_ENTERTAINMENT      45
 
+#define OBJECT_LIST_ROUTE_PACKAGE_TOUR              70
+#define OBJECT_LIST_ROUTE_UNPACKAGE_TOUR            71
+#define OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR           72
+
+
 // For object type
 #define OBJECT_TYPE_CITY_BASIC                  2
 #define OBJECT_TYPE_TRAVEL_PREPARATION          3
 #define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4     
 #define OBJECT_TYPE_TRAVEL_UTILITY              5
 #define OBJECT_TYPE_HELP_INOF                   8
-#define OBJECT_TYPE_APP_DATA        10
+#define OBJECT_TYPE_APP_DATA                    10
 
 
 #endif

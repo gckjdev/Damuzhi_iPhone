@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PPTableViewController.h"
 
-#define TITLE_RECOMMENDED_APP     NSLS(@"精彩应用推荐")
+#define RECOMMENDED_APP     NSLS(@"精彩应用推荐")
 
 @interface RecommendedAppsControllerViewController : PPTableViewController
 

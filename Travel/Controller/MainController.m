@@ -33,7 +33,7 @@
 #import "UIImageUtil.h"
 #import "AppUtils.h"
 #import "PackageManager.h"
-
+#import "MobClick.h"
 #import "PPDebug.h"
 
 @implementation MainController
@@ -261,7 +261,7 @@
     switch (buttonIndex) {
         case 0:
         {
-            [self sendSms:nil body:[NSString stringWithFormat:NSLS(@"kShareContent"),[UIUtils getAppLink:kAppId]]];
+            [self sendSms:nil body:[NSString stringWithFormat:NSLS(@"kShareContent"),[MobClick getConfigParams:@"download_website"]]];
             break;
         }
         case 1:

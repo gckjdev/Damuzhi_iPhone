@@ -164,43 +164,43 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 
 @interface UserInfo : PBGeneratedMessage {
 @private
+  BOOL hasLoginType_:1;
   BOOL hasGender_:1;
-  BOOL hasType_:1;
   BOOL hasUserId_:1;
-  BOOL hasMemberId_:1;
   BOOL hasPassword_:1;
-  BOOL hasNickName_:1;
-  BOOL hasFullName_:1;
   BOOL hasTelephone_:1;
   BOOL hasEmail_:1;
+  BOOL hasNickName_:1;
+  BOOL hasFullName_:1;
+  BOOL hasAddress_:1;
+  int32_t loginType;
   int32_t gender;
-  int32_t type;
   NSString* userId;
-  NSString* memberId;
   NSString* password;
-  NSString* nickName;
-  NSString* fullName;
   NSString* telephone;
   NSString* email;
+  NSString* nickName;
+  NSString* fullName;
+  NSString* address;
 }
 - (BOOL) hasUserId;
-- (BOOL) hasMemberId;
+- (BOOL) hasLoginType;
 - (BOOL) hasPassword;
-- (BOOL) hasNickName;
-- (BOOL) hasGender;
-- (BOOL) hasType;
-- (BOOL) hasFullName;
 - (BOOL) hasTelephone;
 - (BOOL) hasEmail;
+- (BOOL) hasNickName;
+- (BOOL) hasGender;
+- (BOOL) hasFullName;
+- (BOOL) hasAddress;
 @property (readonly, retain) NSString* userId;
-@property (readonly, retain) NSString* memberId;
+@property (readonly) int32_t loginType;
 @property (readonly, retain) NSString* password;
-@property (readonly, retain) NSString* nickName;
-@property (readonly) int32_t gender;
-@property (readonly) int32_t type;
-@property (readonly, retain) NSString* fullName;
 @property (readonly, retain) NSString* telephone;
 @property (readonly, retain) NSString* email;
+@property (readonly, retain) NSString* nickName;
+@property (readonly) int32_t gender;
+@property (readonly, retain) NSString* fullName;
+@property (readonly, retain) NSString* address;
 
 + (UserInfo*) defaultInstance;
 - (UserInfo*) defaultInstance;
@@ -241,15 +241,25 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (UserInfo_Builder*) setUserId:(NSString*) value;
 - (UserInfo_Builder*) clearUserId;
 
-- (BOOL) hasMemberId;
-- (NSString*) memberId;
-- (UserInfo_Builder*) setMemberId:(NSString*) value;
-- (UserInfo_Builder*) clearMemberId;
+- (BOOL) hasLoginType;
+- (int32_t) loginType;
+- (UserInfo_Builder*) setLoginType:(int32_t) value;
+- (UserInfo_Builder*) clearLoginType;
 
 - (BOOL) hasPassword;
 - (NSString*) password;
 - (UserInfo_Builder*) setPassword:(NSString*) value;
 - (UserInfo_Builder*) clearPassword;
+
+- (BOOL) hasTelephone;
+- (NSString*) telephone;
+- (UserInfo_Builder*) setTelephone:(NSString*) value;
+- (UserInfo_Builder*) clearTelephone;
+
+- (BOOL) hasEmail;
+- (NSString*) email;
+- (UserInfo_Builder*) setEmail:(NSString*) value;
+- (UserInfo_Builder*) clearEmail;
 
 - (BOOL) hasNickName;
 - (NSString*) nickName;
@@ -261,25 +271,15 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (UserInfo_Builder*) setGender:(int32_t) value;
 - (UserInfo_Builder*) clearGender;
 
-- (BOOL) hasType;
-- (int32_t) type;
-- (UserInfo_Builder*) setType:(int32_t) value;
-- (UserInfo_Builder*) clearType;
-
 - (BOOL) hasFullName;
 - (NSString*) fullName;
 - (UserInfo_Builder*) setFullName:(NSString*) value;
 - (UserInfo_Builder*) clearFullName;
 
-- (BOOL) hasTelephone;
-- (NSString*) telephone;
-- (UserInfo_Builder*) setTelephone:(NSString*) value;
-- (UserInfo_Builder*) clearTelephone;
-
-- (BOOL) hasEmail;
-- (NSString*) email;
-- (UserInfo_Builder*) setEmail:(NSString*) value;
-- (UserInfo_Builder*) clearEmail;
+- (BOOL) hasAddress;
+- (NSString*) address;
+- (UserInfo_Builder*) setAddress:(NSString*) value;
+- (UserInfo_Builder*) clearAddress;
 @end
 
 @interface RouteFeekbackList : PBGeneratedMessage {
@@ -334,28 +334,28 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 @interface RouteFeekback : PBGeneratedMessage {
 @private
   BOOL hasRouteId_:1;
-  BOOL hasRank_:1;
-  BOOL hasMemberId_:1;
-  BOOL hasNickName_:1;
   BOOL hasDate_:1;
+  BOOL hasRank_:1;
+  BOOL hasUserId_:1;
+  BOOL hasNickName_:1;
   BOOL hasContent_:1;
   int32_t routeId;
+  int32_t date;
   int32_t rank;
-  NSString* memberId;
+  NSString* userId;
   NSString* nickName;
-  NSString* date;
   NSString* content;
 }
 - (BOOL) hasRouteId;
-- (BOOL) hasMemberId;
+- (BOOL) hasUserId;
 - (BOOL) hasNickName;
 - (BOOL) hasDate;
 - (BOOL) hasRank;
 - (BOOL) hasContent;
 @property (readonly) int32_t routeId;
-@property (readonly, retain) NSString* memberId;
+@property (readonly, retain) NSString* userId;
 @property (readonly, retain) NSString* nickName;
-@property (readonly, retain) NSString* date;
+@property (readonly) int32_t date;
 @property (readonly) int32_t rank;
 @property (readonly, retain) NSString* content;
 
@@ -398,10 +398,10 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (RouteFeekback_Builder*) setRouteId:(int32_t) value;
 - (RouteFeekback_Builder*) clearRouteId;
 
-- (BOOL) hasMemberId;
-- (NSString*) memberId;
-- (RouteFeekback_Builder*) setMemberId:(NSString*) value;
-- (RouteFeekback_Builder*) clearMemberId;
+- (BOOL) hasUserId;
+- (NSString*) userId;
+- (RouteFeekback_Builder*) setUserId:(NSString*) value;
+- (RouteFeekback_Builder*) clearUserId;
 
 - (BOOL) hasNickName;
 - (NSString*) nickName;
@@ -409,8 +409,8 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (RouteFeekback_Builder*) clearNickName;
 
 - (BOOL) hasDate;
-- (NSString*) date;
-- (RouteFeekback_Builder*) setDate:(NSString*) value;
+- (int32_t) date;
+- (RouteFeekback_Builder*) setDate:(int32_t) value;
 - (RouteFeekback_Builder*) clearDate;
 
 - (BOOL) hasRank;
@@ -427,6 +427,7 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 @interface TravelResponse : PBGeneratedMessage {
 @private
   BOOL hasResultCode_:1;
+  BOOL hasTotalCount_:1;
   BOOL hasResultInfo_:1;
   BOOL hasPlace_:1;
   BOOL hasOverview_:1;
@@ -442,6 +443,7 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
   BOOL hasRouteFeekbackList_:1;
   BOOL hasOrderList_:1;
   int32_t resultCode;
+  int32_t totalCount;
   NSString* resultInfo;
   Place* place;
   CommonOverview* overview;
@@ -467,6 +469,7 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (BOOL) hasCityList;
 - (BOOL) hasAppInfo;
 - (BOOL) hasTravelTipList;
+- (BOOL) hasTotalCount;
 - (BOOL) hasUserInfo;
 - (BOOL) hasRoute;
 - (BOOL) hasRouteList;
@@ -482,6 +485,7 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 @property (readonly, retain) CityList* cityList;
 @property (readonly, retain) App* appInfo;
 @property (readonly, retain) CommonTravelTipList* travelTipList;
+@property (readonly) int32_t totalCount;
 @property (readonly, retain) UserInfo* userInfo;
 @property (readonly, retain) TouristRoute* route;
 @property (readonly, retain) TouristRouteList* routeList;
@@ -587,6 +591,11 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (TravelResponse_Builder*) setTravelTipListBuilder:(CommonTravelTipList_Builder*) builderForValue;
 - (TravelResponse_Builder*) mergeTravelTipList:(CommonTravelTipList*) value;
 - (TravelResponse_Builder*) clearTravelTipList;
+
+- (BOOL) hasTotalCount;
+- (int32_t) totalCount;
+- (TravelResponse_Builder*) setTotalCount:(int32_t) value;
+- (TravelResponse_Builder*) clearTotalCount;
 
 - (BOOL) hasUserInfo;
 - (UserInfo*) userInfo;

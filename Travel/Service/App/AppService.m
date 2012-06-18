@@ -211,24 +211,8 @@ static AppService* _defaultAppService = nil;
     
     PPDebug(@"download request = %@", url.description);
     [request setDownloadDestinationPath:destinationPath];
-//    [request setResponseEncoding:NSUTF8StringEncoding];
     
     [request startSynchronous];
 }  
-
-//- (void)UnzipDefaultCity
-//{
-//    // if there has no unzip city data, unzip
-//    if ([AppUtils unzipCityZip:DEFAULT_CITY_ID]) {
-//        [[NSFileManager defaultManager] createFileAtPath:[AppUtils getUnzipFlag:DEFAULT_CITY_ID]
-//                                                contents:nil
-//                                              attributes:nil];
-//        LocalCity *localCity = [[LocalCityManager defaultManager] createLocalCity:DEFAULT_CITY_ID];
-//        localCity.downloadStatus = DOWNLOAD_SUCCEED;
-//    }
-//    else {
-//        PPDebug(@"解压默认城市失败");
-//    }
-//}
 
 @end

@@ -10,6 +10,8 @@
 #import "LocaleUtils.h"
 #import "AppManager.h"
 #import "CommonPlace.h"
+#import "PlaceExtend.h"
+
 
 @implementation PlaceUtils
 
@@ -120,12 +122,13 @@
     }
 }
 
+
 + (int)getPlacesCountInSameType:(int)type typeId:(int)typeId placeList:(NSArray*)placeList
 {
     int count = 0;
     switch (type) {
         case TYPE_SUBCATEGORY:
-            count = [PlaceUtils getPlacesOfSameSubcategory:typeId placeList:placeList];
+            count = [PlaceUtils getPlacesCountInSameSubcategory:typeId placeList:placeList];
             break;
             
         case TYPE_PROVIDED_SERVICE:
@@ -163,7 +166,7 @@
     return count;
 }
 
-+ (int)getPlacesOfSameSubcategory:(int)subcategoryId placeList:(NSArray*)placeList
++ (int)getPlacesCountInSameSubcategory:(int)subcategoryId placeList:(NSArray*)placeList
 {
     if (subcategoryId == ALL_CATEGORY) {
         return [placeList count];
@@ -178,6 +181,47 @@
     
     return count;
 }
+
++ (NSArray*)getPlaceList:(NSArray*)placeList inSameSubcategory:(int)subcategoryId
+{    
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (Place *place in placeList) {
+        if ([place isKindOfSubCategory:subcategoryId]) {
+            [retArray addObject:place];
+        };
+    }
+    
+    return retArray;
+}
+
++ (NSArray*)getPlaceList:(NSArray*)placeList hasSameService:(int)serviceId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (Place *place in placeList) {
+        if ([place hasService:serviceId]) {
+            [retArray addObject:place];
+        }
+    }
+    
+    return retArray;
+}
+
++ (NSArray*)getPlaceList:(NSArray*)placeList inSameArea:(int)areaId
+{
+    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (Place *place in placeList) {
+        if ([place isInArea:areaId]) {
+            [retArray addObject:place];
+        }
+    }
+    
+    return retArray;
+}
+
+
 
 + (int)getPlacesInSameArea:(int)areaId placeList:(NSArray*)placeList
 {
@@ -224,5 +268,7 @@
     
     return retArray;
 }
+
+
 
 @end

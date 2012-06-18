@@ -13,6 +13,5 @@
 
 @interface MoreController : PPTableViewController <UserServiceDelegate>
 
-@property (retain, nonatomic) NSDictionary *dataDictionary;
 
 @end

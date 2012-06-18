@@ -40,26 +40,29 @@
 
 - (NSString*)getAreaName:(int)cityId areaId:(int)areaId;
 - (NSString*)getCurrencySymbol:(int)cityId;
-- (NSString*)getCurrencyId:(int)cityId;
+//- (NSString*)getCurrencyId:(int)cityId;
 - (NSString*)getCurrencyName:(int)cityId;
 
-- (NSArray*)getSubCategoryList:(int)categoryId;
-- (NSArray*)getProvidedServiceList:(int)categoryId;
 
-- (NSArray*)getProvidedServiceNameList:(int)categoryId;
+
+//- (NSArray*)getProvidedServiceNameList:(int)categoryId;
 - (NSArray*)getProvidedServiceIconList:(int)categoryId;
 
 - (NSString*)getSubCategotyName:(int)categoryId subCategoryId:(int)subCategoryId;
-- (NSString*)getProvidedServiceName:(int)categoryId providedServiceId:(int)providedServiceId;
+//- (NSString*)getProvidedServiceName:(int)categoryId providedServiceId:(int)providedServiceId;
 - (NSString*)getProvidedServiceIcon:(int)categoryId providedServiceId:(int)providedServiceId;
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
 - (void)setCurrentCityId:(int)newCity;
 
-- (NSArray*)getSortOptionList:(int)categoryId;
+// Get item list for select controller.
+- (NSArray *)getSubCategoryItemList:(int)categoryId placeList:(NSArray *)placeList;
+- (NSArray *)getServiceItemList:(int)categoryId placeList:(NSArray *)placeList;
+- (NSArray *)getAreaItemList:(int)cityId placeList:(NSArray *)placeList;
+- (NSArray *)getPriceRankItemList:(int)cityId;
+- (NSArray *)getSortItemList:(int)categoryId;
 
-- (NSArray *)getAreaNameList:(int)cityId;
-- (NSArray *)getPriceList:(int)cityId;
+- (NSString*)getRouteCityName:(int)routeCityId;
 
 @end

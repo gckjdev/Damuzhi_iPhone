@@ -20,25 +20,18 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @end
 
 @interface TouristRouteList ()
-@property (retain) TouristRoute* routes;
+@property (retain) NSMutableArray* mutableRoutesList;
 @end
 
 @implementation TouristRouteList
 
-- (BOOL) hasRoutes {
-  return !!hasRoutes_;
-}
-- (void) setHasRoutes:(BOOL) value {
-  hasRoutes_ = !!value;
-}
-@synthesize routes;
+@synthesize mutableRoutesList;
 - (void) dealloc {
-  self.routes = nil;
+  self.mutableRoutesList = nil;
   [super dealloc];
 }
 - (id) init {
   if ((self = [super init])) {
-    self.routes = [TouristRoute defaultInstance];
   }
   return self;
 }
@@ -54,18 +47,24 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
 - (TouristRouteList*) defaultInstance {
   return defaultTouristRouteListInstance;
 }
+- (NSArray*) routesList {
+  return mutableRoutesList;
+}
+- (TouristRoute*) routesAtIndex:(int32_t) index {
+  id value = [mutableRoutesList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
-  if (!self.hasRoutes) {
-    return NO;
-  }
-  if (!self.routes.isInitialized) {
-    return NO;
+  for (TouristRoute* element in self.routesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
   }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasRoutes) {
-    [output writeMessage:1 value:self.routes];
+  for (TouristRoute* element in self.routesList) {
+    [output writeMessage:1 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -76,8 +75,8 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   }
 
   size = 0;
-  if (self.hasRoutes) {
-    size += computeMessageSize(1, self.routes);
+  for (TouristRoute* element in self.routesList) {
+    size += computeMessageSize(1, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -154,8 +153,11 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   if (other == [TouristRouteList defaultInstance]) {
     return self;
   }
-  if (other.hasRoutes) {
-    [self mergeRoutes:other.routes];
+  if (other.mutableRoutesList.count > 0) {
+    if (result.mutableRoutesList == nil) {
+      result.mutableRoutesList = [NSMutableArray array];
+    }
+    [result.mutableRoutesList addObjectsFromArray:other.mutableRoutesList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -180,44 +182,40 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
       }
       case 10: {
         TouristRoute_Builder* subBuilder = [TouristRoute builder];
-        if (self.hasRoutes) {
-          [subBuilder mergeFrom:self.routes];
-        }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setRoutes:[subBuilder buildPartial]];
+        [self addRoutes:[subBuilder buildPartial]];
         break;
       }
     }
   }
 }
-- (BOOL) hasRoutes {
-  return result.hasRoutes;
+- (NSArray*) routesList {
+  if (result.mutableRoutesList == nil) { return [NSArray array]; }
+  return result.mutableRoutesList;
 }
-- (TouristRoute*) routes {
-  return result.routes;
+- (TouristRoute*) routesAtIndex:(int32_t) index {
+  return [result routesAtIndex:index];
 }
-- (TouristRouteList_Builder*) setRoutes:(TouristRoute*) value {
-  result.hasRoutes = YES;
-  result.routes = value;
+- (TouristRouteList_Builder*) replaceRoutesAtIndex:(int32_t) index with:(TouristRoute*) value {
+  [result.mutableRoutesList replaceObjectAtIndex:index withObject:value];
   return self;
 }
-- (TouristRouteList_Builder*) setRoutesBuilder:(TouristRoute_Builder*) builderForValue {
-  return [self setRoutes:[builderForValue build]];
-}
-- (TouristRouteList_Builder*) mergeRoutes:(TouristRoute*) value {
-  if (result.hasRoutes &&
-      result.routes != [TouristRoute defaultInstance]) {
-    result.routes =
-      [[[TouristRoute builderWithPrototype:result.routes] mergeFrom:value] buildPartial];
-  } else {
-    result.routes = value;
+- (TouristRouteList_Builder*) addAllRoutes:(NSArray*) values {
+  if (result.mutableRoutesList == nil) {
+    result.mutableRoutesList = [NSMutableArray array];
   }
-  result.hasRoutes = YES;
+  [result.mutableRoutesList addObjectsFromArray:values];
   return self;
 }
-- (TouristRouteList_Builder*) clearRoutes {
-  result.hasRoutes = NO;
-  result.routes = [TouristRoute defaultInstance];
+- (TouristRouteList_Builder*) clearRoutesList {
+  result.mutableRoutesList = nil;
+  return self;
+}
+- (TouristRouteList_Builder*) addRoutes:(TouristRoute*) value {
+  if (result.mutableRoutesList == nil) {
+    result.mutableRoutesList = [NSMutableArray array];
+  }
+  [result.mutableRoutesList addObject:value];
   return self;
 }
 @end
@@ -230,14 +228,14 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
 @property (retain) NSString* price;
 @property int32_t agencyId;
 @property int32_t averageRank;
-@property (retain) NSString* image;
+@property (retain) NSString* thumbImage;
 @property (retain) NSString* tour;
 @property int32_t days;
 @property (retain) NSMutableArray* mutableThemeIdsList;
-@property (retain) NSMutableArray* mutableTypeIdsList;
+@property int32_t typeId;
 @property int32_t followUserCount;
 @property (retain) NSString* customerServiceTelephone;
-@property (retain) NSMutableArray* mutableImagesList;
+@property (retain) NSMutableArray* mutableDetailImagesList;
 @property (retain) NSString* characteristic;
 @property (retain) NSMutableArray* mutableDailySchedulesList;
 @property (retain) NSMutableArray* mutablePackagesList;
@@ -299,13 +297,13 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   hasAverageRank_ = !!value;
 }
 @synthesize averageRank;
-- (BOOL) hasImage {
-  return !!hasImage_;
+- (BOOL) hasThumbImage {
+  return !!hasThumbImage_;
 }
-- (void) setHasImage:(BOOL) value {
-  hasImage_ = !!value;
+- (void) setHasThumbImage:(BOOL) value {
+  hasThumbImage_ = !!value;
 }
-@synthesize image;
+@synthesize thumbImage;
 - (BOOL) hasTour {
   return !!hasTour_;
 }
@@ -321,7 +319,13 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
 }
 @synthesize days;
 @synthesize mutableThemeIdsList;
-@synthesize mutableTypeIdsList;
+- (BOOL) hasTypeId {
+  return !!hasTypeId_;
+}
+- (void) setHasTypeId:(BOOL) value {
+  hasTypeId_ = !!value;
+}
+@synthesize typeId;
 - (BOOL) hasFollowUserCount {
   return !!hasFollowUserCount_;
 }
@@ -336,7 +340,7 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   hasCustomerServiceTelephone_ = !!value;
 }
 @synthesize customerServiceTelephone;
-@synthesize mutableImagesList;
+@synthesize mutableDetailImagesList;
 - (BOOL) hasCharacteristic {
   return !!hasCharacteristic_;
 }
@@ -378,12 +382,11 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
 - (void) dealloc {
   self.name = nil;
   self.price = nil;
-  self.image = nil;
+  self.thumbImage = nil;
   self.tour = nil;
   self.mutableThemeIdsList = nil;
-  self.mutableTypeIdsList = nil;
   self.customerServiceTelephone = nil;
-  self.mutableImagesList = nil;
+  self.mutableDetailImagesList = nil;
   self.characteristic = nil;
   self.mutableDailySchedulesList = nil;
   self.mutablePackagesList = nil;
@@ -403,9 +406,10 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
     self.price = @"";
     self.agencyId = 0;
     self.averageRank = 0;
-    self.image = @"";
+    self.thumbImage = @"";
     self.tour = @"";
     self.days = 0;
+    self.typeId = 0;
     self.followUserCount = 0;
     self.customerServiceTelephone = @"";
     self.characteristic = @"";
@@ -435,18 +439,11 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   id value = [mutableThemeIdsList objectAtIndex:index];
   return [value intValue];
 }
-- (NSArray*) typeIdsList {
-  return mutableTypeIdsList;
+- (NSArray*) detailImagesList {
+  return mutableDetailImagesList;
 }
-- (int32_t) typeIdsAtIndex:(int32_t) index {
-  id value = [mutableTypeIdsList objectAtIndex:index];
-  return [value intValue];
-}
-- (NSArray*) imagesList {
-  return mutableImagesList;
-}
-- (NSString*) imagesAtIndex:(int32_t) index {
-  id value = [mutableImagesList objectAtIndex:index];
+- (NSString*) detailImagesAtIndex:(int32_t) index {
+  id value = [mutableDetailImagesList objectAtIndex:index];
   return value;
 }
 - (NSArray*) dailySchedulesList {
@@ -527,8 +524,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (self.hasAverageRank) {
     [output writeInt32:7 value:self.averageRank];
   }
-  if (self.hasImage) {
-    [output writeString:10 value:self.image];
+  if (self.hasThumbImage) {
+    [output writeString:10 value:self.thumbImage];
   }
   if (self.hasTour) {
     [output writeString:11 value:self.tour];
@@ -539,8 +536,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   for (NSNumber* value in self.mutableThemeIdsList) {
     [output writeInt32:13 value:[value intValue]];
   }
-  for (NSNumber* value in self.mutableTypeIdsList) {
-    [output writeInt32:14 value:[value intValue]];
+  if (self.hasTypeId) {
+    [output writeInt32:14 value:self.typeId];
   }
   if (self.hasFollowUserCount) {
     [output writeInt32:15 value:self.followUserCount];
@@ -548,7 +545,7 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (self.hasCustomerServiceTelephone) {
     [output writeString:20 value:self.customerServiceTelephone];
   }
-  for (NSString* element in self.mutableImagesList) {
+  for (NSString* element in self.mutableDetailImagesList) {
     [output writeString:21 value:element];
   }
   if (self.hasCharacteristic) {
@@ -605,8 +602,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (self.hasAverageRank) {
     size += computeInt32Size(7, self.averageRank);
   }
-  if (self.hasImage) {
-    size += computeStringSize(10, self.image);
+  if (self.hasThumbImage) {
+    size += computeStringSize(10, self.thumbImage);
   }
   if (self.hasTour) {
     size += computeStringSize(11, self.tour);
@@ -622,13 +619,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
     size += dataSize;
     size += 1 * self.mutableThemeIdsList.count;
   }
-  {
-    int32_t dataSize = 0;
-    for (NSNumber* value in self.mutableTypeIdsList) {
-      dataSize += computeInt32SizeNoTag([value intValue]);
-    }
-    size += dataSize;
-    size += 1 * self.mutableTypeIdsList.count;
+  if (self.hasTypeId) {
+    size += computeInt32Size(14, self.typeId);
   }
   if (self.hasFollowUserCount) {
     size += computeInt32Size(15, self.followUserCount);
@@ -638,11 +630,11 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   }
   {
     int32_t dataSize = 0;
-    for (NSString* element in self.mutableImagesList) {
+    for (NSString* element in self.mutableDetailImagesList) {
       dataSize += computeStringSizeNoTag(element);
     }
     size += dataSize;
-    size += 2 * self.mutableImagesList.count;
+    size += 2 * self.mutableDetailImagesList.count;
   }
   if (self.hasCharacteristic) {
     size += computeStringSize(22, self.characteristic);
@@ -764,8 +756,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (other.hasAverageRank) {
     [self setAverageRank:other.averageRank];
   }
-  if (other.hasImage) {
-    [self setImage:other.image];
+  if (other.hasThumbImage) {
+    [self setThumbImage:other.thumbImage];
   }
   if (other.hasTour) {
     [self setTour:other.tour];
@@ -779,11 +771,8 @@ static TouristRoute* defaultTouristRouteInstance = nil;
     }
     [result.mutableThemeIdsList addObjectsFromArray:other.mutableThemeIdsList];
   }
-  if (other.mutableTypeIdsList.count > 0) {
-    if (result.mutableTypeIdsList == nil) {
-      result.mutableTypeIdsList = [NSMutableArray array];
-    }
-    [result.mutableTypeIdsList addObjectsFromArray:other.mutableTypeIdsList];
+  if (other.hasTypeId) {
+    [self setTypeId:other.typeId];
   }
   if (other.hasFollowUserCount) {
     [self setFollowUserCount:other.followUserCount];
@@ -791,11 +780,11 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (other.hasCustomerServiceTelephone) {
     [self setCustomerServiceTelephone:other.customerServiceTelephone];
   }
-  if (other.mutableImagesList.count > 0) {
-    if (result.mutableImagesList == nil) {
-      result.mutableImagesList = [NSMutableArray array];
+  if (other.mutableDetailImagesList.count > 0) {
+    if (result.mutableDetailImagesList == nil) {
+      result.mutableDetailImagesList = [NSMutableArray array];
     }
-    [result.mutableImagesList addObjectsFromArray:other.mutableImagesList];
+    [result.mutableDetailImagesList addObjectsFromArray:other.mutableDetailImagesList];
   }
   if (other.hasCharacteristic) {
     [self setCharacteristic:other.characteristic];
@@ -880,7 +869,7 @@ static TouristRoute* defaultTouristRouteInstance = nil;
         break;
       }
       case 82: {
-        [self setImage:[input readString]];
+        [self setThumbImage:[input readString]];
         break;
       }
       case 90: {
@@ -896,7 +885,7 @@ static TouristRoute* defaultTouristRouteInstance = nil;
         break;
       }
       case 112: {
-        [self addTypeIds:[input readInt32]];
+        [self setTypeId:[input readInt32]];
         break;
       }
       case 120: {
@@ -908,7 +897,7 @@ static TouristRoute* defaultTouristRouteInstance = nil;
         break;
       }
       case 170: {
-        [self addImages:[input readString]];
+        [self addDetailImages:[input readString]];
         break;
       }
       case 178: {
@@ -1069,20 +1058,20 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   result.averageRank = 0;
   return self;
 }
-- (BOOL) hasImage {
-  return result.hasImage;
+- (BOOL) hasThumbImage {
+  return result.hasThumbImage;
 }
-- (NSString*) image {
-  return result.image;
+- (NSString*) thumbImage {
+  return result.thumbImage;
 }
-- (TouristRoute_Builder*) setImage:(NSString*) value {
-  result.hasImage = YES;
-  result.image = value;
+- (TouristRoute_Builder*) setThumbImage:(NSString*) value {
+  result.hasThumbImage = YES;
+  result.thumbImage = value;
   return self;
 }
-- (TouristRoute_Builder*) clearImage {
-  result.hasImage = NO;
-  result.image = @"";
+- (TouristRoute_Builder*) clearThumbImage {
+  result.hasThumbImage = NO;
+  result.thumbImage = @"";
   return self;
 }
 - (BOOL) hasTour {
@@ -1148,35 +1137,20 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   result.mutableThemeIdsList = nil;
   return self;
 }
-- (NSArray*) typeIdsList {
-  if (result.mutableTypeIdsList == nil) {
-    return [NSArray array];
-  }
-  return result.mutableTypeIdsList;
+- (BOOL) hasTypeId {
+  return result.hasTypeId;
 }
-- (int32_t) typeIdsAtIndex:(int32_t) index {
-  return [result typeIdsAtIndex:index];
+- (int32_t) typeId {
+  return result.typeId;
 }
-- (TouristRoute_Builder*) replaceTypeIdsAtIndex:(int32_t) index with:(int32_t) value {
-  [result.mutableTypeIdsList replaceObjectAtIndex:index withObject:[NSNumber numberWithInt:value]];
+- (TouristRoute_Builder*) setTypeId:(int32_t) value {
+  result.hasTypeId = YES;
+  result.typeId = value;
   return self;
 }
-- (TouristRoute_Builder*) addTypeIds:(int32_t) value {
-  if (result.mutableTypeIdsList == nil) {
-    result.mutableTypeIdsList = [NSMutableArray array];
-  }
-  [result.mutableTypeIdsList addObject:[NSNumber numberWithInt:value]];
-  return self;
-}
-- (TouristRoute_Builder*) addAllTypeIds:(NSArray*) values {
-  if (result.mutableTypeIdsList == nil) {
-    result.mutableTypeIdsList = [NSMutableArray array];
-  }
-  [result.mutableTypeIdsList addObjectsFromArray:values];
-  return self;
-}
-- (TouristRoute_Builder*) clearTypeIdsList {
-  result.mutableTypeIdsList = nil;
+- (TouristRoute_Builder*) clearTypeId {
+  result.hasTypeId = NO;
+  result.typeId = 0;
   return self;
 }
 - (BOOL) hasFollowUserCount {
@@ -1211,35 +1185,35 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   result.customerServiceTelephone = @"";
   return self;
 }
-- (NSArray*) imagesList {
-  if (result.mutableImagesList == nil) {
+- (NSArray*) detailImagesList {
+  if (result.mutableDetailImagesList == nil) {
     return [NSArray array];
   }
-  return result.mutableImagesList;
+  return result.mutableDetailImagesList;
 }
-- (NSString*) imagesAtIndex:(int32_t) index {
-  return [result imagesAtIndex:index];
+- (NSString*) detailImagesAtIndex:(int32_t) index {
+  return [result detailImagesAtIndex:index];
 }
-- (TouristRoute_Builder*) replaceImagesAtIndex:(int32_t) index with:(NSString*) value {
-  [result.mutableImagesList replaceObjectAtIndex:index withObject:value];
+- (TouristRoute_Builder*) replaceDetailImagesAtIndex:(int32_t) index with:(NSString*) value {
+  [result.mutableDetailImagesList replaceObjectAtIndex:index withObject:value];
   return self;
 }
-- (TouristRoute_Builder*) addImages:(NSString*) value {
-  if (result.mutableImagesList == nil) {
-    result.mutableImagesList = [NSMutableArray array];
+- (TouristRoute_Builder*) addDetailImages:(NSString*) value {
+  if (result.mutableDetailImagesList == nil) {
+    result.mutableDetailImagesList = [NSMutableArray array];
   }
-  [result.mutableImagesList addObject:value];
+  [result.mutableDetailImagesList addObject:value];
   return self;
 }
-- (TouristRoute_Builder*) addAllImages:(NSArray*) values {
-  if (result.mutableImagesList == nil) {
-    result.mutableImagesList = [NSMutableArray array];
+- (TouristRoute_Builder*) addAllDetailImages:(NSArray*) values {
+  if (result.mutableDetailImagesList == nil) {
+    result.mutableDetailImagesList = [NSMutableArray array];
   }
-  [result.mutableImagesList addObjectsFromArray:values];
+  [result.mutableDetailImagesList addObjectsFromArray:values];
   return self;
 }
-- (TouristRoute_Builder*) clearImagesList {
-  result.mutableImagesList = nil;
+- (TouristRoute_Builder*) clearDetailImagesList {
+  result.mutableDetailImagesList = nil;
   return self;
 }
 - (BOOL) hasCharacteristic {

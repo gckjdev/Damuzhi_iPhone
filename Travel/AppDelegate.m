@@ -19,6 +19,7 @@
 #import "AppUtils.h"
 #import "ResendService.h"
 
+
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
 
@@ -40,7 +41,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [MobClick startWithAppkey:UMENG_KEY];
+    //[MobClick startWithAppkey:UMENG_KEY];
+//    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
+    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
+
+    [MobClick updateOnlineConfig];
     
     if ([DeviceDetection isOS5]){
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"topmenu_bg.png"] forBarMetrics:UIBarMetricsDefault];
@@ -98,6 +103,8 @@
     [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     [self.window makeKeyAndVisible];
+    
+    [[UserService defaultService] queryVersion:self];
 
     return YES;
 }
@@ -161,5 +168,36 @@
 {
     
 }
+
+
+#pragma mark - UserServiceDelegate
+- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
+{
+    if (version && dataVersion) {
+        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        float versionFloat = [version floatValue];
+        float localVersionFloat = [localVersion floatValue];
+        if (localVersionFloat < versionFloat) {
+            UIAlertView *alertView = [[UIAlertView  alloc] initWithTitle:nil message:NSLS(@"有新版本，是否更新？") delegate:self cancelButtonTitle:NSLS(@"稍后更新") otherButtonTitles:@"立即更新", nil];
+            [alertView show];
+            [alertView release];
+        }
+    }
+    else {
+        PPDebug(@"query version faild");
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        return ;
+    }else if(buttonIndex == 1)
+    {
+        [UIUtils openApp:kAppId];
+    }
+}
+
 
 @end

@@ -10,12 +10,10 @@
 #import "LogUtil.h"
 #import "LocaleUtils.h"
 #import "AppDelegate.h"
+#import "MobClick.h"
 
-//#define kSinaWeiBoAppKey        @"475196157"
-#define kSinaWeiBoAppKey        @"4107968699"
-
-//#define kSinaWeiBoAppSecret     @"747adfaf3ec50dfe3791f9f0481365aa"
-#define kSinaWeiBoAppSecret     @"7d7d43fde5bb48e19c4b4bd09bd07848"
+#define UMENG_ONLINE_SINA_WEIBO_APP_KEY       @"sina_weibo_app_key"
+#define UMENG_ONLINE_SINA_WEIBO_APP_SECRET    @"sina_weibo_app_secret"
 
 @interface ShareToSinaController ()
 
@@ -64,7 +62,10 @@
     
     [self createSendView];
     
-    WBEngine *engine = [[WBEngine alloc] initWithAppKey:kSinaWeiBoAppKey appSecret:kSinaWeiBoAppSecret];
+    NSString *appKey = [MobClick getConfigParams:UMENG_ONLINE_SINA_WEIBO_APP_KEY];
+    NSString *appSecret = [MobClick getConfigParams:UMENG_ONLINE_SINA_WEIBO_APP_SECRET];
+    
+    WBEngine *engine = [[WBEngine alloc] initWithAppKey:appKey appSecret:appSecret];
     [engine setRootViewController:self];
     [engine setDelegate:self];
     [engine setRedirectURI:@"http://"];
@@ -137,7 +138,7 @@
     UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake((320-CONTENT_WIDTH)/2, WEIBO_LOGO_HEIGHT, CONTENT_WIDTH, CONTENT_HEIGHT)];
     textView.delegate = self;
     textView.font = [UIFont systemFontOfSize:14];
-    textView.text = [NSString stringWithFormat:NSLS(@"kShareContent"),[UIUtils getAppLink:kAppId]];
+    textView.text = [NSString stringWithFormat:NSLS(@"kShareContent"),[MobClick getConfigParams:@"download_website"]];
     textView.backgroundColor = [UIColor clearColor];
     self.contentTextView = textView;
     [textView release];

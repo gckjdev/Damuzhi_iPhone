@@ -33,7 +33,7 @@
 {
     [super viewDidLoad];
     
-    [self.navigationItem setTitle:TITLE_HISTORY];
+    [self.navigationItem setTitle:HISTORY];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png"

@@ -346,14 +346,14 @@ static Package* defaultPackageInstance = nil;
 
 @interface UserInfo ()
 @property (retain) NSString* userId;
-@property (retain) NSString* memberId;
+@property int32_t loginType;
 @property (retain) NSString* password;
-@property (retain) NSString* nickName;
-@property int32_t gender;
-@property int32_t type;
-@property (retain) NSString* fullName;
 @property (retain) NSString* telephone;
 @property (retain) NSString* email;
+@property (retain) NSString* nickName;
+@property int32_t gender;
+@property (retain) NSString* fullName;
+@property (retain) NSString* address;
 @end
 
 @implementation UserInfo
@@ -365,13 +365,13 @@ static Package* defaultPackageInstance = nil;
   hasUserId_ = !!value;
 }
 @synthesize userId;
-- (BOOL) hasMemberId {
-  return !!hasMemberId_;
+- (BOOL) hasLoginType {
+  return !!hasLoginType_;
 }
-- (void) setHasMemberId:(BOOL) value {
-  hasMemberId_ = !!value;
+- (void) setHasLoginType:(BOOL) value {
+  hasLoginType_ = !!value;
 }
-@synthesize memberId;
+@synthesize loginType;
 - (BOOL) hasPassword {
   return !!hasPassword_;
 }
@@ -379,34 +379,6 @@ static Package* defaultPackageInstance = nil;
   hasPassword_ = !!value;
 }
 @synthesize password;
-- (BOOL) hasNickName {
-  return !!hasNickName_;
-}
-- (void) setHasNickName:(BOOL) value {
-  hasNickName_ = !!value;
-}
-@synthesize nickName;
-- (BOOL) hasGender {
-  return !!hasGender_;
-}
-- (void) setHasGender:(BOOL) value {
-  hasGender_ = !!value;
-}
-@synthesize gender;
-- (BOOL) hasType {
-  return !!hasType_;
-}
-- (void) setHasType:(BOOL) value {
-  hasType_ = !!value;
-}
-@synthesize type;
-- (BOOL) hasFullName {
-  return !!hasFullName_;
-}
-- (void) setHasFullName:(BOOL) value {
-  hasFullName_ = !!value;
-}
-@synthesize fullName;
 - (BOOL) hasTelephone {
   return !!hasTelephone_;
 }
@@ -421,27 +393,55 @@ static Package* defaultPackageInstance = nil;
   hasEmail_ = !!value;
 }
 @synthesize email;
+- (BOOL) hasNickName {
+  return !!hasNickName_;
+}
+- (void) setHasNickName:(BOOL) value {
+  hasNickName_ = !!value;
+}
+@synthesize nickName;
+- (BOOL) hasGender {
+  return !!hasGender_;
+}
+- (void) setHasGender:(BOOL) value {
+  hasGender_ = !!value;
+}
+@synthesize gender;
+- (BOOL) hasFullName {
+  return !!hasFullName_;
+}
+- (void) setHasFullName:(BOOL) value {
+  hasFullName_ = !!value;
+}
+@synthesize fullName;
+- (BOOL) hasAddress {
+  return !!hasAddress_;
+}
+- (void) setHasAddress:(BOOL) value {
+  hasAddress_ = !!value;
+}
+@synthesize address;
 - (void) dealloc {
   self.userId = nil;
-  self.memberId = nil;
   self.password = nil;
-  self.nickName = nil;
-  self.fullName = nil;
   self.telephone = nil;
   self.email = nil;
+  self.nickName = nil;
+  self.fullName = nil;
+  self.address = nil;
   [super dealloc];
 }
 - (id) init {
   if ((self = [super init])) {
     self.userId = @"";
-    self.memberId = @"";
+    self.loginType = 0;
     self.password = @"";
-    self.nickName = @"";
-    self.gender = 0;
-    self.type = 0;
-    self.fullName = @"";
     self.telephone = @"";
     self.email = @"";
+    self.nickName = @"";
+    self.gender = 0;
+    self.fullName = @"";
+    self.address = @"";
   }
   return self;
 }
@@ -458,7 +458,19 @@ static UserInfo* defaultUserInfoInstance = nil;
   return defaultUserInfoInstance;
 }
 - (BOOL) isInitialized {
-  if (!self.hasMemberId) {
+  if (!self.hasUserId) {
+    return NO;
+  }
+  if (!self.hasLoginType) {
+    return NO;
+  }
+  if (!self.hasPassword) {
+    return NO;
+  }
+  if (!self.hasTelephone) {
+    return NO;
+  }
+  if (!self.hasEmail) {
     return NO;
   }
   return YES;
@@ -467,29 +479,29 @@ static UserInfo* defaultUserInfoInstance = nil;
   if (self.hasUserId) {
     [output writeString:1 value:self.userId];
   }
-  if (self.hasMemberId) {
-    [output writeString:2 value:self.memberId];
+  if (self.hasLoginType) {
+    [output writeInt32:2 value:self.loginType];
   }
   if (self.hasPassword) {
     [output writeString:3 value:self.password];
   }
-  if (self.hasNickName) {
-    [output writeString:4 value:self.nickName];
-  }
-  if (self.hasGender) {
-    [output writeInt32:5 value:self.gender];
-  }
-  if (self.hasType) {
-    [output writeInt32:6 value:self.type];
-  }
-  if (self.hasFullName) {
-    [output writeString:7 value:self.fullName];
-  }
   if (self.hasTelephone) {
-    [output writeString:8 value:self.telephone];
+    [output writeString:10 value:self.telephone];
   }
   if (self.hasEmail) {
-    [output writeString:9 value:self.email];
+    [output writeString:11 value:self.email];
+  }
+  if (self.hasNickName) {
+    [output writeString:20 value:self.nickName];
+  }
+  if (self.hasGender) {
+    [output writeInt32:21 value:self.gender];
+  }
+  if (self.hasFullName) {
+    [output writeString:22 value:self.fullName];
+  }
+  if (self.hasAddress) {
+    [output writeString:23 value:self.address];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -503,29 +515,29 @@ static UserInfo* defaultUserInfoInstance = nil;
   if (self.hasUserId) {
     size += computeStringSize(1, self.userId);
   }
-  if (self.hasMemberId) {
-    size += computeStringSize(2, self.memberId);
+  if (self.hasLoginType) {
+    size += computeInt32Size(2, self.loginType);
   }
   if (self.hasPassword) {
     size += computeStringSize(3, self.password);
   }
-  if (self.hasNickName) {
-    size += computeStringSize(4, self.nickName);
-  }
-  if (self.hasGender) {
-    size += computeInt32Size(5, self.gender);
-  }
-  if (self.hasType) {
-    size += computeInt32Size(6, self.type);
-  }
-  if (self.hasFullName) {
-    size += computeStringSize(7, self.fullName);
-  }
   if (self.hasTelephone) {
-    size += computeStringSize(8, self.telephone);
+    size += computeStringSize(10, self.telephone);
   }
   if (self.hasEmail) {
-    size += computeStringSize(9, self.email);
+    size += computeStringSize(11, self.email);
+  }
+  if (self.hasNickName) {
+    size += computeStringSize(20, self.nickName);
+  }
+  if (self.hasGender) {
+    size += computeInt32Size(21, self.gender);
+  }
+  if (self.hasFullName) {
+    size += computeStringSize(22, self.fullName);
+  }
+  if (self.hasAddress) {
+    size += computeStringSize(23, self.address);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -605,11 +617,17 @@ static UserInfo* defaultUserInfoInstance = nil;
   if (other.hasUserId) {
     [self setUserId:other.userId];
   }
-  if (other.hasMemberId) {
-    [self setMemberId:other.memberId];
+  if (other.hasLoginType) {
+    [self setLoginType:other.loginType];
   }
   if (other.hasPassword) {
     [self setPassword:other.password];
+  }
+  if (other.hasTelephone) {
+    [self setTelephone:other.telephone];
+  }
+  if (other.hasEmail) {
+    [self setEmail:other.email];
   }
   if (other.hasNickName) {
     [self setNickName:other.nickName];
@@ -617,17 +635,11 @@ static UserInfo* defaultUserInfoInstance = nil;
   if (other.hasGender) {
     [self setGender:other.gender];
   }
-  if (other.hasType) {
-    [self setType:other.type];
-  }
   if (other.hasFullName) {
     [self setFullName:other.fullName];
   }
-  if (other.hasTelephone) {
-    [self setTelephone:other.telephone];
-  }
-  if (other.hasEmail) {
-    [self setEmail:other.email];
+  if (other.hasAddress) {
+    [self setAddress:other.address];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -654,36 +666,36 @@ static UserInfo* defaultUserInfoInstance = nil;
         [self setUserId:[input readString]];
         break;
       }
-      case 18: {
-        [self setMemberId:[input readString]];
+      case 16: {
+        [self setLoginType:[input readInt32]];
         break;
       }
       case 26: {
         [self setPassword:[input readString]];
         break;
       }
-      case 34: {
-        [self setNickName:[input readString]];
-        break;
-      }
-      case 40: {
-        [self setGender:[input readInt32]];
-        break;
-      }
-      case 48: {
-        [self setType:[input readInt32]];
-        break;
-      }
-      case 58: {
-        [self setFullName:[input readString]];
-        break;
-      }
-      case 66: {
+      case 82: {
         [self setTelephone:[input readString]];
         break;
       }
-      case 74: {
+      case 90: {
         [self setEmail:[input readString]];
+        break;
+      }
+      case 162: {
+        [self setNickName:[input readString]];
+        break;
+      }
+      case 168: {
+        [self setGender:[input readInt32]];
+        break;
+      }
+      case 178: {
+        [self setFullName:[input readString]];
+        break;
+      }
+      case 186: {
+        [self setAddress:[input readString]];
         break;
       }
     }
@@ -705,20 +717,20 @@ static UserInfo* defaultUserInfoInstance = nil;
   result.userId = @"";
   return self;
 }
-- (BOOL) hasMemberId {
-  return result.hasMemberId;
+- (BOOL) hasLoginType {
+  return result.hasLoginType;
 }
-- (NSString*) memberId {
-  return result.memberId;
+- (int32_t) loginType {
+  return result.loginType;
 }
-- (UserInfo_Builder*) setMemberId:(NSString*) value {
-  result.hasMemberId = YES;
-  result.memberId = value;
+- (UserInfo_Builder*) setLoginType:(int32_t) value {
+  result.hasLoginType = YES;
+  result.loginType = value;
   return self;
 }
-- (UserInfo_Builder*) clearMemberId {
-  result.hasMemberId = NO;
-  result.memberId = @"";
+- (UserInfo_Builder*) clearLoginType {
+  result.hasLoginType = NO;
+  result.loginType = 0;
   return self;
 }
 - (BOOL) hasPassword {
@@ -735,6 +747,38 @@ static UserInfo* defaultUserInfoInstance = nil;
 - (UserInfo_Builder*) clearPassword {
   result.hasPassword = NO;
   result.password = @"";
+  return self;
+}
+- (BOOL) hasTelephone {
+  return result.hasTelephone;
+}
+- (NSString*) telephone {
+  return result.telephone;
+}
+- (UserInfo_Builder*) setTelephone:(NSString*) value {
+  result.hasTelephone = YES;
+  result.telephone = value;
+  return self;
+}
+- (UserInfo_Builder*) clearTelephone {
+  result.hasTelephone = NO;
+  result.telephone = @"";
+  return self;
+}
+- (BOOL) hasEmail {
+  return result.hasEmail;
+}
+- (NSString*) email {
+  return result.email;
+}
+- (UserInfo_Builder*) setEmail:(NSString*) value {
+  result.hasEmail = YES;
+  result.email = value;
+  return self;
+}
+- (UserInfo_Builder*) clearEmail {
+  result.hasEmail = NO;
+  result.email = @"";
   return self;
 }
 - (BOOL) hasNickName {
@@ -769,22 +813,6 @@ static UserInfo* defaultUserInfoInstance = nil;
   result.gender = 0;
   return self;
 }
-- (BOOL) hasType {
-  return result.hasType;
-}
-- (int32_t) type {
-  return result.type;
-}
-- (UserInfo_Builder*) setType:(int32_t) value {
-  result.hasType = YES;
-  result.type = value;
-  return self;
-}
-- (UserInfo_Builder*) clearType {
-  result.hasType = NO;
-  result.type = 0;
-  return self;
-}
 - (BOOL) hasFullName {
   return result.hasFullName;
 }
@@ -801,36 +829,20 @@ static UserInfo* defaultUserInfoInstance = nil;
   result.fullName = @"";
   return self;
 }
-- (BOOL) hasTelephone {
-  return result.hasTelephone;
+- (BOOL) hasAddress {
+  return result.hasAddress;
 }
-- (NSString*) telephone {
-  return result.telephone;
+- (NSString*) address {
+  return result.address;
 }
-- (UserInfo_Builder*) setTelephone:(NSString*) value {
-  result.hasTelephone = YES;
-  result.telephone = value;
+- (UserInfo_Builder*) setAddress:(NSString*) value {
+  result.hasAddress = YES;
+  result.address = value;
   return self;
 }
-- (UserInfo_Builder*) clearTelephone {
-  result.hasTelephone = NO;
-  result.telephone = @"";
-  return self;
-}
-- (BOOL) hasEmail {
-  return result.hasEmail;
-}
-- (NSString*) email {
-  return result.email;
-}
-- (UserInfo_Builder*) setEmail:(NSString*) value {
-  result.hasEmail = YES;
-  result.email = value;
-  return self;
-}
-- (UserInfo_Builder*) clearEmail {
-  result.hasEmail = NO;
-  result.email = @"";
+- (UserInfo_Builder*) clearAddress {
+  result.hasAddress = NO;
+  result.address = @"";
   return self;
 }
 @end
@@ -1038,9 +1050,9 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
 
 @interface RouteFeekback ()
 @property int32_t routeId;
-@property (retain) NSString* memberId;
+@property (retain) NSString* userId;
 @property (retain) NSString* nickName;
-@property (retain) NSString* date;
+@property int32_t date;
 @property int32_t rank;
 @property (retain) NSString* content;
 @end
@@ -1054,13 +1066,13 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
   hasRouteId_ = !!value;
 }
 @synthesize routeId;
-- (BOOL) hasMemberId {
-  return !!hasMemberId_;
+- (BOOL) hasUserId {
+  return !!hasUserId_;
 }
-- (void) setHasMemberId:(BOOL) value {
-  hasMemberId_ = !!value;
+- (void) setHasUserId:(BOOL) value {
+  hasUserId_ = !!value;
 }
-@synthesize memberId;
+@synthesize userId;
 - (BOOL) hasNickName {
   return !!hasNickName_;
 }
@@ -1090,18 +1102,17 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
 }
 @synthesize content;
 - (void) dealloc {
-  self.memberId = nil;
+  self.userId = nil;
   self.nickName = nil;
-  self.date = nil;
   self.content = nil;
   [super dealloc];
 }
 - (id) init {
   if ((self = [super init])) {
     self.routeId = 0;
-    self.memberId = @"";
+    self.userId = @"";
     self.nickName = @"";
-    self.date = @"";
+    self.date = 0;
     self.rank = 0;
     self.content = @"";
   }
@@ -1120,7 +1131,19 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   return defaultRouteFeekbackInstance;
 }
 - (BOOL) isInitialized {
+  if (!self.hasRouteId) {
+    return NO;
+  }
+  if (!self.hasUserId) {
+    return NO;
+  }
   if (!self.hasNickName) {
+    return NO;
+  }
+  if (!self.hasDate) {
+    return NO;
+  }
+  if (!self.hasRank) {
     return NO;
   }
   return YES;
@@ -1129,14 +1152,14 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (self.hasRouteId) {
     [output writeInt32:1 value:self.routeId];
   }
-  if (self.hasMemberId) {
-    [output writeString:2 value:self.memberId];
+  if (self.hasUserId) {
+    [output writeString:2 value:self.userId];
   }
   if (self.hasNickName) {
     [output writeString:3 value:self.nickName];
   }
   if (self.hasDate) {
-    [output writeString:4 value:self.date];
+    [output writeInt32:4 value:self.date];
   }
   if (self.hasRank) {
     [output writeInt32:5 value:self.rank];
@@ -1156,14 +1179,14 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (self.hasRouteId) {
     size += computeInt32Size(1, self.routeId);
   }
-  if (self.hasMemberId) {
-    size += computeStringSize(2, self.memberId);
+  if (self.hasUserId) {
+    size += computeStringSize(2, self.userId);
   }
   if (self.hasNickName) {
     size += computeStringSize(3, self.nickName);
   }
   if (self.hasDate) {
-    size += computeStringSize(4, self.date);
+    size += computeInt32Size(4, self.date);
   }
   if (self.hasRank) {
     size += computeInt32Size(5, self.rank);
@@ -1249,8 +1272,8 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (other.hasRouteId) {
     [self setRouteId:other.routeId];
   }
-  if (other.hasMemberId) {
-    [self setMemberId:other.memberId];
+  if (other.hasUserId) {
+    [self setUserId:other.userId];
   }
   if (other.hasNickName) {
     [self setNickName:other.nickName];
@@ -1290,15 +1313,15 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
         break;
       }
       case 18: {
-        [self setMemberId:[input readString]];
+        [self setUserId:[input readString]];
         break;
       }
       case 26: {
         [self setNickName:[input readString]];
         break;
       }
-      case 34: {
-        [self setDate:[input readString]];
+      case 32: {
+        [self setDate:[input readInt32]];
         break;
       }
       case 40: {
@@ -1328,20 +1351,20 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   result.routeId = 0;
   return self;
 }
-- (BOOL) hasMemberId {
-  return result.hasMemberId;
+- (BOOL) hasUserId {
+  return result.hasUserId;
 }
-- (NSString*) memberId {
-  return result.memberId;
+- (NSString*) userId {
+  return result.userId;
 }
-- (RouteFeekback_Builder*) setMemberId:(NSString*) value {
-  result.hasMemberId = YES;
-  result.memberId = value;
+- (RouteFeekback_Builder*) setUserId:(NSString*) value {
+  result.hasUserId = YES;
+  result.userId = value;
   return self;
 }
-- (RouteFeekback_Builder*) clearMemberId {
-  result.hasMemberId = NO;
-  result.memberId = @"";
+- (RouteFeekback_Builder*) clearUserId {
+  result.hasUserId = NO;
+  result.userId = @"";
   return self;
 }
 - (BOOL) hasNickName {
@@ -1363,17 +1386,17 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
 - (BOOL) hasDate {
   return result.hasDate;
 }
-- (NSString*) date {
+- (int32_t) date {
   return result.date;
 }
-- (RouteFeekback_Builder*) setDate:(NSString*) value {
+- (RouteFeekback_Builder*) setDate:(int32_t) value {
   result.hasDate = YES;
   result.date = value;
   return self;
 }
 - (RouteFeekback_Builder*) clearDate {
   result.hasDate = NO;
-  result.date = @"";
+  result.date = 0;
   return self;
 }
 - (BOOL) hasRank {
@@ -1421,6 +1444,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
 @property (retain) CityList* cityList;
 @property (retain) App* appInfo;
 @property (retain) CommonTravelTipList* travelTipList;
+@property int32_t totalCount;
 @property (retain) UserInfo* userInfo;
 @property (retain) TouristRoute* route;
 @property (retain) TouristRouteList* routeList;
@@ -1500,6 +1524,13 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   hasTravelTipList_ = !!value;
 }
 @synthesize travelTipList;
+- (BOOL) hasTotalCount {
+  return !!hasTotalCount_;
+}
+- (void) setHasTotalCount:(BOOL) value {
+  hasTotalCount_ = !!value;
+}
+@synthesize totalCount;
 - (BOOL) hasUserInfo {
   return !!hasUserInfo_;
 }
@@ -1564,6 +1595,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
     self.cityList = [CityList defaultInstance];
     self.appInfo = [App defaultInstance];
     self.travelTipList = [CommonTravelTipList defaultInstance];
+    self.totalCount = 0;
     self.userInfo = [UserInfo defaultInstance];
     self.route = [TouristRoute defaultInstance];
     self.routeList = [TouristRouteList defaultInstance];
@@ -1681,6 +1713,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   if (self.hasTravelTipList) {
     [output writeMessage:10 value:self.travelTipList];
   }
+  if (self.hasTotalCount) {
+    [output writeInt32:13 value:self.totalCount];
+  }
   if (self.hasUserInfo) {
     [output writeMessage:15 value:self.userInfo];
   }
@@ -1734,6 +1769,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (self.hasTravelTipList) {
     size += computeMessageSize(10, self.travelTipList);
+  }
+  if (self.hasTotalCount) {
+    size += computeInt32Size(13, self.totalCount);
   }
   if (self.hasUserInfo) {
     size += computeMessageSize(15, self.userInfo);
@@ -1855,6 +1893,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   if (other.hasTravelTipList) {
     [self mergeTravelTipList:other.travelTipList];
   }
+  if (other.hasTotalCount) {
+    [self setTotalCount:other.totalCount];
+  }
   if (other.hasUserInfo) {
     [self mergeUserInfo:other.userInfo];
   }
@@ -1969,6 +2010,10 @@ static TravelResponse* defaultTravelResponseInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setTravelTipList:[subBuilder buildPartial]];
+        break;
+      }
+      case 104: {
+        [self setTotalCount:[input readInt32]];
         break;
       }
       case 122: {
@@ -2289,6 +2334,22 @@ static TravelResponse* defaultTravelResponseInstance = nil;
 - (TravelResponse_Builder*) clearTravelTipList {
   result.hasTravelTipList = NO;
   result.travelTipList = [CommonTravelTipList defaultInstance];
+  return self;
+}
+- (BOOL) hasTotalCount {
+  return result.hasTotalCount;
+}
+- (int32_t) totalCount {
+  return result.totalCount;
+}
+- (TravelResponse_Builder*) setTotalCount:(int32_t) value {
+  result.hasTotalCount = YES;
+  result.totalCount = value;
+  return self;
+}
+- (TravelResponse_Builder*) clearTotalCount {
+  result.hasTotalCount = NO;
+  result.totalCount = 0;
   return self;
 }
 - (BOOL) hasUserInfo {

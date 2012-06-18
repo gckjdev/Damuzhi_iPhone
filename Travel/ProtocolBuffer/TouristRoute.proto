@@ -6,7 +6,7 @@ option java_outer_classname = "TouristRouteProtos";
 
 // 用于获取团游和自由行列表
 message TouristRouteList {
-  required TouristRoute routes = 1;
+  repeated TouristRoute routes = 1;
 }
 
 //　用于跟团游和自由行详情和列表
@@ -25,7 +25,7 @@ message TouristRoute {
   optional string tour = 11;                        // 线路列表中显示经过的地方
   optional int32 days = 12;                         // 线路游览天数
   repeated int32 themeIds = 13;                     // 线路主题id：赏花，登山。基础数据
-  repeated int32 typeIds = 14;                      // 线路类型id：国内游，东南亚，欧洲。基础数据
+  optional int32 typeId = 14;                      // 线路类型id：国内游，东南亚，欧洲。基础数据
   optional int32 followUserCount = 15;              // 线路关注的用户总数	
 
   // 路线详情

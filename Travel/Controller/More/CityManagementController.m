@@ -345,9 +345,6 @@ static CityManagementController *_instance;
     [dataTableView reloadData];
     
     [[CityDownloadService defaultService] UnzipCityDataAsynchronous:city.cityId unzipDelegate:self];
-    
-//    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据下载成功"), city.countryName, city.cityName];
-//    [self popupMessage:message title:nil];
 }
 
 - (void)didFailDownload:(City *)city error:(NSError *)error
@@ -360,7 +357,6 @@ static CityManagementController *_instance;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
     [alert release];
-//    [self popupMessage:message title:nil];
     [dataTableView reloadData];
 }
 
@@ -395,9 +391,6 @@ static CityManagementController *_instance;
     [self killTimer];
     
     [[CityDownloadService defaultService] UnzipCityDataAsynchronous:city.cityId unzipDelegate:self];
-    
-//    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据更新成功"), city.countryName, city.cityName];
-//    [self popupMessage:message title:nil];
 }
 
 - (void)didFailUpdate:(City *)city error:(NSError *)error
@@ -407,7 +400,7 @@ static CityManagementController *_instance;
     PPDebug(@"update failed, error = %@", error.description);
     NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据更新失败"), city.countryName, city.cityName];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
     [alert release];
     
@@ -426,7 +419,7 @@ static CityManagementController *_instance;
     
     NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据%@失败"), city.countryName, city.cityName, type];
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
     [alert release];
     
@@ -438,13 +431,6 @@ static CityManagementController *_instance;
 
 - (void)didFinishUnzip:(City*)city 
 {
-//    LocalCity *localCity = [[LocalCityManager defaultManager] getLocalCity:city.cityId];
-//    NSString *type = @"";
-//    (localCity.updateStatus == UPDATE_FAILED) ? (type=NSLS(@"更新")) : (type=NSLS(@"下载"));
-//    
-//    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据%@成功"), city.countryName, city.cityName,type];
-//    [self popupMessage:message title:nil];
-    
     [dataTableView reloadData];
     
     self.downloadList = [[PackageManager defaultManager] getLocalCityList];

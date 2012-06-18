@@ -10,25 +10,19 @@
 
 @protocol SelectControllerDelegate <NSObject>
 @optional
-- (void)didSelectFinish:(NSArray*)selectedList;
+- (void)didSelectFinish:(NSArray*)selectedItems;
 
 @end
 
 @interface SelectController : PPTableViewController
 
-@property (assign, nonatomic) int type;
-@property (assign, nonatomic) BOOL multiOptions;
-@property (assign, nonatomic) BOOL needConfirm;
-@property (retain, nonatomic) NSArray *placeList;
-
-@property (retain, nonatomic) NSArray *meaningfulItems;
-@property (retain, nonatomic) NSArray *allItems;
-@property (retain, nonatomic) NSMutableArray *selectedIds;
-@property (retain, nonatomic) NSMutableArray *beforeSelectedIds;
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) id<SelectControllerDelegate> delegate;
 
-+ (SelectController*)createController:(NSArray*)list selectedIds:(NSMutableArray*)selectedIds multiOptions:(BOOL)multiOptions needConfirm:(BOOL)needConfirm type:(int)type;
-- (void)setAndReload:(NSArray*)placeList;
-
+- (SelectController*)initWithTitle:(NSString *)title
+                          itemList:(NSArray *)itemList
+                   selectedItemIds:(NSMutableArray *)selectedItemIds
+                      multiOptions:(BOOL)multiOptions
+                       needConfirm:(BOOL)needConfirm
+                     needShowCount:(BOOL)needShowCount;
 @end

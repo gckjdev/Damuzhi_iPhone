@@ -15,9 +15,11 @@
 #import "AppUtils.h"
 #import "PPDebug.h"
 #import "RecommendedAppsControllerViewController.h"
+#import "MobClickUtils.h"
 
 @interface MoreController ()
 
+@property (retain, nonatomic) NSMutableDictionary *dataDictionary;
 @property (nonatomic, retain) UISwitch *showImageSwitch;
 
 @end
@@ -37,9 +39,10 @@
 
 #define CITIES              NSLS(@"已开通城市")
 #define VERSION             NSLS(@"版本更新")
-#define TITLE_ABOUT         NSLS(@"关于大拇指旅行")
+#define ABOUT               NSLS(@"关于大拇指旅行")
 #define PRAISE              NSLS(@"给我一个好评吧")
 #define SHOW_IMAGE          NSLS(@"列表中显示图片")
+
 
 - (void)viewDidLoad
 {
@@ -50,17 +53,21 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"更多");
+
+    int kShowPraise = [MobClickUtils getIntValueByKey:@"kShowPraise" defaultValue:0];
     
-    self.dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-                           CITIES, [NSNumber numberWithInt:0],
-                           TITLE_HISTORY, [NSNumber numberWithInt:1],
-                           TITLE_FEEDBACK, [NSNumber numberWithInt:2],
-                           VERSION, [NSNumber numberWithInt:3],
-                           TITLE_ABOUT, [NSNumber numberWithInt:4],
-                           PRAISE, [NSNumber numberWithInt:5],
-                           SHOW_IMAGE, [NSNumber numberWithInt:6],
-                           TITLE_RECOMMENDED_APP, [NSNumber numberWithInt:7],
-                           nil];
+    int i = 0;
+    self.dataDictionary = [[[NSMutableDictionary alloc] init] autorelease];
+    [dataDictionary setObject:CITIES forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
+    if (kShowPraise == 1) {
+        [dataDictionary setObject:PRAISE forKey:[NSNumber numberWithInt:i++]];
+    }
+    [dataDictionary setObject:SHOW_IMAGE forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:RECOMMENDED_APP forKey:[NSNumber numberWithInt:i++]];
     
     [self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
     
@@ -149,7 +156,7 @@
 		return cell;
 	}
     
-    if (row == 0) {
+    if ([CITIES isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(114, 2, 122, MORE_TABLE_CELL_HEIGHT-4)];
         cityLabel.text = [[AppManager defaultManager] getCurrentCityName];
         cityLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -158,9 +165,10 @@
         [cell.contentView addSubview:cityLabel];
         [cityLabel release];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+
     }
     
-    if (row == 6) {
+    if ([SHOW_IMAGE isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [cell.contentView addSubview:showImageSwitch];
     }
@@ -173,9 +181,8 @@
 
 - (void)showCityManagment
 {
-    CityManagementController *controller = [[CityManagementController alloc] init];
+    CityManagementController *controller = [CityManagementController getInstance];
     [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
 }
 
 - (void)showHistory
@@ -202,7 +209,9 @@
 {
     if (version && dataVersion) {
         NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        if ([version isEqual:localVersion]) {
+        float versionFloat = [version floatValue];
+        float localVersionFloat = [localVersion floatValue];
+        if (localVersionFloat >= versionFloat) {
             [self popupHappyMessage:NSLS(@"isNewVersion") title:nil];
         }else {
             [UIUtils openApp:kAppId];
@@ -216,7 +225,7 @@
 - (void)showAbout
 {
     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
-    controller.navigationItem.title = TITLE_ABOUT;
+    controller.navigationItem.title = ABOUT;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -230,8 +239,7 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
-    if (row == 0) {
+    if ([CITIES isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:indexPath.row]]]) {
         [self showCityManagment];
     }
 }
@@ -243,22 +251,22 @@
     if ([title isEqualToString:CITIES]) {
         [self showCityManagment];
     }
-    else if ([title isEqualToString:TITLE_HISTORY]) {
+    else if ([title isEqualToString:HISTORY]) {
         [self showHistory];
     }
-    else if ([title isEqualToString:TITLE_FEEDBACK]) {
+    else if ([title isEqualToString:FEEDBACK]) {
         [self showFeekback];
     }
     else if ([title isEqualToString:VERSION]) {
         [self queryVersion];
     }
-    else if ([title isEqualToString:TITLE_ABOUT]) {
+    else if ([title isEqualToString:ABOUT]) {
         [self showAbout];
     }
     else if ([title isEqualToString:PRAISE]) {
         [UIUtils gotoReview:kAppId];
     }
-    else if ([title isEqualToString:TITLE_RECOMMENDED_APP]) {
+    else if ([title isEqualToString:RECOMMENDED_APP]) {
         [self showRecommendedApps];
     }
     else {

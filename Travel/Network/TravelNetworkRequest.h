@@ -14,19 +14,55 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
 
 @interface TravelNetworkRequest : NSObject
 
-+ (CommonNetworkOutput*)submitFeekback:(NSString*)feekback contact:(NSString*)contact;
-+ (CommonNetworkOutput*)registerUser:(int)type token:(NSString*)deviceToken;
-+ (CommonNetworkOutput*)queryList:(int)type cityId:(int)cityId lang:(int)lang;
-+ (CommonNetworkOutput*)queryList:(int)type lang:(int)lang;
-+ (CommonNetworkOutput*)queryList:(int)type lang:(int)lang os:(int)os;
-+ (CommonNetworkOutput*)queryList:(int)type placeId:(int)placeId num:(int)num lang:(int)lang;
-+ (CommonNetworkOutput*)queryList:(int)type placeId:(int)placeId distance:(double)distance lang:(int)lang;
++ (CommonNetworkOutput*)submitFeekback:(NSString*)feekback 
+                               contact:(NSString*)contact;
 
-+ (CommonNetworkOutput*)queryObject:(int)type objId:(int)objId lang:(int)lang;
++ (CommonNetworkOutput*)registerUser:(int)type 
+                               token:(NSString*)deviceToken;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                           cityId:(int)cityId 
+                             lang:(int)lang;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                             lang:(int)lang;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                             lang:(int)lang 
+                               os:(int)os;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                          placeId:(int)placeId 
+                              num:(int)num 
+                             lang:(int)lang;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                          placeId:(int)placeId
+                         distance:(double)distance
+                             lang:(int)lang;
+
++ (CommonNetworkOutput*)queryObject:(int)type 
+                              objId:(int)objId 
+                               lang:(int)lang;
+
 + (CommonNetworkOutput*)queryObject:(int)type lang:(int)lang;
-+ (CommonNetworkOutput*)addFavoriteByUserId:(NSString *)userId placeId:(NSString *)placeId longitude:(NSString *)longitude latitude:(NSString *)latitude;
-+ (CommonNetworkOutput*)deleteFavoriteByUserId:(NSString *)userId placeId:(NSString *)placeId;
++ (CommonNetworkOutput*)addFavoriteByUserId:(NSString *)userId 
+                                    placeId:(NSString *)placeId 
+                                  longitude:(NSString *)longitude 
+                                   latitude:(NSString *)latitude;
+
++ (CommonNetworkOutput*)deleteFavoriteByUserId:(NSString *)userId 
+                                       placeId:(NSString *)placeId;
 + (CommonNetworkOutput*)queryVersion;
-+ (CommonNetworkOutput*)queryPlace:(NSString*)userId placeId:(NSString*)placeId;
+
++ (CommonNetworkOutput*)queryPlace:(NSString*)userId
+                           placeId:(NSString*)placeId;
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                     departCityId:(int)departCityId 
+                destinationCityId:(int)destinationCityId
+                            start:(int)start
+                            count:(int)count
+                             lang:(int)lang;
 
 @end

@@ -11,7 +11,7 @@
 #import "PlaceService.h"
 #import "SelectController.h"
 #import "CityOverviewService.h"
-#import "SelectedItemsManager.h"
+#import "SelectedItemIdsManager.h"
 #import "PlaceListController.h"
 
 #define WIDTH_OF_FILTER_BUTTON 52
@@ -32,7 +32,7 @@
 - (int)getCategoryId;
 - (NSString*)getCategoryName;
 
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItems*)selectedItems;
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(SelectedItemIds*)selectedItemIds;
 
 @end
 
@@ -43,7 +43,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *modeButton;
 
 - (id)initWithFilterHandler:(NSObject<PlaceListFilterProtocol>*)handler;
-
 - (IBAction)clickMapButton:(id)sender;
 
 @end
