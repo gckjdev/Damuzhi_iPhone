@@ -12,9 +12,10 @@
 #import "MoreController.h"
 #import "NearbyController.h"
 #import "WBEngine.h"
+#import "UserService.h"
 
 
-@interface MainController : PPViewController<UIActionSheetDelegate>
+@interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate>
 
 - (IBAction)clickSpotButton:(id)sender;
 - (IBAction)clickHotelButton:(id)sender;

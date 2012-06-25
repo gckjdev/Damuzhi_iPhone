@@ -12,10 +12,10 @@
 #define OS_IOS 1
 
 // for test service
-//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
-#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
 
 // URL
@@ -33,16 +33,24 @@
 #define URL_TRAVEL_QUERY_VERSION    (URL_SERVICE@"iphoneVersion.txt")
 #define URL_TRAVEL_SUBMIT_FEEKBACK  (URL_SERVICE@"feedback.aspx?")
 
+#define URL_TRAVEL_MEMBER_REGISTER      (URL_SERVICE@"memberRegister.aspx?")
+#define URL_TRAVEL_MEMBER_VERIFICATION  (URL_SERVICE@"memberVerification.aspx?")
+#define URL_TRAVEL_RETRIEVE_PASSWORD  (URL_SERVICE@"retrievePassword.aspx?")
+
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
 #define FORMAT_TRAVEL_PB            2   // protocol buffer
 
 // request & reponse parameters (HTTP / JSON)
 #define PARA_TRAVEL_USER_ID         @"userId"
+#define PARA_TRAVEL_LOGIN_ID        @"loginId"
+#define PARA_TRAVEL_PASSWORD        @"password"
+#define PARA_TRAVEL_TOKEN           @"token"
 #define PARA_TRAVEL_TYPE            @"type"
 #define PARA_TRAVEL_DEVICE_TOKEN    @"deviceToken"
 #define PARA_TRAVEL_RESULT          @"result"
 #define PARA_TRAVEL_DEVICE_ID       @"deviceId"
+#define PARA_TRAVEL_MAC_ADRESS      @"macAdress"
 #define PARA_TRAVEL_ID              @"id"
 
 #define PARA_TRAVEL_CONTACT         @"contact"
@@ -66,9 +74,22 @@
 #define PARA_TRAVEL_COUNT                   @"count"
 
 
-#define PARA_TRAVEL_PLACE_FAVORITE_COUNT  @"placeFavoriteCount"
-#define PARA_TRAVEL_APP_VERSION           @"app_version"
-#define PARA_TRAVEL_APP_DATA_VERSION      @"app_data_version"
+#define PARA_TRAVEL_PLACE_FAVORITE_COUNT    @"placeFavoriteCount"
+#define PARA_TRAVEL_APP_VERSION             @"appVersion"
+#define PARA_TRAVEL_APP_DATA_VERSION        @"app_data_version"
+
+#define PARA_TRAVEL_TELEPHONE               @"telephone"
+#define PARA_TRAVEL_CODE                    @"code"
+
+#define PARA_TRAVEL_RESULT                  @"result"
+#define PARA_TRAVEL_RESULT_INFO             @"resultInfo"
+
+#define PARA_TRAVEL_ROUTE_ID                @"routeId"
+#define PARA_TRAVEL_PACKAGE_ID              @"packageId"
+#define PARA_TRAVEL_DEPART_DATE             @"departDate"
+#define PARA_TRAVEL_ADULT                   @"adult"
+#define PARA_TRAVEL_CHILDREN                @"children"
+#define PARA_TRAVEL_CONTACT_PERSION         @"contactPersion"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
@@ -106,8 +127,10 @@
 #define OBJECT_LIST_ROUTE_UNPACKAGE_TOUR            71
 #define OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR           72
 
+#define OBJECT_LIST_CITY_IMAGE                      90
 
 // For object type
+#define OBJECT_TYPE_USER_RIGISTER               1
 #define OBJECT_TYPE_CITY_BASIC                  2
 #define OBJECT_TYPE_TRAVEL_PREPARATION          3
 #define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4     

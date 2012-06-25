@@ -46,7 +46,7 @@
 							<object class="IBUILabel" id="39680355">
 								<reference key="NSNextResponder" ref="522195839"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{74, 7}, {93, 20}}</string>
+								<string key="NSFrame">{{74, 7}, {190, 20}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
 								<reference key="NSNextKeyView" ref="969795915"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -75,6 +75,7 @@
 									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
+								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
 							<object class="IBUIImageView" id="608224041">
 								<reference key="NSNextResponder" ref="522195839"/>

@@ -25,6 +25,12 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                              lang:(int)lang;
 
 + (CommonNetworkOutput*)queryList:(int)type 
+                           cityId:(int)cityId
+                            start:(int)start
+                            count:(int)count
+                             lang:(int)lang;
+
++ (CommonNetworkOutput*)queryList:(int)type 
                              lang:(int)lang;
 
 + (CommonNetworkOutput*)queryList:(int)type 
@@ -65,4 +71,32 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                             count:(int)count
                              lang:(int)lang;
 
++ (CommonNetworkOutput*)login:(NSString *)loginId password:(NSString *)password;
++ (CommonNetworkOutput*)logout:(NSString *)loginId token:(NSString *)token;
+
++ (CommonNetworkOutput*)signUp:(NSString *)loginId
+                      password:(NSString *)password;
+
++ (CommonNetworkOutput*)verificate:(NSString *)loginId telephone:(NSString *)telephone;
++ (CommonNetworkOutput*)verificate:(NSString *)loginId code:(NSString *)code;
++ (CommonNetworkOutput*)retrievePassword:(NSString *)loginId telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)placeOrderWithUserId:(NSString *)userId 
+                                     routeId:(int)routeId
+                                   packageId:(int)packageId
+                                  departDate:(int)departDate
+                                       adult:(int)adult
+                                    children:(int)children
+                               contactPerson:(NSString *)contactPersion
+                                   telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)placeOrderWithLoginId:(NSString *)loginId 
+                                        token:(NSString *)token
+                                      routeId:(int)routeId
+                                    packageId:(int)packageId
+                                   departDate:(int)departDate
+                                        adult:(int)adult
+                                     children:(int)children
+                                contactPerson:(NSString *)contactPersion
+                                    telephone:(NSString *)telephone;
 @end

@@ -48,9 +48,10 @@
     
     UIImage *image = [[ImageManager defaultManager] tableBgImageWithRowNum:rowNum rowCount:rowCount];
     [relatedPlaceButton setBackgroundImage:image forState:UIControlStateNormal];
+    [relatedPlaceButton addTarget:self action:@selector(clickPlaceTourButton:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (IBAction)clickPlaceTourButton:(id)sender {
+- (void)clickPlaceTourButton:(id)sender {
     if ([_aDelegate respondsToSelector:@selector(didSelectedRelatedPlace:)]) {
         [_aDelegate didSelectedRelatedPlace:_relatedPlace];
     }

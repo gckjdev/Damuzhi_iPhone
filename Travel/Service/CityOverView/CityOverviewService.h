@@ -11,11 +11,15 @@
 #import "PPViewController.h"
 #import "CityOverview.pb.h"
 
-
 @protocol CityOverviewServiceDelegate <NSObject>
 
 @optional
 - (void)findRequestDone:(int)result overview:(CommonOverview*)overView;
+
+- (void)findRequestDone:(int)result 
+             totalCount:(int)totalCount
+             cityImages:(NSArray *)cityImages;
+
 @end
 
 @interface CityOverviewService : CommonService
@@ -26,8 +30,12 @@
 
 + (CityOverviewService*)defaultService;
 
-- (void)findCommonOverView:(int)cityId type:(CommonOverviewType)type delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
+- (void)findCommonOverView:(int)cityId
+                      type:(CommonOverviewType)type
+                  delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
 
-
-
+- (void)findCityImages:(int)cityId 
+                 start:(int)start
+                 count:(int)count
+              delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
 @end

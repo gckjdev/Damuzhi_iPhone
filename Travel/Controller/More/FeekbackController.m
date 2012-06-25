@@ -11,6 +11,7 @@
 #import "ImageName.h"
 #import "UIImageUtil.h"
 #import "StringUtil.h"
+#import "PPNetworkRequest.h"
 
 @implementation FeekbackController
 @synthesize viewCenter = _viewCenter;
@@ -192,13 +193,13 @@
 
 #pragma mark -
 #pragma mark: implementation of user service delegate method
-- (void)submitFeekbackDidFinish:(BOOL)success
+- (void)submitFeekbackDidFinish:(int)resultCode
 {
-    if (success) {
+    if (resultCode == ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"提交成功") title:nil];
     }
     else {
-        [self popupMessage:NSLS(@"提交失败") title:nil];
+        [self popupMessage:NSLS(@"网络不稳定，提交失败") title:nil];
     }
 }
 

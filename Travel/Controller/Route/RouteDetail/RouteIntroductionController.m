@@ -12,9 +12,10 @@
 #import "ImageManager.h"
 #import "TravelNetworkConstants.h"
 #import "DailyScheduleCell.h"
-#import "RelatedPlaceCell.h"
 #import "CharacticsCell.h"
 #import "BookingCell.h"
+#import "SlideImageView.h"
+#import "ImageName.h"
 
 #define CELL_IDENTIFY_CHARACTICS @"CharacticsCell"
 
@@ -25,6 +26,18 @@
 
 #define SECTION_COUNT_PACKTOUR 4
 #define SECTION_COUNT_UNPACKTOUR (4 + [_route.packagesList count])
+
+#define SECTION_CHARACTICS 0
+#define SECTION_DAILY_SCHEDULE 1
+#define SECTION_BOOKING 2
+#define SECTION_RELATED_PLACE 3
+
+#define FONT_SECTION_TITLE [UIFont systemFontOfSize:15]
+
+#define SECTION_TITLE_CHARACTICS NSLS(@"线路特色")
+#define SECTION_TITLE_DAILY_SCHEDULE NSLS(@"行程安排")
+#define SECTION_TITLE_BOOKING NSLS(@"预订情况")
+#define SECTION_TITLE_RELATED_PLACE NSLS(@"相关景点")
 
 #define HEIGHT_DAILY_SCHEDULE_TITLE_LABEL 36
 
@@ -70,9 +83,6 @@
     if (self = [super init]) {
         self.route = route;
         self.routeType = routeType;
-        
-        //init sectionStat
-        [self initSectionStatWithSectionCount:[self sectionCountWithRouteType:_routeType]];
     }
     
     return self;
@@ -107,11 +117,18 @@
     [routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
     
     [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+    [self setAgencyInfoHolderViewAppearance];
+
     
     self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
-    [self setAgencyInfoHolderViewAppearance];
     
+    //init sectionStat
+    [self initSectionStatWithSectionCount:[self sectionCountWithRouteType:_routeType]];
     
+    SlideImageView *slideImageView = [[SlideImageView alloc] initWithFrame:imagesHolderView.bounds];
+    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    [slideImageView setImages:_route.detailImagesList];
+    [imagesHolderView addSubview:slideImageView];
 }
 
 - (void)viewDidUnload
@@ -203,6 +220,10 @@
     [superView addSubview:self.view];
 }
 
+- (void)clickBookButton
+{
+    [self popupMessage:@"待实现" title:nil];
+}
 
 // Table vew delegate.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -268,13 +289,13 @@
     UITableViewCell *cell = nil;
 
     if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        if (indexPath.section == 0) {
+        if (indexPath.section == SECTION_CHARACTICS) {
             cell = [self cellForCharacticsWithIndex:indexPath tableView:tableView];
-        }else if (indexPath.section == 1) {
+        }else if (indexPath.section == SECTION_DAILY_SCHEDULE) {
             cell = [self cellForDailyScheduleWithIndex:indexPath tableView:tableView];
-        }else if (indexPath.section == 2) {
+        }else if (indexPath.section == SECTION_BOOKING) {
             cell = [self cellForBookingWithIndex:indexPath tableView:tableView];
-        }else {
+        }else if (indexPath.section == SECTION_RELATED_PLACE) {
             cell = [self cellForRelatedPlaceWithIndex:indexPath tableView:tableView];
         }
     }
@@ -335,20 +356,21 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[BookingCell getCellIdentifier]];
     
     if (cell == nil) {
-        cell = [BookingCell createCell:self];				            
+        cell = [BookingCell createCell:self];	
         
     }
     
     BookingCell *bookingCell = (BookingCell *)cell;
+    bookingCell.bookingBgImageView.image = [[ImageManager defaultManager] bookingBgImage];
     
-    [bookingCell setCellData:NO];
+    [bookingCell setCellData:NO bookings:_route.bookingsList];
     
     return cell;
 }
 
 - (CGFloat)cellHeightForBookingWithIndex:(NSIndexPath *)indexPath
 {
-    return 600;
+    return 388;
 }
 
 - (UITableViewCell *)cellForRelatedPlaceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -363,6 +385,8 @@
     RelatedPlaceCell *relatedPlaceCell = (RelatedPlaceCell *)cell;
     
     [relatedPlaceCell setCellData:[[_route relatedplacesList] objectAtIndex:indexPath.row] rowNum:indexPath.row rowCount:[self cellCountForSection:indexPath.section]];
+    
+    relatedPlaceCell.aDelegate = self;
         
     return cell;
 }
@@ -387,22 +411,19 @@
     
     CGFloat height = 0;
     if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        if (indexPath.section == 0) {
+        if (indexPath.section == SECTION_CHARACTICS) {
             height = [self cellHeightForCharacticsWithIndex:indexPath];
-        }else if (indexPath.section == 1) {
+        }else if (indexPath.section == SECTION_DAILY_SCHEDULE) {
             height = [self cellHeightForDailyScheduleWithIndex:indexPath];
-        }else if (indexPath.section == 2) {
+        }else if (indexPath.section == SECTION_BOOKING) {
             height = [self cellHeightForBookingWithIndex:indexPath];
-        }else {
+        }else if (indexPath.section == SECTION_RELATED_PLACE) {
             height = [self cellHeightForRelatedPlaceWithIndex:indexPath];
         }
     }
         
     return height;
 }
-
-
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -416,11 +437,36 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_HEADER_VIEW);
-    
-    
-    return [self genHeaderViewWithFrame:rect Tag:section text:@"fuck"];
+    return [self headerViewForSection:section];
 }
+
+- (NSString *)titleForSection:(NSInteger)section
+{
+    NSString *title;
+    switch (section) {
+        case SECTION_CHARACTICS:
+            title = SECTION_TITLE_CHARACTICS;
+            break;
+        case SECTION_DAILY_SCHEDULE:
+            title = SECTION_TITLE_DAILY_SCHEDULE;
+            break;
+            
+        case SECTION_BOOKING:
+            title = SECTION_TITLE_BOOKING;
+            break;
+            
+        case SECTION_RELATED_PLACE:
+            title = SECTION_TITLE_RELATED_PLACE;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return title;
+}
+
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -430,18 +476,44 @@
     return view;
 }
 
-- (UIView *)genHeaderViewWithFrame:(CGRect)frame
-                               Tag:(int)tag
-                            text:(NSString *)text 
-{
-    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
-    button.tag = tag;
-    [button setTitle:text forState:UIControlStateNormal];
-    [button setBackgroundImage:[[ImageManager defaultManager] lineListBgImage] forState:UIControlStateNormal];
-    button.titleLabel.textColor = [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1];
-    [button addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
+- (UIView *)headerViewForSection:(NSInteger)section
+{    
+    UIView *headerView = [self headerView];
+    headerView.tag = section;
+    
+    UILabel *label = [self headerTitle];
+    label.text = [self titleForSection:section];
+    [headerView addSubview:label];
+    
+    return headerView;
 }
+
+- (UIView *)headerView
+{
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_HEADER_VIEW);
+    UIButton *headerView = [[[UIButton alloc] initWithFrame:rect] autorelease];
+    [headerView setBackgroundImage:[[ImageManager defaultManager] lineListBgImage] forState:UIControlStateNormal];
+    [headerView addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280, HEIGHT_HEADER_VIEW/2-22/2, 22, 22)];
+    arrowImageView.image = [[ImageManager defaultManager] arrowImage];
+    
+    [headerView addSubview:arrowImageView];
+    [arrowImageView release];
+    
+    return headerView;
+}
+
+- (UILabel *)headerTitle
+{
+    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
+    headerTitle.backgroundColor = [UIColor clearColor];
+    headerTitle.textColor = [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1];
+    headerTitle.font = FONT_SECTION_TITLE;
+    
+    return headerTitle;
+}
+
 
 - (void)clickSectionHeaderView:(id)sender
 {
@@ -451,5 +523,9 @@
     
 }
 
+- (void)didSelectedRelatedPlace:(PlaceTour *)placeTour
+{
+    [self popupMessage:@"待实现" title:nil];
+}
 
 @end

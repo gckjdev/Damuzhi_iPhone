@@ -1050,7 +1050,7 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
 
 @interface RouteFeekback ()
 @property int32_t routeId;
-@property (retain) NSString* userId;
+@property (retain) NSString* loginId;
 @property (retain) NSString* nickName;
 @property int32_t date;
 @property int32_t rank;
@@ -1066,13 +1066,13 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
   hasRouteId_ = !!value;
 }
 @synthesize routeId;
-- (BOOL) hasUserId {
-  return !!hasUserId_;
+- (BOOL) hasLoginId {
+  return !!hasLoginId_;
 }
-- (void) setHasUserId:(BOOL) value {
-  hasUserId_ = !!value;
+- (void) setHasLoginId:(BOOL) value {
+  hasLoginId_ = !!value;
 }
-@synthesize userId;
+@synthesize loginId;
 - (BOOL) hasNickName {
   return !!hasNickName_;
 }
@@ -1102,7 +1102,7 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
 }
 @synthesize content;
 - (void) dealloc {
-  self.userId = nil;
+  self.loginId = nil;
   self.nickName = nil;
   self.content = nil;
   [super dealloc];
@@ -1110,7 +1110,7 @@ static RouteFeekbackList* defaultRouteFeekbackListInstance = nil;
 - (id) init {
   if ((self = [super init])) {
     self.routeId = 0;
-    self.userId = @"";
+    self.loginId = @"";
     self.nickName = @"";
     self.date = 0;
     self.rank = 0;
@@ -1134,7 +1134,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (!self.hasRouteId) {
     return NO;
   }
-  if (!self.hasUserId) {
+  if (!self.hasLoginId) {
     return NO;
   }
   if (!self.hasNickName) {
@@ -1152,8 +1152,8 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (self.hasRouteId) {
     [output writeInt32:1 value:self.routeId];
   }
-  if (self.hasUserId) {
-    [output writeString:2 value:self.userId];
+  if (self.hasLoginId) {
+    [output writeString:2 value:self.loginId];
   }
   if (self.hasNickName) {
     [output writeString:3 value:self.nickName];
@@ -1179,8 +1179,8 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (self.hasRouteId) {
     size += computeInt32Size(1, self.routeId);
   }
-  if (self.hasUserId) {
-    size += computeStringSize(2, self.userId);
+  if (self.hasLoginId) {
+    size += computeStringSize(2, self.loginId);
   }
   if (self.hasNickName) {
     size += computeStringSize(3, self.nickName);
@@ -1272,8 +1272,8 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   if (other.hasRouteId) {
     [self setRouteId:other.routeId];
   }
-  if (other.hasUserId) {
-    [self setUserId:other.userId];
+  if (other.hasLoginId) {
+    [self setLoginId:other.loginId];
   }
   if (other.hasNickName) {
     [self setNickName:other.nickName];
@@ -1313,7 +1313,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
         break;
       }
       case 18: {
-        [self setUserId:[input readString]];
+        [self setLoginId:[input readString]];
         break;
       }
       case 26: {
@@ -1351,20 +1351,20 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   result.routeId = 0;
   return self;
 }
-- (BOOL) hasUserId {
-  return result.hasUserId;
+- (BOOL) hasLoginId {
+  return result.hasLoginId;
 }
-- (NSString*) userId {
-  return result.userId;
+- (NSString*) loginId {
+  return result.loginId;
 }
-- (RouteFeekback_Builder*) setUserId:(NSString*) value {
-  result.hasUserId = YES;
-  result.userId = value;
+- (RouteFeekback_Builder*) setLoginId:(NSString*) value {
+  result.hasLoginId = YES;
+  result.loginId = value;
   return self;
 }
-- (RouteFeekback_Builder*) clearUserId {
-  result.hasUserId = NO;
-  result.userId = @"";
+- (RouteFeekback_Builder*) clearLoginId {
+  result.hasLoginId = NO;
+  result.loginId = @"";
   return self;
 }
 - (BOOL) hasNickName {
@@ -1450,6 +1450,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
 @property (retain) TouristRouteList* routeList;
 @property (retain) RouteFeekbackList* routeFeekbackList;
 @property (retain) OrderList* orderList;
+@property (retain) CityImageList* cityImageList;
 @end
 
 @implementation TravelResponse
@@ -1566,6 +1567,13 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   hasOrderList_ = !!value;
 }
 @synthesize orderList;
+- (BOOL) hasCityImageList {
+  return !!hasCityImageList_;
+}
+- (void) setHasCityImageList:(BOOL) value {
+  hasCityImageList_ = !!value;
+}
+@synthesize cityImageList;
 - (void) dealloc {
   self.resultInfo = nil;
   self.place = nil;
@@ -1581,6 +1589,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
   self.routeList = nil;
   self.routeFeekbackList = nil;
   self.orderList = nil;
+  self.cityImageList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -1601,6 +1610,7 @@ static RouteFeekback* defaultRouteFeekbackInstance = nil;
     self.routeList = [TouristRouteList defaultInstance];
     self.routeFeekbackList = [RouteFeekbackList defaultInstance];
     self.orderList = [OrderList defaultInstance];
+    self.cityImageList = [CityImageList defaultInstance];
   }
   return self;
 }
@@ -1680,6 +1690,11 @@ static TravelResponse* defaultTravelResponseInstance = nil;
       return NO;
     }
   }
+  if (self.hasCityImageList) {
+    if (!self.cityImageList.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1730,6 +1745,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (self.hasOrderList) {
     [output writeMessage:35 value:self.orderList];
+  }
+  if (self.hasCityImageList) {
+    [output writeMessage:40 value:self.cityImageList];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1787,6 +1805,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (self.hasOrderList) {
     size += computeMessageSize(35, self.orderList);
+  }
+  if (self.hasCityImageList) {
+    size += computeMessageSize(40, self.cityImageList);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1910,6 +1931,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (other.hasOrderList) {
     [self mergeOrderList:other.orderList];
+  }
+  if (other.hasCityImageList) {
+    [self mergeCityImageList:other.cityImageList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2059,6 +2083,15 @@ static TravelResponse* defaultTravelResponseInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setOrderList:[subBuilder buildPartial]];
+        break;
+      }
+      case 322: {
+        CityImageList_Builder* subBuilder = [CityImageList builder];
+        if (self.hasCityImageList) {
+          [subBuilder mergeFrom:self.cityImageList];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setCityImageList:[subBuilder buildPartial]];
         break;
       }
     }
@@ -2500,6 +2533,36 @@ static TravelResponse* defaultTravelResponseInstance = nil;
 - (TravelResponse_Builder*) clearOrderList {
   result.hasOrderList = NO;
   result.orderList = [OrderList defaultInstance];
+  return self;
+}
+- (BOOL) hasCityImageList {
+  return result.hasCityImageList;
+}
+- (CityImageList*) cityImageList {
+  return result.cityImageList;
+}
+- (TravelResponse_Builder*) setCityImageList:(CityImageList*) value {
+  result.hasCityImageList = YES;
+  result.cityImageList = value;
+  return self;
+}
+- (TravelResponse_Builder*) setCityImageListBuilder:(CityImageList_Builder*) builderForValue {
+  return [self setCityImageList:[builderForValue build]];
+}
+- (TravelResponse_Builder*) mergeCityImageList:(CityImageList*) value {
+  if (result.hasCityImageList &&
+      result.cityImageList != [CityImageList defaultInstance]) {
+    result.cityImageList =
+      [[[CityImageList builderWithPrototype:result.cityImageList] mergeFrom:value] buildPartial];
+  } else {
+    result.cityImageList = value;
+  }
+  result.hasCityImageList = YES;
+  return self;
+}
+- (TravelResponse_Builder*) clearCityImageList {
+  result.hasCityImageList = NO;
+  result.cityImageList = [CityImageList defaultInstance];
   return self;
 }
 @end

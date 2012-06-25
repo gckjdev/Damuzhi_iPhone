@@ -1,0 +1,17 @@
+
+package damuzhi;
+
+option java_package = "com.damuzhi.travel";
+option java_outer_classname = "CityImageProtos";
+
+message CityImage {
+  required int32  cityImageId = 1;  	// 城市美图ID
+  optional string url = 2;		// 城市美图绝对URL
+  optional string introduce = 3;	// 城市美图简介
+  optional int32 priceCount = 7;	// 城市美图
+  optional string detail =10;
+}
+
+message CityImageList {
+  repeated CityImage cityImages = 1;
+}

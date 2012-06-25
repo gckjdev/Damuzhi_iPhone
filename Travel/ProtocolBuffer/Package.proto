@@ -33,7 +33,7 @@ message UserInfo {
   required string email = 11; 		// 邮箱
 
   optional string nickName = 20;	// 昵称
-  optional int32  gender = 21; 		// 性别
+  optional int32  gender = 21; 		// 性别，0为不显示，1为男，2为女，3为保密
   optional string fullName = 22;	// 姓名
   optional string address = 23;     // 住址
 }
@@ -47,7 +47,7 @@ message RouteFeekbackList
 // 用于路线反馈
 message RouteFeekback {
   required int32  routeId = 1;		// 线路编号
-  required string userId = 2;		// 用户名，即会员的登陆时的用户名。只有会员才能评价路线。
+  required string loginId = 2;		// 登陆名，即会员的登陆时的用户名。只有会员才能评价路线。
   required string nickName = 3;		// 用户昵称
   required int32 date = 4;          // 评价时间，从1970年1月1日0时0分0秒算起，经过的秒数。
   required int32 rank = 5;          // 评级
@@ -76,4 +76,6 @@ message TravelResponse{
   optional RouteFeekbackList routeFeekbackList= 30;     // 线路反馈
   
   optional OrderList orderList = 35;                    // 订单列表
+  
+  optional CityImageList cityImageList = 40;            // 城市美图列表
 }

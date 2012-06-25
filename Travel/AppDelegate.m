@@ -176,7 +176,7 @@
 - (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
 {
     if (version && dataVersion) {
-        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
         float versionFloat = [version floatValue];
         float localVersionFloat = [localVersion floatValue];
         if (localVersionFloat < versionFloat) {

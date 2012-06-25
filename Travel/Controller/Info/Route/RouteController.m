@@ -102,30 +102,13 @@
 
 - (void)findRequestDone:(int)resulteCode tipList:(NSArray*)tipList
 {
-    switch (resulteCode) {
-        case ERROR_SUCCESS:
-            self.dataList = tipList;
-            [self.dataTableView reloadData];
-            break;
-        case ERROR_NETWORK:
-            [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
-            break;
-            
-        case ERROR_CLIENT_URL_NULL:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_URL_NULL") title:nil];
-            break;
-            
-        case ERROR_CLIENT_REQUEST_NULL:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_REQUEST_NULL") title:nil];
-            break;
-            
-        case ERROR_CLIENT_PARSE_JSON:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_PARSE_JSON") title:nil];
-            break;
-            
-        default:
-            break;
+    if (resulteCode != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
+        return;
     }
+    
+    self.dataList = tipList;
+    [self.dataTableView reloadData];
 }
 
 @end

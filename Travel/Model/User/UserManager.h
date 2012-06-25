@@ -14,4 +14,32 @@
 - (NSString*)getUserId;
 - (void)saveUserId:(NSString*)userId;
 
+// 是否自动登陆，由UserService调用。
+- (BOOL)isAutoLogin;
+
+// 设置login信息，由UserService调用。
+- (void)loginWithLoginId:(NSString *)loginId
+                password:(NSString *)password
+                   token:(NSString *)token;
+
+// 设置logout信息，由UserService调用。
+- (void)logout;
+
+// 返回登陆信息。
+- (BOOL)isLogin;
+- (NSString *)loginId;
+- (NSString *)password;
+- (NSString *)token;
+
+// 设置登陆信息，用于用户登陆界面。
+- (void)setAutoLogin:(BOOL)autoLogin;
+- (void)rememberLoginId:(BOOL)remember;
+- (void)rememberPassword:(BOOL)remember;
+
+// 是否记住用户名(loginId)，调用用户登陆界面时判断，若是，则设置界面的用户名。
+- (BOOL)isRememberLoginId;
+
+// 是否记住密码(password)，调用用户登陆界面时判断，若是，则设置界面上的密码。
+- (BOOL)isRememberPassword;
+
 @end

@@ -10,7 +10,6 @@
 #import "TouristRoute.pb.h"
 
 #define WIDTH_DAILY_SCHEDULE_VIEW 308
-#define HEIGHT_TITLE 34
 
 #define HEIGHT_PLACE_TOUR_LABEL 21
 #define EDGE_TOP 1

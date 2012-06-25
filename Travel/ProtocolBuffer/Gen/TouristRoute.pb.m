@@ -1885,6 +1885,7 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
 
 @interface TravelPackage ()
 @property int32_t packageId;
+@property (retain) NSString* price;
 @property (retain) Flight* departFlight;
 @property (retain) Flight* returnFlight;
 @property (retain) NSMutableArray* mutableAccommodationsList;
@@ -1899,6 +1900,13 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
   hasPackageId_ = !!value;
 }
 @synthesize packageId;
+- (BOOL) hasPrice {
+  return !!hasPrice_;
+}
+- (void) setHasPrice:(BOOL) value {
+  hasPrice_ = !!value;
+}
+@synthesize price;
 - (BOOL) hasDepartFlight {
   return !!hasDepartFlight_;
 }
@@ -1915,6 +1923,7 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
 @synthesize returnFlight;
 @synthesize mutableAccommodationsList;
 - (void) dealloc {
+  self.price = nil;
   self.departFlight = nil;
   self.returnFlight = nil;
   self.mutableAccommodationsList = nil;
@@ -1923,6 +1932,7 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
 - (id) init {
   if ((self = [super init])) {
     self.packageId = 0;
+    self.price = @"";
     self.departFlight = [Flight defaultInstance];
     self.returnFlight = [Flight defaultInstance];
   }
@@ -1972,14 +1982,17 @@ static TravelPackage* defaultTravelPackageInstance = nil;
   if (self.hasPackageId) {
     [output writeInt32:1 value:self.packageId];
   }
+  if (self.hasPrice) {
+    [output writeString:2 value:self.price];
+  }
   if (self.hasDepartFlight) {
-    [output writeMessage:2 value:self.departFlight];
+    [output writeMessage:3 value:self.departFlight];
   }
   if (self.hasReturnFlight) {
-    [output writeMessage:3 value:self.returnFlight];
+    [output writeMessage:4 value:self.returnFlight];
   }
   for (Accommodation* element in self.accommodationsList) {
-    [output writeMessage:4 value:element];
+    [output writeMessage:5 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1993,14 +2006,17 @@ static TravelPackage* defaultTravelPackageInstance = nil;
   if (self.hasPackageId) {
     size += computeInt32Size(1, self.packageId);
   }
+  if (self.hasPrice) {
+    size += computeStringSize(2, self.price);
+  }
   if (self.hasDepartFlight) {
-    size += computeMessageSize(2, self.departFlight);
+    size += computeMessageSize(3, self.departFlight);
   }
   if (self.hasReturnFlight) {
-    size += computeMessageSize(3, self.returnFlight);
+    size += computeMessageSize(4, self.returnFlight);
   }
   for (Accommodation* element in self.accommodationsList) {
-    size += computeMessageSize(4, element);
+    size += computeMessageSize(5, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -2080,6 +2096,9 @@ static TravelPackage* defaultTravelPackageInstance = nil;
   if (other.hasPackageId) {
     [self setPackageId:other.packageId];
   }
+  if (other.hasPrice) {
+    [self setPrice:other.price];
+  }
   if (other.hasDepartFlight) {
     [self mergeDepartFlight:other.departFlight];
   }
@@ -2118,6 +2137,10 @@ static TravelPackage* defaultTravelPackageInstance = nil;
         break;
       }
       case 18: {
+        [self setPrice:[input readString]];
+        break;
+      }
+      case 26: {
         Flight_Builder* subBuilder = [Flight builder];
         if (self.hasDepartFlight) {
           [subBuilder mergeFrom:self.departFlight];
@@ -2126,7 +2149,7 @@ static TravelPackage* defaultTravelPackageInstance = nil;
         [self setDepartFlight:[subBuilder buildPartial]];
         break;
       }
-      case 26: {
+      case 34: {
         Flight_Builder* subBuilder = [Flight builder];
         if (self.hasReturnFlight) {
           [subBuilder mergeFrom:self.returnFlight];
@@ -2135,7 +2158,7 @@ static TravelPackage* defaultTravelPackageInstance = nil;
         [self setReturnFlight:[subBuilder buildPartial]];
         break;
       }
-      case 34: {
+      case 42: {
         Accommodation_Builder* subBuilder = [Accommodation builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addAccommodations:[subBuilder buildPartial]];
@@ -2158,6 +2181,22 @@ static TravelPackage* defaultTravelPackageInstance = nil;
 - (TravelPackage_Builder*) clearPackageId {
   result.hasPackageId = NO;
   result.packageId = 0;
+  return self;
+}
+- (BOOL) hasPrice {
+  return result.hasPrice;
+}
+- (NSString*) price {
+  return result.price;
+}
+- (TravelPackage_Builder*) setPrice:(NSString*) value {
+  result.hasPrice = YES;
+  result.price = value;
+  return self;
+}
+- (TravelPackage_Builder*) clearPrice {
+  result.hasPrice = NO;
+  result.price = @"";
   return self;
 }
 - (BOOL) hasDepartFlight {

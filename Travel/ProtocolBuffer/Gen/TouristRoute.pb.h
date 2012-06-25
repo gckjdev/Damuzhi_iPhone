@@ -439,17 +439,21 @@
 @interface TravelPackage : PBGeneratedMessage {
 @private
   BOOL hasPackageId_:1;
+  BOOL hasPrice_:1;
   BOOL hasDepartFlight_:1;
   BOOL hasReturnFlight_:1;
   int32_t packageId;
+  NSString* price;
   Flight* departFlight;
   Flight* returnFlight;
   NSMutableArray* mutableAccommodationsList;
 }
 - (BOOL) hasPackageId;
+- (BOOL) hasPrice;
 - (BOOL) hasDepartFlight;
 - (BOOL) hasReturnFlight;
 @property (readonly) int32_t packageId;
+@property (readonly, retain) NSString* price;
 @property (readonly, retain) Flight* departFlight;
 @property (readonly, retain) Flight* returnFlight;
 - (NSArray*) accommodationsList;
@@ -493,6 +497,11 @@
 - (int32_t) packageId;
 - (TravelPackage_Builder*) setPackageId:(int32_t) value;
 - (TravelPackage_Builder*) clearPackageId;
+
+- (BOOL) hasPrice;
+- (NSString*) price;
+- (TravelPackage_Builder*) setPrice:(NSString*) value;
+- (TravelPackage_Builder*) clearPrice;
 
 - (BOOL) hasDepartFlight;
 - (Flight*) departFlight;

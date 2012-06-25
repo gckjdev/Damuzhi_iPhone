@@ -69,7 +69,6 @@
     self.buttonsHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] lineNavBgImage]];
     
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
-
 }
 
 - (void)viewDidUnload
@@ -110,6 +109,9 @@
     }
     
     self.route = route;
+    
+    [self clickIntroductionButton:nil];
+
 }
 
 

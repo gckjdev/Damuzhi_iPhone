@@ -109,29 +109,12 @@
 
 - (void)findRequestDone:(int)result overview:(CommonOverview*)overview;
 {
-    switch (result) {
-        case ERROR_SUCCESS:
-            [self initDataSource:overview];
-            break;
-        case ERROR_NETWORK:
-            [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
-            break;
-            
-        case ERROR_CLIENT_URL_NULL:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_URL_NULL") title:nil];
-            break;
-            
-        case ERROR_CLIENT_REQUEST_NULL:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_REQUEST_NULL") title:nil];
-            break;
-            
-        case ERROR_CLIENT_PARSE_JSON:
-            [self popupMessage:NSLS(@"ERROR_CLIENT_PARSE_JSON") title:nil];
-            break;
-            
-        default:
-            break;
+    if (result != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
+        return;
     }
+    
+    [self initDataSource:overview];
 }
 
 - (void)initDataSource:(CommonOverview*)overview

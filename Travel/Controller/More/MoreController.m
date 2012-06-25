@@ -16,6 +16,8 @@
 #import "PPDebug.h"
 #import "RecommendedAppsControllerViewController.h"
 #import "MobClickUtils.h"
+#import "UserManager.h"
+#import "LoginController.h"
 
 @interface MoreController ()
 
@@ -53,7 +55,22 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"更多");
+    
 
+    
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        [self setNavigationRightButton:NSLS(@"退出登陆") 
+                             imageName:@"topmenu_btn2.png"
+                                action:@selector(clickLogout:)];
+    }else {
+
+        [self setNavigationRightButton:NSLS(@"会员登陆") 
+                             imageName:@"topmenu_btn2.png"
+                                action:@selector(clickLogin:)];
+
+    }
+    
     int kShowPraise = [MobClickUtils getIntValueByKey:@"kShowPraise" defaultValue:0];
     
     int i = 0;
@@ -208,7 +225,7 @@
 - (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
 {
     if (version && dataVersion) {
-        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
         float versionFloat = [version floatValue];
         float localVersionFloat = [localVersion floatValue];
         if (localVersionFloat >= versionFloat) {
@@ -277,6 +294,22 @@
 {
     UISwitch *currentSwitch = (UISwitch *)sender;
     [AppUtils enableImageShow:currentSwitch.on];
+}
+
+- (void)clickLogin:(id)sender
+{
+    LoginController *controller = [[[LoginController alloc] init] autorelease];
+
+    
+//    [[[UINavigationController alloc] initWithRootViewController:controller] autorelease];
+    
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)clickLogout:(id)sender
+{
+    [[UserManager defaultManager] logout];
 }
 
 @end

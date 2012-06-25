@@ -8,11 +8,10 @@
 
 #import "PPTableViewController.h"
 #import "TouristRoute.pb.h"
+#import "RelatedPlaceCell.h"
 
-@interface RouteIntroductionController : PPTableViewController
-{
-    
-}
+@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate>
+
 - (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
 
 @property (retain, nonatomic) IBOutlet UIView *titleHolerView;

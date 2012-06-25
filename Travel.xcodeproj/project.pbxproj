@@ -58,6 +58,10 @@
 		A401AE0A1552175000953743 /* table5_bg1_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A401AE071552175000953743 /* table5_bg1_top@2x.png */; };
 		A4034755150D998200D2B11E /* HotelListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A4034754150D998200D2B11E /* HotelListFilter.m */; };
 		A4034764150DA8BF00D2B11E /* PlaceMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = A4034763150DA8BF00D2B11E /* PlaceMapAnnotation.m */; };
+		A406A2B01597FD7E00CE938A /* PlaceOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = A406A2AE1597FD7E00CE938A /* PlaceOrderController.m */; };
+		A406A2B11597FD7E00CE938A /* PlaceOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A406A2AF1597FD7E00CE938A /* PlaceOrderController.xib */; };
+		A406A2B51597FFEE00CE938A /* MonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A406A2B31597FFEE00CE938A /* MonthViewController.m */; };
+		A406A2B61597FFEE00CE938A /* MonthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A406A2B41597FFEE00CE938A /* MonthViewController.xib */; };
 		A406BA51157C4A3800257DED /* RouteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A406BA50157C4A3800257DED /* RouteManager.m */; };
 		A406BA57157C4D5B00257DED /* TravelTipsService.m in Sources */ = {isa = PBXBuildFile; fileRef = A406BA56157C4D5B00257DED /* TravelTipsService.m */; };
 		A406BA5B157C4E0500257DED /* RouteService.m in Sources */ = {isa = PBXBuildFile; fileRef = A406BA5A157C4E0500257DED /* RouteService.m */; };
@@ -128,6 +132,9 @@
 		A455F8ED1585D43900CA5743 /* CommonRouteListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A455F8E01585D43900CA5743 /* CommonRouteListFilter.m */; };
 		A455F8EE1585D43900CA5743 /* PackageTourListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A455F8E21585D43900CA5743 /* PackageTourListFilter.m */; };
 		A455F8EF1585D43900CA5743 /* UnPackageTourListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A455F8E41585D43900CA5743 /* UnPackageTourListFilter.m */; };
+		A483AAEE1594717900A1F699 /* CityImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = A483AAEC1594717900A1F699 /* CityImageController.m */; };
+		A483AAEF1594717900A1F699 /* CityImageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A483AAED1594717900A1F699 /* CityImageController.xib */; };
+		A483AAF31594D39A00A1F699 /* OrderService.m in Sources */ = {isa = PBXBuildFile; fileRef = A483AAF21594D39A00A1F699 /* OrderService.m */; };
 		A485784B1516DE7B00FDFE5B /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = A48578411516DE7B00FDFE5B /* ioapi.c */; };
 		A485784C1516DE7B00FDFE5B /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = A48578431516DE7B00FDFE5B /* mztools.c */; };
 		A485784D1516DE7B00FDFE5B /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A48578451516DE7B00FDFE5B /* unzip.c */; };
@@ -276,10 +283,22 @@
 		A4BB6E50152A415D001CEA6B /* SelectedItemIds.m in Sources */ = {isa = PBXBuildFile; fileRef = A4BB6E4F152A415D001CEA6B /* SelectedItemIds.m */; };
 		A4BC1EE715871E0E009FDE5F /* DailyScheduleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4BC1EE515871E0E009FDE5F /* DailyScheduleCell.m */; };
 		A4BC1EE815871E0E009FDE5F /* DailyScheduleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4BC1EE615871E0E009FDE5F /* DailyScheduleCell.xib */; };
+		A4C11EBE1591AE42000A989B /* date_t_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C11EBD1591AE42000A989B /* date_t_bg@2x.png */; };
+		A4C11EC21591B951000A989B /* RouteFeekbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C11EC01591B950000A989B /* RouteFeekbackController.m */; };
+		A4C11EC31591B951000A989B /* RouteFeekbackController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4C11EC11591B950000A989B /* RouteFeekbackController.xib */; };
+		A4C11EF61591C54B000A989B /* RouteFeekbackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C11EF41591C54A000A989B /* RouteFeekbackCell.m */; };
+		A4C11EF71591C54B000A989B /* RouteFeekbackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4C11EF51591C54B000A989B /* RouteFeekbackCell.xib */; };
+		A4C11EFB1592C003000A989B /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C11EF91592C000000A989B /* LoginController.m */; };
+		A4C11EFC1592C003000A989B /* LoginController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4C11EFA1592C000000A989B /* LoginController.xib */; };
 		A4C6BC4C152DF83000681DD7 /* EntertainmentDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC48152DF83000681DD7 /* EntertainmentDetailViewHandler.m */; };
 		A4C6BC4D152DF83000681DD7 /* HotelDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC49152DF83000681DD7 /* HotelDetailViewHandler.m */; };
 		A4C6BC4E152DF83000681DD7 /* RestaurantDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC4A152DF83000681DD7 /* RestaurantDetailViewHandler.m */; };
 		A4C6BC4F152DF83000681DD7 /* ShoppingDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC4B152DF83000681DD7 /* ShoppingDetailViewHandler.m */; };
+		A4D9F30F1592F14700566B32 /* SignUpController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D9F30D1592F14700566B32 /* SignUpController.m */; };
+		A4D9F3101592F14700566B32 /* SignUpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4D9F30E1592F14700566B32 /* SignUpController.xib */; };
+		A4D9F3131592FB3A00566B32 /* signup_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4D9F3121592FB3A00566B32 /* signup_bg@2x.png */; };
+		A4D9F31715931E3E00566B32 /* VerificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D9F31515931E3D00566B32 /* VerificationController.m */; };
+		A4D9F31815931E3E00566B32 /* VerificationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4D9F31615931E3E00566B32 /* VerificationController.xib */; };
 		A4DC80F1150F2EF00025F032 /* SelectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DC80EF150F2EF00025F032 /* SelectController.m */; };
 		A4DC80F2150F2EF00025F032 /* SelectController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4DC80F0150F2EF00025F032 /* SelectController.xib */; };
 		A4EAFCCD150DB9BB003C35E5 /* AppService.m in Sources */ = {isa = PBXBuildFile; fileRef = A4EAFCCC150DB9BB003C35E5 /* AppService.m */; };
@@ -683,6 +702,12 @@
 		A4034754150D998200D2B11E /* HotelListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelListFilter.m; sourceTree = "<group>"; };
 		A4034762150DA8BF00D2B11E /* PlaceMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceMapAnnotation.h; sourceTree = "<group>"; };
 		A4034763150DA8BF00D2B11E /* PlaceMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceMapAnnotation.m; sourceTree = "<group>"; };
+		A406A2AD1597FD7E00CE938A /* PlaceOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceOrderController.h; sourceTree = "<group>"; };
+		A406A2AE1597FD7E00CE938A /* PlaceOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceOrderController.m; sourceTree = "<group>"; };
+		A406A2AF1597FD7E00CE938A /* PlaceOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaceOrderController.xib; sourceTree = "<group>"; };
+		A406A2B21597FFEE00CE938A /* MonthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthViewController.h; sourceTree = "<group>"; };
+		A406A2B31597FFEE00CE938A /* MonthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthViewController.m; sourceTree = "<group>"; };
+		A406A2B41597FFEE00CE938A /* MonthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MonthViewController.xib; sourceTree = "<group>"; };
 		A406BA4F157C4A3800257DED /* RouteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteManager.h; sourceTree = "<group>"; };
 		A406BA50157C4A3800257DED /* RouteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteManager.m; sourceTree = "<group>"; };
 		A406BA55157C4D5B00257DED /* TravelTipsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelTipsService.h; path = Travel/Service/TravelTips/TravelTipsService.h; sourceTree = SOURCE_ROOT; };
@@ -778,6 +803,11 @@
 		A455F8E21585D43900CA5743 /* PackageTourListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageTourListFilter.m; sourceTree = "<group>"; };
 		A455F8E31585D43900CA5743 /* UnPackageTourListFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnPackageTourListFilter.h; sourceTree = "<group>"; };
 		A455F8E41585D43900CA5743 /* UnPackageTourListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnPackageTourListFilter.m; sourceTree = "<group>"; };
+		A483AAEB1594717900A1F699 /* CityImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityImageController.h; sourceTree = "<group>"; };
+		A483AAEC1594717900A1F699 /* CityImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityImageController.m; sourceTree = "<group>"; };
+		A483AAED1594717900A1F699 /* CityImageController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CityImageController.xib; sourceTree = "<group>"; };
+		A483AAF11594D39A00A1F699 /* OrderService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderService.h; sourceTree = "<group>"; };
+		A483AAF21594D39A00A1F699 /* OrderService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderService.m; sourceTree = "<group>"; };
 		A48578401516DE7B00FDFE5B /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		A48578411516DE7B00FDFE5B /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		A48578421516DE7B00FDFE5B /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -958,10 +988,27 @@
 		A4BC1EE415871E0E009FDE5F /* DailyScheduleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DailyScheduleCell.h; sourceTree = "<group>"; };
 		A4BC1EE515871E0E009FDE5F /* DailyScheduleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DailyScheduleCell.m; sourceTree = "<group>"; };
 		A4BC1EE615871E0E009FDE5F /* DailyScheduleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DailyScheduleCell.xib; sourceTree = "<group>"; };
+		A4C11EBD1591AE42000A989B /* date_t_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "date_t_bg@2x.png"; sourceTree = "<group>"; };
+		A4C11EBF1591B94E000A989B /* RouteFeekbackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteFeekbackController.h; sourceTree = "<group>"; };
+		A4C11EC01591B950000A989B /* RouteFeekbackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteFeekbackController.m; sourceTree = "<group>"; };
+		A4C11EC11591B950000A989B /* RouteFeekbackController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteFeekbackController.xib; sourceTree = "<group>"; };
+		A4C11EF31591C54A000A989B /* RouteFeekbackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteFeekbackCell.h; sourceTree = "<group>"; };
+		A4C11EF41591C54A000A989B /* RouteFeekbackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteFeekbackCell.m; sourceTree = "<group>"; };
+		A4C11EF51591C54B000A989B /* RouteFeekbackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RouteFeekbackCell.xib; sourceTree = "<group>"; };
+		A4C11EF81592BFFF000A989B /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		A4C11EF91592C000000A989B /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		A4C11EFA1592C000000A989B /* LoginController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginController.xib; sourceTree = "<group>"; };
 		A4C6BC48152DF83000681DD7 /* EntertainmentDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntertainmentDetailViewHandler.m; sourceTree = "<group>"; };
 		A4C6BC49152DF83000681DD7 /* HotelDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelDetailViewHandler.m; sourceTree = "<group>"; };
 		A4C6BC4A152DF83000681DD7 /* RestaurantDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantDetailViewHandler.m; sourceTree = "<group>"; };
 		A4C6BC4B152DF83000681DD7 /* ShoppingDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingDetailViewHandler.m; sourceTree = "<group>"; };
+		A4D9F30C1592F14700566B32 /* SignUpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpController.h; sourceTree = "<group>"; };
+		A4D9F30D1592F14700566B32 /* SignUpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpController.m; sourceTree = "<group>"; };
+		A4D9F30E1592F14700566B32 /* SignUpController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpController.xib; sourceTree = "<group>"; };
+		A4D9F3121592FB3A00566B32 /* signup_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signup_bg@2x.png"; sourceTree = "<group>"; };
+		A4D9F31415931E3D00566B32 /* VerificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerificationController.h; sourceTree = "<group>"; };
+		A4D9F31515931E3D00566B32 /* VerificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerificationController.m; sourceTree = "<group>"; };
+		A4D9F31615931E3E00566B32 /* VerificationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerificationController.xib; sourceTree = "<group>"; };
 		A4DC80EE150F2EF00025F032 /* SelectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectController.h; sourceTree = "<group>"; };
 		A4DC80EF150F2EF00025F032 /* SelectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectController.m; sourceTree = "<group>"; };
 		A4DC80F0150F2EF00025F032 /* SelectController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectController.xib; sourceTree = "<group>"; };
@@ -1678,6 +1725,17 @@
 			path = Guide;
 			sourceTree = "<group>";
 		};
+		A406A2AC1597FD0800CE938A /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				A406A2AD1597FD7E00CE938A /* PlaceOrderController.h */,
+				A406A2AE1597FD7E00CE938A /* PlaceOrderController.m */,
+				A406A2AF1597FD7E00CE938A /* PlaceOrderController.xib */,
+			);
+			name = Order;
+			path = Controller/Order;
+			sourceTree = "<group>";
+		};
 		A406BA4E157C49F000257DED /* Route */ = {
 			isa = PBXGroup;
 			children = (
@@ -1781,6 +1839,7 @@
 		A455F85A1585A0F800CA5743 /* route_detail */ = {
 			isa = PBXGroup;
 			children = (
+				A4C11EBD1591AE42000A989B /* date_t_bg@2x.png */,
 				A4EBDB94158746CD00C1653C /* line_table_1@2x.png */,
 				A4EBDB95158746CD00C1653C /* line_table_2a@2x.png */,
 				A4EBDB96158746CD00C1653C /* line_table_2b@2x.png */,
@@ -1828,6 +1887,15 @@
 				A455F8D41585D43900CA5743 /* RouteIntroductionController.h */,
 				A455F8D51585D43900CA5743 /* RouteIntroductionController.m */,
 				A455F8D61585D43900CA5743 /* RouteIntroductionController.xib */,
+				A4C11EBF1591B94E000A989B /* RouteFeekbackController.h */,
+				A4C11EC01591B950000A989B /* RouteFeekbackController.m */,
+				A4C11EC11591B950000A989B /* RouteFeekbackController.xib */,
+				A4C11EF31591C54A000A989B /* RouteFeekbackCell.h */,
+				A4C11EF41591C54A000A989B /* RouteFeekbackCell.m */,
+				A4C11EF51591C54B000A989B /* RouteFeekbackCell.xib */,
+				A406A2B21597FFEE00CE938A /* MonthViewController.h */,
+				A406A2B31597FFEE00CE938A /* MonthViewController.m */,
+				A406A2B41597FFEE00CE938A /* MonthViewController.xib */,
 			);
 			path = RouteDetail;
 			sourceTree = "<group>";
@@ -1857,6 +1925,25 @@
 				A455F8E41585D43900CA5743 /* UnPackageTourListFilter.m */,
 			);
 			path = RouteListFilter;
+			sourceTree = "<group>";
+		};
+		A483AAEA1594716900A1F699 /* CityImage */ = {
+			isa = PBXGroup;
+			children = (
+				A483AAEB1594717900A1F699 /* CityImageController.h */,
+				A483AAEC1594717900A1F699 /* CityImageController.m */,
+				A483AAED1594717900A1F699 /* CityImageController.xib */,
+			);
+			path = CityImage;
+			sourceTree = "<group>";
+		};
+		A483AAF01594D27A00A1F699 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				A483AAF11594D39A00A1F699 /* OrderService.h */,
+				A483AAF21594D39A00A1F699 /* OrderService.m */,
+			);
+			path = Order;
 			sourceTree = "<group>";
 		};
 		A485783E1516DE7B00FDFE5B /* ssziparchive */ = {
@@ -1922,6 +2009,15 @@
 				A42D908E155538760023AF32 /* RecommendedAppCell.h */,
 				A42D908F155538780023AF32 /* RecommendedAppCell.m */,
 				A42D90901555387B0023AF32 /* RecommendedAppCell.xib */,
+				A4C11EF81592BFFF000A989B /* LoginController.h */,
+				A4C11EF91592C000000A989B /* LoginController.m */,
+				A4C11EFA1592C000000A989B /* LoginController.xib */,
+				A4D9F30C1592F14700566B32 /* SignUpController.h */,
+				A4D9F30D1592F14700566B32 /* SignUpController.m */,
+				A4D9F30E1592F14700566B32 /* SignUpController.xib */,
+				A4D9F31415931E3D00566B32 /* VerificationController.h */,
+				A4D9F31515931E3D00566B32 /* VerificationController.m */,
+				A4D9F31615931E3E00566B32 /* VerificationController.xib */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -1985,6 +2081,7 @@
 		A48E047F1534058800B2695E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				A4D9F3111592FB3A00566B32 /* login */,
 				A455F85A1585A0F800CA5743 /* route_detail */,
 				A455F82415835A5A00CA5743 /* route_list */,
 				A455F81F15835A0B00CA5743 /* travel_guide */,
@@ -2338,6 +2435,14 @@
 				A4EBDBD31589BDAC00C1653C /* BookingCell.xib */,
 			);
 			path = RouteDetailCell;
+			sourceTree = "<group>";
+		};
+		A4D9F3111592FB3A00566B32 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				A4D9F3121592FB3A00566B32 /* signup_bg@2x.png */,
+			);
+			path = login;
 			sourceTree = "<group>";
 		};
 		A4EAFCCA150DB9BB003C35E5 /* App */ = {
@@ -3428,6 +3533,7 @@
 		CA4906FE14F5F05B00228C37 /* Travel */ = {
 			isa = PBXGroup;
 			children = (
+				A406A2AC1597FD0800CE938A /* Order */,
 				A48E047A1534058800B2695E /* Resource */,
 				CA238F2514FB27B600114175 /* ProtocolBuffer */,
 				CA585F8C14F7376300471880 /* Controller */,
@@ -3475,6 +3581,7 @@
 		CA585F8D14F7376300471880 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				A483AAEA1594716900A1F699 /* CityImage */,
 				A3FE358E15358DB7002190D7 /* Guide */,
 				A48E05B215342BBE00B2695E /* Route */,
 				CA585FB414F73C1100471880 /* CityBasicController.h */,
@@ -3528,6 +3635,7 @@
 		CA585F9214F7376300471880 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				A483AAF01594D27A00A1F699 /* Order */,
 				A406BA58157C4E0500257DED /* Route */,
 				A3ED59601557737C00312715 /* Resend */,
 				A48B63341541656500733DF1 /* CityDownload */,
@@ -3928,6 +4036,16 @@
 				A4EBDBBC15887BBE00C1653C /* table5_bg1_only_one@2x.png in Resources */,
 				A4EBDBC115898D6800C1653C /* CharacticsCell.xib in Resources */,
 				A4EBDBD51589BDBB00C1653C /* BookingCell.xib in Resources */,
+				A4C11EBE1591AE42000A989B /* date_t_bg@2x.png in Resources */,
+				A4C11EC31591B951000A989B /* RouteFeekbackController.xib in Resources */,
+				A4C11EF71591C54B000A989B /* RouteFeekbackCell.xib in Resources */,
+				A4C11EFC1592C003000A989B /* LoginController.xib in Resources */,
+				A4D9F3101592F14700566B32 /* SignUpController.xib in Resources */,
+				A4D9F3131592FB3A00566B32 /* signup_bg@2x.png in Resources */,
+				A4D9F31815931E3E00566B32 /* VerificationController.xib in Resources */,
+				A483AAEF1594717900A1F699 /* CityImageController.xib in Resources */,
+				A406A2B11597FD7E00CE938A /* PlaceOrderController.xib in Resources */,
+				A406A2B61597FFEE00CE938A /* MonthViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4216,6 +4334,15 @@
 				A4EBDBB915887AE100C1653C /* RelatedPlaceCell.m in Sources */,
 				A4EBDBC015898D6800C1653C /* CharacticsCell.m in Sources */,
 				A4EBDBD41589BDBB00C1653C /* BookingCell.m in Sources */,
+				A4C11EC21591B951000A989B /* RouteFeekbackController.m in Sources */,
+				A4C11EF61591C54B000A989B /* RouteFeekbackCell.m in Sources */,
+				A4C11EFB1592C003000A989B /* LoginController.m in Sources */,
+				A4D9F30F1592F14700566B32 /* SignUpController.m in Sources */,
+				A4D9F31715931E3E00566B32 /* VerificationController.m in Sources */,
+				A483AAEE1594717900A1F699 /* CityImageController.m in Sources */,
+				A483AAF31594D39A00A1F699 /* OrderService.m in Sources */,
+				A406A2B01597FD7E00CE938A /* PlaceOrderController.m in Sources */,
+				A406A2B51597FFEE00CE938A /* MonthViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4284,8 +4411,8 @@
 					armv7,
 					armv6,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4300,8 +4427,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PROVISIONING_PROFILE = "6D09F27C-168C-49DE-A153-742E8C2F435A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D09F27C-168C-49DE-A153-742E8C2F435A";
+				PROVISIONING_PROFILE = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 			};
@@ -4315,8 +4442,8 @@
 					armv7,
 					armv6,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -4325,8 +4452,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "6D09F27C-168C-49DE-A153-742E8C2F435A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D09F27C-168C-49DE-A153-742E8C2F435A";
+				PROVISIONING_PROFILE = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 				VALIDATE_PRODUCT = YES;
@@ -4336,8 +4463,8 @@
 		CA49071314F5F05B00228C37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -4348,8 +4475,9 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6D09F27C-168C-49DE-A153-742E8C2F435A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D09F27C-168C-49DE-A153-742E8C2F435A";
+				PROVISIONING_PROFILE = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4358,8 +4486,8 @@
 		CA49071414F5F05B00228C37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -4370,8 +4498,9 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6D09F27C-168C-49DE-A153-742E8C2F435A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D09F27C-168C-49DE-A153-742E8C2F435A";
+				PROVISIONING_PROFILE = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "77E072E6-D6D3-4790-A415-98002DCA6CAB";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
 			};

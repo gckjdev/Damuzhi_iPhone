@@ -664,3 +664,539 @@ static CityOverview* defaultCityOverviewInstance = nil;
 }
 @end
 
+@interface CityImageList ()
+@property (retain) NSMutableArray* mutableCityImagesList;
+@end
+
+@implementation CityImageList
+
+@synthesize mutableCityImagesList;
+- (void) dealloc {
+  self.mutableCityImagesList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static CityImageList* defaultCityImageListInstance = nil;
++ (void) initialize {
+  if (self == [CityImageList class]) {
+    defaultCityImageListInstance = [[CityImageList alloc] init];
+  }
+}
++ (CityImageList*) defaultInstance {
+  return defaultCityImageListInstance;
+}
+- (CityImageList*) defaultInstance {
+  return defaultCityImageListInstance;
+}
+- (NSArray*) cityImagesList {
+  return mutableCityImagesList;
+}
+- (CityImage*) cityImagesAtIndex:(int32_t) index {
+  id value = [mutableCityImagesList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  for (CityImage* element in self.cityImagesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (CityImage* element in self.cityImagesList) {
+    [output writeMessage:1 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  for (CityImage* element in self.cityImagesList) {
+    size += computeMessageSize(1, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (CityImageList*) parseFromData:(NSData*) data {
+  return (CityImageList*)[[[CityImageList builder] mergeFromData:data] build];
+}
++ (CityImageList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImageList*)[[[CityImageList builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (CityImageList*) parseFromInputStream:(NSInputStream*) input {
+  return (CityImageList*)[[[CityImageList builder] mergeFromInputStream:input] build];
+}
++ (CityImageList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImageList*)[[[CityImageList builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityImageList*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (CityImageList*)[[[CityImageList builder] mergeFromCodedInputStream:input] build];
+}
++ (CityImageList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImageList*)[[[CityImageList builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityImageList_Builder*) builder {
+  return [[[CityImageList_Builder alloc] init] autorelease];
+}
++ (CityImageList_Builder*) builderWithPrototype:(CityImageList*) prototype {
+  return [[CityImageList builder] mergeFrom:prototype];
+}
+- (CityImageList_Builder*) builder {
+  return [CityImageList builder];
+}
+@end
+
+@interface CityImageList_Builder()
+@property (retain) CityImageList* result;
+@end
+
+@implementation CityImageList_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[CityImageList alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (CityImageList_Builder*) clear {
+  self.result = [[[CityImageList alloc] init] autorelease];
+  return self;
+}
+- (CityImageList_Builder*) clone {
+  return [CityImageList builderWithPrototype:result];
+}
+- (CityImageList*) defaultInstance {
+  return [CityImageList defaultInstance];
+}
+- (CityImageList*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (CityImageList*) buildPartial {
+  CityImageList* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (CityImageList_Builder*) mergeFrom:(CityImageList*) other {
+  if (other == [CityImageList defaultInstance]) {
+    return self;
+  }
+  if (other.mutableCityImagesList.count > 0) {
+    if (result.mutableCityImagesList == nil) {
+      result.mutableCityImagesList = [NSMutableArray array];
+    }
+    [result.mutableCityImagesList addObjectsFromArray:other.mutableCityImagesList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (CityImageList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (CityImageList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        CityImage_Builder* subBuilder = [CityImage builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addCityImages:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) cityImagesList {
+  if (result.mutableCityImagesList == nil) { return [NSArray array]; }
+  return result.mutableCityImagesList;
+}
+- (CityImage*) cityImagesAtIndex:(int32_t) index {
+  return [result cityImagesAtIndex:index];
+}
+- (CityImageList_Builder*) replaceCityImagesAtIndex:(int32_t) index with:(CityImage*) value {
+  [result.mutableCityImagesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (CityImageList_Builder*) addAllCityImages:(NSArray*) values {
+  if (result.mutableCityImagesList == nil) {
+    result.mutableCityImagesList = [NSMutableArray array];
+  }
+  [result.mutableCityImagesList addObjectsFromArray:values];
+  return self;
+}
+- (CityImageList_Builder*) clearCityImagesList {
+  result.mutableCityImagesList = nil;
+  return self;
+}
+- (CityImageList_Builder*) addCityImages:(CityImage*) value {
+  if (result.mutableCityImagesList == nil) {
+    result.mutableCityImagesList = [NSMutableArray array];
+  }
+  [result.mutableCityImagesList addObject:value];
+  return self;
+}
+@end
+
+@interface CityImage ()
+@property int32_t cityImageId;
+@property (retain) NSString* url;
+@property (retain) NSString* introduce;
+@property int32_t priceCount;
+@property (retain) NSString* detail;
+@end
+
+@implementation CityImage
+
+- (BOOL) hasCityImageId {
+  return !!hasCityImageId_;
+}
+- (void) setHasCityImageId:(BOOL) value {
+  hasCityImageId_ = !!value;
+}
+@synthesize cityImageId;
+- (BOOL) hasUrl {
+  return !!hasUrl_;
+}
+- (void) setHasUrl:(BOOL) value {
+  hasUrl_ = !!value;
+}
+@synthesize url;
+- (BOOL) hasIntroduce {
+  return !!hasIntroduce_;
+}
+- (void) setHasIntroduce:(BOOL) value {
+  hasIntroduce_ = !!value;
+}
+@synthesize introduce;
+- (BOOL) hasPriceCount {
+  return !!hasPriceCount_;
+}
+- (void) setHasPriceCount:(BOOL) value {
+  hasPriceCount_ = !!value;
+}
+@synthesize priceCount;
+- (BOOL) hasDetail {
+  return !!hasDetail_;
+}
+- (void) setHasDetail:(BOOL) value {
+  hasDetail_ = !!value;
+}
+@synthesize detail;
+- (void) dealloc {
+  self.url = nil;
+  self.introduce = nil;
+  self.detail = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.cityImageId = 0;
+    self.url = @"";
+    self.introduce = @"";
+    self.priceCount = 0;
+    self.detail = @"";
+  }
+  return self;
+}
+static CityImage* defaultCityImageInstance = nil;
++ (void) initialize {
+  if (self == [CityImage class]) {
+    defaultCityImageInstance = [[CityImage alloc] init];
+  }
+}
++ (CityImage*) defaultInstance {
+  return defaultCityImageInstance;
+}
+- (CityImage*) defaultInstance {
+  return defaultCityImageInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasCityImageId) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasCityImageId) {
+    [output writeInt32:1 value:self.cityImageId];
+  }
+  if (self.hasUrl) {
+    [output writeString:2 value:self.url];
+  }
+  if (self.hasIntroduce) {
+    [output writeString:3 value:self.introduce];
+  }
+  if (self.hasPriceCount) {
+    [output writeInt32:7 value:self.priceCount];
+  }
+  if (self.hasDetail) {
+    [output writeString:10 value:self.detail];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasCityImageId) {
+    size += computeInt32Size(1, self.cityImageId);
+  }
+  if (self.hasUrl) {
+    size += computeStringSize(2, self.url);
+  }
+  if (self.hasIntroduce) {
+    size += computeStringSize(3, self.introduce);
+  }
+  if (self.hasPriceCount) {
+    size += computeInt32Size(7, self.priceCount);
+  }
+  if (self.hasDetail) {
+    size += computeStringSize(10, self.detail);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (CityImage*) parseFromData:(NSData*) data {
+  return (CityImage*)[[[CityImage builder] mergeFromData:data] build];
+}
++ (CityImage*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImage*)[[[CityImage builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (CityImage*) parseFromInputStream:(NSInputStream*) input {
+  return (CityImage*)[[[CityImage builder] mergeFromInputStream:input] build];
+}
++ (CityImage*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImage*)[[[CityImage builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityImage*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (CityImage*)[[[CityImage builder] mergeFromCodedInputStream:input] build];
+}
++ (CityImage*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityImage*)[[[CityImage builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityImage_Builder*) builder {
+  return [[[CityImage_Builder alloc] init] autorelease];
+}
++ (CityImage_Builder*) builderWithPrototype:(CityImage*) prototype {
+  return [[CityImage builder] mergeFrom:prototype];
+}
+- (CityImage_Builder*) builder {
+  return [CityImage builder];
+}
+@end
+
+@interface CityImage_Builder()
+@property (retain) CityImage* result;
+@end
+
+@implementation CityImage_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[CityImage alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (CityImage_Builder*) clear {
+  self.result = [[[CityImage alloc] init] autorelease];
+  return self;
+}
+- (CityImage_Builder*) clone {
+  return [CityImage builderWithPrototype:result];
+}
+- (CityImage*) defaultInstance {
+  return [CityImage defaultInstance];
+}
+- (CityImage*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (CityImage*) buildPartial {
+  CityImage* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (CityImage_Builder*) mergeFrom:(CityImage*) other {
+  if (other == [CityImage defaultInstance]) {
+    return self;
+  }
+  if (other.hasCityImageId) {
+    [self setCityImageId:other.cityImageId];
+  }
+  if (other.hasUrl) {
+    [self setUrl:other.url];
+  }
+  if (other.hasIntroduce) {
+    [self setIntroduce:other.introduce];
+  }
+  if (other.hasPriceCount) {
+    [self setPriceCount:other.priceCount];
+  }
+  if (other.hasDetail) {
+    [self setDetail:other.detail];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (CityImage_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (CityImage_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setCityImageId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setUrl:[input readString]];
+        break;
+      }
+      case 26: {
+        [self setIntroduce:[input readString]];
+        break;
+      }
+      case 56: {
+        [self setPriceCount:[input readInt32]];
+        break;
+      }
+      case 82: {
+        [self setDetail:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasCityImageId {
+  return result.hasCityImageId;
+}
+- (int32_t) cityImageId {
+  return result.cityImageId;
+}
+- (CityImage_Builder*) setCityImageId:(int32_t) value {
+  result.hasCityImageId = YES;
+  result.cityImageId = value;
+  return self;
+}
+- (CityImage_Builder*) clearCityImageId {
+  result.hasCityImageId = NO;
+  result.cityImageId = 0;
+  return self;
+}
+- (BOOL) hasUrl {
+  return result.hasUrl;
+}
+- (NSString*) url {
+  return result.url;
+}
+- (CityImage_Builder*) setUrl:(NSString*) value {
+  result.hasUrl = YES;
+  result.url = value;
+  return self;
+}
+- (CityImage_Builder*) clearUrl {
+  result.hasUrl = NO;
+  result.url = @"";
+  return self;
+}
+- (BOOL) hasIntroduce {
+  return result.hasIntroduce;
+}
+- (NSString*) introduce {
+  return result.introduce;
+}
+- (CityImage_Builder*) setIntroduce:(NSString*) value {
+  result.hasIntroduce = YES;
+  result.introduce = value;
+  return self;
+}
+- (CityImage_Builder*) clearIntroduce {
+  result.hasIntroduce = NO;
+  result.introduce = @"";
+  return self;
+}
+- (BOOL) hasPriceCount {
+  return result.hasPriceCount;
+}
+- (int32_t) priceCount {
+  return result.priceCount;
+}
+- (CityImage_Builder*) setPriceCount:(int32_t) value {
+  result.hasPriceCount = YES;
+  result.priceCount = value;
+  return self;
+}
+- (CityImage_Builder*) clearPriceCount {
+  result.hasPriceCount = NO;
+  result.priceCount = 0;
+  return self;
+}
+- (BOOL) hasDetail {
+  return result.hasDetail;
+}
+- (NSString*) detail {
+  return result.detail;
+}
+- (CityImage_Builder*) setDetail:(NSString*) value {
+  result.hasDetail = YES;
+  result.detail = value;
+  return self;
+}
+- (CityImage_Builder*) clearDetail {
+  result.hasDetail = NO;
+  result.detail = @"";
+  return self;
+}
+@end
+

@@ -19,7 +19,8 @@
 #import "PlaceUtils.h"
 #import "RouteUtils.h"
 
-#define TEST_CITY
+//#define TEST_CITY
+
 #ifdef TEST_CITY
 #define CITY_LIST [self allCities]
 #else
@@ -116,6 +117,10 @@ static AppManager* _defaultAppManager = nil;
     NSArray *testCityList = [self.app testCitiesList];
     for (City *city in testCityList) {
         PPDebug(@"testcity = %@", city.cityName);
+    }
+    
+    for (RecommendedApp *app in self.app.recommendedAppsList) {
+        PPDebug(@"app.name = %@", app.name);
     }
     
     [[appData data] writeToFile:[AppUtils getAppFilePath] atomically:YES];

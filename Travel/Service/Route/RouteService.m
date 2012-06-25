@@ -8,6 +8,8 @@
 
 #import "RouteService.h"
 #import "TravelNetworkRequest.h"
+#import "LocaleUtils.h"
+#import "PPViewController.h"
 
 @interface RouteService ()
 
@@ -46,6 +48,8 @@ static RouteService *_defaultRouteService = nil;
                      count:(int)count
             viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
+    [viewController showActivityWithText:NSLS(@"数据加载中......")];
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CommonNetworkOutput* output = [TravelNetworkRequest queryList:routeType 
                                                          departCityId:departCityId 
@@ -53,26 +57,30 @@ static RouteService *_defaultRouteService = nil;
                                                                 start:start 
                                                                 count:count 
                                                                  lang:LanguageTypeZhHans];
-        
-        TravelResponse *travelResponse = nil;
+        int totalCount;
+        NSArray *routeList;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
-                travelResponse = [TravelResponse parseFromData:output.responseData];
+                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
             
-                int totalCount = [travelResponse totalCount];
-                NSArray *routeList = [[travelResponse routeList] routesList];
+                totalCount = [travelResponse totalCount];
+                routeList = [[travelResponse routeList] routesList];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:routeList:)]) {
-                        [viewController findRequestDone:travelResponse.resultCode 
-                                             totalCount:totalCount
-                                              routeList:routeList];
-                    }
-                });
+
             }
             @catch (NSException *exception){
             }
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewController hideActivity];   
+            
+            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:routeList:)]) {
+                [viewController findRequestDone:output.resultCode 
+                                     totalCount:totalCount
+                                      routeList:routeList];
+            }
+        });
     });    
 }
 
