@@ -404,7 +404,6 @@ static CityManagementController *_instance;
     [alert show];
     [alert release];
     
-//    [self popupMessage:message title:nil];
     [_downloadTableView reloadData];
 }
 

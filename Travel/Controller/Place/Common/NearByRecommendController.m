@@ -15,12 +15,22 @@
 #import "PPDebug.h"
 #import "MapUtils.h"
 #import "Reachability.h"
+#import "AppService.h"
+
+#define TAG_USER_LOCATE_DENY_ALERT_VIEW 111
+
+@interface NearByRecommendController ()
+
+@property (retain, nonatomic) UIButton *locateButton;
+
+@end
 
 @implementation NearByRecommendController
 
 @synthesize mapView;
 @synthesize placeList = _placeList;
 @synthesize place = _place;
+@synthesize locateButton = _locateButton;
 
 - (NearByRecommendController*)initWithPlace:(Place*)place
 {
@@ -57,6 +67,8 @@
         [AppUtils showAlertViewWhenLookingMapWithoutNetwork];
         return;
     }
+    
+    mapView.showsUserLocation = _locateButton.selected;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -74,19 +86,22 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
+    
+    
     [self.navigationItem setTitle:NSLS(@"周边推荐")];
     
     mapView.delegate = self;
     mapView.mapType = MKMapTypeStandard; 
-//    mapView.ShowsUserLocation = YES;
     
     MKCoordinateSpan span = MKCoordinateSpanMake(0.0, 0.0);
     [MapUtils setMapSpan:mapView span:span];    
+    
+    
     [MapUtils gotoLocation:mapView latitude:_place.latitude longitude:_place.longitude];
     
     self.placeList = [[[NSMutableArray alloc] init] autorelease];
     
-    [self addMyLocationBtnTo:self.view];
+    [self addMyLocationBtnTo:mapView];
     
     if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable) {
         [AppUtils showAlertViewWhenLookingMapWithoutNetwork];
@@ -121,6 +136,7 @@
     PPRelease(_placeList);
     PPRelease(_place);
     PPRelease(mapView);
+    PPRelease(_locateButton);
     
     [super dealloc];
 }
@@ -238,7 +254,7 @@
     UIButton *button = (UIButton*)sender;
     button.selected = !button.selected;
     if (button.selected) {
-        mapView.showsUserLocation = YES;       
+        mapView.showsUserLocation = YES;    
     }else {
         mapView.showsUserLocation = NO;
         [MapUtils gotoLocation:mapView latitude:_place.latitude longitude:_place.longitude];
@@ -247,19 +263,57 @@
 
 - (void)mapView:(MKMapView *)mapView1 didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    PPDebug(@"showsUserLocation = %d", mapView1.showsUserLocation);
+    
+    PPDebug(@"current location: %f, %f", userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
+    
+    
     [MapUtils gotoLocation:mapView1 latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
 }
 
+
+- (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
+{
+    [[AppService defaultService] setCurrentLocation:nil];
+    
+    if (error.domain != kCLErrorDomain) {
+        return;
+    }
+        
+    if (error.code == kCLErrorDenied) {
+        [AppUtils showAlertViewWhenUserDenyLocatedServiceWithTag:TAG_USER_LOCATE_DENY_ALERT_VIEW delegate:self];
+    }else {
+        [AppUtils showAlertViewWhenCannotLocateUserLocation];
+    }
+}
+
+#pragma mark -
+#pragma mark: implementation of alert view delegate.
+
+- (void)alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (alertView1.tag) {
+        case TAG_USER_LOCATE_DENY_ALERT_VIEW:
+            if (buttonIndex == 1) {
+                [AppUtils enableShowUserLocateDenyAlert:NO];
+            }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 - (void)addMyLocationBtnTo:(UIView*)view
 {
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-35, self.view.frame.size.height-35, 31, 31)];            
+    self.locateButton = [[[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-35, self.view.frame.size.height-35, 31, 31)] autorelease];            
     
-    [button setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"locate_back.png"] forState:UIControlStateSelected];
+    [_locateButton setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];
+    [_locateButton setImage:[UIImage imageNamed:@"locate_back.png"] forState:UIControlStateSelected];
     
-    [button addTarget:self action:@selector(clickMyLocationBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:button];
-    [button release];
+    [_locateButton addTarget:self action:@selector(clickMyLocationBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:_locateButton];
 }
 
 

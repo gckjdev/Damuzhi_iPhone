@@ -32,6 +32,11 @@
     return @"BookingCell";
 }
 
++ (CGFloat)getCellHeight
+{
+    return 390;
+}
+
 - (void)dealloc
 {
     [_monthHolderView release];

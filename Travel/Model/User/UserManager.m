@@ -7,6 +7,7 @@
 //
 
 #import "UserManager.h"
+#import "PPDebug.h"
 
 #define KEY_USER_ID   @"KEY_USER_ID"
 #define KEY_LOGIN_ID   @"KEY_LOGIN_ID"
@@ -15,19 +16,17 @@
 #define KEY_REMEMBER_LOGIN_ID   @"KEY_REMEMBER_LOGIN_ID"
 #define KEY_REMEMBER_PASSWORD   @"KEY_REMEMBER_PASSWORD"
 
-
-
-
 @interface UserManager ()
+{
+    BOOL _isLogin;
+    BOOL _isAutoLogin;
+    BOOL _isRememberLoginId;
+    BOOL _isRememberPassword;
+}
 
-@property (assign, nonatomic) BOOL isLogin;
 @property (copy, nonatomic) NSString *loginId;
 @property (copy, nonatomic) NSString *password;
 @property (copy, nonatomic) NSString *token;
-
-@property (assign, nonatomic) BOOL isAutoLogin;
-@property (assign, nonatomic) BOOL isRememberLoginId;
-@property (assign, nonatomic) BOOL isRememberPassword;
 
 @end
 
@@ -35,14 +34,9 @@
 
 static UserManager* _defaultUserManager = nil;
 
-@synthesize isLogin = _isLogin;
 @synthesize loginId = _loginId;
 @synthesize password = _password;
 @synthesize token = _token;
-
-@synthesize isAutoLogin = _isAutoLogin;
-@synthesize isRememberLoginId = _isRememberLoginId;
-@synthesize isRememberPassword = _isRememberPassword;
 
 + (id)defaultManager
 {
@@ -56,10 +50,12 @@ static UserManager* _defaultUserManager = nil;
 - (id)init
 {
     if (self = [super init]) {
-        self.isAutoLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_AUTO_LOGIN] boolValue];
-        self.isRememberLoginId = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_REMEMBER_LOGIN_ID] boolValue];
-        self.isRememberPassword = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_REMEMBER_PASSWORD] boolValue];
+        _isAutoLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_AUTO_LOGIN] boolValue];
+        _isRememberLoginId = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_REMEMBER_LOGIN_ID] boolValue];
+        _isRememberPassword = [[[NSUserDefaults standardUserDefaults] objectForKey:KEY_REMEMBER_PASSWORD] boolValue];
         
+        PPDebug(@"init: _isAutoLogin = %d; _isRememberLoginId = %d; _isRememberPassword = %d", _isAutoLogin, _isRememberLoginId, _isRememberPassword);
+                
         if (_isAutoLogin) {
             self.loginId = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_LOGIN_ID];
             self.password = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_PASSWORD];
@@ -94,18 +90,21 @@ static UserManager* _defaultUserManager = nil;
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:userId forKey:KEY_USER_ID];
+    [userDefaults synchronize];
 }
 
 - (void)loginWithLoginId:(NSString *)loginId
                 password:(NSString *)password
                    token:(NSString *)token
 {
-    self.isLogin = YES;
+    _isLogin = YES;
     self.loginId = loginId;
     self.password = password;
     self.token = token;
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    PPDebug(@"login: _isAutoLogin = %d; _isRememberLoginId = %d; _isRememberPassword = %d", _isAutoLogin, _isRememberLoginId, _isRememberPassword);
     
     [userDefaults setObject:[NSNumber numberWithBool:_isAutoLogin]  forKey:KEY_AUTO_LOGIN];
     [userDefaults setObject:[NSNumber numberWithBool:_isRememberLoginId]  forKey:KEY_REMEMBER_LOGIN_ID];
@@ -123,13 +122,13 @@ static UserManager* _defaultUserManager = nil;
     if (_isRememberPassword) {
         [userDefaults setObject:password forKey:KEY_PASSWORD];
     }
+    
+    [userDefaults synchronize];
 }
 
 - (void)logout
 {
-    self.isLogin = NO;
-    self.loginId = nil;
-    self.password = nil;
+    _isLogin = NO;
     self.token = nil;
 }
 
@@ -156,21 +155,24 @@ static UserManager* _defaultUserManager = nil;
 
 - (void)setAutoLogin:(BOOL)autoLogin
 {
-    self.isAutoLogin = autoLogin;
+    PPDebug(@"setAutoLogin:%d", autoLogin);
+    _isAutoLogin = autoLogin;
 }
 
 - (void)rememberLoginId:(BOOL)remember
 {
-    self.isRememberLoginId = remember;
+    _isRememberLoginId = remember;
 }
 
 - (void)rememberPassword:(BOOL)remember
 {
-    self.isRememberPassword = remember;
+    _isRememberPassword = remember;
 }
 
 - (BOOL)isAutoLogin
 {
+    PPDebug(@"getAutoLogin:%d", _isAutoLogin);
+
     return _isAutoLogin;
 }
 

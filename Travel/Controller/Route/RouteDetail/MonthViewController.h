@@ -9,7 +9,16 @@
 #import "PPViewController.h"
 #import "TKCalendarMonthView.h"
 
+@protocol MonthViewControllerDelegate <NSObject>
+
+@optional
+- (void)didSelecteDate:(NSDate *)date;
+
+@end
+
 @interface MonthViewController : PPViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource>
+
+@property (assign, nonatomic) id<MonthViewControllerDelegate> aDelegate;
 
 @property (retain, nonatomic) IBOutlet UIButton *currentMonthButton;
 @property (retain, nonatomic) IBOutlet UIButton *nextMonthButton;

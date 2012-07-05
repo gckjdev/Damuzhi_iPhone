@@ -19,7 +19,7 @@
 #import "PlaceUtils.h"
 #import "RouteUtils.h"
 
-//#define TEST_CITY
+#define TEST_CITY
 
 #ifdef TEST_CITY
 #define CITY_LIST [self allCities]
@@ -96,6 +96,22 @@ static AppManager* _defaultAppManager = nil;
             App *localApp = [App parseFromData:localAppData];
             self.app = localApp;
             PPDebug(@"loading local app data %@...... done!", [AppUtils getAppFilePath]);
+            
+//            NSArray *cityList = [localApp citiesList];
+//            for (City *city in cityList) {
+//                PPDebug(@"city = %@", city.cityName);
+//                PPDebug(@"city size = %d", city.dataSize);
+//            }
+//            
+//            NSArray *testCityList = [localApp testCitiesList];
+//            for (City *city in testCityList) {
+//                PPDebug(@"testcity = %@", city.cityName);
+//                PPDebug(@"city size = %d", city.dataSize);
+//            }
+//            
+//            for (RecommendedApp *app in localApp.recommendedAppsList) {
+//                PPDebug(@"app.name = %@", app.name);
+//            }
         }
         @catch (NSException *exception) {
             PPDebug (@"<loadAppData> Caught %@%@", [exception name], [exception reason]);
@@ -109,21 +125,23 @@ static AppManager* _defaultAppManager = nil;
     
     self.app = appData;    
     
-    NSArray *cityList = [self.app citiesList];
-    for (City *city in cityList) {
-        PPDebug(@"city = %@", city.cityName);
-    }
+//    NSArray *cityList = [appData citiesList];
+//    for (City *city in cityList) {
+//        PPDebug(@"city = %@", city.cityName);
+//        PPDebug(@"city size = %d", city.dataSize);
+//    }
+//    
+//    NSArray *testCityList = [appData testCitiesList];
+//    for (City *city in testCityList) {
+//        PPDebug(@"testcity = %@", city.cityName);
+//        PPDebug(@"city size = %d", city.dataSize);
+//    }
+//    
+//    for (RecommendedApp *app in appData.recommendedAppsList) {
+//        PPDebug(@"app.name = %@", app.name);
+//    }
     
-    NSArray *testCityList = [self.app testCitiesList];
-    for (City *city in testCityList) {
-        PPDebug(@"testcity = %@", city.cityName);
-    }
-    
-    for (RecommendedApp *app in self.app.recommendedAppsList) {
-        PPDebug(@"app.name = %@", app.name);
-    }
-    
-    [[appData data] writeToFile:[AppUtils getAppFilePath] atomically:YES];
+   [[appData data] writeToFile:[AppUtils getAppFilePath] atomically:YES];
 }
 
 - (City*)getCity:(int)cityId
@@ -777,6 +795,81 @@ static AppManager* _defaultAppManager = nil;
     }
     
     return nil;
+}
+
+- (NSArray*)buildAdultItemList
+{
+    NSMutableArray *adultItems = [[[NSMutableArray alloc] init] autorelease];    
+    
+    [adultItems addObject:[Item itemWithId:1
+                                  itemName:NSLS(@"成人1位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:2
+                                  itemName:NSLS(@"成人2位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:3
+                                  itemName:NSLS(@"成人3位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:4
+                                  itemName:NSLS(@"成人4位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:5
+                                  itemName:NSLS(@"成人5位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:6
+                                  itemName:NSLS(@"成人6位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:7
+                                  itemName:NSLS(@"成人7位") 
+                                     count:0]];
+    
+    
+    return adultItems;
+}
+
+- (NSArray*)buildChildrenItemList
+{
+    NSMutableArray *childrenItems = [[[NSMutableArray alloc] init] autorelease]; 
+    
+    [childrenItems addObject:[Item itemWithId:0
+                                     itemName:NSLS(@"儿童0位") 
+                                        count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:1
+                                  itemName:NSLS(@"儿童1位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:2
+                                  itemName:NSLS(@"儿童2位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:3
+                                  itemName:NSLS(@"儿童3位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:4
+                                  itemName:NSLS(@"儿童4位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:5
+                                  itemName:NSLS(@"儿童5位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:6
+                                  itemName:NSLS(@"儿童6位") 
+                                     count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:7
+                                  itemName:NSLS(@"儿童7位") 
+                                     count:0]];
+    
+    return childrenItems;
 }
 
 

@@ -16,47 +16,55 @@
 #import "BookingCell.h"
 #import "SlideImageView.h"
 #import "ImageName.h"
+#import "RankView.h"
+#import "PPNetworkRequest.h"
+#import "UIViewUtils.h"
 
 #define CELL_IDENTIFY_CHARACTICS @"CharacticsCell"
-
-//#define SECTION_COUNT 4
 
 #define SECTION_OPEN 1
 #define SECTION_CLOSE 0
 
-#define SECTION_COUNT_PACKTOUR 4
-#define SECTION_COUNT_UNPACKTOUR (4 + [_route.packagesList count])
-
-#define SECTION_CHARACTICS 0
-#define SECTION_DAILY_SCHEDULE 1
-#define SECTION_BOOKING 2
-#define SECTION_RELATED_PLACE 3
-
-#define FONT_SECTION_TITLE [UIFont systemFontOfSize:15]
-
 #define SECTION_TITLE_CHARACTICS NSLS(@"线路特色")
 #define SECTION_TITLE_DAILY_SCHEDULE NSLS(@"行程安排")
-#define SECTION_TITLE_BOOKING NSLS(@"预订情况")
+#define SECTION_TITLE_BOOKING NSLS(@"出发日期")
 #define SECTION_TITLE_RELATED_PLACE NSLS(@"相关景点")
+#define SECTION_TITLE_REFERENCE NSLS(@"参考行程")
+
+
+#define FONT_SECTION_TITLE [UIFont boldSystemFontOfSize:14]
+#define COLOR_SECTION_TITLE [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1]
+
+#define COLOR_CONTENT [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
+
+
 
 #define HEIGHT_DAILY_SCHEDULE_TITLE_LABEL 36
 
 #define HEIGHT_HEADER_VIEW 30
 #define HEIGHT_FOOTER_VIEW 8
 
+#define HEIGHT_BOOK_BUTTON 22
+#define WIDTH_BOOK_BUTTON 70
+
 @interface RouteIntroductionController ()
 
 @property (retain, nonatomic) NSMutableArray *sectionStat;
 @property (retain, nonatomic) TouristRoute *route;
 @property (assign, nonatomic) int routeType;
+@property (retain, nonatomic) NSMutableDictionary *sectionInfo;
+
+- (RankView *)headerRankView;
 
 @end
 
 @implementation RouteIntroductionController
 
+@synthesize aDelegate = _aDelegate;
 @synthesize sectionStat = _sectionStat;
 @synthesize route = _route;
 @synthesize routeType = _routeType;
+@synthesize sectionInfo = _sectionInfo;
 
 @synthesize titleHolerView;
 @synthesize routeNameLabel;
@@ -68,7 +76,7 @@
 - (void)dealloc {
     [_sectionStat release];
     [_route release];
-    
+    [_sectionInfo release];
     [titleHolerView release];
     [imagesHolderView release];
     [agencyInfoHolderView release];
@@ -88,22 +96,16 @@
     return self;
 }
 
-- (int)sectionCountWithRouteType:(int)routeType
+- (int)sectionCount
 {
-    if (routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        return SECTION_COUNT_PACKTOUR;
-    }else if (routeType == OBJECT_LIST_ROUTE_UNPACKAGE_TOUR) {
-        return SECTION_COUNT_UNPACKTOUR;
-    }
-    
-    return 0;
+    return [self.sectionInfo count];
 }
 
-- (void)initSectionStatWithSectionCount:(int)sectionCount
+- (void)initSectionStat
 {
     self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
     
-    for (int i = 0; i < sectionCount; i++) {
+    for (int i = 0; i < [self sectionCount]; i++) {
         [_sectionStat addObject:[NSNumber numberWithBool:YES]];
     }
 }
@@ -111,24 +113,50 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    // Do any additional setup after loading the view from its nib
+    
     [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
+    
     [routeNameLabel setText:_route.name];
     [routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
     
     [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
     [self setAgencyInfoHolderViewAppearance];
-
     
     self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
-    
-    //init sectionStat
-    [self initSectionStatWithSectionCount:[self sectionCountWithRouteType:_routeType]];
     
     SlideImageView *slideImageView = [[SlideImageView alloc] initWithFrame:imagesHolderView.bounds];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
     [slideImageView setImages:_route.detailImagesList];
     [imagesHolderView addSubview:slideImageView];
+    
+    [self initSectionStat];
+}
+
+- (NSMutableDictionary *)sectionInfo
+{
+    if (_sectionInfo == nil) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        int row = 0;
+        [dic setObject:SECTION_TITLE_CHARACTICS forKey:[NSNumber numberWithInt:row++]];
+
+        if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
+            [dic setObject:SECTION_TITLE_DAILY_SCHEDULE forKey:[NSNumber numberWithInt:row++]];
+            [dic setObject:SECTION_TITLE_BOOKING forKey:[NSNumber numberWithInt:row++]];
+        }else {
+            for (TravelPackage * package in _route.packagesList) {
+                [dic setObject:package.name forKey:[NSNumber numberWithInt:row++]];
+            }
+            [dic setObject:SECTION_TITLE_BOOKING forKey:[NSNumber numberWithInt:row++]];
+//            [dic setObject:SECTION_TITLE_REFERENCE forKey:[NSNumber numberWithInt:row++]];
+        }
+        
+        [dic setObject:SECTION_TITLE_RELATED_PLACE forKey:[NSNumber numberWithInt:row++]];
+
+        return dic;
+    }
+    
+    return _sectionInfo;
 }
 
 - (void)viewDidUnload
@@ -151,6 +179,8 @@
 {
     [agencyNameLabel setText:[[AppManager defaultManager] getAgencyName:_route.agencyId]];
     
+    CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+    
     CGFloat origin_x;
     CGFloat origin_y;
 
@@ -158,9 +188,11 @@
     UILabel *priceSuffixLabel;
     UIButton *bookButton;
     
+    RankView *rankView;
+    
     switch (_routeType) {
         case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
-            origin_x = agencyNameLabel.frame.origin.x + agencyNameLabel.frame.size.width + 15;
+            origin_x = 180;
             origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
             priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x, origin_y, 40, HEIGHT_PRICE_LABEL)];
             [agencyInfoHolderView addSubview:priceLabel];
@@ -170,11 +202,31 @@
             priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(origin_x, origin_y, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
             [agencyInfoHolderView addSubview:priceSuffixLabel];
             
-            origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 20;
+            origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 10;
             origin_y = agencyNameLabel.frame.size.height/2 - 22/2; 
             bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x, origin_y, 70, 22)];
             [agencyInfoHolderView addSubview:bookButton];
             
+            break;
+        
+        case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+            rankView = [self headerRankView];
+            origin_x = agencyInfoHolderView.frame.size.width / 2 - rankView.frame.size.width;
+            if (agencyNameSize.width+10 > origin_x) {
+                origin_x = agencyNameSize.width+10;
+            }
+            rankView.frame = CGRectMake(origin_x, (agencyInfoHolderView.frame.size.height-rankView.frame.size.height)/2, rankView.frame.size.width, rankView.frame.size.height);
+            [agencyInfoHolderView addSubview:rankView];
+            
+            origin_x = 220;
+            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
+            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x, origin_y, 70, HEIGHT_PRICE_LABEL)];
+            [agencyInfoHolderView addSubview:priceLabel];
+            
+            origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
+            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_SUFFIX_LABEL/2 + 1; 
+            priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(origin_x, origin_y, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
+            [agencyInfoHolderView addSubview:priceSuffixLabel];
             break;
             
         default:
@@ -198,6 +250,7 @@
 {
     UILabel *suffixLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
     [suffixLabel setFont:[UIFont systemFontOfSize:12]];
+    suffixLabel.textColor = COLOR_CONTENT;
     [suffixLabel setText:NSLS(@"起")];
     [suffixLabel setBackgroundColor:[UIColor clearColor]];
     
@@ -209,25 +262,33 @@
     UIButton *bookButton = [[[UIButton alloc] initWithFrame:frame] autorelease];
     [bookButton setImage:[[ImageManager defaultManager] bookButtonImage] forState:UIControlStateNormal];
     
-    [bookButton addTarget:self action:@selector(clickBookButton) forControlEvents:UIControlEventTouchUpInside];
+    [bookButton addTarget:self action:@selector(clickBookButton:) forControlEvents:UIControlEventTouchUpInside];
     
     return bookButton;
 }
 
 - (void)showInView:(UIScrollView *)superView
 {
+    [superView removeAllSubviews];
+    
     superView.contentSize = self.view.bounds.size;
     [superView addSubview:self.view];
 }
 
-- (void)clickBookButton
+
+- (void)clickBookButton:(id)sender
 {
-    [self popupMessage:@"待实现" title:nil];
+    UIButton *button = (UIButton *)sender;
+    int selectPackageId = button.tag;
+    if ([_aDelegate respondsToSelector:@selector(didClickBookButton:)]) {
+        [_aDelegate didClickBookButton:selectPackageId];
+    }
 }
+
 
 // Table vew delegate.
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self sectionCountWithRouteType:_routeType];		// default implementation
+    return [self sectionCount];		// default implementation
 }
 
 - (BOOL)isSectionOpen:(NSInteger)section
@@ -243,7 +304,6 @@
 {
     if ([_sectionStat count] > section) {
         [_sectionStat removeObjectAtIndex:section];
-//        NSNumber *num = [_sectionStat objectAtIndex:section];
         NSNumber *num = [NSNumber numberWithBool:open];
         [_sectionStat insertObject:num atIndex:section];
         
@@ -257,15 +317,16 @@
         return 0;
     }
     
-    if (section == [self sectionCountWithRouteType:_routeType] - 1) {
+    NSString *title = [self titleForSection:section];
+    
+    if ([title isEqualToString:SECTION_TITLE_RELATED_PLACE]) {
         return [_route.relatedplacesList count]; 
     }
-    
-    if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR && section == 1) {
-            return [_route.dailySchedulesList count];
+    else if ([title isEqualToString:SECTION_TITLE_DAILY_SCHEDULE]) {
+        return [_route.dailySchedulesList count];
+    }else {
+        return 1;
     }
-    
-    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -275,7 +336,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int sectionCount = [self sectionCountWithRouteType:_routeType];
+    int sectionCount = [self sectionCount];
     if (indexPath.section >= sectionCount) {
         PPDebug(@"indexPath.section is out of range!");
         return nil;
@@ -288,15 +349,24 @@
     
     UITableViewCell *cell = nil;
 
-    if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        if (indexPath.section == SECTION_CHARACTICS) {
-            cell = [self cellForCharacticsWithIndex:indexPath tableView:tableView];
-        }else if (indexPath.section == SECTION_DAILY_SCHEDULE) {
-            cell = [self cellForDailyScheduleWithIndex:indexPath tableView:tableView];
-        }else if (indexPath.section == SECTION_BOOKING) {
-            cell = [self cellForBookingWithIndex:indexPath tableView:tableView];
-        }else if (indexPath.section == SECTION_RELATED_PLACE) {
-            cell = [self cellForRelatedPlaceWithIndex:indexPath tableView:tableView];
+    NSString *title = [self titleForSection:indexPath.section];
+    PPDebug(@"title: %@", title);
+
+    if ([title isEqualToString:SECTION_TITLE_CHARACTICS]) {
+        cell = [self cellForCharacticsWithIndex:indexPath tableView:tableView];
+    }else if ([title isEqualToString:SECTION_TITLE_DAILY_SCHEDULE]) {
+        cell = [self cellForDailyScheduleWithIndex:indexPath tableView:tableView];
+    }else if ([title isEqualToString:SECTION_TITLE_BOOKING]) {
+        cell = [self cellForBookingWithIndex:indexPath tableView:tableView];
+    }else if ([title isEqualToString:SECTION_TITLE_RELATED_PLACE]) {
+        cell = [self cellForRelatedPlaceWithIndex:indexPath tableView:tableView];
+//    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
+//        
+    }else{
+        for (TravelPackage *package in _route.packagesList) {
+            if ([title isEqualToString:package.name]) {
+                cell = [self cellForPackageWithIndex:indexPath tableView:tableView];
+            }
         }
     }
     
@@ -313,6 +383,7 @@
     }
     
     CharacticsCell *characticsCell = (CharacticsCell *)cell;
+    characticsCell.characticsLabel.textColor = COLOR_CONTENT;
     [characticsCell setCellData:_route.characteristic];
     
     return cell;
@@ -323,7 +394,7 @@
     CGSize withinSize = CGSizeMake(WIDTH_CHARACTICS_LABEL, MAXFLOAT);
     CGSize size = [_route.characteristic sizeWithFont:FONT_CHARACTICS_LABEL constrainedToSize:withinSize lineBreakMode:LINE_BREAK_MODE_CHARACTICS_LABEL];
     
-    return size.height;
+    return size.height + 5;
 }
 
 - (UITableViewCell *)cellForDailyScheduleWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -336,6 +407,7 @@
     }
     
     DailyScheduleCell *dailySchedulesCell = (DailyScheduleCell *)cell;
+    
     [dailySchedulesCell setCellData:[[_route dailySchedulesList] objectAtIndex:indexPath.row] rowNum:indexPath.row rowCount:[self cellCountForSection:indexPath.section]];
     
     return cell;
@@ -370,7 +442,7 @@
 
 - (CGFloat)cellHeightForBookingWithIndex:(NSIndexPath *)indexPath
 {
-    return 388;
+    return [BookingCell getCellHeight];
 }
 
 - (UITableViewCell *)cellForRelatedPlaceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -385,6 +457,7 @@
     RelatedPlaceCell *relatedPlaceCell = (RelatedPlaceCell *)cell;
     
     [relatedPlaceCell setCellData:[[_route relatedplacesList] objectAtIndex:indexPath.row] rowNum:indexPath.row rowCount:[self cellCountForSection:indexPath.section]];
+    [relatedPlaceCell.relatedPlaceButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
     
     relatedPlaceCell.aDelegate = self;
         
@@ -396,9 +469,36 @@
     return [RelatedPlaceCell getCellHeight];
 }
 
+- (UITableViewCell *)cellForPackageWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[PackageCell getCellIdentifier]];
+    
+    if (cell == nil) {
+        cell = [PackageCell createCell:self];				            
+        
+    }
+    
+    PackageCell *packageCell = (PackageCell *)cell;
+    
+    [packageCell setCellData:[_route.packagesList objectAtIndex:indexPath.row]];
+    
+    packageCell.aDelegate = self;
+    
+    return cell;
+}
+
+- (CGFloat)cellHeightForPackageWithIndex:(NSIndexPath *)indexPath
+{
+    TravelPackage *package = [[_route packagesList] objectAtIndex:indexPath.row];
+    
+    CGFloat height = 5 + 32 + (HEIGHT_ACCOMODATION_VIEW + EDGE) * [package.accommodationsList count];
+    
+    return height;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    int sectionCount = [self sectionCountWithRouteType:_routeType];
+    int sectionCount = [self sectionCount];
     if (indexPath.section >= sectionCount) {
         PPDebug(@"indexPath.section is out of range!");
         return 0;
@@ -410,17 +510,25 @@
     }
     
     CGFloat height = 0;
-    if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        if (indexPath.section == SECTION_CHARACTICS) {
-            height = [self cellHeightForCharacticsWithIndex:indexPath];
-        }else if (indexPath.section == SECTION_DAILY_SCHEDULE) {
-            height = [self cellHeightForDailyScheduleWithIndex:indexPath];
-        }else if (indexPath.section == SECTION_BOOKING) {
-            height = [self cellHeightForBookingWithIndex:indexPath];
-        }else if (indexPath.section == SECTION_RELATED_PLACE) {
-            height = [self cellHeightForRelatedPlaceWithIndex:indexPath];
-        }
+    
+    NSString *title = [self titleForSection:indexPath.section];
+    if ([title isEqualToString:SECTION_TITLE_CHARACTICS]) {
+        height = [self cellHeightForCharacticsWithIndex:indexPath];
+    }else if ([title isEqualToString:SECTION_TITLE_DAILY_SCHEDULE]) {
+        height = [self cellHeightForDailyScheduleWithIndex:indexPath];
+    }else if ([title isEqualToString:SECTION_TITLE_BOOKING]) {
+        height = [self cellHeightForBookingWithIndex:indexPath];
+    }else if ([title isEqualToString:SECTION_TITLE_RELATED_PLACE]) {
+        height = [self cellHeightForRelatedPlaceWithIndex:indexPath];
+//    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
+        
+    }else{
+        for (TravelPackage *package in _route.packagesList) {
+            if ([title isEqualToString:package.name]) {
+                height = [self cellHeightForPackageWithIndex:indexPath];
+            }
     }
+}
         
     return height;
 }
@@ -430,9 +538,15 @@
     return HEIGHT_HEADER_VIEW;
 }
 
+#define HEIGHT_FOLLOW_VIEW 53
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return HEIGHT_FOOTER_VIEW;
+//    if (section == [self sectionCount] - 1) {
+//        return HEIGHT_FOLLOW_VIEW;
+//    }
+    
+    return HEIGHT_FOOTER_VIEW * [[_sectionStat objectAtIndex:section] boolValue];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -441,43 +555,64 @@
 }
 
 - (NSString *)titleForSection:(NSInteger)section
-{
-    NSString *title;
-    switch (section) {
-        case SECTION_CHARACTICS:
-            title = SECTION_TITLE_CHARACTICS;
-            break;
-        case SECTION_DAILY_SCHEDULE:
-            title = SECTION_TITLE_DAILY_SCHEDULE;
-            break;
-            
-        case SECTION_BOOKING:
-            title = SECTION_TITLE_BOOKING;
-            break;
-            
-        case SECTION_RELATED_PLACE:
-            title = SECTION_TITLE_RELATED_PLACE;
-            break;
-            
-        default:
-            break;
-    }
-    
-    return title;
+{    
+    return [self.sectionInfo objectForKey:[NSNumber numberWithInt:section]];
 }
 
 
+#define WIDTH_FOLLOW_BUTTON 92
+#define HEIGHT_FOLLOW_BUTTOn 29
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOOTER_VIEW);
+    if (![self isSectionOpen:section]) {
+        return nil;
+    }
+    
+    CGRect rect;
     UIView *view = [[[UIView alloc] initWithFrame:rect] autorelease];
     view.backgroundColor = [UIColor clearColor];
+    
+//    PPDebug(@"section count: %d", [self sectionCount]);
+//    PPDebug(@"section = %d", section);
+//    if (section == [self sectionCount] - 1) {
+//        view.frame = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOLLOW_VIEW);
+//        UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(self.dataTableView.frame.size.width/2 - WIDTH_FOLLOW_BUTTON/2, 53/2 - HEIGHT_FOLLOW_BUTTOn/2, WIDTH_FOLLOW_BUTTON, HEIGHT_FOLLOW_BUTTOn)] autorelease];
+//        [button addTarget:self action:@selector(clickFollowRoute:) forControlEvents:UIControlEventTouchUpInside];
+//        [button setTitle:NSLS(@"关注路线") forState:UIControlStateNormal];
+//        [button setBackgroundImage:[UIImage imageNamed:@"favorites.png"] forState:UIControlStateNormal];
+//        [view addSubview:button];
+//    }
+
+    view.frame = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOOTER_VIEW);
+    
     return view;
 }
 
+- (RankView *)headerRankView
+{
+    RankView *rankView = [[[RankView alloc] initWithGoodImage:[[ImageManager defaultManager] rankGoodImage] 
+                                                    badImage:[[ImageManager defaultManager] rankBadImage]  
+                                                   imageSize:CGSizeMake(11, 16) 
+                                                       space:3 
+                                                    maxCount:3 
+                                                        rank:_route.averageRank] autorelease];
+    rankView.frame = CGRectMake(74, 7, rankView.frame.size.width, rankView.frame.size.height);
+    return rankView;
+}
+
+- (UILabel *)headerNote
+{
+    UILabel *note = [[[UILabel alloc] initWithFrame:CGRectMake(74, 1, 80, 30)] autorelease];
+    note.backgroundColor = [UIColor clearColor];
+    note.textColor = [UIColor colorWithRed:75.0/255.0 green:75.0/255.0 blue:76.0/255.0 alpha:1];
+    note.font = [UIFont systemFontOfSize:11];
+    
+    return note;
+}
+
 - (UIView *)headerViewForSection:(NSInteger)section
-{    
+{
     UIView *headerView = [self headerView];
     headerView.tag = section;
     
@@ -485,6 +620,49 @@
     label.text = [self titleForSection:section];
     [headerView addSubview:label];
     
+    //特殊处理
+    if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
+        //跟团游
+        
+        if ([label.text isEqualToString:SECTION_TITLE_CHARACTICS]) {
+            RankView * rankView = [self headerRankView];
+            [headerView addSubview:rankView];
+        }
+        
+    } else if (_routeType == OBJECT_LIST_ROUTE_UNPACKAGE_TOUR){
+        //自由行
+        
+        for (TravelPackage * package in _route.packagesList) {
+            
+            if ([label.text isEqualToString:package.name]) {
+                UILabel *priceLabel = [self genPriceLabelWithFrame:CGRectMake(150, 0, 40, 30)];
+                priceLabel.text = package.price;
+                [headerView addSubview:priceLabel];
+                
+                UILabel *priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(190, 0, 15, 30)];
+                [headerView addSubview:priceSuffixLabel];
+                
+                UIButton *bookButton = [[[UIButton alloc] init] autorelease];
+                bookButton.frame = CGRectMake(210, 0, 70, 30);
+                [bookButton setImage:[[ImageManager defaultManager] bookButtonImage] forState:UIControlStateNormal];
+                bookButton.tag = package.packageId;
+                [bookButton addTarget:self action:@selector(clickBookButton:) forControlEvents:UIControlEventTouchUpInside];
+                [headerView addSubview:bookButton];
+                
+                break;
+            }
+        }
+    }
+    
+    
+    //出发日期
+    if([label.text isEqualToString:SECTION_TITLE_BOOKING]) {
+        UILabel *noteLabel = [self headerNote];
+        noteLabel.text = [NSString  stringWithFormat:@"(%@)", _route.bookingNote];
+        noteLabel.text = [NSString  stringWithFormat:@"(%@)", @"提前10天"];
+        [headerView addSubview:noteLabel];
+    }
+        
     return headerView;
 }
 
@@ -497,7 +675,6 @@
     
     UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280, HEIGHT_HEADER_VIEW/2-22/2, 22, 22)];
     arrowImageView.image = [[ImageManager defaultManager] arrowImage];
-    
     [headerView addSubview:arrowImageView];
     [arrowImageView release];
     
@@ -510,8 +687,15 @@
     headerTitle.backgroundColor = [UIColor clearColor];
     headerTitle.textColor = [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1];
     headerTitle.font = FONT_SECTION_TITLE;
+    headerTitle.textColor = COLOR_SECTION_TITLE;
     
     return headerTitle;
+}
+
+- (NSString *)packageIdentifier:(NSString *)packageName 
+                        section:(NSInteger)section
+{
+    return [NSString stringWithFormat:@"%@%d", packageName, section];
 }
 
 
@@ -520,12 +704,34 @@
     UIButton *button = (UIButton *)sender;
     BOOL open = [self isSectionOpen:button.tag];
     [self setSection:button.tag Open:!open];
-    
 }
 
-- (void)didSelectedRelatedPlace:(PlaceTour *)placeTour
+- (void)didSelectedRelatedPlace:(int)placeId
 {
-    [self popupMessage:@"待实现" title:nil];
+    if ([_aDelegate respondsToSelector:@selector(didSelectedPlace:)]) {
+        [_aDelegate didSelectedPlace:placeId];
+    }
 }
+
+- (IBAction)clickFollowRoute:(id)sender
+{
+    [self popupMessage:@"关注路线" title:nil]; 
+}
+
+- (void)didClickFlight:(int)packageId
+{
+    if ([_aDelegate respondsToSelector:@selector(didClickFlight:)]) {
+        [_aDelegate didClickFlight:packageId];
+    }
+}
+
+- (void)didClickAccommodation:(int)hotelId
+{
+    if ([_aDelegate respondsToSelector:@selector(didSelectedPlace:)]) {
+        [_aDelegate didSelectedPlace:hotelId];
+    }
+}
+
+
 
 @end

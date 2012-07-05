@@ -30,13 +30,14 @@ message TouristRoute {
 
   // 路线详情
   optional string customerServiceTelephone = 20;	// 客服电话
-  repeated string detailImages = 21;                // 线路详情中滑动图片的绝对URL地址
-  optional string characteristic =  22;       		// 线路特色
-  repeated DailySchedule dailySchedules = 23;		// 线路行程安排，跟团游特有字段
-  repeated TravelPackage packages= 24;              // 线路套餐，自由行特有字段
-  repeated Booking bookings = 25;                   // 线路预订情况
-  optional string reference = 26;                   // 线路参考行程，返回html的绝对url
-  repeated PlaceTour relatedplaces = 27;            // 线路相关景点
+  repeated string detailImages = 25;                // 线路详情中滑动图片的绝对URL地址
+  optional string characteristic =  30;       		// 线路特色
+  repeated DailySchedule dailySchedules = 33;		// 线路行程安排，跟团游特有字段
+  repeated TravelPackage packages= 36;              // 线路套餐，自由行特有字段
+  optional string bookingNote = 40;                 // 预订备注：如“需提前10天预订”
+  repeated Booking bookings = 41;                   // 线路预订情况
+  optional string reference = 45;                   // 线路参考行程，返回html的绝对url
+  repeated PlaceTour relatedplaces = 48;            // 线路相关景点
 
   optional string fee = 50;                         // 线路费用说明，返回html的绝对url
   optional string bookingNotice = 51;               // 线路预订须知，返回html的绝对url
@@ -54,10 +55,12 @@ message DailySchedule {
 
 message TravelPackage {
   required int32 packageId = 1;                 // 套餐编号
-  optional string price = 2;                    // 套餐价格
-  optional Flight departFlight = 3;             // 出发航班
-  optional Flight returnFlight = 4;             // 回程航班
-  repeated Accommodation accommodations = 5;	// 入住
+  required string name = 2;                     // 套餐名称：如“套餐1”
+  optional string note = 3;                     // 套餐备注：如“(机票+酒店)”
+  optional string price = 5;                    // 套餐价格：如“4800元/人”
+  optional Flight departFlight = 10;            // 出发航班
+  optional Flight returnFlight = 11;            // 回程航班
+  repeated Accommodation accommodations = 15;	// 入住
 }
 
 message Booking {
@@ -78,6 +81,7 @@ message Flight {
   optional string arriveCityName = 7; 		// 到达城市id
   optional string arriveTime = 8;           // 到达时间
   optional string arriveAirport = 9;     	// 到达机场
+  optional string note = 10;                // 航班提示：如“需到北京机场经传”
 }
 
 message PlaceTour {
@@ -99,21 +103,21 @@ message OrderList {
 }
 
 message Order {
-  required int32 orderId = 1;		// 订单编号
-  required int32 date = 2;          // 下订日期，从1970年1月1日0时0分0秒算起，经过的秒数。
+  required int32 orderId = 1;           // 订单编号
+  required int32 bookDate = 2;          // 下订日期，从1970年1月1日0时0分0秒算起，经过的秒数。
 
-  required int32 routeId = 3;		// 路线编号
-  optional string routeName = 4;	// 线路名称
+  required int32 routeId = 3;           // 路线编号
+  optional string routeName = 4;        // 线路名称
 
-  optional int32 agencyId = 5;		// 旅行社id
+  optional int32 agencyId = 5;          // 旅行社id
 
   optional string departCityName = 6;	// 出发城市名称
-  optional string departDate = 7;       // 出发日期
+  optional int32 departDate = 7;          // 出发日期，从1970年1月1日0时0分0秒算起，经过的秒数。
   optional int32 adult = 8;             // 成人个数
   optional int32 children = 9 ;         // 儿童个数
 
   optional string price = 10;           // 大拇指价
-  optional int32 priceStatus = 11;      // 价格状态
-  optional int32 status = 12;           // 订单状态
+  optional string priceStatus = 11;     // 价格状态
+  optional int32 status = 12;             // 订单状态
 }
 

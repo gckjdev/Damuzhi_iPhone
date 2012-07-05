@@ -12,7 +12,7 @@
 @protocol RelatedPlaceCellDelegate <NSObject>
 
 @optional
-- (void)didSelectedRelatedPlace:(PlaceTour *)placeTour;
+- (void)didSelectedRelatedPlace:(int)placeId;
 
 @end
 

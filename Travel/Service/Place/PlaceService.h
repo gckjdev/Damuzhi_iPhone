@@ -24,6 +24,11 @@
 - (void)finishFindTopFavoritePlaces:(NSArray*)list type:(int)type result:(int)result;
 - (void)didGetPlaceData:(int)placeId count:(int)placeFavoriteCount;
 
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result 
+             resultInfo:(NSString *)resultInfo
+                  place:(Place *)place;
+
 @end
 
 @interface PlaceService : CommonService
@@ -40,8 +45,6 @@
 
 - (void)findPlacesNearby:(int)categoryId place:(Place*)place distance:(double)distance viewController:(PPViewController<PlaceServiceDelegate> *)viewController;
 
-//- (void)findPlacesNearby:(int)categoryId CLLocation:(CLLocation*)location distance:(double)distance viewController:(PPViewController<PlaceServiceDelegate> *)viewController;
-
 - (void)addPlaceIntoFavorite:(PPViewController<PlaceServiceDelegate>*)viewController
                        place:(Place*)place;
 - (void)deletePlaceFromFavorite:(PPViewController<PlaceServiceDelegate>*)viewController 
@@ -49,5 +52,7 @@
 - (void)getPlaceFavoriteCount:(PPViewController<PlaceServiceDelegate>*)viewController
                       placeId:(int)placeId;
 - (void)findTopFavoritePlaces:(PPViewController<PlaceServiceDelegate>*)viewController type:(int)type;
+
+- (void)findPlace:(int)placeId viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
 
 @end

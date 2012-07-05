@@ -145,7 +145,12 @@
     
     [_placeListController showInView:placeListHolderView];
     
+    UIButton *button = [_placeListController valueForKey:@"locateButton"];
+    [_placeListController performSelector:@selector(clickMyLocationBtn:) withObject:button];
+    
     [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+    
+    _placeListController.isNearby = YES;
     
 #ifdef TEST_FOR_SIMULATE__LOCATION
     self.testLocation = [[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease];
@@ -322,8 +327,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_1KM 
               needAnimation:YES];
         
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
         [self updateDataSorce];
+
     }   
 }
 

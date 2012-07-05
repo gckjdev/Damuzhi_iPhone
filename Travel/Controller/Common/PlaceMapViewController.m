@@ -53,6 +53,7 @@
 #import "UIImageUtil.h"
 #import "MapUtils.h"
 #import "AppUtils.h"
+#import "UIViewUtils.h"
 
 @interface PlaceMapViewController ()
 
@@ -121,7 +122,9 @@
 }
 
 - (void)showInView:(UIView*)superView 
-{    
+{   
+    [superView removeAllSubviews];
+    
     [self.view setFrame:superView.bounds];
     [superView addSubview:self.view];
 }

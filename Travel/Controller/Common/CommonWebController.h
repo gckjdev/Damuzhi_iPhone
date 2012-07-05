@@ -9,6 +9,7 @@
 #import "PPViewController.h"
 #import "CityOverviewService.h"
 
+
 @protocol CommonWebDataSourceProtocol <NSObject>
 - (NSString*)getTitleName;
 - (void)requestDataWithDelegate:(PPViewController<CityOverviewServiceDelegate>*)delegate;
@@ -24,5 +25,7 @@
 
 - (CommonWebController*)initWithWebUrl:(NSString*)htmlPath;
 - (id)initWithDataSource:(NSObject<CommonWebDataSourceProtocol>*)source;
+
+- (void)showInView:(UIView *)superView;
 
 @end

@@ -8,24 +8,21 @@
 
 #import "RelatedPlaceCell.h"
 #import "ImageManager.h"
+#import "PPDebug.h"
 
 #define CELL_HEIGHT 25
 
 @interface RelatedPlaceCell ()
-
-@property (retain, nonatomic) PlaceTour *relatedPlace;
 
 @end
 
 @implementation RelatedPlaceCell
 
 @synthesize aDelegate = _aDelegate;
-@synthesize relatedPlace = _relatedPlace;
 
 @synthesize relatedPlaceButton;
 
 - (void)dealloc {
-    [_relatedPlace release];
     
     [relatedPlaceButton release];
     
@@ -49,11 +46,18 @@
     UIImage *image = [[ImageManager defaultManager] tableBgImageWithRowNum:rowNum rowCount:rowCount];
     [relatedPlaceButton setBackgroundImage:image forState:UIControlStateNormal];
     [relatedPlaceButton addTarget:self action:@selector(clickPlaceTourButton:) forControlEvents:UIControlEventTouchUpInside];
+    relatedPlaceButton.tag = relatedPlace.placeId;
+    
+    PPDebug(@"place id: %d", relatedPlace.placeId);
+    
 }
 
 - (void)clickPlaceTourButton:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    int placeId = button.tag;
+    
     if ([_aDelegate respondsToSelector:@selector(didSelectedRelatedPlace:)]) {
-        [_aDelegate didSelectedRelatedPlace:_relatedPlace];
+        [_aDelegate didSelectedRelatedPlace:placeId];
     }
 }
 

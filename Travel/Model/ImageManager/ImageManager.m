@@ -63,14 +63,14 @@ static ImageManager *_defaultManager = nil;
     return [UIImage strectchableImageName:@"li_bg.png"];
 }
 
-- (UIImage *)routeRankGoodImage
+- (UIImage *)rankGoodImage
 {
-    return [UIImage strectchableImageName:@"line_star.png"];
+    return [UIImage strectchableImageName:@"good.png"];
 }
 
-- (UIImage *)routeRankBadImage;
+- (UIImage *)rankBadImage;
 {
-    return [UIImage strectchableImageName:@"line_star2.png"];
+    return [UIImage strectchableImageName:@"good2.png"];
 }
 
 - (UIImage *)departIcon
@@ -202,6 +202,64 @@ static ImageManager *_defaultManager = nil;
 - (UIImage *)signUpBgImage
 {
     return [UIImage strectchableImageName:@"signup_bg.png"];
+}
+
+- (UIImage *)selectDownImage
+{
+    return [UIImage strectchableImageName:@"select_down.png" leftCapWidth:10];
+}
+
+
+- (UIImage *)morePointImage
+{
+    return [UIImage imageNamed:@"more_icon.png"];
+}
+
+
+
+- (UIImage *)accessoryImage
+{
+    return [UIImage imageNamed:@"go_btn.png"];
+}
+
+
+
+- (UIImage *)orderListHeaderView:(int)rowNum rowCount:(int)rowCount
+{
+    int position = [self getPositionWithRowNum:rowNum rowCount:rowCount];
+    
+    if (position == POSITION_MIDDLE) {
+        return [UIImage strectchableImageName:@"order_list_2.png" leftCapWidth:50]; 
+    }
+    
+    if (position == POSITION_TOP || position == POSITION_ONLY_ONE) {
+        return [UIImage strectchableImageName:@"order_list_1.png" leftCapWidth:50]; 
+    }
+    
+    if (position == POSITION_BOTTOM) {
+        return [UIImage strectchableImageName:@"order_list_3.png" leftCapWidth:50]; 
+    }
+    
+    return nil;
+}
+
+- (UIImage *)orangePoint
+{
+    return [UIImage imageNamed:@"line_p2.png"];
+}
+
+- (UIImage *)routeFeekbackBgImage1
+{
+    return [UIImage strectchableImageName:@"fk_bg.png" leftCapWidth:12];
+}
+- (UIImage *)routeFeekbackBgImage2
+{
+    return [UIImage strectchableImageName:@"fk_bg2.png" leftCapWidth:(21)];
+}
+
+- (UIImage *)orderTel
+{
+    return [UIImage imageNamed:@"order_tel.png"];
 }
 
 @end

@@ -96,7 +96,7 @@
     
     self.window.rootViewController = navigationController;
     
-    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
     splashView.frame = [self.window bounds];
     splashView.tag = SPLASH_VIEW_TAG;
     [self.window.rootViewController.view addSubview:splashView];

@@ -9,10 +9,22 @@
 #import "PPTableViewController.h"
 #import "TouristRoute.pb.h"
 #import "RelatedPlaceCell.h"
+#import "PackageCell.h"
 
-@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate>
+@protocol RouteIntroductionControllerDelegate <NSObject>
+
+@optional
+- (void)didClickBookButton:(int)packageId;
+- (void)didSelectedPlace:(int)placeId;
+- (void)didClickFlight:(int)packageId;
+
+@end
+
+@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, PackageCellDelegate>
 
 - (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
+
+@property (assign, nonatomic) id<RouteIntroductionControllerDelegate> aDelegate;
 
 @property (retain, nonatomic) IBOutlet UIView *titleHolerView;
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;

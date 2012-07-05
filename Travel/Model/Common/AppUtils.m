@@ -49,6 +49,8 @@
 
 @implementation AppUtils
 
+static BOOL _showUserLocateDenyAlert = YES;
+
 + (BOOL)createAllNeededDir
 {
     BOOL success = [FileUtil createDir:[self getDownloadDir]]
@@ -303,6 +305,7 @@
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setBool:isShow forKey:KEY_IS_SHOW_IMAGE];
+    [userDefaults synchronize];
 }
 
 + (NSString*)getCategoryIcon:(int)categoryId
@@ -410,6 +413,20 @@
 
 // alert when user denies your application’s use of the location service.
 
++ (UIAlertView*)showAlertViewWhenUserDenyLocatedServiceWithTag:(int)tag delegate:(id)delegate
+{
+    if (!_showUserLocateDenyAlert) {
+        return nil;
+    }
+    
+    NSString *message = NSLS(@"您没有开启定位功能，请到手机设置里开启");
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLS(@"提示") message:message delegate:delegate cancelButtonTitle:NSLS(@"我知道了") otherButtonTitles:NSLS(@"不再提醒"),nil] autorelease];
+    alert.tag = tag;
+    [alert show];
+    
+    return alert;
+}
+
 + (UIAlertView*)showAlertViewWhenUserDenyLocatedService
 {
     NSString *message = NSLS(@"您没有开启定位功能，请到手机设置里开启");
@@ -418,5 +435,20 @@
     
     return alert;
 }
+
++ (UIAlertView*)showAlertViewWhenCannotLocateUserLocation
+{
+    NSString *message = NSLS(@"未能获取您的位置");
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLS(@"提示") message:message delegate:nil cancelButtonTitle:NSLS(@"我知道了") otherButtonTitles:nil,nil] autorelease];
+    [alert show];
+    
+    return alert;
+}
+ 
++ (void)enableShowUserLocateDenyAlert:(BOOL)isShow
+{
+    _showUserLocateDenyAlert = isShow;
+}
+
 
 @end

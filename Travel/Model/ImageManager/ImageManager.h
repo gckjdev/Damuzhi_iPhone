@@ -22,8 +22,8 @@
 
 - (UIImage *)listBgImage;
 
-- (UIImage *)routeRankGoodImage;
-- (UIImage *)routeRankBadImage;
+- (UIImage *)rankGoodImage;
+- (UIImage *)rankBadImage;
 
 - (UIImage *)departIcon;
 - (UIImage *)angencyIcon;
@@ -47,5 +47,16 @@
 - (UIImage *)bookingBgImage;
 
 - (UIImage *)signUpBgImage;
+- (UIImage *)selectDownImage;
 
+- (UIImage *)morePointImage;
+- (UIImage *)accessoryImage;
+
+- (UIImage *)orderListHeaderView:(int)rowNum rowCount:(int)rowCount;
+
+- (UIImage *)orangePoint;
+- (UIImage *)orderTel;
+
+- (UIImage *)routeFeekbackBgImage1;
+- (UIImage *)routeFeekbackBgImage2;
 @end

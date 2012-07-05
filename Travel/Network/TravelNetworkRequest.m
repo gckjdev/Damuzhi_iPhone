@@ -38,6 +38,7 @@
     [request setAllowCompressedResponse:YES];
     [request setTimeOutSeconds:NETWORK_TIMEOUT];
     
+    
 #ifdef DEBUG    
     int startTime = time(0);
     PPDebug(@"[SEND] URL=%@", [url description]);    
@@ -135,14 +136,14 @@
         //set input parameters
         NSString* str = [NSString stringWithString:baseURL];        
         NSString* deviceId = [[UIDevice currentDevice] uniqueGlobalDeviceIdentifier];
-        NSString *macAdress = [[UIDevice currentDevice] performSelector:@selector(macAdress)];
+        NSString *macAdress = [[UIDevice currentDevice] performSelector:@selector(macaddress)];
         NSString* appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_TOKEN value:deviceToken];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:deviceId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_MAC_ADRESS value:macAdress];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_APP_VERSION value:appVersion];
+        str = [str stringByAddQueryParameter:@"appVersion" value:appVersion];
 
         return str;
     };
@@ -543,13 +544,56 @@
 + (CommonNetworkOutput*)login:(NSString *)loginId
                      password:(NSString *)password
 {
-    return nil;
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LOGIN_ID value:loginId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_PASSWORD value:password];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_MEMBER_LOGIN
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+
 }
 
 + (CommonNetworkOutput*)logout:(NSString *)loginId 
                          token:(NSString *)token
 {
-    return nil;
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LOGIN_ID value:loginId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TOKEN value:token];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_MEMBER_LOGOUT
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
 }
 
 + (CommonNetworkOutput*)signUp:(NSString *)loginId
@@ -692,7 +736,7 @@
 + (CommonNetworkOutput*)placeOrderWithUserId:(NSString *)userId 
                                      routeId:(int)routeId
                                    packageId:(int)packageId
-                                  departDate:(int)departDate
+                                  departDate:(NSString *)departDate
                                        adult:(int)adult
                                     children:(int)children
                                contactPerson:(NSString *)contactPersion
@@ -708,7 +752,8 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_USER_ID value:userId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_PACKAGE_ID intValue:packageId];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE intValue:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TELEPHONE value:telephone];
@@ -720,7 +765,7 @@
         return;
     };
     
-    return [TravelNetworkRequest sendRequest:URL_TRAVEL_MEMBER_REGISTER
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_PLACE_ORDER
                          constructURLHandler:constructURLHandler                         
                              responseHandler:responseHandler         
                                 outputFormat:FORMAT_TRAVEL_JSON
@@ -732,7 +777,7 @@
                                         token:(NSString *)token
                                       routeId:(int)routeId
                                     packageId:(int)packageId
-                                   departDate:(int)departDate
+                                   departDate:(NSString *)departDate
                                         adult:(int)adult
                                      children:(int)children
                                 contactPerson:(NSString *)contactPersion
@@ -749,7 +794,8 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TOKEN value:token];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_PACKAGE_ID intValue:packageId];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE intValue:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TELEPHONE value:telephone];
@@ -761,10 +807,103 @@
         return;
     };
     
-    return [TravelNetworkRequest sendRequest:URL_TRAVEL_MEMBER_REGISTER
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_PLACE_ORDER
                          constructURLHandler:constructURLHandler                         
                              responseHandler:responseHandler         
                                 outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)queryList:(int)type
+                           userId:(NSString *)userId
+                             lang:(int)lang
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_USER_ID value:userId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_LIST
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_PB
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)queryList:(int)type
+                          loginId:(NSString *)loginId
+                            token:(NSString *)token
+                             lang:(int)lang
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LOGIN_ID value:loginId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TOKEN value:token];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_LIST
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_PB
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)queryList:(int)type
+                          routeId:(int)routeId
+                            start:(int)start
+                            count:(int)count
+                             lang:(int)lang
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_START intValue:start];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_COUNT intValue:count];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_LIST
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_PB
                                       output:output];
 }
 

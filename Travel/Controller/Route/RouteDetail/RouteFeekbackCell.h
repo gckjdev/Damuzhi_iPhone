@@ -7,11 +7,21 @@
 //
 
 #import "PPTableViewCell.h"
+#import "Package.pb.h"
 
 @interface RouteFeekbackCell : PPTableViewCell
 @property (retain, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *dateLabel;
 @property (retain, nonatomic) IBOutlet UILabel *contentLabel;
 @property (retain, nonatomic) IBOutlet UIImageView *bgImageView;
+
+- (void)setCellData:(RouteFeekback *)routeFeekback;
+
+
+@property (retain, nonatomic) IBOutlet UIImageView *displayRankImage1;
+
+@property (retain, nonatomic) IBOutlet UIImageView *displayRankImage2;
+
+@property (retain, nonatomic) IBOutlet UIImageView *displayRankImage3;
 
 @end

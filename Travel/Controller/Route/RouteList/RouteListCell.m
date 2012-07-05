@@ -52,10 +52,10 @@
     
     [nameLabel setText:route.name];
     [tourLabel setText:route.tour];
-
+    
     [self setRank:route.averageRank];
     
-    [daysLabel setText:[NSString stringWithFormat:NSLS(@"行程:%d天"), route.days]];
+    [daysLabel setText:[NSString stringWithFormat:NSLS(@"行程 : %d天"), route.days]];
     
     [priceLabel setText:route.price];
 }
@@ -89,18 +89,14 @@
 {
     int i = 0;
     
-    for ( ; i < rank; i ++) {
+    for ( ; i < 3 ; i ++) {
         int tag = TAG_BEGIN_RANK_IMAGE_VIEW + i;
-        
         UIImageView *rankImageView = (UIImageView*)[rankHolderView viewWithTag:tag];
-        [rankImageView setImage:[[ImageManager defaultManager] routeRankGoodImage]];
-    }
-    
-    for ( ; i < 5; i ++) {
-        int tag = TAG_BEGIN_RANK_IMAGE_VIEW + i;
-        
-        UIImageView *rankImageView = (UIImageView*)[rankHolderView viewWithTag:tag];
-        [rankImageView setImage:[[ImageManager defaultManager] routeRankBadImage]];
+        if (i<rank) {
+            [rankImageView setImage:[[ImageManager defaultManager] rankGoodImage]];
+        } else {
+            [rankImageView setImage:[[ImageManager defaultManager] rankBadImage]];
+        }
     }
 }
 

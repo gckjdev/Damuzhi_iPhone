@@ -1,4 +1,4 @@
-//
+
 //  MoreController.m
 //  Travel
 //
@@ -18,8 +18,15 @@
 #import "MobClickUtils.h"
 #import "UserManager.h"
 #import "LoginController.h"
+#import "OrderManagerController.h"
+#import "FavoriteController.h"
+#import "ShareToSinaController.h"
+#import "ShareToQQController.h"
+#import "PersonalInfoController.h"
 
 @interface MoreController ()
+
+@property (retain, nonatomic) UIButton *loginoutButton;
 
 @property (retain, nonatomic) NSMutableDictionary *dataDictionary;
 @property (nonatomic, retain) UISwitch *showImageSwitch;
@@ -27,17 +34,10 @@
 @end
 
 @implementation MoreController
+
+@synthesize loginoutButton = _loginoutButton;
 @synthesize dataDictionary;
 @synthesize showImageSwitch;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 #define CITIES              NSLS(@"已开通城市")
 #define VERSION             NSLS(@"版本更新")
@@ -45,6 +45,20 @@
 #define PRAISE              NSLS(@"给我一个好评吧")
 #define SHOW_IMAGE          NSLS(@"列表中显示图片")
 
+#define ORDER_NON_MEMBER    NSLS(@"非会员订单查询")
+#define USER_INFO           NSLS(@"个人资料")
+#define ORDER_MANAGER       NSLS(@"订单管理")
+#define MY_FAVORITE         NSLS(@"我的收藏")
+#define SHARE               NSLS(@"推荐给好友")
+
+
+- (void)dealloc
+{
+    [_loginoutButton release];
+    [showImageSwitch release];
+    [dataDictionary release];
+    [super dealloc];
+}
 
 - (void)viewDidLoad
 {
@@ -56,36 +70,6 @@
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"更多");
     
-
-    
-    
-    if ([[UserManager defaultManager] isLogin]) {
-        [self setNavigationRightButton:NSLS(@"退出登陆") 
-                             imageName:@"topmenu_btn2.png"
-                                action:@selector(clickLogout:)];
-    }else {
-
-        [self setNavigationRightButton:NSLS(@"会员登陆") 
-                             imageName:@"topmenu_btn2.png"
-                                action:@selector(clickLogin:)];
-
-    }
-    
-    int kShowPraise = [MobClickUtils getIntValueByKey:@"kShowPraise" defaultValue:0];
-    
-    int i = 0;
-    self.dataDictionary = [[[NSMutableDictionary alloc] init] autorelease];
-    [dataDictionary setObject:CITIES forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
-    if (kShowPraise == 1) {
-        [dataDictionary setObject:PRAISE forKey:[NSNumber numberWithInt:i++]];
-    }
-    [dataDictionary setObject:SHOW_IMAGE forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:RECOMMENDED_APP forKey:[NSNumber numberWithInt:i++]];
-    
     [self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
     
     UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(206, 8, 79, 27)];
@@ -94,6 +78,60 @@
     self.showImageSwitch = aSwitch;
     [aSwitch release];
     showImageSwitch.on = [AppUtils isShowImage];
+    
+    [self updateDataSource];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self updateDataSource];
+    [super viewDidAppear:animated];
+}
+
+- (void)updateDataSource
+{
+    
+    int kShowPraise = [MobClickUtils getIntValueByKey:@"kShowPraise" defaultValue:0];
+    int kShowRecommendApp = [MobClickUtils getIntValueByKey:@"kShowRecommendApp" defaultValue:0];
+
+    
+    int i = 0;
+    self.dataDictionary = [[[NSMutableDictionary alloc] init] autorelease];
+    [dataDictionary setObject:CITIES forKey:[NSNumber numberWithInt:i++]];
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        [self setNavigationRightButton:NSLS(@"退出登陆") 
+                             imageName:@"topmenu_btn2.png"
+                                action:@selector(clickLogout:)];
+        
+        [dataDictionary setObject:USER_INFO forKey:[NSNumber numberWithInt:i++]];
+        [dataDictionary setObject:ORDER_MANAGER forKey:[NSNumber numberWithInt:i++]];
+        
+    }else {
+        [self setNavigationRightButton:NSLS(@"会员登陆") 
+                             imageName:@"topmenu_btn2.png"
+                                action:@selector(clickLogin:)];
+        
+        [dataDictionary setObject:ORDER_NON_MEMBER forKey:[NSNumber numberWithInt:i++]];
+    }
+    
+    [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    
+    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
+    
+    [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:SHARE forKey:[NSNumber numberWithInt:i++]];
+    
+    if (kShowPraise == 1) {
+        [dataDictionary setObject:PRAISE forKey:[NSNumber numberWithInt:i++]];
+    }
+    [dataDictionary setObject:SHOW_IMAGE forKey:[NSNumber numberWithInt:i++]];
+
+    if (kShowRecommendApp == 1) {
+        [dataDictionary setObject:RECOMMENDED_APP forKey:[NSNumber numberWithInt:i++]];
+    }
 }
 
 - (void)viewDidUnload
@@ -113,12 +151,6 @@
     
 }
 
-- (void)dealloc
-{
-    [showImageSwitch release];
-    [dataDictionary release];
-    [super dealloc];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -286,7 +318,20 @@
     else if ([title isEqualToString:RECOMMENDED_APP]) {
         [self showRecommendedApps];
     }
-    else {
+    else if ([title isEqualToString:ORDER_NON_MEMBER] || [title isEqualToString:ORDER_MANAGER]) {
+        [self showOrderManager];
+    }
+    else if ([title isEqualToString:USER_INFO]) {
+        [self showUserInfo];
+    }
+    else if ([title isEqualToString:MY_FAVORITE]) {
+        [self showFavorite];
+    }
+    else if ([title isEqualToString:SHARE]) {
+        [self showShare];
+    }
+    else
+    {
     }
 }
 
@@ -299,17 +344,82 @@
 - (void)clickLogin:(id)sender
 {
     LoginController *controller = [[[LoginController alloc] init] autorelease];
-
-    
-//    [[[UINavigationController alloc] initWithRootViewController:controller] autorelease];
-    
-    
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showOrderManager
+{
+    OrderManagerController *controller  = [[OrderManagerController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)showUserInfo
+{
+    PersonalInfoController *controller = [[PersonalInfoController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)showFavorite
+{
+    FavoriteController *fc = [[FavoriteController alloc] init];
+    [self.navigationController pushViewController:fc animated:YES];
+    [fc release];
+}
+
+- (void)showShare
+{
+    UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLS(@"取消") destructiveButtonTitle:NSLS(@"通过短信") otherButtonTitles:NSLS(@"分享到新浪微博"), NSLS(@"分享到腾讯微博"), nil];
+    [shareSheet showInView:self.view];
+    [shareSheet release];
 }
 
 - (void)clickLogout:(id)sender
 {
-    [[UserManager defaultManager] logout];
+    self.loginoutButton = (UIButton *)sender;
+    _loginoutButton.enabled = NO;
+    
+    [[UserService defaultService] logout:self];
 }
+
+- (void)loginoutDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    _loginoutButton.enabled = YES;
+    
+    [self updateDataSource];
+    [dataTableView reloadData];
+}
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+        {
+            [self sendSms:nil body:[NSString stringWithFormat:NSLS(@"kShareContent"),[MobClick getConfigParams:@"download_website"]]];
+            break;
+        }
+        case 1:
+        {
+            ShareToSinaController *sc = [[ShareToSinaController alloc] init];
+            [self.navigationController pushViewController:sc animated:YES];
+            [sc release];
+            break;
+        }
+        case 2:
+        {
+            ShareToQQController *shareToQQ = [[ShareToQQController alloc] init];
+            [self.navigationController pushViewController:shareToQQ animated:YES];
+            [shareToQQ release];
+            break;
+        }
+        case 3:
+            break;
+        default:
+            break;
+    }
+}
+
 
 @end

@@ -12,6 +12,8 @@
 #import "TimeUtils.h"
 #import "TouristRoute.pb.h"
 #import "NSDate+TKCategory.h"
+#import "UIViewUtils.h"
+#import "RouteUtils.h"
 
 
 @interface MonthViewController ()
@@ -23,6 +25,7 @@
 @end
 
 @implementation MonthViewController
+@synthesize aDelegate = _aDelegate;
 @synthesize currentMonthButton = _currentMonthButton;
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
@@ -53,8 +56,12 @@
 
 - (void)viewDidLoad
 {
+    self.title = NSLS(@"出发日期");
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self setNavigationLeftButton:NSLS(@" 返回") 
+                        imageName:@"back.png" 
+                           action:@selector(clickBack:)];
     
     NSDate *now = [NSDate date];
     self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
@@ -62,7 +69,7 @@
                                                     hasMonthYearAndArrow:NO 
                                                         hasTopBackground:NO
                                                                hasShadow:NO 
-                                                   userInteractionEnable:NO] autorelease];
+                                                   userInteractionEnable:YES] autorelease];
     
     [self.currentMonthButton setTitle:dateToStringByFormat(now, @"yyyy年MM月") forState:UIControlStateNormal];
     [self.nextMonthButton  setTitle:dateToStringByFormat([now nextMonth], @"yyyy年MM月") forState:UIControlStateNormal];
@@ -147,11 +154,7 @@
     NSDate *d = startDate;
     
     while(YES){
-        //        if ([d compare:[NSDate date]] == NSOrderedAscending) {
-        //            [texts addObject:@""];
-        //        }else {
         [texts addObject:[self bookingStringWithDate:d]];
-        //        }
 		
 		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		info.day++;
@@ -164,30 +167,50 @@
 
 - (NSString*)bookingStringWithDate:(NSDate *)date
 {
-    int passDay = [date timeIntervalSince1970] / 86400;
-    for (Booking *booking in _bookings) {
-        if (passDay == booking.date / 86400) {
-            if (booking.status == 1) {
-                return @"未开售";
-            }else if (booking.status == 2) {
-                return [NSString stringWithFormat:@"%@\n%@", booking.adultPrice, booking.remainder];
-            }else if (booking.status == 3) {
-                return NSLS(@"满");
-            }
+    NSString *bookingInfo = @"";
+    
+    Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
+    if (booking != nil) {
+        if (booking.status == 1) {
+            bookingInfo = NSLS(@"未开售") ;
+        }else if (booking.status == 2) {
+            NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
+            bookingInfo = [NSString stringWithFormat:@"%@\n可报%@", booking.adultPrice, remainder];
+        }else if (booking.status == 3) {
+            bookingInfo = NSLS(@"满");
         }
     }
     
-    return @"";
+    return bookingInfo;
 }
+
+
 
 - (void)showInView:(UIView *)superView
 {
+    [superView removeAllSubviews];
+
     CGFloat scale = superView.frame.size.width / self.view.frame.size.width;
     CGAffineTransform transform =  CGAffineTransformMakeScale(scale, scale);
     _monthView.transform = transform;
     _monthView.frame = CGRectMake(0, 0, _monthView.frame.size.width, _monthView.frame.size.height);
     
     [superView addSubview:self.view];
+}
+
+- (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
+{
+    if ([_aDelegate respondsToSelector:@selector(didSelecteDate:)]) {
+        Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
+        
+        if (booking.status == 1) {
+            [self popupMessage:NSLS(@"该日期未开售") title:nil];
+        }else if (booking.status == 2) {
+            [_aDelegate didSelecteDate:date];
+        }else if (booking.status == 3) {
+            [self popupMessage:NSLS(@"该日期已满") title:nil];
+        }
+    }
 }
 
 @end

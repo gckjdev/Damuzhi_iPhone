@@ -431,4 +431,33 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
     }); 
 }
 
+- (void)findPlace:(int)placeId viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryObject:OBJECT_TYPE_PLACE objId:placeId     lang:LanguageTypeZhHans];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            Place *place;
+            int result;
+            NSString *resultInfo;
+            @try {
+                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                place = [travelResponse place];  
+                result = [travelResponse resultCode];
+                resultInfo = [travelResponse resultInfo];
+            }
+            @catch (NSException *exception) {
+                PPDebug(@"<findPlace> Caught %@%@", [exception name], [exception reason]);
+            }  
+            
+            if ([viewController respondsToSelector:@selector(findRequestDone:result:resultInfo:place:)]){
+                [viewController findRequestDone:output.resultCode
+                                         result:result
+                                     resultInfo:resultInfo
+                                          place:place];
+            }
+        });
+    });
+}
+
 @end

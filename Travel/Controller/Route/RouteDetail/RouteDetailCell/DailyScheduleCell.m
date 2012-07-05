@@ -11,6 +11,8 @@
 #import "LocaleUtils.h"
 #import "PPDebug.h"
 
+#define COLOR_CONTENT [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
+
 @interface DailyScheduleCell ()
 
 @end
@@ -41,6 +43,12 @@
 
 - (void)setCellData:(DailySchedule *)dailySchedule rowNum:(int)rowNum rowCount:(int)rowCount
 {
+    [placeToursTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    [diningTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    [hotelTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    [diningButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    [hotelButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    
     [titleButton setTitle:dailySchedule.title forState:UIControlStateNormal];
     [titleButton setBackgroundImage:[[ImageManager defaultManager] dailyScheduleTitleBgImageWithRowNum:rowNum rowCount:rowCount]forState:UIControlStateNormal];
     
@@ -66,6 +74,7 @@
         placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
         placeTourLabel.font = [UIFont systemFontOfSize:13];
         [placeToursBgImageView addSubview:placeTourLabel];
+        placeTourLabel.textColor = COLOR_CONTENT;
         [placeTourLabel release];
     }
 

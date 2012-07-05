@@ -120,7 +120,10 @@
 
 + (UIAlertView*)showAlertViewWhenLookingMapWithoutNetwork;
 
++ (UIAlertView*)showAlertViewWhenUserDenyLocatedServiceWithTag:(int)tag delegate:(id)delegate;
 + (UIAlertView*)showAlertViewWhenUserDenyLocatedService;
++ (UIAlertView*)showAlertViewWhenCannotLocateUserLocation;
++ (void)enableShowUserLocateDenyAlert:(BOOL)isShow;
 
 // for other ...
 + (NSString*)getAbsolutePath:(NSString*)absoluteDir string:(NSString*)string;

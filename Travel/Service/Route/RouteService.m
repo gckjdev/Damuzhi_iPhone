@@ -66,21 +66,23 @@ static RouteService *_defaultRouteService = nil;
                 totalCount = [travelResponse totalCount];
                 routeList = [[travelResponse routeList] routesList];
                 
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [viewController hideActivity];   
+                    
+                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:)]) {
+                        [viewController findRequestDone:output.resultCode 
+                                             totalCount:totalCount
+                                                   list:routeList];
+                    }
+                });
+                
 
             }
             @catch (NSException *exception){
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [viewController hideActivity];   
-            
-            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:routeList:)]) {
-                [viewController findRequestDone:output.resultCode 
-                                     totalCount:totalCount
-                                      routeList:routeList];
-            }
-        });
+
     });    
 }
 
@@ -111,5 +113,32 @@ static RouteService *_defaultRouteService = nil;
     }); 
 }
 
+- (void)queryRouteFeekbacks:(int)routeId 
+                      start:(int)start
+                      count:(int)count
+             viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput* output = [TravelNetworkRequest queryList:OBJECT_LIST_ROUTE_FEEKBACK routeId:routeId start:start count:count lang:LanguageTypeZhHans];
+        
+        int totalCount;
+        TravelResponse *travelResponse = nil;
+        if (output.resultCode == ERROR_SUCCESS){
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+                totalCount = [travelResponse totalCount];
+                NSArray *list = [[travelResponse routeFeekbackList] routeFeekbacksList] ;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:)]) {
+                        [viewController findRequestDone:output.resultCode totalCount:totalCount list:list];
+                    }
+                });
+            }
+            @catch (NSException *exception){
+            }
+        }
+    }); 
+}
 
 @end

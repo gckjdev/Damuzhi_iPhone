@@ -43,8 +43,9 @@
 							<object class="IBUIImageView" id="424530249">
 								<reference key="NSNextResponder" ref="766757604"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{6, 0}, {308, 387}}</string>
+								<string key="NSFrame">{{6, 2}, {308, 390}}</string>
 								<reference key="NSSuperview" ref="766757604"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="821884245"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -53,9 +54,9 @@
 							<object class="IBUIView" id="821884245">
 								<reference key="NSNextResponder" ref="766757604"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{11, 0}, {298, 372}}</string>
+								<string key="NSFrame">{{11, 0}, {298, 380}}</string>
 								<reference key="NSSuperview" ref="766757604"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="866135647">
 									<int key="NSColorSpace">3</int>
@@ -64,8 +65,9 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 387}</string>
+						<string key="NSFrameSize">{320, 392}</string>
 						<reference key="NSSuperview" ref="300097335"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="424530249"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<reference key="IBUIBackgroundColor" ref="866135647"/>
@@ -76,14 +78,15 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 388}</string>
+				<string key="NSFrameSize">{320, 393}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="766757604"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="766757604"/>
 				<string key="IBUIReuseIdentifier">BookingCell</string>
-				<real value="371" key="IBUIRowHeight"/>
+				<real value="369" key="IBUIRowHeight"/>
 			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -128,8 +131,8 @@
 						<int key="objectID">4</int>
 						<reference key="object" ref="300097335"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="424530249"/>
 							<reference ref="821884245"/>
+							<reference ref="424530249"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -162,7 +165,40 @@
 			<nil key="sourceID"/>
 			<int key="maxID">39</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">BookingCell</string>
+					<string key="superclassName">PPTableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="bookingBgImageView">UIImageView</string>
+						<string key="monthHolderView">UIView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="bookingBgImageView">
+							<string key="name">bookingBgImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="monthHolderView">
+							<string key="name">monthHolderView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/BookingCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PPTableViewCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PPTableViewCell.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">

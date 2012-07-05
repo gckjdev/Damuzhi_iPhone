@@ -19,8 +19,10 @@
 @protocol RouteServiceDelegate <NSObject>
 
 @optional
-- (void)findRequestDone:(int)result totalCount:(int)totalCount routeList:(NSArray*)routeList;
+- (void)findRequestDone:(int)result totalCount:(int)totalCount list:(NSArray*)list;
 - (void)findRequestDone:(int)result route:(TouristRoute *)route;
+
+
 @end
 
 @interface RouteService : CommonService
@@ -35,6 +37,11 @@
             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)queryRouteFeekbacks:(int)routeId 
+                      start:(int)start
+                      count:(int)count
+             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
                 
 
 @end

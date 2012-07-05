@@ -127,6 +127,14 @@
     [_filterHandler findAllPlaces:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [_placeListController viewDidAppear:animated];
+}
+
+
 - (void)clickBack:(id)sender
 {
     [_selectedItemIds reset];

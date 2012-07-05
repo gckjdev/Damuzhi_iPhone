@@ -7,7 +7,12 @@
 //
 
 #import "PPTableViewController.h"
+#import "RouteService.h"
 
-@interface RouteFeekbackController : PPTableViewController
+@interface RouteFeekbackController : PPTableViewController <RouteServiceDelegate>
+
+- (id)initWithRouteId:(int)routeId;
+
+- (void)showInView:(UIView *)superView;
 
 @end

@@ -24,7 +24,7 @@
 #define HEIGHT_STATISTICS_VIEW 20
 #define HEIGHT_FILTER_HOLDER_VIEW 40
 
-#define COUNT_EACH_FETCH 2
+#define COUNT_EACH_FETCH 20
 
 @interface CommonRouteListController ()
 
@@ -110,9 +110,11 @@
 - (void)viewDidLoad
 {
 
-    
+    self.title = [_filterHandler getRouteTypeName];
+
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
     
     // Init UI Interface
     [self setNavigationLeftButton:NSLS(@" 返回") 
@@ -126,9 +128,6 @@
     self.statisticsView = [self genStatisticsView];
     [self.view addSubview:_statisticsView];
     [_statisticsView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] statisticsBgImage]]];
-    UIImageView *lineView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 2, 300, 2)] autorelease];
-    [lineView setImage:[[ImageManager defaultManager] lineImage]];
-//    [_statisticsView addSubview:lineView];
     
     self.buttonsHolderView = [[[UIView alloc] initWithFrame:CGRectMake(0, _statisticsView.frame.size.height, self.view.frame.size.width, HEIGHT_FILTER_HOLDER_VIEW)] autorelease];
     _buttonsHolderView.backgroundColor = [UIColor whiteColor];
@@ -136,7 +135,12 @@
     _buttonsHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] filterBtnsHolderViewBgImage]];
     
     [self.view addSubview:_buttonsHolderView];
-    [_buttonsHolderView addSubview:lineView];
+    if (self.hasStatisticsView ) {
+        UIImageView *lineView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 2, 300, 2)] autorelease];
+        [lineView setImage:[[ImageManager defaultManager] lineImage]];
+        //    [_statisticsView addSubview:lineView];
+        [_buttonsHolderView addSubview:lineView];
+    }
 
     CGRect rect = CGRectMake(0, _buttonsHolderView.frame.origin.y + _buttonsHolderView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - _buttonsHolderView.frame.size.height - _statisticsView.frame.size.height);
     self.dataTableView.frame = rect;    
@@ -168,7 +172,7 @@
 }
 
 #pragma mark - RouteServiceDelegate
-- (void)findRequestDone:(int)result totalCount:(int)totalCount routeList:(NSArray *)routeList
+- (void)findRequestDone:(int)result totalCount:(int)totalCount list:(NSArray *)routeList
 {
     [self dataSourceDidFinishLoadingNewData];
     [self dataSourceDidFinishLoadingMoreData];
@@ -375,7 +379,7 @@
                                                               multiOptions:multiOptions 
                                                                needConfirm:needConfirm
                                                              needShowCount:needShowCount];
-    
+     
     controller.delegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];

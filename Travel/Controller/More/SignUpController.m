@@ -107,10 +107,12 @@
     
     if (_password.length < 6) {
         [self popupMessage:NSLS(@"您输入的密码长度太短") title:nil];
+        return;
     }
     
     if (_password.length > 16) {
         [self popupMessage:NSLS(@"您输入的密码长度太长") title:nil];
+        return;
     }
     
     if (![_password isEqualToString:comfirmPassword]) {
@@ -125,9 +127,8 @@
                                 password:_password
                                 delegate:self];
     
-    if (_signUpButton == nil) {
-        self.signUpButton = (UIButton *)sender;
-    }
+
+    self.signUpButton = (UIButton *)sender;
     _signUpButton.enabled = NO;
 }
 
@@ -135,24 +136,22 @@
 {
     _signUpButton.enabled = YES;
     
-    VerificationController *controller = [[[VerificationController alloc] init] autorelease];
-    controller.loginController = self.superController;
-    [self.navigationController pushViewController:controller animated:YES];
-    
     if (resultCode != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"您的网络不稳定，注册失败") title:nil];
         return;
     }
     
-    if (result == 0 ) {
-        [self popupMessage:NSLS(@"注册成功") title:nil];
-//        VerificationController *controller = [[[VerificationController alloc] init] autorelease];
-//        [self.navigationController pushViewController:controller animated:YES];
+    if (result != 0 ) {
+        NSString *text = [NSString stringWithFormat:NSLS(@"注册失败: %@"), resultInfo];
+        [self popupMessage:text title:nil];
         return;
     }
     
-    NSString *text = [NSString stringWithFormat:NSLS(@"注册失败: %@"), resultInfo];
-    [self popupMessage:text title:nil];
+    [self popupMessage:NSLS(@"注册成功") title:nil];
+    VerificationController *controller = [[[VerificationController alloc] init] autorelease];
+    controller.loginController = self.superController;
+    [self.navigationController pushViewController:controller animated:YES];
+
 }
 
 

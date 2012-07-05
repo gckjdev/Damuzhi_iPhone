@@ -16,6 +16,10 @@
 
 
 @interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate>
+@property (retain, nonatomic) IBOutlet UIButton *homeButton;
+@property (retain, nonatomic) IBOutlet UIButton *UnpackageButton;
+@property (retain, nonatomic) IBOutlet UIButton *PackageButton;
+@property (retain, nonatomic) IBOutlet UIButton *moreButton;
 
 - (IBAction)clickSpotButton:(id)sender;
 - (IBAction)clickHotelButton:(id)sender;
@@ -31,7 +35,5 @@
 - (IBAction)clickNearbyButton:(id)sender;
 - (IBAction)clickMoreButton:(id)sender;
 - (void) clickTitle:(id)sender;
-- (IBAction)clickFavorite:(id)sender;
-- (IBAction)clickShare:(id)sender;
 
 @end

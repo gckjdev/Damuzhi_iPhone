@@ -9,7 +9,7 @@
 #import "PPTableViewCell.h"
 #import "TKCalendarMonthView.h"
 
-@interface BookingCell : PPTableViewCell <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource>
+@interface BookingCell : PPTableViewCell
 
 @property (retain, nonatomic) IBOutlet UIImageView *bookingBgImageView;
 @property (retain, nonatomic) IBOutlet UIView *monthHolderView;

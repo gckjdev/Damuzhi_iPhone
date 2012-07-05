@@ -61,7 +61,7 @@ static PlaceStorage* _historyManager = nil;
     else {
         filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
     }
-    PPDebug(@"%@",filePath);
+//    PPDebug(@"%@",filePath);
     
     return filePath;
 }

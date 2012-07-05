@@ -129,7 +129,7 @@
     if (![place.icon hasPrefix:@"http"]){
         // local files, read image locally
         NSString *iconPath = [[AppUtils getCityDir:[[AppManager defaultManager] getCurrentCityId]] stringByAppendingPathComponent:place.icon];
-        PPDebug(@"place iconPath = %@", iconPath);
+//        PPDebug(@"place iconPath = %@", iconPath);
         
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:iconPath];
         [self.imageView setImage:image];
@@ -140,7 +140,7 @@
 
         self.imageView.callbackOnSetImage = self;
         self.imageView.url = [NSURL URLWithString:[place icon]];
-        PPDebug(@"load place image from URL %@", [place icon]);
+//        PPDebug(@"load place image from URL %@", [place icon]);
         [GlobalGetImageCache() manage:self.imageView];
     }
 }

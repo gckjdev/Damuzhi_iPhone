@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TouristRoute.pb.h"
 
 @interface RouteUtils : NSObject
 
@@ -15,5 +16,10 @@
 + (NSArray *)getRouteList:(NSArray *)routeList providedByAngency:(int)angencyId;
 + (NSArray *)getRouteList:(NSArray *)routeList inTheme:(int)themeId;
 + (NSArray *)getRouteList:(NSArray *)routeList inCategory:(int)categoryId;
+
++ (Booking *)bookingOfDate:(NSDate *)date bookings:(NSArray *)bookings;
+
++ (TravelPackage *)findPackageByPackageId:(int)packageId fromPackageList:(NSArray *)packageList;
+
 
 @end

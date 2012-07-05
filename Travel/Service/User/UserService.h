@@ -17,9 +17,11 @@
 - (void)submitFeekbackDidFinish:(int)resultCode;
 
 - (void)signUpDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
-- (void)verificationDidSend:(int)resultCode;
-- (void)verificationDidFinish:(int)resultCode;
-- (void)loginDidFinish:(int)resultCode;
+- (void)verificationDidSend:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+- (void)verificationDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+- (void)loginDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+- (void)loginoutDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+
 - (void)retrievePasswordDidSend:(int)resultCode;
 
 @end
@@ -45,8 +47,7 @@
      delegate:(id<UserServiceDelegate>)delegate;
 
 // 用户登出接口
-- (void)logout:(NSString *)loginId 
-         token:(NSString *)token;
+- (void)logout:(id<UserServiceDelegate>)delegate;
 
 // 注册接口
 - (void)signUp:(NSString *)loginId 

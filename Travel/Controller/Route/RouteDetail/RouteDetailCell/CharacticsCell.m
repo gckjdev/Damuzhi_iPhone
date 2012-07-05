@@ -22,6 +22,7 @@
 
 - (void)setCellData:(NSString *)text 
 {
+    [text stringByReplacingOccurrencesOfString:@"\n" withString:@"\n         "];
     characticsLabel.font = FONT_CHARACTICS_LABEL;
     characticsLabel.lineBreakMode = LINE_BREAK_MODE_CHARACTICS_LABEL;
     characticsLabel.numberOfLines = 0;

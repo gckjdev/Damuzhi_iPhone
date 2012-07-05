@@ -21,55 +21,45 @@
 #import "Reachability.h"
 #import "AppUtils.h"
 #import "ImageManager.h"
+#import "PlaceMapAnnotation.h"
+#import "UIViewUtils.h"
+
+#define TAG_USER_LOCATE_DENY_ALERT_VIEW 111
+
 
 @interface PlaceListController () 
 {
     BOOL _showMap;
+    BOOL _firstIn;
+    int _updateTimes;
 }
 
 @property (assign, nonatomic) BOOL canDelete;
-
-@property (retain, nonatomic) PlaceMapViewController *mapViewController;
-@property (assign, nonatomic) UINavigationController *superNavigationController;
-
-- (void)reloadDataTableView;
+@property (retain, nonatomic) UINavigationController *superNavigationController;
+@property (retain, nonatomic) UIButton *locateButton;
 
 @end
 
 @implementation PlaceListController
 
-@synthesize mapHolderView = _mapHolderView;
 @synthesize superNavigationController = _superNavigationController;
-@synthesize mapViewController = _mapViewController;
 @synthesize canDelete = _canDelete;
+@synthesize mapView = _mapView;
 @synthesize aDelegate = _aDelegate;
 @synthesize pullDownDelegate = _pullDownDelegate;
+@synthesize locateButton = _locateButton;
+@synthesize alertViewType = _alertViewType;
+@synthesize isNearby = _isNearby;
 
 - (void)dealloc
 {
     [GlobalGetImageCache() cancelLoadingObjects];
-    PPRelease(_mapViewController);
-    [_mapHolderView release];
-    
+    [_superNavigationController release];
+    [_mapView release];
+    [_locateButton release];
     [super dealloc];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-        _showMap = NO;
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    // Release any cached data, images, etc that aren't in use.
-}
 
 #pragma mark - View lifecycle
 
@@ -77,58 +67,15 @@
 {
     [super viewDidLoad];
     
-    [self initLocationManager];
-    [self startUpdatingLocation];
+    _mapView.delegate = self;
+    _mapView.mapType = MKMapTypeStandard;   
     
-    self.mapViewController = [[[PlaceMapViewController alloc] initWithSuperNavigationController:_superNavigationController] autorelease];
-    [_mapViewController showInView:_mapHolderView];
-
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
+    [MapUtils setMapSpan:_mapView span:span];
+    
+    [self addMyLocationBtnTo:_mapView];
+    
     [self switchToListMode];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    // save to current location
-    self.currentLocation = newLocation;
-	
-	// we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:kTimeOutObjectString];
-	
-	// IMPORTANT!!! Minimize power usage by stopping the location manager as soon as possible.
-	[self stopUpdatingLocation:NSLocalizedString(@"Acquired Location", @"Acquired Location")];
-	
-    // TODO:
-    PPDebug(@"current location: %f, %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
-    [[AppService defaultService] setCurrentLocation:newLocation];
-    
-    
-    if ([_aDelegate respondsToSelector:@selector(didUpdateToLocation)]) {
-        [_aDelegate didUpdateToLocation];
-    }
-    
-    [self.dataTableView reloadData];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{   
-    // we can also cancel our previous performSelector:withObject:afterDelay: - it's no longer necessary
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:kTimeOutObjectString];
-    
-    // IMPORTANT!!! Minimize power usage by stopping the location manager as soon as possible.
-    [self stopUpdatingLocation:NSLocalizedString(@"Acquired Location", @"Acquired Location")];
-    
-    [self.dataTableView reloadData];
-    
-    [[AppService defaultService] setCurrentLocation:nil];
-    
-    if ([_aDelegate respondsToSelector:@selector(didFailUpdateLocation)]) {
-        [_aDelegate didFailUpdateLocation];
-    }
-    
-    if (error.code == kCLErrorDenied) {
-        [AppUtils showAlertViewWhenUserDenyLocatedService];
-    }else {
-        [self popupMessage:NSLS(@"未能获取您的位置") title:nil];
-    }
 }
 
 #pragma mark For Sub Class to override and implement
@@ -150,14 +97,8 @@
 
 - (void)viewDidUnload
 {
-    [self setMapHolderView:nil];
+    [self setMapView:nil];
     [super viewDidUnload];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
@@ -170,32 +111,35 @@
         self.supportRefreshHeader = wantPullDownToRefresh;
 //        self.supportRefreshFooter = YES;
         self.pullDownDelegate = pullDownDelegate;
+        _firstIn = YES;
     }
     
     return self;
 }
 
 - (void)showInView:(UIView*)superView 
-{    
+{   
+    [superView removeAllSubviews];
+
     [self.view setFrame:superView.bounds];
     [superView addSubview:self.view];
 }
 
-- (void)setPlaceList:(NSArray*)placeList
+- (void)viewDidAppear:(BOOL)animated
 {
-    if (placeList == self.dataList) {
-        return;
-    }
+    [super viewDidAppear:animated];
     
-    self.dataList = placeList;
-    [self reloadDataTableView];
-
-    if (_showMap) {
-        [_mapViewController setPlaces:self.dataList];
-    }else {
-//        [self reloadDataTableView];
+    if (_showMap && _locateButton.selected) {
+        _mapView.showsUserLocation = YES;
     }
 }
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    _mapView.showsUserLocation = NO;
+    [super viewDidDisappear:animated];
+}
+
 
 #pragma mark -
 #pragma mark TableView Delegate
@@ -207,16 +151,6 @@
 	
 	return 76;
 }
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;		// default implementation
-}
-
-//// Customize the number of rows in the table view.
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//	return [dataList count];			// default implementation
-//}
-
 
 - (Class)getClassByPlace:(Place*)place
 {    
@@ -318,24 +252,62 @@
     
     _showMap = YES;
     dataTableView.hidden = YES;
-    _mapHolderView.hidden = NO;
+    _mapView.hidden = NO;
     
-//    [_mapViewController showUserLocation:YES];
-    [_mapViewController setPlaces:self.dataList];
+    _mapView.showsUserLocation = _locateButton.selected;
+    [self reloadMap];
 }
 
 - (void)switchToListMode
 {
     _showMap = NO;
+    _mapView.showsUserLocation = _firstIn;
     
     dataTableView.hidden = NO;
-    _mapHolderView.hidden = YES;
+    _mapView.hidden = YES;
     
-    [_mapViewController showUserLocation:NO];
-    [self reloadDataTableView];
+    [self reloadTableView];
 }
 
-- (void)reloadDataTableView
+- (void)setPlaceList:(NSArray*)placeList
+{
+    if (placeList == self.dataList) {
+        return;
+    }
+    
+    self.dataList = placeList;
+    
+    if (_showMap) {
+        [self reloadMap];
+    }else {
+        [self reloadTableView];
+    }
+}
+
+- (void)reloadMap
+{   
+    if (_locateButton.selected) {
+        _mapView.showsUserLocation = NO;
+        _mapView.showsUserLocation = YES;
+    }
+    [self loadAllAnnotations];
+    [self gotoLocation];
+}
+
+- (void)gotoLocation
+{
+    if (_locateButton.selected) {
+        CLLocation *location = [[AppService defaultService] currentLocation];
+        [MapUtils gotoLocation:_mapView latitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+    }else {
+        if ([dataList count] > 0) {
+            Place *place = [dataList objectAtIndex:0];
+            [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+        }
+    }
+}
+
+- (void)reloadTableView
 {
     [self.dataTableView reloadData];
     
@@ -345,5 +317,188 @@
         [self hideTipsOnTableView];
     }
 }
+
+- (void)addMyLocationBtnTo:(UIView*)view
+{
+    self.locateButton = [[[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-35, 342, 31, 31)] autorelease];            
+    
+    [_locateButton setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];
+    [_locateButton setImage:[UIImage imageNamed:@"locate_jt.png"] forState:UIControlStateSelected];
+    
+    [_locateButton addTarget:self action:@selector(clickMyLocationBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:_locateButton];
+}
+
+- (void)clickMyLocationBtn:(id)sender
+{
+    UIButton *button = (UIButton*)sender;
+    button.selected = !button.selected;
+    if (button.selected) {
+        _mapView.showsUserLocation = YES;       
+    }else {
+        _mapView.showsUserLocation = NO;
+        Place *place = [dataList objectAtIndex:0];
+        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+    }
+    
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
+    [MapUtils setMapSpan:_mapView span:span];
+}
+
+#define TOLERANCE 0.000001
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    PPDebug(@"current location: %f, %f", userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
+    
+    CLLocation *currentLocation1 = [[AppService defaultService] currentLocation];
+    
+    PPDebug(@"my location: %f, %f", currentLocation1.coordinate.latitude, currentLocation1.coordinate.longitude);
+    
+    float distance  = [userLocation.location distanceFromLocation:currentLocation1];
+    
+    PPDebug(@"distance = %f", distance);
+    
+    if (_firstIn && (userLocation.location.coordinate.latitude - 0.000000) < TOLERANCE && (userLocation.location.coordinate.longitude - 0.000000) < TOLERANCE) {
+        return;
+    }
+    
+    if (_isNearby && !_firstIn && distance < 100.0) {
+        return;
+    }
+    
+    [[AppService defaultService] setCurrentLocation:userLocation.location];
+    
+    if (_showMap) {
+        [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+    }else {
+        [self reloadTableView];
+    }
+    
+    if ([_aDelegate respondsToSelector:@selector(didUpdateToLocation)]) {
+        [_aDelegate didUpdateToLocation];
+    }
+
+    if (_firstIn) {
+        _firstIn = NO;
+        _mapView.showsUserLocation = NO;
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
+{
+    [[AppService defaultService] setCurrentLocation:nil];
+    [self reloadTableView];
+    
+    PPDebug(@"error domain: %@", error.domain);
+//    PPDebug(@"error code: %@", error.code);
+    
+    if (error.domain != kCLErrorDomain) {
+        return;
+    }
+    
+    if (error.code == kCLErrorDenied) {
+        if (!_isNearby) {
+            [AppUtils showAlertViewWhenUserDenyLocatedServiceWithTag:TAG_USER_LOCATE_DENY_ALERT_VIEW delegate:self];
+
+        }else {
+            [AppUtils showAlertViewWhenUserDenyLocatedService];
+        }
+    }else {
+        [AppUtils showAlertViewWhenCannotLocateUserLocation];
+    }
+    
+    if ([_aDelegate respondsToSelector:@selector(didFailUpdateLocation)]) {
+        [_aDelegate didFailUpdateLocation];
+    }
+    
+    _mapView.showsUserLocation = NO;
+    
+    if (_firstIn) {
+        _firstIn = NO;
+    }
+}
+
+- (void)loadAllAnnotations
+{    
+    NSMutableArray *mapAnnotations = [[NSMutableArray alloc] init];
+    if ([dataList count] > 0) {
+        for (Place *place in dataList) {
+            if ([MapUtils isValidLatitude:[place latitude] Longitude:[place longitude]]) {
+                PlaceMapAnnotation *placeAnnotation = [[PlaceMapAnnotation alloc]initWithPlace:place];
+                [mapAnnotations addObject:placeAnnotation];
+                [placeAnnotation release];
+            }
+        } 
+    }
+    
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_mapView addAnnotations:mapAnnotations];
+    [mapAnnotations release];
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    // if it's the user location, just return nil.
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    
+    // handle our custom annotations
+    if([annotation isKindOfClass:[PlaceMapAnnotation class]])
+    {
+        // try to dequeue an existing pin view first
+        static NSString* annotationIdentifier = @"mapAnnotationIdentifier";
+        MKPinAnnotationView* pinView = (MKPinAnnotationView *)[_mapView dequeueReusableAnnotationViewWithIdentifier:[annotation title]];
+        if (pinView == nil)
+        {
+            MKAnnotationView* annotationView = [[[MKAnnotationView alloc]
+                                                 initWithAnnotation:annotation reuseIdentifier:annotationIdentifier] autorelease];
+            PlaceMapAnnotation *placeAnnotation = (PlaceMapAnnotation*)annotation;
+            
+            NSInteger tag = [dataList indexOfObject:placeAnnotation.place];
+            NSString *fileName = [AppUtils getCategoryPinIcon:placeAnnotation.place.categoryId];
+            [MapUtils showCallout:annotationView imageName:fileName tag:tag target:self];
+            
+            return annotationView;
+        }
+        else
+        {
+            pinView.annotation = annotation;
+            
+        }
+        return pinView;
+        
+    }
+    
+    return nil;
+}
+
+//The event handling method
+- (void)notationAction:(id)sender
+{        
+    UIButton *button = sender;
+    NSInteger index = button.tag;
+    CommonPlaceDetailController *controller = [[CommonPlaceDetailController alloc]initWithPlace:[dataList objectAtIndex:index]];
+    [_superNavigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+#pragma mark -
+#pragma mark: implementation of alert view delegate.
+
+- (void)alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (alertView1.tag) {
+        case TAG_USER_LOCATE_DENY_ALERT_VIEW:
+            if (buttonIndex == 1) {
+                [AppUtils enableShowUserLocateDenyAlert:NO];
+            }
+            break;
+            
+        default:
+            break;
+    }
+}
+
 
 @end

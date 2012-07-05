@@ -12,7 +12,12 @@
 @protocol OrderServiceDelegate <NSObject>
 
 @optional
-- (void)placeOrderDone:(int)result;
+- (void)placeOrderDone:(int)resultCode
+                result:(int)result
+           reusultInfo:(NSString *)resultInfo;
+
+- (void)findRequestDone:(int)resultCode
+                   list:(NSArray *)list;
 
 @end
 
@@ -20,23 +25,38 @@
 
 + (OrderService*)defaultService;
 
+// 下面接口中departDate参数的格式是：yyyyMMdd
+
 - (void)placeOrderUsingUserId:(NSString *)userId 
                       routeId:(int)routeId
-                       packId:(int)packId
-                   departDate:(int)departDate
+                    packageId:(int)packageId
+                   departDate:(NSString *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion
-                    telephone:(NSString *)telephone;
+                    telephone:(NSString *)telephone
+                     delegate:(id<OrderServiceDelegate>)delegate;
 
 - (void)placeOrderUsingLoginId:(NSString *)LoginId 
                          token:(NSString *)token
                       routeId:(int)routeId
-                       packId:(int)packId
-                   departDate:(int)departDate
+                    packageId:(int)packageId
+                   departDate:(NSString *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion
-                    telephone:(NSString *)telephone;
+                    telephone:(NSString *)telephone
+                      delegate:(id<OrderServiceDelegate>)delegate;
+
+- (void)findOrderUsingUserId:(NSString *)userId
+                   orderType:(int)orderType
+                    delegate:(id<OrderServiceDelegate>)delegate;
+
+
+- (void)findOrderUsingLoginId:(NSString *)loginId
+                        token:(NSString *)token
+                    orderType:(int)orderType
+                     delegate:(id<OrderServiceDelegate>)delegate;
+
 
 @end

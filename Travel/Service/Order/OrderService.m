@@ -8,6 +8,9 @@
 
 #import "OrderService.h"
 #import "TravelNetworkRequest.h"
+#import "JSON.h"
+#import "Package.pb.h"
+#import "PPDebug.h"
 
 @implementation OrderService
 
@@ -24,8 +27,8 @@ static OrderService *_instance = nil;
 
 - (void)placeOrderUsingUserId:(NSString *)userId 
                       routeId:(int)routeId
-                       packageId:(int)packageId
-                   departDate:(int)departDate
+                    packageId:(int)packageId
+                   departDate:(NSString *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion
@@ -42,10 +45,17 @@ static OrderService *_instance = nil;
                                                                    contactPerson:contactPersion 
                                                                        telephone:telephone];   
 
+        int result = -1;
+        NSString *resultInfo;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(placeOrderDone:)]) {
-                [delegate placeOrderDone:output.resultCode];
+            if ([delegate respondsToSelector:@selector(placeOrderDone:result:reusultInfo:)]) {
+                [delegate placeOrderDone:output.resultCode result:result reusultInfo:resultInfo];
             }
         });                        
     });
@@ -55,7 +65,7 @@ static OrderService *_instance = nil;
                          token:(NSString *)token
                        routeId:(int)routeId
                      packageId:(int)packageId
-                    departDate:(int)departDate
+                    departDate:(NSString *)departDate
                          adult:(int)adult
                       children:(int)children
                  contactPerson:(NSString *)contactPersion
@@ -72,11 +82,80 @@ static OrderService *_instance = nil;
                                                                          children:children 
                                                                     contactPerson:contactPersion 
                                                                         telephone:telephone];   
-        
+        int result = -1;
+        NSString *resultInfo;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(placeOrderDone:)]) {
-                [delegate placeOrderDone:output.resultCode];
+            if ([delegate respondsToSelector:@selector(placeOrderDone:result:reusultInfo:)]) {
+                [delegate placeOrderDone:output.resultCode result:result reusultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
+
+- (void)findOrderUsingUserId:(NSString *)userId
+                    orderType:(int)orderType
+                    delegate:(id<OrderServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryList:orderType userId:userId lang:LanguageTypeZhHans];   
+        int result = -1;
+        NSString *resultInfo;
+        TravelResponse *travelResponse = nil;
+
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+            } @catch (NSException *exception){
+                PPDebug (@"<findOrderUsingUserId> Caught %@%@", [exception name], [exception reason]);
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findRequestDone:list:)]) {
+                [delegate findRequestDone:output.resultCode
+                                     list:[travelResponse.orderList ordersList]];
+            }
+        });                        
+    });
+}
+
+
+- (void)findOrderUsingLoginId:(NSString *)loginId
+                        token:(NSString *)token
+                    orderType:(int)orderType
+                     delegate:(id<OrderServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryList:orderType loginId:loginId token:token lang:LanguageTypeZhHans];   
+        int result = -1;
+        NSString *resultInfo;
+        TravelResponse *travelResponse = nil;
+        
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+            } @catch (NSException *exception){
+                PPDebug (@"<findOrderUsingUserId> Caught %@%@", [exception name], [exception reason]);
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findRequestDone:list:)]) {
+                [delegate findRequestDone:output.resultCode
+                                     list:[travelResponse.orderList ordersList]];
             }
         });                        
     });

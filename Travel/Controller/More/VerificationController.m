@@ -9,6 +9,7 @@
 #import "VerificationController.h"
 #import "UserManager.h"
 #import "PPNetworkRequest.h"
+#import "StringUtil.h"
 
 @interface VerificationController ()
 
@@ -73,16 +74,6 @@
 //    [[UserService defaultService] verificate:[[UserManager defaultManager] loginId] telephone:_telephone delegate:self];
 }
 
-- (void) verificationDidSend:(int)resultCode
-{
-    if (resultCode != ERROR_SUCCESS) {
-        [self popupMessage:NSLS(@"您的网络不稳定，获取验证码失败") title:nil];
-        return;
-    }
-    
-    [self popupMessage:NSLS(@"等待接收验证码") title:nil];
-}
-
 - (IBAction)clickHideKeyboardButton:(id)sender {
     [self hideKeyboard];
     hideKeyboardButton.enabled = NO;
@@ -97,6 +88,46 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField;           // became first responder
 {
     hideKeyboardButton.enabled = YES;
+}
+
+- (void)clickFinish:(id)sender
+{
+    if (!NSStringIsValidPhone(telephoneTextField.text)) {
+        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+        return;
+    }
+    
+    [[UserService defaultService] verificate:telephoneTextField.text code:codeTextField.text delegate:self];
+}
+
+- (void)verificationDidSend:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    if (resultCode != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"您的网络不稳定，获取验证码失败") title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    [self popupMessage:NSLS(@"等待接收验证码") title:nil];
+}
+
+- (void)verificationDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    if (resultCode != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"您的网络不稳定，验证失败") title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    [self popupMessage:NSLS(@"验证成功") title:nil];
 }
 
 

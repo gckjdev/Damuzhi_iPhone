@@ -15,7 +15,12 @@
 #define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
+
 //#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+
+
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+////#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
 
 
 // URL
@@ -33,9 +38,14 @@
 #define URL_TRAVEL_QUERY_VERSION    (URL_SERVICE@"iphoneVersion.txt")
 #define URL_TRAVEL_SUBMIT_FEEKBACK  (URL_SERVICE@"feedback.aspx?")
 
+#define URL_TRAVEL_MEMBER_LOGIN         (URL_SERVICE@"memberLogin.aspx?")
+#define URL_TRAVEL_MEMBER_LOGOUT        (URL_SERVICE@"memberLogout.aspx?")
+
 #define URL_TRAVEL_MEMBER_REGISTER      (URL_SERVICE@"memberRegister.aspx?")
 #define URL_TRAVEL_MEMBER_VERIFICATION  (URL_SERVICE@"memberVerification.aspx?")
-#define URL_TRAVEL_RETRIEVE_PASSWORD  (URL_SERVICE@"retrievePassword.aspx?")
+#define URL_TRAVEL_RETRIEVE_PASSWORD    (URL_SERVICE@"retrievePassword.aspx?")
+#define URL_TRAVEL_PLACE_ORDER          (URL_SERVICE@"placeOrder.aspx?")
+
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -75,7 +85,7 @@
 
 
 #define PARA_TRAVEL_PLACE_FAVORITE_COUNT    @"placeFavoriteCount"
-#define PARA_TRAVEL_APP_VERSION             @"appVersion"
+#define PARA_TRAVEL_APP_VERSION             @"app_version"
 #define PARA_TRAVEL_APP_DATA_VERSION        @"app_data_version"
 
 #define PARA_TRAVEL_TELEPHONE               @"telephone"
@@ -127,10 +137,18 @@
 #define OBJECT_LIST_ROUTE_UNPACKAGE_TOUR            71
 #define OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR           72
 
+#define OBJECT_LIST_ROUTE_FEEKBACK                  75
+
+
+#define OBJECT_LIST_PACKAGE_TOUR_ORDER              80
+#define OBJECT_LIST_UNPACKAGE_TOUR_ORDER            81
+#define OBJECT_LIST_SELF_GUIDE_TOUR_ORDER           82
+
+
 #define OBJECT_LIST_CITY_IMAGE                      90
 
 // For object type
-#define OBJECT_TYPE_USER_RIGISTER               1
+#define OBJECT_TYPE_PLACE                       1
 #define OBJECT_TYPE_CITY_BASIC                  2
 #define OBJECT_TYPE_TRAVEL_PREPARATION          3
 #define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4     
