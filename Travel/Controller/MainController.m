@@ -135,8 +135,16 @@
     [[UserService defaultService] autoLogin:self];
 }
 
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self hideTabBar:NO];
+    
     [self createButtonView];
     [super viewWillAppear:animated];
 }
@@ -144,16 +152,16 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     self.hidesBottomBarWhenPushed = YES;
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideTabBar:NO];
+    [self hideTabBar:NO];
+    
     [super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     self.hidesBottomBarWhenPushed = NO;
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideTabBar:YES];
+    [self hideTabBar:YES];
+    
     [super viewDidDisappear:animated];
 }
 
