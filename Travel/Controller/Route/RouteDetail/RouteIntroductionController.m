@@ -377,6 +377,8 @@
         }
     }
     
+    [cell setBackgroundColor:[UIColor clearColor]];
+    
     return cell;
 }
 
@@ -570,12 +572,8 @@
 #define HEIGHT_FOLLOW_VIEW 53
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-//    if (section == [self sectionCount] - 1) {
-//        return HEIGHT_FOLLOW_VIEW;
-//    }
-    
-    return HEIGHT_FOOTER_VIEW * [[_sectionStat objectAtIndex:section] boolValue];
+{    
+    return HEIGHT_FOOTER_VIEW * [self isSectionOpen:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
