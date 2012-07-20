@@ -19,6 +19,7 @@
 
 @property (retain, nonatomic) NSArray *orderTypeList;
 @property (retain, nonatomic) UIButton *loginoutButton;
+@property (retain, nonatomic) NSArray *phoneList;
 
 @end
 
@@ -26,11 +27,13 @@
 
 @synthesize orderTypeList = _orderTypeList;
 @synthesize loginoutButton = _loginoutButton;
+@synthesize phoneList = _phoneList;
 
 - (void)dealloc
 {
     [_orderTypeList release];
     [_loginoutButton release];
+    [_phoneList release];
     [super dealloc];
 }
 
@@ -48,7 +51,6 @@
                            action:@selector(clickBack:)];
 
     [self updateNavButtons];
-    
     self.dataList = [NSArray arrayWithObjects:NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"), NSLS(@"自定制订单管理"),nil];
     self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
     
@@ -139,6 +141,8 @@
 }
 
 
+
+
 #define CUSTOMER_SERVICE_TELEPHONE @"400-800-888"
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
@@ -151,7 +155,9 @@
     [button addSubview:imageView];
     
     UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(88, 0, 200, HEIGHT_FOOTER_VIEW)] autorelease];
-    label.text = [NSString stringWithFormat:NSLS(@"客服电话：%@"), CUSTOMER_SERVICE_TELEPHONE];
+    label.text = [NSString stringWithFormat:NSLS(@"客服电话：%@"), [[[AppManager defaultManager]getServicePhoneList] objectAtIndex: 0]];
+
+    
     label.textColor = [UIColor colorWithRed:1 green:72.0/255.0 blue:0 alpha:1];
     label.font = [UIFont systemFontOfSize:15];
     label.backgroundColor = [UIColor clearColor];
@@ -162,9 +168,28 @@
 
 - (void)clickCustomerServiceTelephone:(id)sender
 {
-    NSString *telephone = [CUSTOMER_SERVICE_TELEPHONE stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    [UIUtils makeCall:telephone];
+
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    for(NSString* title in [[AppManager defaultManager] getServicePhoneList]){
+        [actionSheet addButtonWithTitle:title];
+    }
+    [actionSheet addButtonWithTitle:NSLS(@"返回")];
+    [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+    
 }
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
+    [UIUtils makeCall:[[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex]];
+}
+
 
 - (void)clickLogout:(id)sender
 {
