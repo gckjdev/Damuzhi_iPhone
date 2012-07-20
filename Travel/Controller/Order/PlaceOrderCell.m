@@ -7,6 +7,7 @@
 //
 
 #import "PlaceOrderCell.h"
+#import "LocaleUtils.h"
 @interface PlaceOrderCell()
 
 - (void)clickLeftButton:(id)sender;
@@ -53,6 +54,8 @@
 
 - (void)clickLeftButton:(id)sender
 {
+    
+
     if ([delegate respondsToSelector:@selector(didClickLeftButton:)]) {
         [delegate didClickLeftButton:self.indexPath];
     }
