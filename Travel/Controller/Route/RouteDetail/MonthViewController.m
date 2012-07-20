@@ -216,11 +216,13 @@
             [self popupMessage:NSLS(@"该日期未开售") title:nil];
         }else if (booking.status == 2) {
             [_aDelegate didSelecteDate:date];
+            [self.navigationController popViewControllerAnimated:YES];
         }else if (booking.status == 3) {
             [self popupMessage:NSLS(@"该日期已满") title:nil];
+        }else {
+            [self popupMessage:NSLS(@"该日期不出团") title:nil];
         }
         
-        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
