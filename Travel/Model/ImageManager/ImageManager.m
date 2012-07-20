@@ -194,10 +194,10 @@ static ImageManager *_defaultManager = nil;
     return [UIImage imageNamed:@"line_zk.png"];
 }
 
-- (UIImage *)bookingBgImage
-{
-    return [UIImage strectchableImageName:@"date_t_bg.png"];
-}
+//- (UIImage *)bookingBgImage
+//{
+//    return [UIImage strectchableImageName:@"date_t_bg.png"];
+//}
 
 - (UIImage *)signUpBgImage
 {

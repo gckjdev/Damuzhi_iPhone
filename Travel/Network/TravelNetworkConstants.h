@@ -21,8 +21,8 @@
 //#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
 
 // URL
-#define URL_TRAVEL_REGISTER_USER    (URL_SERVICE@"RegisterUser.aspx?")
-#define URL_TRAVEL_ROUTE_FEEDBACK    (URL_SERVICE@"routeFeekback.aspx?")
+#define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
+#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeekback.aspx?")
 
 //query place list
 #define URL_TRAVEL_QUERY_LIST       (URL_SERVICE@"queryList.aspx?")

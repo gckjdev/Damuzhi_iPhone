@@ -44,7 +44,7 @@
 - (UIImage *)tableRightBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)arrowImage;
 
-- (UIImage *)bookingBgImage;
+//- (UIImage *)bookingBgImage;
 
 - (UIImage *)signUpBgImage;
 - (UIImage *)selectDownImage;

@@ -26,7 +26,6 @@
 @property (retain, nonatomic) TouristRoute *route;
 @property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
 @property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
-@property (retain, nonatomic) MonthViewController *monthViewController;
 @property (retain, nonatomic) NSDate *departDate;
 @property (retain, nonatomic) NonMemberOrderController *nonMemberOrderController;
 @property (retain, nonatomic) NSArray *phoneList;
@@ -59,7 +58,6 @@
 @synthesize route = _route;
 @synthesize selectedAdultIdList = _selectedAdultIdList;
 @synthesize selectedChildrenIdList = _selectedChildrenIdList;
-@synthesize monthViewController = _monthViewController;
 @synthesize departDate = _departDate;
 @synthesize nonMemberOrderController = _nonMemberOrderController;
 @synthesize phoneList = _phoneList;
@@ -69,7 +67,6 @@
     PPRelease(_route);
     PPRelease(_selectedAdultIdList);
     PPRelease(_selectedChildrenIdList);
-    PPRelease(_monthViewController);
     PPRelease(_departDate);
     PPRelease(_phoneList);
     [super dealloc];
@@ -303,12 +300,12 @@
 #pragma button actions
 - (void)clickDepartDateButton
 {
-    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];   
-    [_monthViewController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
-    _monthViewController.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
-    _monthViewController.aDelegate = self;
+    MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];   
+    [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
+    controller.aDelegate = self;
     
-    [self.navigationController pushViewController:_monthViewController animated:YES];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -394,7 +391,6 @@
 - (void)didSelecteDate:(NSDate *)date
 {
     self.departDate = date;
-    [_monthViewController.navigationController popViewControllerAnimated:YES];
     [dataTableView reloadData];
 }
 

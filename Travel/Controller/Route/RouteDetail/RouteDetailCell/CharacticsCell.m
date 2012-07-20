@@ -30,7 +30,7 @@
     CGSize withinSize = CGSizeMake(WIDTH_CHARACTICS_LABEL, MAXFLOAT);
     CGSize size = [text sizeWithFont:characticsLabel.font constrainedToSize:withinSize lineBreakMode:characticsLabel.lineBreakMode];
     
-    characticsLabel.frame = CGRectMake((self.frame.size.width-WIDTH_CHARACTICS_LABEL)/2, characticsLabel.frame.origin.y, WIDTH_CHARACTICS_LABEL, size.height);
+    characticsLabel.frame = CGRectMake(characticsLabel.frame.origin.x, characticsLabel.frame.origin.y, WIDTH_CHARACTICS_LABEL, size.height);
     characticsLabel.text = text;
 }
 
