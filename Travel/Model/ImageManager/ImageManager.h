@@ -44,7 +44,7 @@
 - (UIImage *)tableRightBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)arrowImage;
 
-- (UIImage *)bookingBgImage;
+//- (UIImage *)bookingBgImage;
 
 - (UIImage *)signUpBgImage;
 - (UIImage *)selectDownImage;
@@ -52,7 +52,8 @@
 - (UIImage *)morePointImage;
 - (UIImage *)accessoryImage;
 
-- (UIImage *)orderListHeaderView:(int)rowNum rowCount:(int)rowCount;
+- (UIImage *)orderListHeaderView:(int)rowNum rowCount:(int)rowCount open:(BOOL)open;
+- (UIImage *)orderListCellBgImage:(int)rowNum rowCount:(int)rowCount;
 
 - (UIImage *)orangePoint;
 - (UIImage *)orderTel;

@@ -158,6 +158,12 @@
 #endif
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidUnload
 {
     // Release any retained subviews of the main view.

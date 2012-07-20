@@ -78,6 +78,7 @@
 
     self.feekbackTextView.placeholderColor = [UIColor lightGrayColor];    
 }
+
 -(void) clickSubmit: (id) sender
 {
     NSString *feekback = [self.feekbackTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];   

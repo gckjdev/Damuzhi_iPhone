@@ -38,6 +38,8 @@
 @property (retain, nonatomic) IBOutlet UILabel *packageIdLabel;
 @property (retain, nonatomic) IBOutlet UILabel *packageIdTitleLabel;
 
+@property (retain, nonatomic) IBOutlet UIImageView *cellBgImageView;
+
 
 - (void)setCellData:(Order *)order;
 

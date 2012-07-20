@@ -25,6 +25,7 @@
 #import "UnPackageTourListFilter.h"
 #import "PackageTourListFilter.h"
 #import "MoreController.h"
+#import "CustomTourController.h"
 
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
@@ -84,7 +85,7 @@
                  hideNavigationBar:NO 
                    viewControllers:controllers];
     
-    [UIUtils addViewController:[MoreController alloc] 
+    [UIUtils addViewController:[CustomTourController alloc] 
                          viewTitle:nil
                          viewImage:@"menu_btn4_off.png" 
                   hasNavController:YES 
@@ -110,6 +111,8 @@
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
     [_tabBarController setTopImageView:imageView down:1.0 animated:YES];
     [imageView release];
+    
+    PPDebug(@"tabBarController y:%f h:%f",self.tabBarController.tabBar.frame.origin.y ,self.tabBarController.tabBar.frame.size.height);
 	
 	[controllers release];
 }

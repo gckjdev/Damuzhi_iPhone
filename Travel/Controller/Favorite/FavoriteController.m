@@ -127,6 +127,12 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 - (void)showPlaces{
     if (self.myFavoriteButton.selected == YES) {
         self.myFavPlaceListView.hidden = NO;

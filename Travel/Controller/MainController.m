@@ -151,6 +151,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = NO;
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideTabBar:YES];
     [super viewDidDisappear:animated];
@@ -256,15 +257,6 @@
     [controller release];  
 }
 
-- (IBAction)clickMoreButton:(id)sender
-{ 
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    MoreController *controller = [[MoreController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
-}
 
 
 - (void)updateSelectedButton:(UIButton *)button
@@ -274,35 +266,6 @@
     self.currentSelectedButton.selected = YES;
 }
 
-- (IBAction)clickHomeButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-
-    
-    
-    
-}
-- (IBAction)clickUnpackageTourButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    NSObject<RouteListFilterProtocol>* filter = [UnPackageTourListFilter createFilter];
-    CommonRouteListController *controller = [[CommonRouteListController alloc] initWithFilterHandler:filter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO];
-        
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-
-
-- (IBAction)clickPackageTourButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    NSObject<RouteListFilterProtocol>* filter = [PackageTourListFilter createFilter];
-    CommonRouteListController *controller = [[CommonRouteListController alloc] initWithFilterHandler:filter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO];
-        
-    [self.navigationController pushViewController:controller animated:YES];
-}
 
 #pragma -mark share UIActionSheet delegate
 

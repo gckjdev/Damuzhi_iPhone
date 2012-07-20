@@ -164,10 +164,13 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = YES;
+    
     [super viewDidAppear:animated];
     
     [_placeListController viewDidAppear:animated];
 }
+
 
 
 - (void)clickBack:(id)sender

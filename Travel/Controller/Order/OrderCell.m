@@ -39,6 +39,7 @@
 @synthesize orderStatusLabel;
 @synthesize packageIdLabel;
 @synthesize packageIdTitleLabel;
+@synthesize cellBgImageView;
 
 - (void)dealloc {
     [_order release];
@@ -57,6 +58,7 @@
     [orderPayButton release];
     [routeFeedback release];
     [routeDetail release];
+    [cellBgImageView release];
     [super dealloc];
 }
 

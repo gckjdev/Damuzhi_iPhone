@@ -78,6 +78,7 @@
     showImageSwitch.on = [AppUtils isShowImage];
     
     [self updateDataSource];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -92,6 +93,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = NO;
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideTabBar:YES];
     [super viewDidDisappear:animated];
@@ -391,7 +393,8 @@
 - (void)showShare
 {
     UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLS(@"取消") destructiveButtonTitle:NSLS(@"通过短信") otherButtonTitles:NSLS(@"分享到新浪微博"), NSLS(@"分享到腾讯微博"), nil];
-    [shareSheet showInView:self.view];
+    //[shareSheet showInView:self.view];
+    [shareSheet showFromTabBar:self.tabBarController.tabBar];
     [shareSheet release];
 }
 

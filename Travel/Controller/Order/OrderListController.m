@@ -14,7 +14,6 @@
 #import "CommonRouteDetailController.h"
 #import "TravelNetworkConstants.h"
 #import "AppManager.h"
-
 #import "RouteFeekbackController.h"
 
 #define HEIGHT_HEADER_VIEW 44
@@ -25,16 +24,20 @@
 
 @property (assign, nonatomic) int orderType;
 @property (retain, nonatomic) NSMutableArray *sectionStat;
+@property (retain, nonatomic) NSDictionary *tipDic;
+
 @end
 
 @implementation OrderListController
 
 @synthesize orderType = _orderType;
 @synthesize sectionStat = _sectionStat;
+@synthesize tipDic = _tipDic;
 
 - (void)dealloc
 {
     [_sectionStat release];
+    [_tipDic release];
     [super dealloc];
 }
 
@@ -43,6 +46,7 @@
     if (self = [super init]) {
         self.orderType = orderType;
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
+        self.tipDic = [NSDictionary dictionary];
     }
     
     return self;
@@ -61,6 +65,8 @@
     [self setNavigationRightButton:NSLS(@"咨询") 
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
+    
+    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过跟团游订单"), [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], NSLS(@"您还没有下过自由行订单"), [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], NSLS(@"您还没有下过定制游订单"), [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
     
     
     if ([[UserManager defaultManager] isLogin]) {
@@ -127,6 +133,7 @@
     orderCell.delegate = self;
 
 	[orderCell setCellData:[dataList objectAtIndex:indexPath.row]];
+    orderCell.cellBgImageView.image = [[ImageManager defaultManager] orderListCellBgImage:indexPath.section rowCount:[dataList count]];
     
     return cell;
 }
@@ -156,15 +163,11 @@
     [view addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
     view.tag = section;
     
-    
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:view.bounds];
     bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
     
-    if (section >=1 && section == [dataList count] -1 && [[_sectionStat objectAtIndex:section] boolValue] == YES) {
-        bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:(section-1) rowCount:[dataList count]];
-    }else {
-        bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count]];
-    }
+    bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count] open:[[_sectionStat objectAtIndex:section] boolValue]];
+    
     [view addSubview:bgImageView];
     [bgImageView release];
     
@@ -212,7 +215,7 @@
     }
     
     if ([list count] == 0) {
-        [self showTipsOnTableView:NSLS(@"您没有下过订单")];
+        [self showTipsOnTableView:[_tipDic objectForKey:[NSNumber numberWithInt:_orderType]]];
         return;
     }
     

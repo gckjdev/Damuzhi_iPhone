@@ -108,6 +108,12 @@
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 - (void)clickConsult:(id)sender
 {
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];

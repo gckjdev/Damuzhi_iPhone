@@ -70,8 +70,10 @@
     }
 }
 
+
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = YES;
     [self updateNavButtons];
     [super viewDidAppear:animated];
 }
