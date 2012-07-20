@@ -344,25 +344,43 @@
         return;
     }
     
-    UserManager *manager = [UserManager defaultManager];
-    if ([[UserManager defaultManager] isLogin]) {
-        OrderService *service = [OrderService defaultService];
-        [service placeOrderUsingLoginId:[manager loginId] 
-                                  token:[manager token]
-                                routeId:_route.routeId 
-                              packageId:_packageId
-                             departDate:_departDate
-                                  adult:_adult 
-                               children:_children 
-                          contactPerson:nil
-                              telephone:nil
-                               delegate:self];
-    } else {
-        LoginController *controller  = [[LoginController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
+    NSString *message = NSLS(@"是否预订？");
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil] autorelease];
+    [alert show];
+    
+}
+
+//- (void) alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex    //wrong
+- (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex  // after animation
+{
+    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
+    NSString * str2 = [NSString stringWithFormat:@"确定"];
+    if ([str1 isEqualToString: str2]) 
+    {
+        UserManager *manager = [UserManager defaultManager];
+        if ([[UserManager defaultManager] isLogin]) {
+            OrderService *service = [OrderService defaultService];
+            [service placeOrderUsingLoginId:[manager loginId] 
+                                      token:[manager token]
+                                    routeId:_route.routeId 
+                                  packageId:_packageId
+                                 departDate:_departDate
+                                      adult:_adult 
+                                   children:_children 
+                              contactPerson:nil
+                                  telephone:nil
+                                   delegate:self];
+        } 
+        else 
+        {
+            LoginController *controller  = [[LoginController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
+        }
+        return;
     }
 }
+
 
 
 - (void)clickNonMemberBookButton
@@ -387,13 +405,18 @@
 }
 
 
+
+
+
+
+
+
 #pragma mark - MonthViewControllerDelegate methods
 - (void)didSelecteDate:(NSDate *)date
 {
     self.departDate = date;
     [dataTableView reloadData];
 }
-
 
 #pragma mark - SelectControllerDelegate
 - (void)didSelectFinish:(NSArray*)selectedItems
