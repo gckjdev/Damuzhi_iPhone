@@ -90,6 +90,9 @@
     
     if (_typeCity == destination) {
         [self addAreaButton];
+        
+        //默认选中第一个按钮
+        [self clickAreaButton:[[self buttonList] objectAtIndex:0]];
     }
 }
 
