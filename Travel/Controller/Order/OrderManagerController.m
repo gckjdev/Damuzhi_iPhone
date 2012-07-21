@@ -152,13 +152,12 @@
     
     [button addTarget:self action:@selector(clickCustomerServiceTelephone:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(65, HEIGHT_FOOTER_VIEW/2-8, 16, 16)] autorelease];
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(60, HEIGHT_FOOTER_VIEW/2-8, 16, 16)] autorelease];
     imageView.image = [[ImageManager defaultManager] orderTel];
     [button addSubview:imageView];
     
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(88, 0, 200, HEIGHT_FOOTER_VIEW)] autorelease];
-    label.text = [NSString stringWithFormat:NSLS(@"客服电话：%@"), [[[AppManager defaultManager]getServicePhoneList] objectAtIndex: 0]];
-
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(83, 0, 200, HEIGHT_FOOTER_VIEW)] autorelease];
+    label.text = [NSString stringWithFormat:NSLS(@"客服电话：%@"), [[[AppManager defaultManager] getServicePhoneList] objectAtIndex: 0]];
     
     label.textColor = [UIColor colorWithRed:1 green:72.0/255.0 blue:0 alpha:1];
     label.font = [UIFont systemFontOfSize:15];
@@ -189,7 +188,10 @@
         return;
     }
     
-    [UIUtils makeCall:[[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex]];
+    NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
+    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    
+    [UIUtils makeCall:phone];
 }
 
 
