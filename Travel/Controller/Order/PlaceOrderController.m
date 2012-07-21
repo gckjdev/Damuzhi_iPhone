@@ -208,10 +208,7 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         CGRect departFrame = cell.leftButton.frame;
         cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_DATE, departFrame.size.height);
-        
-        [cell.leftButton setTitle:dateToChineseString(_departDate) forState:UIControlStateNormal];
-        
-        
+        [cell.leftButton setTitle:((_departDate == nil) ? NSLS(@"请选择出发日期") : dateToChineseString(_departDate)) forState:UIControlStateNormal];
     }
     else if ([cellTitle isEqualToString:TITLE_PEOPLE_NUMBER]) {
         cell.contentLabel.hidden = YES;

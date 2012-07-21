@@ -33,6 +33,7 @@
 @synthesize currentMonthButton = _currentMonthButton;
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
+@synthesize buttonHolderView = _buttonHolderView;
 
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
@@ -47,6 +48,7 @@
     [_nextMonthButton release];
     [_monthHolderView release];
     [_aBgView release];
+    [_buttonHolderView release];
     [super dealloc];
 }
 
@@ -98,6 +100,7 @@
     [self setNextMonthButton:nil];
     [self setMonthHolderView:nil];
     [self setABgView:nil];
+    [self setButtonHolderView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -203,6 +206,10 @@
     CGAffineTransform transform =  CGAffineTransformMakeScale(scale, scale);
     _monthView.transform = transform;
     _monthView.frame = CGRectMake(0, 0, _monthView.frame.size.width, _monthView.frame.size.height);
+    
+    self.buttonHolderView.transform = transform;
+    CGRect bFrame = self.buttonHolderView.frame;
+    self.buttonHolderView.frame = CGRectMake(_monthView.frame.size.width * 0.5 - bFrame.size.width * 0.5, bFrame.origin.y, bFrame.size.width, bFrame.size.height);
     
     [superView addSubview:self.view];
 }

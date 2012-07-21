@@ -50,6 +50,7 @@
 
 - (UIView*)genStatisticsView;
 - (void)updateStatisticsData;
+- (void)updateDepartCityButton;
 
 @end
 
@@ -108,20 +109,29 @@
     return self;
 }
 
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self hideTabBar:NO];
+    [super viewWillAppear:animated];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
     self.hidesBottomBarWhenPushed = YES;
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideTabBar:NO];
+    [self hideTabBar:NO];
     [super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     self.hidesBottomBarWhenPushed = NO;
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideTabBar:YES];
+    [self hideTabBar:YES];
     [super viewDidDisappear:animated];
 }
 
@@ -177,6 +187,7 @@
     
     dataTableView.backgroundColor = [UIColor whiteColor];
     
+    [self updateDepartCityButton];
 }
 
 - (void)viewDidUnload
@@ -508,6 +519,18 @@
     [controller release];
 }
 
+- (void)updateDepartCityButton
+{
+    NSNumber *cityId = (NSNumber *)[_selectedItemIds.departCityIds objectAtIndex:0];
+    NSString *departCityName = [[AppManager defaultManager] getDepartCityName:[cityId intValue]];
+    if ([cityId intValue] == ALL_CATEGORY) {
+        departCityName = @"全部";
+    }
+    NSString *buttonTitle = [NSString stringWithFormat:NSLS(@"出发:%@"), departCityName];
+    UIButton *button = (UIButton *)[self.buttonsHolderView viewWithTag:TAG_FILTER_BTN_DEPART_CITY];
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+}
+
 #pragma mark - SelectControllerDelegate method
 - (void)didSelectFinish:(NSArray*)selectedItems
 {
@@ -520,7 +543,6 @@
                          viewController:self]; 
 }
 
-
 #pragma mark - SelectCityDelegate methods
 - (void)didSelectCity:(NSArray *)selectedItemList
 {
@@ -531,6 +553,7 @@
                    RouteSelectedItemIds:_selectedItemIds 
                          needStatistics:NO 
                          viewController:self];
+    [self updateDepartCityButton];
 }
 
 #pragma mark - 
