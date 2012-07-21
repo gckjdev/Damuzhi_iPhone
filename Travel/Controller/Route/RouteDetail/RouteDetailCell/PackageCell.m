@@ -97,6 +97,11 @@
     hotelNameLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
     [button addSubview:hotelNameLabel];
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(287, frame.size.height/2 - 6/2 , 5.5, 6)];
+    imageView.image = [UIImage imageNamed:@"go_btn.png"];
+    [button addSubview:imageView];
+    [imageView release];
+    
     return button;
 }
 
