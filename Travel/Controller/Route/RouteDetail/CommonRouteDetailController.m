@@ -133,7 +133,9 @@
         return;
     }
     
-    [UIUtils makeCall:[self.phoneList objectAtIndex:buttonIndex]];
+    NSString *phone = [self.phoneList objectAtIndex:buttonIndex];
+//    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];    
+    [UIUtils makeCall:phone];
 }
 
 
