@@ -21,6 +21,7 @@
 
 @property (retain, nonatomic) IBOutlet UIImageView *feekbackImageView;
 
+@property (retain, nonatomic) IBOutlet UIScrollView *backgroundScrollView;
 - (id)initWithOrder:(Order *)order;
 
 @end

@@ -10,7 +10,7 @@
 
 #import "PPTableViewController.h"   //(have not found the exact header for using NSLS)
 #import "PPNetworkRequest.h"
-
+#import "UIViewUtils.h"
 
 #define MAX_LENGTH_OF_FEEKBACK 160
 
@@ -32,6 +32,7 @@
 
 @synthesize feekbackTextView;
 @synthesize feekbackImageView;
+@synthesize backgroundScrollView;
 
 #pragma mark - View lifecycle
 
@@ -44,6 +45,7 @@
     [feekbackTextView release];
     [feekbackImageView release];
     [_order release];
+    [backgroundScrollView release];
     [super dealloc];
 }
 
@@ -71,6 +73,8 @@
                          imageName:@"topmenu_btn_right.png"  
                             action:@selector(clickSubmit:)];
     
+    self.backgroundScrollView.contentSize = CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height + 1);
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     // Set feekback text view delegate.
     self.feekbackTextView.delegate = self;
     self.feekbackTextView.placeholder = NSLS(@"请输入您的评价!(小于等于160个字)");
@@ -81,6 +85,7 @@
 
 -(void) clickSubmit: (id) sender
 {
+
     NSString *feekback = [self.feekbackTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];   
     
     if ([feekback compare:@""] == 0) {
@@ -124,6 +129,7 @@
     [self setBackgroundImageButton3:nil];
     [self setFeekbackTextView:nil];
     [self setFeekbackImageView:nil];
+    [self setBackgroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

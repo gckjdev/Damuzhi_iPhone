@@ -59,12 +59,12 @@
 - (void)updateNavButtons
 {
     if ([[UserManager defaultManager] isLogin]) {
-        [self setNavigationRightButton:NSLS(@"退出登陆") 
+        [self setNavigationRightButton:NSLS(@"退出登录") 
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
     }else {
-        [self setNavigationRightButton:NSLS(@"会员登陆") 
+        [self setNavigationRightButton:NSLS(@"会员登录") 
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
     }

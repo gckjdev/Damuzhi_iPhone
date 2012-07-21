@@ -113,8 +113,14 @@
 
 - (void)clickFinish:(id)sender
 {
-    if (!NSStringIsValidPhone(telephoneTextField.text)) {
-        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+//    if (!NSStringIsValidPhone(telephoneTextField.text)) {
+//        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+//        return;
+//    }
+    NSString *str = codeTextField.text;
+    str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (0 == [str length]) {
+        [self popupMessage:@"您输入的验证码为空，请重新输入" title:nil];
         return;
     }
     

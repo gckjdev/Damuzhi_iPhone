@@ -42,10 +42,10 @@
               feekback:(NSString*)feekback
                contact:(NSString*)contact;
 
-// 用户自动登陆接口，启动时调用
+// 用户自动登录接口，启动时调用
 - (void)autoLogin:(id<UserServiceDelegate>)delegate;
 
-// 用户登陆接口
+// 用户登录接口
 - (void)login:(NSString *)loginId
      password:(NSString *)password
      delegate:(id<UserServiceDelegate>)delegate;
