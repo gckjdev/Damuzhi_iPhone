@@ -39,8 +39,8 @@ message Package {
 //}
 
 enum LoginType{
-  TELEPHONE = 1;          // 手机登陆
-  EMAIL = 2;              // 邮箱登陆
+  TELEPHONE = 1;          // 手机登录
+  EMAIL = 2;              // 邮箱登录
 }
 
 // 用于会员资料
@@ -67,7 +67,7 @@ message RouteFeekbackList
 // 用于路线反馈
 message RouteFeekback {
   required int32  routeId = 1;		// 线路编号
-  required string loginId = 2;		// 登陆名，即会员的登陆时的用户名。只有会员才能评价路线。
+  required string loginId = 2;		// 登录名，即会员的登录时的用户名。只有会员才能评价路线。
   required string nickName = 3;		// 用户昵称
   required int32 date = 4;          // 评价时间，从1970年1月1日0时0分0秒算起，经过的秒数。
   required int32 rank = 5;          // 评级

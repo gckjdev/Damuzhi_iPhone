@@ -324,12 +324,12 @@
     }
     
     if (result != 0) {
-        NSString *str = [NSString stringWithFormat:NSLS(@"登陆失败：%@"), resultInfo];
+        NSString *str = [NSString stringWithFormat:NSLS(@"登录失败：%@"), resultInfo];
         [self popupMessage:str title:nil];
         return;
     }
     
-    [self popupMessage:NSLS(@"登陆成功") title:nil];    
+    [self popupMessage:NSLS(@"登录成功") title:nil];    
 }
 
 @end

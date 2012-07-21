@@ -11,7 +11,7 @@
 #import "PPNetworkRequest.h"
 #import "VerificationController.h"
 
-#define TITLE_SIGN_UP_ID                NSLS(@"用 户 名:")
+#define TITLE_SIGN_UP_ID                NSLS(@"用 户 名 :")
 #define TITLE_SIGN_UP_PASSWORD          NSLS(@"密     码 :")
 #define TITLE_SIGN_UP_PASSWORD_AGAIN    NSLS(@"确认密码:")
 

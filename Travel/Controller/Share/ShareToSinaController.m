@@ -178,17 +178,17 @@
 #pragma -mark WBEngineDelegate
 - (void)engineAlreadyLoggedIn:(WBEngine *)engine
 {
-    NSLog(@"已登陆");
+    NSLog(@"已登录");
 }
 
 - (void)engineDidLogIn:(WBEngine *)engine
 {
-    NSLog(@"登陆成功");
+    NSLog(@"登录成功");
 }
 
 - (void)engine:(WBEngine *)engine didFailToLogInWithError:(NSError *)error
 {
-    NSLog(@"登陆错误,错误代码:%@",error);
+    NSLog(@"登录错误,错误代码:%@",error);
 }
 
 - (void)engineDidLogOut:(WBEngine *)engine

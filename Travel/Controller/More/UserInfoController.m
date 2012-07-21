@@ -260,7 +260,7 @@ enum{
     UserInfoCell *cell = (UserInfoCell *)[self.dataTableView cellForRowAtIndexPath:aIndexPath];
     self.currentInputTextField = cell.inputTextField;
 
-    if (aIndexPath.section >1 || (aIndexPath.section == 1 && aIndexPath.row >= 1)) {
+    if (aIndexPath.section >= 1 ) {
         [self.view moveTtoCenter:CGPointMake(viewCenter.x, viewCenter.y - 100) needAnimation:YES animationDuration:0.5];
     }
 }
