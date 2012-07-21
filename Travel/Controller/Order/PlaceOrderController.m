@@ -346,6 +346,12 @@
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];
         return;
     }
+    if (![[UserManager defaultManager] isLogin]) {
+        LoginController *controller = [[LoginController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+        return;
+    }
     
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil] autorelease];
@@ -405,6 +411,7 @@
     }
     
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
+//    [self popupMessage:@"yunyunyun" title:nil];
 }
 
 
