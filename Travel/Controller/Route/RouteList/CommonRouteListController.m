@@ -50,6 +50,7 @@
 
 - (UIView*)genStatisticsView;
 - (void)updateStatisticsData;
+- (void)updateDepartCityButton;
 
 @end
 
@@ -186,6 +187,7 @@
     
     dataTableView.backgroundColor = [UIColor whiteColor];
     
+    [self updateDepartCityButton];
 }
 
 - (void)viewDidUnload
@@ -517,6 +519,18 @@
     [controller release];
 }
 
+- (void)updateDepartCityButton
+{
+    NSNumber *cityId = (NSNumber *)[_selectedItemIds.departCityIds objectAtIndex:0];
+    NSString *departCityName = [[AppManager defaultManager] getDepartCityName:[cityId intValue]];
+    if ([cityId intValue] == ALL_CATEGORY) {
+        departCityName = @"全部";
+    }
+    NSString *buttonTitle = [NSString stringWithFormat:NSLS(@"出发:%@"), departCityName];
+    UIButton *button = (UIButton *)[self.buttonsHolderView viewWithTag:TAG_FILTER_BTN_DEPART_CITY];
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+}
+
 #pragma mark - SelectControllerDelegate method
 - (void)didSelectFinish:(NSArray*)selectedItems
 {
@@ -529,7 +543,6 @@
                          viewController:self]; 
 }
 
-
 #pragma mark - SelectCityDelegate methods
 - (void)didSelectCity:(NSArray *)selectedItemList
 {
@@ -540,6 +553,7 @@
                    RouteSelectedItemIds:_selectedItemIds 
                          needStatistics:NO 
                          viewController:self];
+    [self updateDepartCityButton];
 }
 
 #pragma mark - 
