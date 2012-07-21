@@ -99,7 +99,9 @@
         return;
     }
     
-    [UIUtils makeCall:[[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex]];
+    NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
+//    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    [UIUtils makeCall:phone];
 }
 
 - (void)viewDidUnload

@@ -23,6 +23,8 @@
 @property (retain, nonatomic) IBOutlet UITextField *telephoneTextField;
 @property (assign, nonatomic) id<NonMemberOrderDelegate>  delegate;
 
+@property (retain, nonatomic) IBOutlet UIScrollView *backGroundScrollView;
+
 - (id)initWithRoute:(TouristRoute *)route
          departDate:(NSDate *)departDate
               adult:(int)adult
