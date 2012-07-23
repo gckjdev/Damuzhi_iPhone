@@ -20,6 +20,12 @@
 #import "ResendService.h"
 #import "ImageManager.h"
 
+#import "PPTabBarController.h"
+#import "CommonRouteListController.h"
+#import "UnPackageTourListFilter.h"
+#import "PackageTourListFilter.h"
+#import "MoreController.h"
+#import "CustomTourController.h"
 
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
@@ -28,18 +34,93 @@
 
 @synthesize window = _window;
 @synthesize mainController = _mainController;
+@synthesize tabBarController = _tabBarController;
 
 - (void)dealloc
 {
     [_window release];
     [_mainController release];
+    [_tabBarController release];
     [super dealloc];
 }
 
+- (void)hideTabBar:(BOOL)isHide
+{
+    [self.tabBarController hideCustomTabBarView:isHide];
+}
+
+- (void)initTabViewControllers
+{
+    PPTabBarController *tabBarController = [[PPTabBarController alloc] init];
+    self.tabBarController = tabBarController;
+    [tabBarController release];
+    
+    _tabBarController.delegate = self;
+    
+	NSMutableArray* controllers = [[NSMutableArray alloc] init];
+    
+	self.mainController = (MainController *)[UIUtils addViewController:[MainController alloc]
+					 viewTitle:nil
+					 viewImage:@"menu_btn1_off.png"
+			  hasNavController:YES			
+			   viewControllers:controllers];	
+    
+    NSObject<RouteListFilterProtocol>* unPackageFilter = [UnPackageTourListFilter createFilter];
+    CommonRouteListController *unPackageController = [[[CommonRouteListController alloc] initWithFilterHandler:unPackageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+    
+    [UIUtils addInitViewController:unPackageController 
+                         viewTitle:nil
+                         viewImage:@"menu_btn2_off.png" 
+                  hasNavController:YES 
+                 hideNavigationBar:NO 
+                   viewControllers:controllers];
+    
+    NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
+    CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+    
+    [UIUtils addInitViewController:packageController 
+                         viewTitle:nil
+                         viewImage:@"menu_btn3_off.png" 
+                  hasNavController:YES 
+                 hideNavigationBar:NO 
+                   viewControllers:controllers];
+    
+    [UIUtils addViewController:[CustomTourController alloc] 
+                         viewTitle:nil
+                         viewImage:@"menu_btn4_off.png" 
+                  hasNavController:YES 
+                 hideNavigationBar:NO 
+                   viewControllers:controllers];
+    
+    [UIUtils addViewController:[MoreController alloc] 
+                         viewTitle:nil
+                         viewImage:@"menu_btn5_off.png" 
+                  hasNavController:YES 
+                 hideNavigationBar:NO 
+                   viewControllers:controllers];
+    
+	_tabBarController.viewControllers = controllers;
+    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
+                                                  @"menu_btn1_on.png", 
+                                                  @"menu_btn2_on.png", 
+                                                  @"menu_btn3_on.png", 
+                                                  @"menu_btn4_on.png", 
+                                                  @"menu_btn5_on.png", nil]];
+    _tabBarController.selectedIndex = 0;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
+    [_tabBarController setTopImageView:imageView down:1.0 animated:YES];
+    [imageView release];
+    
+    PPDebug(@"tabBarController y:%f h:%f",self.tabBarController.tabBar.frame.origin.y ,self.tabBarController.tabBar.frame.size.height);
+	
+	[controllers release];
+}
+
+
+
 #define EVER_LAUNCHED @"everLaunched"
 #define FIRST_LAUNCH @"firstLaunch"
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     application.applicationIconBadgeNumber = 0;
@@ -88,21 +169,26 @@
     [[ResendService defaultService] resendFavorite];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
     // Override point for customization after application launch.
-    self.mainController = [[[MainController alloc] initWithNibName:@"MainController" bundle:nil] autorelease];
+//    self.mainController = [[[MainController alloc] initWithNibName:@"MainController" bundle:nil] autorelease];
+//    
+//    UINavigationController* navigationController = [[[UINavigationController alloc] initWithRootViewController:self.mainController] autorelease];
+//    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
+//    
+//    self.window.rootViewController = navigationController;
+//    
+//    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
+//    splashView.frame = [self.window bounds];
+//    splashView.tag = SPLASH_VIEW_TAG;
+//    [self.window.rootViewController.view addSubview:splashView];
+//    [splashView release];
+//    
+//    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
-    UINavigationController* navigationController = [[[UINavigationController alloc] initWithRootViewController:self.mainController] autorelease];
-    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
     
-    self.window.rootViewController = navigationController;
-    
-    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
-    splashView.frame = [self.window bounds];
-    splashView.tag = SPLASH_VIEW_TAG;
-    [self.window.rootViewController.view addSubview:splashView];
-    [splashView release];
-    
-    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
+    [self initTabViewControllers];
+    [self.window addSubview:_tabBarController.view];
     
     [self.window makeKeyAndVisible];
     

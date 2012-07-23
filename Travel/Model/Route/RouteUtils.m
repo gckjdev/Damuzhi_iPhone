@@ -9,6 +9,7 @@
 #import "RouteUtils.h"
 #import "TouristRoute.pb.h"
 #import "RouteExtend.h"
+#import "PPDebug.h"
 
 @implementation RouteUtils
 
@@ -74,8 +75,12 @@
 
 + (TravelPackage *)findPackageByPackageId:(int)packageId fromPackageList:(NSArray *)packageList
 {
+    PPDebug(@"find packageId = %d", packageId);
+
     TravelPackage *package;
     for (package in packageList) {
+        PPDebug(@"packageId = %d", package.packageId);
+
         if (package.packageId == packageId) {
             return package;
         }

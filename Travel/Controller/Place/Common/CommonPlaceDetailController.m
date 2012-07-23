@@ -9,7 +9,6 @@
 #import "CommonPlaceDetailController.h"
 #import "SlideImageView.h"
 #import "Place.pb.h"
-#import "CommonPlace.h"
 #import "ImageName.h"
 #import "UIImageUtil.h"
 #import "UIUtils.h"

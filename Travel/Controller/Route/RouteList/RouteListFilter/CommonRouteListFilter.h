@@ -14,14 +14,19 @@
 #define TAG_FILTER_BTN_CLASSIFY 21
 #define TAG_SORT_BTN 22
 
+typedef enum{
+    depart = 0,
+    destination = 1
+} typeCity;
+
 @interface CommonRouteListFilter : NSObject
 
 + (UIButton*)createFilterButton:(CGRect)frame title:(NSString*)title;
 
-+ (NSArray *)filterRouteList:(NSArray *)routeList byAgencyIdList:(NSArray *)agencyIdList;
-+ (NSArray *)filterRouteList:(NSArray *)routeList byThemeIdList:(NSArray *)themeIdList;
-+ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList;
-+ (NSArray *)filterRouteList:(NSArray *)routeList byDepartCityId:(int)departCityId;
-+ (NSArray *)filterRouteList:(NSArray *)routeList byDestinationCityId:(int)destinationCityId;
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byAgencyIdList:(NSArray *)agencyIdList;
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byThemeIdList:(NSArray *)themeIdList;
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList;
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byDepartCityId:(int)departCityId;
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byDestinationCityId:(int)destinationCityId;
 
 @end

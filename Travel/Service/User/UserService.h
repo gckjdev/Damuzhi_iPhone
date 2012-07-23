@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CommonService.h"
+#import "Package.pb.h"
 
 @protocol UserServiceDelegate <NSObject>
 
@@ -22,7 +23,10 @@
 - (void)loginDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
 - (void)loginoutDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
 
-- (void)retrievePasswordDidSend:(int)resultCode;
+- (void)retrievePasswordDidSend:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+
+- (void)modifyPasswordDidDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;
+- (void)retrieveUserInfoDidDone:(int)resultCode userInfo:(UserInfo *)userInfo;
 
 @end
 
@@ -38,10 +42,10 @@
               feekback:(NSString*)feekback
                contact:(NSString*)contact;
 
-// 用户自动登陆接口，启动时调用
+// 用户自动登录接口，启动时调用
 - (void)autoLogin:(id<UserServiceDelegate>)delegate;
 
-// 用户登陆接口
+// 用户登录接口
 - (void)login:(NSString *)loginId
      password:(NSString *)password
      delegate:(id<UserServiceDelegate>)delegate;
@@ -66,25 +70,21 @@
 
 
 // 找回密码接口
-- (void)retrievePassword:(NSString *)loginId 
-               telephone:(NSString *)telephone
+- (void)retrievePassword:(NSString *)telephone
                 delegate:(id<UserServiceDelegate>)delegate;
 
-- (void)modifyUserInfo:(NSString *)loginId
-                 token:(NSString *)token 
-              fullName:(NSString *)fullName
-              nickName:(NSString *)nickName
-                gender:(int)gender
-             telephone:(NSString *)telephone
-                 email:(NSString *)email
-               address:(NSString *)address;
+- (void)modifyUserFullName:(NSString *)fullName
+                  nickName:(NSString *)nickName
+                    gender:(int)gender
+                 telephone:(NSString *)telephone
+                     email:(NSString *)email
+                   address:(NSString *)address
+                  delegate:(id<UserServiceDelegate>)delegate;
     
-- (void)modifyPassword:(NSString *)loginId
-                 token:(NSString *)token 
-           oldPassword:(NSString *)oldPassword
-                newPassword:(NSString *)newPassword;
+- (void)modifyPassword:(NSString *)oldPassword
+           newPassword:(NSString *)newPassword
+              delegate:(id<UserServiceDelegate>)delegate;
 
-- (void)retrieveUserInfo:(NSString *)loginId
-        token:(NSString *)token;
+- (void)retrieveUserInfo:(id<UserServiceDelegate>)delegate;
 
 @end

@@ -53,17 +53,25 @@
 @class PlaceList_Builder;
 @class PlaceMeta;
 @class PlaceMeta_Builder;
+@class PlaceStatistics;
+@class PlaceStatistics_Builder;
 @class PlaceTour;
 @class PlaceTour_Builder;
 @class Place_Builder;
 @class RecommendedApp;
 @class RecommendedApp_Builder;
+@class Region;
+@class Region_Builder;
 @class RouteCity;
 @class RouteCity_Builder;
 @class RouteFeekback;
 @class RouteFeekbackList;
 @class RouteFeekbackList_Builder;
 @class RouteFeekback_Builder;
+@class RouteStatistics;
+@class RouteStatistics_Builder;
+@class Statistics;
+@class Statistics_Builder;
 @class TouristRoute;
 @class TouristRouteList;
 @class TouristRouteList_Builder;
@@ -83,6 +91,13 @@ typedef enum {
 } LanguageType;
 
 BOOL LanguageTypeIsValidValue(LanguageType value);
+
+typedef enum {
+  LoginTypeTelephone = 1,
+  LoginTypeEmail = 2,
+} LoginType;
+
+BOOL LoginTypeIsValidValue(LoginType value);
 
 
 @interface PackageRoot : NSObject {
@@ -170,41 +185,37 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 @private
   BOOL hasLoginType_:1;
   BOOL hasGender_:1;
-  BOOL hasUserId_:1;
-  BOOL hasPassword_:1;
-  BOOL hasTelephone_:1;
-  BOOL hasEmail_:1;
+  BOOL hasLoginId_:1;
   BOOL hasNickName_:1;
   BOOL hasFullName_:1;
+  BOOL hasTelephone_:1;
+  BOOL hasEmail_:1;
   BOOL hasAddress_:1;
   int32_t loginType;
   int32_t gender;
-  NSString* userId;
-  NSString* password;
-  NSString* telephone;
-  NSString* email;
+  NSString* loginId;
   NSString* nickName;
   NSString* fullName;
+  NSString* telephone;
+  NSString* email;
   NSString* address;
 }
-- (BOOL) hasUserId;
+- (BOOL) hasLoginId;
 - (BOOL) hasLoginType;
-- (BOOL) hasPassword;
+- (BOOL) hasNickName;
+- (BOOL) hasFullName;
 - (BOOL) hasTelephone;
 - (BOOL) hasEmail;
-- (BOOL) hasNickName;
-- (BOOL) hasGender;
-- (BOOL) hasFullName;
 - (BOOL) hasAddress;
-@property (readonly, retain) NSString* userId;
+- (BOOL) hasGender;
+@property (readonly, retain) NSString* loginId;
 @property (readonly) int32_t loginType;
-@property (readonly, retain) NSString* password;
+@property (readonly, retain) NSString* nickName;
+@property (readonly, retain) NSString* fullName;
 @property (readonly, retain) NSString* telephone;
 @property (readonly, retain) NSString* email;
-@property (readonly, retain) NSString* nickName;
-@property (readonly) int32_t gender;
-@property (readonly, retain) NSString* fullName;
 @property (readonly, retain) NSString* address;
+@property (readonly) int32_t gender;
 
 + (UserInfo*) defaultInstance;
 - (UserInfo*) defaultInstance;
@@ -240,20 +251,25 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (UserInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (UserInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (BOOL) hasUserId;
-- (NSString*) userId;
-- (UserInfo_Builder*) setUserId:(NSString*) value;
-- (UserInfo_Builder*) clearUserId;
+- (BOOL) hasLoginId;
+- (NSString*) loginId;
+- (UserInfo_Builder*) setLoginId:(NSString*) value;
+- (UserInfo_Builder*) clearLoginId;
 
 - (BOOL) hasLoginType;
 - (int32_t) loginType;
 - (UserInfo_Builder*) setLoginType:(int32_t) value;
 - (UserInfo_Builder*) clearLoginType;
 
-- (BOOL) hasPassword;
-- (NSString*) password;
-- (UserInfo_Builder*) setPassword:(NSString*) value;
-- (UserInfo_Builder*) clearPassword;
+- (BOOL) hasNickName;
+- (NSString*) nickName;
+- (UserInfo_Builder*) setNickName:(NSString*) value;
+- (UserInfo_Builder*) clearNickName;
+
+- (BOOL) hasFullName;
+- (NSString*) fullName;
+- (UserInfo_Builder*) setFullName:(NSString*) value;
+- (UserInfo_Builder*) clearFullName;
 
 - (BOOL) hasTelephone;
 - (NSString*) telephone;
@@ -265,25 +281,15 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (UserInfo_Builder*) setEmail:(NSString*) value;
 - (UserInfo_Builder*) clearEmail;
 
-- (BOOL) hasNickName;
-- (NSString*) nickName;
-- (UserInfo_Builder*) setNickName:(NSString*) value;
-- (UserInfo_Builder*) clearNickName;
+- (BOOL) hasAddress;
+- (NSString*) address;
+- (UserInfo_Builder*) setAddress:(NSString*) value;
+- (UserInfo_Builder*) clearAddress;
 
 - (BOOL) hasGender;
 - (int32_t) gender;
 - (UserInfo_Builder*) setGender:(int32_t) value;
 - (UserInfo_Builder*) clearGender;
-
-- (BOOL) hasFullName;
-- (NSString*) fullName;
-- (UserInfo_Builder*) setFullName:(NSString*) value;
-- (UserInfo_Builder*) clearFullName;
-
-- (BOOL) hasAddress;
-- (NSString*) address;
-- (UserInfo_Builder*) setAddress:(NSString*) value;
-- (UserInfo_Builder*) clearAddress;
 @end
 
 @interface RouteFeekbackList : PBGeneratedMessage {
@@ -428,6 +434,65 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (RouteFeekback_Builder*) clearContent;
 @end
 
+@interface RouteStatistics : PBGeneratedMessage {
+@private
+  NSMutableArray* mutableDepartCityStatisticsList;
+  NSMutableArray* mutableAgencyStatisticsList;
+}
+- (NSArray*) departCityStatisticsList;
+- (Statistics*) departCityStatisticsAtIndex:(int32_t) index;
+- (NSArray*) agencyStatisticsList;
+- (Statistics*) agencyStatisticsAtIndex:(int32_t) index;
+
++ (RouteStatistics*) defaultInstance;
+- (RouteStatistics*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (RouteStatistics_Builder*) builder;
++ (RouteStatistics_Builder*) builder;
++ (RouteStatistics_Builder*) builderWithPrototype:(RouteStatistics*) prototype;
+
++ (RouteStatistics*) parseFromData:(NSData*) data;
++ (RouteStatistics*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (RouteStatistics*) parseFromInputStream:(NSInputStream*) input;
++ (RouteStatistics*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (RouteStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (RouteStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface RouteStatistics_Builder : PBGeneratedMessage_Builder {
+@private
+  RouteStatistics* result;
+}
+
+- (RouteStatistics*) defaultInstance;
+
+- (RouteStatistics_Builder*) clear;
+- (RouteStatistics_Builder*) clone;
+
+- (RouteStatistics*) build;
+- (RouteStatistics*) buildPartial;
+
+- (RouteStatistics_Builder*) mergeFrom:(RouteStatistics*) other;
+- (RouteStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (RouteStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) departCityStatisticsList;
+- (Statistics*) departCityStatisticsAtIndex:(int32_t) index;
+- (RouteStatistics_Builder*) replaceDepartCityStatisticsAtIndex:(int32_t) index with:(Statistics*) value;
+- (RouteStatistics_Builder*) addDepartCityStatistics:(Statistics*) value;
+- (RouteStatistics_Builder*) addAllDepartCityStatistics:(NSArray*) values;
+- (RouteStatistics_Builder*) clearDepartCityStatisticsList;
+
+- (NSArray*) agencyStatisticsList;
+- (Statistics*) agencyStatisticsAtIndex:(int32_t) index;
+- (RouteStatistics_Builder*) replaceAgencyStatisticsAtIndex:(int32_t) index with:(Statistics*) value;
+- (RouteStatistics_Builder*) addAgencyStatistics:(Statistics*) value;
+- (RouteStatistics_Builder*) addAllAgencyStatistics:(NSArray*) values;
+- (RouteStatistics_Builder*) clearAgencyStatisticsList;
+@end
+
 @interface TravelResponse : PBGeneratedMessage {
 @private
   BOOL hasResultCode_:1;
@@ -436,9 +501,11 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
   BOOL hasCityImageList_:1;
   BOOL hasOrderList_:1;
   BOOL hasRouteFeekbackList_:1;
+  BOOL hasRouteStatistics_:1;
   BOOL hasRouteList_:1;
   BOOL hasRoute_:1;
   BOOL hasUserInfo_:1;
+  BOOL hasPlaceStatistics_:1;
   BOOL hasTravelTipList_:1;
   BOOL hasAppInfo_:1;
   BOOL hasCityList_:1;
@@ -453,9 +520,11 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
   CityImageList* cityImageList;
   OrderList* orderList;
   RouteFeekbackList* routeFeekbackList;
+  RouteStatistics* routeStatistics;
   TouristRouteList* routeList;
   TouristRoute* route;
   UserInfo* userInfo;
+  PlaceStatistics* placeStatistics;
   CommonTravelTipList* travelTipList;
   App* appInfo;
   CityList* cityList;
@@ -475,10 +544,12 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (BOOL) hasCityList;
 - (BOOL) hasAppInfo;
 - (BOOL) hasTravelTipList;
+- (BOOL) hasPlaceStatistics;
 - (BOOL) hasTotalCount;
 - (BOOL) hasUserInfo;
 - (BOOL) hasRoute;
 - (BOOL) hasRouteList;
+- (BOOL) hasRouteStatistics;
 - (BOOL) hasRouteFeekbackList;
 - (BOOL) hasOrderList;
 - (BOOL) hasCityImageList;
@@ -492,10 +563,12 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 @property (readonly, retain) CityList* cityList;
 @property (readonly, retain) App* appInfo;
 @property (readonly, retain) CommonTravelTipList* travelTipList;
+@property (readonly, retain) PlaceStatistics* placeStatistics;
 @property (readonly) int32_t totalCount;
 @property (readonly, retain) UserInfo* userInfo;
 @property (readonly, retain) TouristRoute* route;
 @property (readonly, retain) TouristRouteList* routeList;
+@property (readonly, retain) RouteStatistics* routeStatistics;
 @property (readonly, retain) RouteFeekbackList* routeFeekbackList;
 @property (readonly, retain) OrderList* orderList;
 @property (readonly, retain) CityImageList* cityImageList;
@@ -600,6 +673,13 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (TravelResponse_Builder*) mergeTravelTipList:(CommonTravelTipList*) value;
 - (TravelResponse_Builder*) clearTravelTipList;
 
+- (BOOL) hasPlaceStatistics;
+- (PlaceStatistics*) placeStatistics;
+- (TravelResponse_Builder*) setPlaceStatistics:(PlaceStatistics*) value;
+- (TravelResponse_Builder*) setPlaceStatisticsBuilder:(PlaceStatistics_Builder*) builderForValue;
+- (TravelResponse_Builder*) mergePlaceStatistics:(PlaceStatistics*) value;
+- (TravelResponse_Builder*) clearPlaceStatistics;
+
 - (BOOL) hasTotalCount;
 - (int32_t) totalCount;
 - (TravelResponse_Builder*) setTotalCount:(int32_t) value;
@@ -625,6 +705,13 @@ BOOL LanguageTypeIsValidValue(LanguageType value);
 - (TravelResponse_Builder*) setRouteListBuilder:(TouristRouteList_Builder*) builderForValue;
 - (TravelResponse_Builder*) mergeRouteList:(TouristRouteList*) value;
 - (TravelResponse_Builder*) clearRouteList;
+
+- (BOOL) hasRouteStatistics;
+- (RouteStatistics*) routeStatistics;
+- (TravelResponse_Builder*) setRouteStatistics:(RouteStatistics*) value;
+- (TravelResponse_Builder*) setRouteStatisticsBuilder:(RouteStatistics_Builder*) builderForValue;
+- (TravelResponse_Builder*) mergeRouteStatistics:(RouteStatistics*) value;
+- (TravelResponse_Builder*) clearRouteStatistics;
 
 - (BOOL) hasRouteFeekbackList;
 - (RouteFeekbackList*) routeFeekbackList;

@@ -23,19 +23,39 @@ message Package {
   required LanguageType language = 4 [default=ZH_HANS];            // 语言类型
 }
 
+//// 用于会员资料
+//message UserInfo {
+//  required string userId = 1;		// 用户id，与设备id绑定
+//  required int32  loginType = 2;    // 当前登录类型，1：手机；2：邮箱
+//  required string password = 3;		// 密码
+//
+//  required string telephone = 10;	// 电话
+//  required string email = 11; 		// 邮箱
+//
+//  optional string nickName = 20;	// 昵称
+//  optional int32  gender = 21; 		// 性别，0为不显示，1为男，2为女，3为保密
+//  optional string fullName = 22;	// 姓名
+//  optional string address = 23;     // 住址
+//}
+
+enum LoginType{
+  TELEPHONE = 1;          // 手机登录
+  EMAIL = 2;              // 邮箱登录
+}
+
 // 用于会员资料
 message UserInfo {
-  required string userId = 1;		// 用户id，与设备id绑定
-  required int32  loginType = 2;    // 当前登录类型，1：手机；2：邮箱
-  required string password = 3;		// 密码
+  required string  loginId = 1;      // 用户名
+  required int32  loginType = 2;     // 当前登录类型，1：手机；2：邮箱
 
-  required string telephone = 10;	// 电话
-  required string email = 11; 		// 邮箱
+  optional string nickName = 5;	// 昵称
 
-  optional string nickName = 20;	// 昵称
-  optional int32  gender = 21; 		// 性别，0为不显示，1为男，2为女，3为保密
-  optional string fullName = 22;	// 姓名
-  optional string address = 23;     // 住址
+  optional string fullName = 10;	// 姓名
+  optional string telephone = 15;	// 电话
+  optional string email = 16; 		// 邮箱
+  
+  optional string address = 20;     // 住址
+  optional int32  gender = 30; 		// 性别，0为不显示，1为男，2为女，3为保密
 }
 
 // 用于获取线路反馈列表
@@ -47,11 +67,16 @@ message RouteFeekbackList
 // 用于路线反馈
 message RouteFeekback {
   required int32  routeId = 1;		// 线路编号
-  required string loginId = 2;		// 登陆名，即会员的登陆时的用户名。只有会员才能评价路线。
+  required string loginId = 2;		// 登录名，即会员的登录时的用户名。只有会员才能评价路线。
   required string nickName = 3;		// 用户昵称
   required int32 date = 4;          // 评价时间，从1970年1月1日0时0分0秒算起，经过的秒数。
   required int32 rank = 5;          // 评级
   optional string content = 6;      // 反馈内容
+}
+
+message RouteStatistics{
+  repeated Statistics departCityStatistics = 1;
+  repeated Statistics agencyStatistics = 2;
 }
 
 message TravelResponse{
@@ -66,12 +91,16 @@ message TravelResponse{
   optional App appInfo = 9;   
   optional CommonTravelTipList travelTipList = 10;
   
+  optional PlaceStatistics placeStatistics = 12;        // 地点统计信息
+  
   optional int32 totalCount = 13;                       // 用于返回符合查询条件的列表的行总数
   
   optional UserInfo userInfo = 15;                      // 用户资料
   
   optional TouristRoute route = 20;                     // 线路详情
   optional TouristRouteList routeList = 21;             // 线路列表
+  
+  optional RouteStatistics routeStatistics = 25;        // 线路统计信息
   
   optional RouteFeekbackList routeFeekbackList= 30;     // 线路反馈
   

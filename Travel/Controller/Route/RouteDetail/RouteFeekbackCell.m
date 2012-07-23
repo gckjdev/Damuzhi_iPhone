@@ -30,9 +30,6 @@
     return 120;
 }
 
-
-
-
 + (NSString *)getCellIdentifier
 {
     return @"RouteFeekbackCell";
@@ -78,24 +75,7 @@
     
     contentLabel.frame = CGRectMake(contentLabel.frame.origin.x, contentLabel.frame.origin.y, contentLabel.frame.size.width, size.height);
     
-    //PPDebug(@"%@", routeFeekback);
 }
-
-//- (UIView *)genRankViewWithFrame:(CGRect)frame
-//                       imageGood:(UIImage *)iamgeGood
-//                        imageBad:(UIImage *)imageBad
-//                       totalRank:(int)totalRank
-//                            rank:(int)rank
-//{
-//    UIView *view = [[[UIView alloc] initWithFrame:frame] autorelease];
-//    
-//    UIImageView *rankImageView = [[[UIImageView alloc] initWithFrame:] autorelease];
-//    rankImageView.image = 
-//    
-//    
-//    [view addSubview:rankImageView];
-//    
-//}
 
 - (void)dealloc {
     [userNameLabel release];

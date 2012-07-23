@@ -30,7 +30,7 @@
 - (void)placeOrderUsingUserId:(NSString *)userId 
                       routeId:(int)routeId
                     packageId:(int)packageId
-                   departDate:(NSString *)departDate
+                   departDate:(NSDate *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion
@@ -41,7 +41,7 @@
                          token:(NSString *)token
                       routeId:(int)routeId
                     packageId:(int)packageId
-                   departDate:(NSString *)departDate
+                   departDate:(NSDate *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion

@@ -23,9 +23,10 @@
 
 @end
 
-@protocol PullToRefrshDelegate <NSObject>
+@protocol PullDelegate <NSObject>
 @optional
-- (void)didPullDown;
+- (void)didPullDownToRefresh;
+- (void)didPullUpToLoadMore;
 
 @end
 
@@ -33,14 +34,15 @@
 
 @property (retain, nonatomic) IBOutlet MKMapView *mapView;
 @property (assign, nonatomic) id<PlaceListControllerDelegate> aDelegate;
-@property (assign, nonatomic) id<PullToRefrshDelegate> pullDownDelegate;
+@property (assign, nonatomic) id<PullDelegate> pullDelegate;
 
 @property (assign, nonatomic) int alertViewType;
 @property (assign, nonatomic) int isNearby;
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
-                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh
-                       pullDownDelegate:(id<PullToRefrshDelegate>)pullDownDelegate;
+               supportPullDownToRefresh:(BOOL)supportPullDownToRefresh
+                supportPullUpToLoadMore:(BOOL)supportPullUpToLoadMore
+                           pullDelegate:(id<PullDelegate>)pullDelegate;
 
 
 

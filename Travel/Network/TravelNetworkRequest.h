@@ -24,6 +24,19 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                            cityId:(int)cityId 
                              lang:(int)lang;
 
+
++ (CommonNetworkOutput*)queryList:(int)type 
+                           cityId:(int)cityId 
+                            start:(int)start
+                            count:(int)count
+                   subCategoryIds:(NSArray *)subCategoryIds
+                          areaIds:(NSArray *)areaIds
+                       serviceIds:(NSArray *)serviceIds
+                     priceRankIds:(NSArray *)priceRankIds
+                      sortTypeIds:(NSArray *)sortTypeIds
+                   needStatistics:(BOOL)needStatistics
+                             lang:(int)lang;
+
 + (CommonNetworkOutput*)queryList:(int)type 
                            cityId:(int)cityId
                             start:(int)start
@@ -65,21 +78,52 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                            placeId:(NSString*)placeId;
 
 + (CommonNetworkOutput*)queryList:(int)type 
-                     departCityId:(int)departCityId 
-                destinationCityId:(int)destinationCityId
                             start:(int)start
                             count:(int)count
-                             lang:(int)lang;
+                 departCityIdList:(NSArray *)departCityIdList 
+            destinationCityIdList:(NSArray *)destinationCityIdList 
+                     agencyIdList:(NSArray *)agencyIdList 
+                  priceRankIdList:(NSArray *)priceRankIdList
+                  daysRangeIdList:(NSArray *)daysRangeIdList 
+                      themeIdList:(NSArray *)themeIdList 
+                     sortTypeList:(NSArray *)sortTypeList 
+                   needStatistics:(BOOL)needStatistics
+                             lang:(int)lang 
+                             test:(BOOL)test;
 
-+ (CommonNetworkOutput*)login:(NSString *)loginId password:(NSString *)password;
-+ (CommonNetworkOutput*)logout:(NSString *)loginId token:(NSString *)token;
++ (CommonNetworkOutput*)login:(NSString *)loginId 
+                     password:(NSString *)password;
+
++ (CommonNetworkOutput*)logout:(NSString *)loginId
+                         token:(NSString *)token;
 
 + (CommonNetworkOutput*)signUp:(NSString *)loginId
                       password:(NSString *)password;
 
-+ (CommonNetworkOutput*)verificate:(NSString *)loginId telephone:(NSString *)telephone;
-+ (CommonNetworkOutput*)verificate:(NSString *)loginId code:(NSString *)code;
-+ (CommonNetworkOutput*)retrievePassword:(NSString *)loginId telephone:(NSString *)telephone;
++ (CommonNetworkOutput*)verificate:(NSString *)loginId 
+                         telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)verificate:(NSString *)loginId
+                              code:(NSString *)code;
+
++ (CommonNetworkOutput*)retrievePassword:(NSString *)telephone;
+
++ (CommonNetworkOutput*)modifyPassword:(NSString *)loginId
+                                 token:(NSString *)token 
+                           oldPassword:(NSString *)oldPassword
+                           newPassword:(NSString *)newPassword;
+
++ (CommonNetworkOutput*)retrieveUserInfo:(NSString *)loginId
+                                   token:(NSString *)token;
+
++ (CommonNetworkOutput*)modifyUserInfo:(NSString *)loginId
+                                 token:(NSString *)token 
+                              fullName:(NSString *)fullName
+                              nickName:(NSString *)nickName
+                                gender:(int)gender
+                             telephone:(NSString *)telephone
+                                 email:(NSString *)email
+                               address:(NSString *)address;
 
 + (CommonNetworkOutput*)placeOrderWithUserId:(NSString *)userId 
                                      routeId:(int)routeId
@@ -114,4 +158,16 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                             start:(int)start
                             count:(int)count
                              lang:(int)lang;
+
++ (CommonNetworkOutput*)followRoute:(NSString *)userId 
+                            loginId:(NSString *)loginId 
+                              token:(NSString *)token 
+                            routeId:(int)routeId;
+
++ (CommonNetworkOutput*)routeFeedback:(NSString *)loginId 
+                                token:(NSString *)token 
+                              routeId:(int)routeId
+                                 rank:(int)rank 
+                            content:(NSString *)content;
+
 @end

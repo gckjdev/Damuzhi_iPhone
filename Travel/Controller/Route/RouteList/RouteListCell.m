@@ -19,6 +19,7 @@
 @end
 
 @implementation RouteListCell
+@synthesize totalView;
 @synthesize thumbImageView;
 @synthesize nameLabel;
 @synthesize tourLabel;
@@ -33,6 +34,7 @@
     [rankHolderView release];
     [daysLabel release];
     [priceLabel release];
+    [totalView release];
     [super dealloc];
 }
 

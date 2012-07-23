@@ -19,21 +19,43 @@
 @protocol RouteServiceDelegate <NSObject>
 
 @optional
-- (void)findRequestDone:(int)result totalCount:(int)totalCount list:(NSArray*)list;
-- (void)findRequestDone:(int)result route:(TouristRoute *)route;
+- (void)findRequestDone:(int)result
+             totalCount:(int)totalCount
+                   list:(NSArray*)list
+             statistics:(RouteStatistics *)statistics;
 
+- (void)findRequestDone:(int)result
+             totalCount:(int)totalCount
+                   list:(NSArray*)list;
+
+- (void)findRequestDone:(int)result
+                  route:(TouristRoute *)route;
+
+- (void)followRouteDone:(int)resultCode 
+                 result:(int)result 
+             resultInfo:(NSString *)resultInfo;
+
+- (void)unfollowRouteDone:(int)resultCode 
+                   result:(int)result 
+               resultInfo:(NSString *)resultInfo;
+
+- (void)routeFeekBackDidSend:(int)resultCode 
+                      result:(int)result 
+                  resultInfo:(NSString *)resultInfo;
 
 @end
 
+
+@class RouteSelectedItemIds;
 @interface RouteService : CommonService
 
 + (RouteService*)defaultService;
 
 - (void)findRoutesWithType:(int)routeType
-              departCityId:(int)departCityId
-         destinationCityId:(int)destinationCityId
                      start:(int)start
-                     count:(int)count
+                     count:(int)count 
+           selectedItemIds:(RouteSelectedItemIds *)selectedItemIds
+            needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController;
@@ -43,5 +65,16 @@
                       count:(int)count
              viewController:(PPViewController<RouteServiceDelegate>*)viewController;
                 
+- (void)followRoute:(TouristRoute *)route 
+          routeType:(int)routeType 
+     viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
+- (void)unfollowRoute:(TouristRoute *)route 
+          routeType:(int)routeType 
+     viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)routeFeedbackWithRouteId:(int)routeId 
+                            rank:(int)rank
+                         content:(NSString *)content   
+                  viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 @end

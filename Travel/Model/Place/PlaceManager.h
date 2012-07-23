@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "CommonService.h"
 #import "Place.pb.h"
-#import "CommonPlace.h"
 
 @interface PlaceManager : NSObject<CommonManagerProtocol>
 {

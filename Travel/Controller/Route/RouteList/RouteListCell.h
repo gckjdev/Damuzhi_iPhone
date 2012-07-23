@@ -13,6 +13,7 @@
 
 @interface RouteListCell : PPTableViewCell <HJManagedImageVDelegate>
 
+@property (retain, nonatomic) IBOutlet UIView *totalView;
 @property (retain, nonatomic) IBOutlet HJManagedImageV *thumbImageView;
 @property (retain, nonatomic) IBOutlet UILabel *nameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *tourLabel;

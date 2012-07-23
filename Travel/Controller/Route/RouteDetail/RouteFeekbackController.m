@@ -1,51 +1,58 @@
 //
-//  RouteFeekback.m
+//  RouteFeekbackController.m
 //  Travel
 //
-//  Created by 小涛 王 on 12-6-20.
-//  Copyright (c) 2012年 甘橙软件. All rights reserved.
+//  Created by Orange on 12-7-7.
+//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
 #import "RouteFeekbackController.h"
-#import "Package.pb.h"
+
+#import "PPTableViewController.h"   //(have not found the exact header for using NSLS)
 #import "PPNetworkRequest.h"
-#import "RouteFeekbackCell.h"
-#import "ImageManager.h"
 #import "UIViewUtils.h"
-#import "AppManager.h"
 
-#define TAG_DEPART_CITY_LABEL 18
-
-#define EACH_COUNT 20
+#define MAX_LENGTH_OF_FEEKBACK 160
 
 @interface RouteFeekbackController ()
+{
+    int _rank;
+}
 
-@property (assign, nonatomic) int routeId;
-@property (assign, nonatomic) int start;
-@property (retain, nonatomic) NSMutableArray *allRouteFeekback;
-@property (assign, nonatomic) int totalCount;
-@property (assign, nonatomic) int departCityId;
-@property (assign, nonatomic) int statisticsView;
+@property (retain, nonatomic) Order *order;
 
-
-- (void)updateStatisticsData;
 @end
 
 @implementation RouteFeekbackController
 
-@synthesize routeId = _routeId;
-@synthesize start = _start;
-@synthesize allRouteFeekback = _allRouteFeekback;
-@synthesize totalCount = _totalCount;
-@synthesize departCityId = _departCityId;
-@synthesize statisticsView = _statisticsView;
+@synthesize order = _order;
+@synthesize backgroundImageButton1;
+@synthesize backgroundImageButton2;
+@synthesize backgroundImageButton3;
+
+@synthesize feekbackTextView;
+@synthesize feekbackImageView;
+@synthesize backgroundScrollView;
+
+#pragma mark - View lifecycle
 
 
-- (id)initWithRouteId:(int)routeId
+- (void)dealloc {
+    [backgroundImageButton1 release];
+    [backgroundImageButton2 release];
+    [backgroundImageButton3 release];
+    
+    [feekbackTextView release];
+    [feekbackImageView release];
+    [_order release];
+    [backgroundScrollView release];
+    [super dealloc];
+}
+
+- (id)initWithOrder:(Order *)order
 {
     if (self = [super init]) {
-        // Custom initialization
-        self.routeId = routeId;
+        self.order = order;
     }
     
     return self;
@@ -55,123 +62,118 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = [UIColor whiteColor];
+   
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
+    self.navigationItem.title = NSLS(@"评价");
+    [self setNavigationRightButton:NSLS(@"发送")
+                         imageName:@"topmenu_btn_right.png"  
+                            action:@selector(clickSubmit:)];
     
-    [self setNavigationRightButton:NSLS(@"咨询") 
-                         imageName:@"topmenu_btn2.png"
+    self.backgroundScrollView.contentSize = CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height + 1);
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    // Set feekback text view delegate.
+    self.feekbackTextView.delegate = self;
+    self.feekbackTextView.placeholder = NSLS(@"请输入您的评价!(小于等于160个字)");
+    self.feekbackTextView.font = [UIFont systemFontOfSize:13];
 
-                            action:@selector(query:)];
-    self.navigationItem.title = NSLS(@"路线详情");
+    self.feekbackTextView.placeholderColor = [UIColor lightGrayColor];    
+}
+
+-(void) clickSubmit: (id) sender
+{
+
+    NSString *feekback = [self.feekbackTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];   
     
-    dataTableView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:227.0/255.0 alpha:1];
+    if ([feekback compare:@""] == 0) {
+        [self popupMessage:NSLS(@"请输入意见或建议") title:nil];
+        return;
+    }
     
-    [RouteService defaultService] ;
+    if ([feekback lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > MAX_LENGTH_OF_FEEKBACK) {
+        [self popupMessage:NSLS(@"反馈意见字数太长") title:nil];
+        return;
+    }
+  
+    [feekbackTextView resignFirstResponder];
+    [[RouteService defaultService] routeFeedbackWithRouteId:_order.routeId 
+                                                       rank:_rank 
+                                                    content:feekback 
+                                             viewController:self];
+}
+
+-(void) routeFeekBackDidSend:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    if (resultCode != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"您的网络不稳定，发送失败") title:nil];
+        return;
+    }
     
+    if (result != 0) {
+        NSString *str = [NSString stringWithFormat:NSLS(@"发送失败：%@"), resultInfo];
+        [self popupMessage:str title:nil];
+        return;
+    }
     
-    [[RouteService defaultService] queryRouteFeekbacks:_routeId start:0 count:EACH_COUNT viewController:self];
+    [self popupMessage:NSLS(@"发送成功") title:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidUnload
 {
+    [self setBackgroundImageButton1:nil];
+    [self setBackgroundImageButton2:nil];
+    [self setBackgroundImageButton3:nil];
+    [self setFeekbackTextView:nil];
+    [self setFeekbackImageView:nil];
+    [self setBackgroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [RouteFeekbackCell getCellHeight];
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [dataList count];
+- (IBAction)clickChangeBackgroundButton1:(id)sender {
+    backgroundImageButton1.selected = YES;
+    backgroundImageButton2.selected = NO;
+    backgroundImageButton3.selected = NO;
+    _rank = 1;
 }
 
-
-- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-    cell = [tableView dequeueReusableCellWithIdentifier:[RouteFeekbackCell getCellIdentifier]];
-    if (cell == nil) {
-        cell = [RouteFeekbackCell createCell:self];		
-    
-        // Customize the appearance of table view cells at first time
-    }
-    
-    int row = [indexPath row];	
-    int count = [dataList count];
-    if (row >= count){
-        PPDebug(@"[WARN] cellForRowAtIndexPath, row(%d) > data list total number(%d)", row, count);
-        return cell;
-    }
-    
-    RouteFeekbackCell* routeCell = (RouteFeekbackCell*)cell;
-    [routeCell setCellData:[dataList objectAtIndex:row]];
-    return cell;
-}
-
-// essential
-- (void)updateStatisticsData
-{
+- (IBAction)clickChangeBackgroundButton2:(id)sender {
+    backgroundImageButton1.selected = YES;
+    backgroundImageButton2.selected = YES;
+    backgroundImageButton3.selected = NO;
+    _rank = 2;
 
 }
 
-// RouteService delegate
-- (void)findRequestDone:(int)result totalCount:(int)totalCount list:(NSArray *)routeFeekback
-{
-    [self dataSourceDidFinishLoadingNewData];
-    [self dataSourceDidFinishLoadingMoreData];
-    
-    if (result != ERROR_SUCCESS) {
-        [self popupMessage:@"网络弱，数据加载失败" title:nil];
-        return;
-    }
-    
-    if (_start == 0) {
-        self.noMoreData = NO;
-        [self.allRouteFeekback removeAllObjects];
-        self.dataList = [NSArray array];
-    }
-  
-    self.start += [routeFeekback count];
-    self.totalCount = totalCount;
-    
-    [_allRouteFeekback addObjectsFromArray:routeFeekback];
-    self.dataList = [dataList arrayByAddingObjectsFromArray:routeFeekback];     
-    
-    PPDebug(@"dalist count %d", [dataList count]);
-    
-    if (_start >= totalCount) {
-        self.noMoreData = YES;
-    }
-    
-    [self updateStatisticsData];
-    
-    [dataTableView reloadData];
+- (IBAction)clickChangeBackgroundButton3:(id)sender {
+    backgroundImageButton1.selected = YES;
+    backgroundImageButton2.selected = YES;
+    backgroundImageButton3.selected = YES;
+    _rank = 3;
+
 }
 
--(void) showInView:(UIView *)superView
-{
-    [superView removeAllSubviews];
-    
-    self.view.frame = superView.bounds;
-    [superView addSubview:self.view];
+- (IBAction)clickLeftCornerButton:(id)sender {
+    backgroundImageButton1.selected = NO;
+    backgroundImageButton2.selected = NO;
+    backgroundImageButton3.selected = NO;
+    _rank = 0;
 }
+
+- (IBAction)hideKeyboardButton:(id)sender {
+    [feekbackTextView resignFirstResponder];
+}
+
 
 @end
-
-
-
-
-
-
-
-
-
-

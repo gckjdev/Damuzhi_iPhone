@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "CommonPlaceListController.h"
 
-@interface HotelListFilter : NSObject<PlaceListFilterProtocol>
+@interface HotelListFilter : PlaceListFilter
 
 @end

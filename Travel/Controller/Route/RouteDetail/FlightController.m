@@ -31,6 +31,7 @@
 @synthesize returnFlightModeLabel;
 @synthesize returnFlightBackgroundImage;
 @synthesize returnFlightBackgroundImage2;
+@synthesize backgroundScrollView;
 
 
 
@@ -47,10 +48,11 @@
     [returnFlightLaunchInforLabel release];
     [returnFlightDescendInforLabel release];
     [returnFlightModeLabel release];
+    [backgroundScrollView release];
     [super dealloc];
 }
 
-- (id)initWithDepartFlight:(Flight *)departFlight returnFlight:(Flight *)returnFlight
+- (id)initWithDepartReturnFlight:(Flight *)departFlight returnFlight:(Flight *)returnFlight
 {
     if (self = [super init]) {
         self.departFlight = departFlight;
@@ -58,6 +60,7 @@
     }
     return self;
 }
+
 
 
 - (void)viewDidLoad
@@ -74,32 +77,32 @@
     
     
     
-    
-//    UIImage *background = [UIImage strectchableImageName:@"line_table_4a@2x.png"leftCapWidth:20];
-//    returnFlightBackgroundImage.image = background;
-    
-    UIImage *returnBackground = [UIImage imageNamed:@"line_table_4a@2x.png"];
-    UIImage *stretchBackgroundImage = [returnBackground stretchableImageWithLeftCapWidth:12 topCapHeight:0]; 
-    returnFlightBackgroundImage.image = stretchBackgroundImage;
-    
-//    
-//    UIImage *returnBackground2 = [UIImage strectchableImageName:@"line_table_4b@2x.png" leftCapWidth:20 topCapHeight:20];
-//    returnFlightBackgroundImage.image = returnBackground2;  
-    
-    
-    
     PPDebug(@"_departFlight is %@", _departFlight);
+    [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
+
+
     
-//    departFlightLabel.text = _departFlight.note;
-    departFlightLabel.text = NSLS(@"出发 : 北京 - 泰国   南航 NF102");
-    departFlightLaunchInfoLabel.text = NSLS(@"20:45 起飞 首都国际机场");
-    departFlightDescendInfoLabel.text = NSLS(@"22:45 降落 曼谷机场");
-    departFlightModeLabel.text = NSLS(@"波音747");
-    returnFlightLabel.text = NSLS(@"回程 : 泰国 - 北京   泰国航空 TG0103");
-    returnFlightLaunchInforLabel.text = NSLS(@"20:45 起飞 曼谷机场");
-    returnFlightDescendInforLabel.text = NSLS(@"22.55 降落 首都国际机场");
-    returnFlightModeLabel.text = NSLS(@"机型待定");
+    departFlightLabel.text = [NSString stringWithFormat:@"出发 : %@ - %@   %@ %@",
+                              _departFlight.departCityName, _departFlight.arriveCityName,
+                              _departFlight.company, _departFlight.flightId];    
+
+    departFlightLaunchInfoLabel.text = [NSString stringWithFormat:@"%@ 起飞 %@", _departFlight.departTime, _departFlight.departAirport];
+    
+    departFlightDescendInfoLabel.text = [NSString stringWithFormat:@"%@ 降落 %@", _departFlight.arriveTime, _departFlight.arriveAirport];
+    
+    departFlightModeLabel.text = [NSString stringWithFormat:@"%@", _departFlight.mode];
+   
+
+    returnFlightLabel.text = [NSString stringWithFormat:@"出发 : %@ - %@   %@ %@",
+                              _returnFlight.departCityName, _returnFlight.arriveCityName,
+                              _returnFlight.company, _returnFlight.flightId];       
+    
+    returnFlightLaunchInforLabel.text = [NSString stringWithFormat:@"%@ 起飞 %@", _returnFlight.departTime, _returnFlight.departAirport];
+
+    returnFlightDescendInforLabel.text = [NSString stringWithFormat:@"%@ 降落 %@", _returnFlight.arriveTime, _returnFlight.arriveAirport];
+     returnFlightModeLabel.text = [NSString stringWithFormat:@"%@", _returnFlight.mode];    
     
 }  
 
@@ -116,6 +119,7 @@
     [self setReturnFlightLaunchInforLabel:nil];
     [self setReturnFlightDescendInforLabel:nil];
     [self setReturnFlightModeLabel:nil];
+    [self setBackgroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

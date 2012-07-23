@@ -14,9 +14,12 @@
 #import "NSDate+TKCategory.h"
 #import "UIViewUtils.h"
 #import "RouteUtils.h"
-
+#import "TravelNetworkConstants.h"
 
 @interface MonthViewController ()
+{
+    int _routeType;
+}
 
 @property (retain, nonatomic) TKCalendarMonthView *monthView;
 @property (retain, nonatomic) NSArray *bookings;
@@ -26,9 +29,11 @@
 
 @implementation MonthViewController
 @synthesize aDelegate = _aDelegate;
+@synthesize aBgView = _aBgView;
 @synthesize currentMonthButton = _currentMonthButton;
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
+@synthesize buttonHolderView = _buttonHolderView;
 
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
@@ -42,13 +47,16 @@
     [_currentMonthButton release];
     [_nextMonthButton release];
     [_monthHolderView release];
+    [_aBgView release];
+    [_buttonHolderView release];
     [super dealloc];
 }
 
-- (id)initWithBookings:(NSArray *)bookings
+- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
 {
     if (self= [super init]) {
         self.bookings = bookings;
+        _routeType = routeType;
     }
     
     return self;
@@ -91,13 +99,12 @@
     [self setCurrentMonthButton:nil];
     [self setNextMonthButton:nil];
     [self setMonthHolderView:nil];
+    [self setABgView:nil];
+    [self setButtonHolderView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
-
-
-
 
 - (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
 {
@@ -148,7 +155,7 @@
 
 - (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
 {
-    NSMutableArray *texts = [[NSMutableArray alloc] init];
+    NSMutableArray *texts = [[[NSMutableArray alloc] init] autorelease];
     
     // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
     NSDate *d = startDate;
@@ -171,13 +178,18 @@
     
     Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
     if (booking != nil) {
-        if (booking.status == 1) {
-            bookingInfo = NSLS(@"未开售") ;
-        }else if (booking.status == 2) {
-            NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
-            bookingInfo = [NSString stringWithFormat:@"%@\n可报%@", booking.adultPrice, remainder];
-        }else if (booking.status == 3) {
-            bookingInfo = NSLS(@"满");
+        PPDebug(@"routeType = %d", _routeType);
+        if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
+            if (booking.status == 1) {
+                bookingInfo = NSLS(@"未开售") ;
+            }else if (booking.status == 2) {            
+                NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
+                bookingInfo = [NSString stringWithFormat:@"%@\n可报%@", booking.adultPrice, remainder];
+            }else if (booking.status == 3) {
+                bookingInfo = NSLS(@"满");
+            }
+        }else {
+            bookingInfo = [NSString stringWithFormat:@"%@", booking.adultPrice];
         }
     }
     
@@ -195,6 +207,10 @@
     _monthView.transform = transform;
     _monthView.frame = CGRectMake(0, 0, _monthView.frame.size.width, _monthView.frame.size.height);
     
+    self.buttonHolderView.transform = transform;
+    CGRect bFrame = self.buttonHolderView.frame;
+    self.buttonHolderView.frame = CGRectMake(_monthView.frame.size.width * 0.5 - bFrame.size.width * 0.5, bFrame.origin.y, bFrame.size.width, bFrame.size.height);
+    
     [superView addSubview:self.view];
 }
 
@@ -207,9 +223,13 @@
             [self popupMessage:NSLS(@"该日期未开售") title:nil];
         }else if (booking.status == 2) {
             [_aDelegate didSelecteDate:date];
+            [self.navigationController popViewControllerAnimated:YES];
         }else if (booking.status == 3) {
             [self popupMessage:NSLS(@"该日期已满") title:nil];
+        }else {
+            [self popupMessage:NSLS(@"该日期不出团") title:nil];
         }
+        
     }
 }
 

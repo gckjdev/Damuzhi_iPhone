@@ -14,8 +14,12 @@
 #import "CommonRouteListFilter.h"
 #import "ImageManager.h"
 #import "SelectedItemIdsManager.h"
-#import "CommonPlace.h"
 #import "CommonRouteDetailController.h"
+#import "AppConstants.h"
+#import "SelectCityController.h"
+#import "Item.h"
+#import "FollowRouteController.h"
+#import "AppDelegate.h"
 
 #define TAG_DEPART_CITY_LABEL 18
 #define TAG_AGENCY_LABEL 19
@@ -28,8 +32,6 @@
 
 @interface CommonRouteListController ()
 
-@property (retain, nonatomic) NSMutableArray *allRouteList;
-//@property (retain, nonatomic) NSMutableArray *routeList;
 @property (assign, nonatomic) BOOL hasStatisticsView;
 
 @property (assign, nonatomic) int departCityId;
@@ -44,15 +46,16 @@
 
 @property (retain, nonatomic) NSObject<RouteListFilterProtocol> *filterHandler;
 
+@property (retain, nonatomic) RouteStatistics *routeStatistics;
+
 - (UIView*)genStatisticsView;
 - (void)updateStatisticsData;
+- (void)updateDepartCityButton;
 
 @end
 
 @implementation CommonRouteListController
 
-@synthesize allRouteList = _allRouteList;
-//@synthesize routeList = _routeList;
 @synthesize hasStatisticsView = _hasStatisticsView;
 
 @synthesize departCityId = _departCityId;
@@ -67,16 +70,17 @@
 
 @synthesize filterHandler = _filterHandler;
 
+@synthesize routeStatistics = _routeStatistics;
+
 #pragma mark - View lifecycle
 - (void)dealloc
 {
-    [_allRouteList release];
-//    [_routeList release];
     [_selectedItemIds release];
     
     [_statisticsView release];
     [_buttonsHolderView release];
     [_filterHandler release];
+    [_routeStatistics release];
     
     [super dealloc];
 }
@@ -93,8 +97,6 @@
         self.destinationCityId = destinationCityId;
         self.hasStatisticsView = hasStatisticsLabel;
         
-        self.allRouteList = [[[NSMutableArray alloc] init] autorelease];
-        //        self.routeList = [[[NSMutableArray alloc] init] autorelease];
         self.dataList = [NSArray array];
         self.start = 0;
         
@@ -107,6 +109,33 @@
     return self;
 }
 
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self hideTabBar:NO];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self hideTabBar:NO];
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = NO;
+    [self hideTabBar:YES];
+    [super viewDidDisappear:animated];
+}
+
+
 - (void)viewDidLoad
 {
 
@@ -117,9 +146,6 @@
 
     
     // Init UI Interface
-    [self setNavigationLeftButton:NSLS(@" 返回") 
-                        imageName:@"back.png" 
-                           action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"我的关注") 
                          imageName:@"topmenu_btn2.png"
@@ -132,6 +158,8 @@
     self.buttonsHolderView = [[[UIView alloc] initWithFrame:CGRectMake(0, _statisticsView.frame.size.height, self.view.frame.size.width, HEIGHT_FILTER_HOLDER_VIEW)] autorelease];
     _buttonsHolderView.backgroundColor = [UIColor whiteColor];
     
+    
+    
     _buttonsHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] filterBtnsHolderViewBgImage]];
     
     [self.view addSubview:_buttonsHolderView];
@@ -140,26 +168,26 @@
         [lineView setImage:[[ImageManager defaultManager] lineImage]];
         //    [_statisticsView addSubview:lineView];
         [_buttonsHolderView addSubview:lineView];
+        //    // Init statistics data
+        [self updateStatisticsData];
     }
 
     CGRect rect = CGRectMake(0, _buttonsHolderView.frame.origin.y + _buttonsHolderView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - _buttonsHolderView.frame.size.height - _statisticsView.frame.size.height);
     self.dataTableView.frame = rect;    
     
-//    // Init statistics data
-    [self updateStatisticsData];
-    
     // Init filter view
     [_filterHandler createFilterButtons:self.buttonsHolderView controller:self];
 
     // Find route list
-    [_filterHandler findRoutesWithDepartCityId:_departCityId
-                             destinationCityId:_destinationCityId 
-                                         start:_start
-                                         count:COUNT_EACH_FETCH 
-                                viewController:self];
+    [_filterHandler findRoutesWithStart:_start 
+                                  count:COUNT_EACH_FETCH 
+                   RouteSelectedItemIds:_selectedItemIds 
+                         needStatistics:YES 
+                         viewController:self];
     
     dataTableView.backgroundColor = [UIColor whiteColor];
     
+    [self updateDepartCityButton];
 }
 
 - (void)viewDidUnload
@@ -172,10 +200,17 @@
 }
 
 #pragma mark - RouteServiceDelegate
-- (void)findRequestDone:(int)result totalCount:(int)totalCount list:(NSArray *)routeList
+- (void)findRequestDone:(int)result
+             totalCount:(int)totalCount 
+                   list:(NSArray *)routeList 
+             statistics:(RouteStatistics *)statistics
 {
     [self dataSourceDidFinishLoadingNewData];
     [self dataSourceDidFinishLoadingMoreData];
+    
+    if (_routeStatistics == nil) {
+        self.routeStatistics = statistics;
+    }
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
@@ -184,14 +219,12 @@
     
     if (_start == 0) {
         self.noMoreData = NO;
-        [self.allRouteList removeAllObjects];
         self.dataList = [NSArray array];
     }
     
     self.start += [routeList count];
     self.totalCount = totalCount;
     
-    [_allRouteList addObjectsFromArray:routeList];
     self.dataList = [dataList arrayByAddingObjectsFromArray:routeList];     
     
     
@@ -199,7 +232,15 @@
         self.noMoreData = YES;
     }
     
-    [self updateStatisticsData];
+    if (_hasStatisticsView) {
+        [self updateStatisticsData];
+    }
+    
+    if ([self.dataList count] == 0) {
+        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+    }else {
+        [self hideTipsOnTableView];
+    }
     
     [dataTableView reloadData];
 }
@@ -222,12 +263,6 @@
     cell = [tableView dequeueReusableCellWithIdentifier:[RouteListCell getCellIdentifier]];
     if (cell == nil) {
         cell = [RouteListCell createCell:self];		
-        
-        UIImageView *view = [[UIImageView alloc] init];
-        [view setImage:[[ImageManager defaultManager] listBgImage]];
-        [cell setBackgroundView:view];
-        [view release];
-        // Customize the appearance of table view cells at first time
     }
     
     int row = [indexPath row];	
@@ -245,7 +280,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int routeId = [[dataList objectAtIndex:indexPath.row] routeId];
-    
     
     CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:routeId routeType:[_filterHandler getRouteType]];
     
@@ -329,7 +363,7 @@
     
     int agencyCount = 0;
     if ([[_selectedItemIds.agencyIds objectAtIndex:0] intValue] == ALL_CATEGORY) {
-        agencyCount = [[[AppManager defaultManager] getAgencyItemList:dataList] count] - 1;
+        agencyCount = [[[AppManager defaultManager] getAgencyItemList:_routeStatistics.agencyStatisticsList] count] - 1;
     }else {
         [_selectedItemIds.agencyIds count];
     }
@@ -347,11 +381,11 @@
     }
     
     else {
-        [_filterHandler findRoutesWithDepartCityId:_departCityId
-                                 destinationCityId:_destinationCityId 
-                                             start:_start
-                                             count:COUNT_EACH_FETCH
-                                    viewController:self];
+        [_filterHandler findRoutesWithStart:_start 
+                                      count:COUNT_EACH_FETCH 
+                       RouteSelectedItemIds:_selectedItemIds 
+                             needStatistics:NO 
+                             viewController:self];
     }
 }
 
@@ -359,27 +393,72 @@
 {
     self.start = 0;
     // Find route list
-    [_filterHandler findRoutesWithDepartCityId:_departCityId
-                             destinationCityId:_destinationCityId 
-                                         start:_start
-                                         count:COUNT_EACH_FETCH 
-                                viewController:self];
+    [_filterHandler findRoutesWithStart:_start 
+                                  count:COUNT_EACH_FETCH 
+                   RouteSelectedItemIds:_selectedItemIds 
+                         needStatistics:NO
+                         viewController:self];
 }
 
-- (void)pushSelectedControllerWithTitle:(NSString *)title
-                               itemList:(NSArray *)itemList
-                        selectedItemIds:(NSMutableArray *)selectedItemIds 
-                           multiOptions:(BOOL)multiOptions 
-                            needConfirm:(BOOL)needConfirm
-                          needShowCount:(BOOL)needShowCount;
+- (void)pushDepartCitySelectController
 {
-    SelectController *controller = [[SelectController alloc] initWithTitle:title
+    NSArray *itemList = [[AppManager defaultManager] getDepartCityItemList:_routeStatistics.departCityStatisticsList];
+    SelectCityController *controller = [[SelectCityController alloc] initWithTitle:NSLS(@"出发城市") 
+                                                                        regionList:nil 
+                                                                          itemList:itemList
+                                                                selectedItemIdList:_selectedItemIds.departCityIds 
+                                                                              type:depart 
+                                                                      multiOptions:NO
+                                                                          delegate:self];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)pushDestinationCitySelectController
+{
+    NSArray *regionList = [[AppManager defaultManager] getRegions];
+    NSArray *itemList = [[AppManager defaultManager] getDestinationCityItemList];
+    SelectCityController *controller = [[SelectCityController alloc] initWithTitle:NSLS(@"目的城市") 
+                                                                        regionList:regionList 
+                                                                          itemList:itemList
+                                                                selectedItemIdList:_selectedItemIds.destinationCityIds 
+                                                                              type:destination
+                                                                      multiOptions:YES
+                                                                          delegate:self];
+    
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)pushAgencySelectController
+{
+     NSArray *itemList = [[AppManager defaultManager] getAgencyItemList:_routeStatistics.agencyStatisticsList];
+    
+    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"旅行社选择")
                                                                   itemList:itemList
-                                                           selectedItemIds:selectedItemIds
-                                                              multiOptions:multiOptions 
-                                                               needConfirm:needConfirm
-                                                             needShowCount:needShowCount];
-     
+                                                           selectedItemIds:_selectedItemIds.agencyIds
+                                                              multiOptions:YES 
+                                                               needConfirm:YES
+                                                             needShowCount:YES];
+    
+    
+    controller.delegate = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)pushSortTypeSelectController
+{
+    NSArray *itemList = [[AppManager defaultManager] buildRouteSortItemList];
+    
+    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"排序")
+                                                                  itemList:itemList
+                                                           selectedItemIds:_selectedItemIds.sortIds
+                                                              multiOptions:NO 
+                                                               needConfirm:YES
+                                                             needShowCount:NO];
+    
+    
     controller.delegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];
@@ -393,21 +472,38 @@
 - (void)clickFitlerButton:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    NSArray *itemList = nil;
     switch (button.tag) {
         case TAG_FILTER_BTN_DEPART_CITY:
-            itemList = [[AppManager defaultManager] getDepartCityItemList:dataList];
-            [self pushSelectedControllerWithTitle:NSLS(@"出发城市")
-                                         itemList:itemList
-                                  selectedItemIds:_selectedItemIds.departCityIds
-                                     multiOptions:NO 
-                                      needConfirm:YES 
-                                    needShowCount:YES];
+            [self pushDepartCitySelectController];
             break;
             
+        case TAG_FILTER_BTN_CLASSIFY:
+            [self pushRouteSelectController];
+            break;
+        case TAG_FILTER_BTN_DESTINATION_CITY:
+            [self pushDestinationCitySelectController];
+            break;
+            
+        case TAG_SORT_BTN:
+            [self pushSortTypeSelectController];
+            break;
+        case TAG_FILTER_BTN_AGENCY:
+            [self pushAgencySelectController];
+            break;
+
         default:
             break;
     }
+}
+
+
+
+- (void)pushRouteSelectController
+{    
+    RouteSelectController *controller = [[[RouteSelectController alloc] initWithRouteType:[_filterHandler getRouteType] selectedItemIds:_selectedItemIds] autorelease];
+    controller.aDelegate = self;
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)clickBack:(id)sender
@@ -415,6 +511,64 @@
     [_selectedItemIds reset]; 
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)clickMyFollow:(id)sender
+{
+    FollowRouteController *controller  = [[FollowRouteController alloc] initWithRouteType:[_filterHandler getRouteType]];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)updateDepartCityButton
+{
+    NSNumber *cityId = (NSNumber *)[_selectedItemIds.departCityIds objectAtIndex:0];
+    NSString *departCityName = [[AppManager defaultManager] getDepartCityName:[cityId intValue]];
+    if ([cityId intValue] == ALL_CATEGORY) {
+        departCityName = @"全部";
+    }
+    NSString *buttonTitle = [NSString stringWithFormat:NSLS(@"出发:%@"), departCityName];
+    UIButton *button = (UIButton *)[self.buttonsHolderView viewWithTag:TAG_FILTER_BTN_DEPART_CITY];
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+}
+
+#pragma mark - SelectControllerDelegate method
+- (void)didSelectFinish:(NSArray*)selectedItems
+{
+    self.start = 0;
+    
+    [_filterHandler findRoutesWithStart:_start 
+                                  count:COUNT_EACH_FETCH 
+                   RouteSelectedItemIds:_selectedItemIds 
+                         needStatistics:NO 
+                         viewController:self]; 
+}
+
+#pragma mark - SelectCityDelegate methods
+- (void)didSelectCity:(NSArray *)selectedItemList
+{
+    self.start = 0;
+    
+    [_filterHandler findRoutesWithStart:_start 
+                                  count:COUNT_EACH_FETCH 
+                   RouteSelectedItemIds:_selectedItemIds 
+                         needStatistics:NO 
+                         viewController:self];
+    [self updateDepartCityButton];
+}
+
+#pragma mark - 
+#pragma mark: Implementation of RouteSelectControllerDelegate.
+- (void)didClickFinish
+{
+    self.start = 0;
+
+    [_filterHandler findRoutesWithStart:_start 
+                                  count:COUNT_EACH_FETCH 
+                   RouteSelectedItemIds:_selectedItemIds 
+                         needStatistics:NO 
+                         viewController:self];
+}
+
 
 
 @end

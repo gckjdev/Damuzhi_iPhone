@@ -9,6 +9,6 @@
 #import "PPTableViewController.h"
 #import "UserService.h"
 
-@interface OrderManagerController : PPTableViewController <UserServiceDelegate>
+@interface OrderManagerController : PPTableViewController <UserServiceDelegate, UIActionSheetDelegate>
 
 @end

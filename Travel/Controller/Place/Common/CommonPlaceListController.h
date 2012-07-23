@@ -22,12 +22,14 @@
 
 @class PlaceListController;
 
+@class PlaceListFilter;
+
 @protocol PlaceListFilterProtocol <NSObject>
 
 @optional
 - (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController*)controller;
-- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
-+ (NSObject<PlaceListFilterProtocol>*)createFilter;
+//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
++ (PlaceListFilter<PlaceListFilterProtocol>*)createFilter;
 
 - (int)getCategoryId;
 - (NSString*)getCategoryName;
@@ -36,13 +38,24 @@
 
 @end
 
-@interface CommonPlaceListController : PPTableViewController <PlaceServiceDelegate, CityOverviewServiceDelegate, SelectControllerDelegate, PullToRefrshDelegate>
+@interface PlaceListFilter : NSObject <PlaceListFilterProtocol>
+
+//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
+- (void)findAllPlacesWithStart:(int)start
+                         count:(int)count
+               selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+                needStatistics:(BOOL)needStatistics 
+                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+
+@end
+
+@interface CommonPlaceListController : PPTableViewController <PlaceServiceDelegate, CityOverviewServiceDelegate, SelectControllerDelegate, PullDelegate>
 
 @property (retain, nonatomic) IBOutlet UIView *buttonHolderView;
 @property (retain, nonatomic) IBOutlet UIView *placeListHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *modeButton;
 
-- (id)initWithFilterHandler:(NSObject<PlaceListFilterProtocol>*)handler;
+- (id)initWithFilterHandler:(PlaceListFilter<PlaceListFilterProtocol>*)handler;
 - (IBAction)clickMapButton:(id)sender;
 
 @end

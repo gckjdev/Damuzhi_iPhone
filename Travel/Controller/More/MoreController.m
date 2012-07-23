@@ -22,7 +22,7 @@
 #import "FavoriteController.h"
 #import "ShareToSinaController.h"
 #import "ShareToQQController.h"
-#import "PersonalInfoController.h"
+#import "UserInfoController.h"
 
 @interface MoreController ()
 
@@ -65,12 +65,10 @@
     [super viewDidLoad];
 
     // Do any additional setup after loading the view from its nib.
-    [self setNavigationLeftButton:NSLS(@" 返回") 
-                        imageName:@"back.png"
-                           action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"更多");
     
-    [self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
+    //[self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(206, 8, 79, 27)];
     aSwitch.transform = CGAffineTransformMakeScale(0.7, 0.7);
@@ -80,13 +78,39 @@
     showImageSwitch.on = [AppUtils isShowImage];
     
     [self updateDataSource];
+    
 }
+
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self hideTabBar:NO];
+    [super viewWillAppear:animated];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = YES;
+    [self hideTabBar:NO];
+    
     [self updateDataSource];
     [super viewDidAppear:animated];
 }
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = NO;
+    [self hideTabBar:YES];
+    [super viewDidDisappear:animated];
+}
+
 
 - (void)updateDataSource
 {
@@ -100,7 +124,7 @@
     [dataDictionary setObject:CITIES forKey:[NSNumber numberWithInt:i++]];
     
     if ([[UserManager defaultManager] isLogin]) {
-        [self setNavigationRightButton:NSLS(@"退出登陆") 
+        [self setNavigationRightButton:NSLS(@"退出登录") 
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
@@ -108,7 +132,7 @@
         [dataDictionary setObject:ORDER_MANAGER forKey:[NSNumber numberWithInt:i++]];
         
     }else {
-        [self setNavigationRightButton:NSLS(@"会员登陆") 
+        [self setNavigationRightButton:NSLS(@"会员登录") 
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
         
@@ -181,7 +205,8 @@
 	return [dataDictionary count];			// default implementation
 }
 
-
+#define TAG_CITY_LABEL 70 
+#define TAG_SHOW_IMAGE_SWITCH 71
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -205,8 +230,12 @@
 		return cell;
 	}
     
+    UILabel *cityLabel = (UILabel*)[cell.contentView viewWithTag:TAG_CITY_LABEL];
+    [cityLabel removeFromSuperview];
+    
     if ([CITIES isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(114, 2, 122, MORE_TABLE_CELL_HEIGHT-4)];
+        cityLabel.tag = TAG_CITY_LABEL;
         cityLabel.text = [[AppManager defaultManager] getCurrentCityName];
         cityLabel.font = [UIFont boldSystemFontOfSize:16];
         cityLabel.textAlignment = UITextAlignmentRight;
@@ -214,12 +243,17 @@
         [cell.contentView addSubview:cityLabel];
         [cityLabel release];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     if ([SHOW_IMAGE isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        showImageSwitch.tag = TAG_SHOW_IMAGE_SWITCH;
         [cell.contentView addSubview:showImageSwitch];
+    }else {
+        UISwitch *switchView = (UISwitch *)[cell.contentView viewWithTag:TAG_SHOW_IMAGE_SWITCH];
+        [switchView removeFromSuperview];
     }
     
     cell.textLabel.text = [dataDictionary objectForKey:[NSNumber numberWithInt:row]];
@@ -356,7 +390,7 @@
 
 - (void)showUserInfo
 {
-    PersonalInfoController *controller = [[PersonalInfoController alloc] init];
+    UserInfoController *controller = [[UserInfoController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -371,7 +405,8 @@
 - (void)showShare
 {
     UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLS(@"取消") destructiveButtonTitle:NSLS(@"通过短信") otherButtonTitles:NSLS(@"分享到新浪微博"), NSLS(@"分享到腾讯微博"), nil];
-    [shareSheet showInView:self.view];
+    //[shareSheet showInView:self.view];
+    [shareSheet showFromTabBar:self.tabBarController.tabBar];
     [shareSheet release];
 }
 

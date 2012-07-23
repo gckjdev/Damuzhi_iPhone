@@ -15,7 +15,7 @@
 @property (retain, nonatomic) NSMutableArray *areaItemIds;
 @property (retain, nonatomic) NSMutableArray *priceRankItemIds;
 @property (retain, nonatomic) NSMutableArray *serviceItemIds;
-@property (retain, nonatomic) NSMutableArray *cuisineItemIds;
+//@property (retain, nonatomic) NSMutableArray *cuisineItemIds;
 
 - (void)reset;
 
@@ -26,8 +26,10 @@
 @property (retain, nonatomic) NSMutableArray *departCityIds;
 @property (retain, nonatomic) NSMutableArray *destinationCityIds;
 @property (retain, nonatomic) NSMutableArray *agencyIds;
+@property (retain, nonatomic) NSMutableArray *priceRankItemIds;
+@property (retain, nonatomic) NSMutableArray *daysRangeItemIds;
 @property (retain, nonatomic) NSMutableArray *themeIds;
-@property (retain, nonatomic) NSMutableArray *routeTypeIds;
+@property (retain, nonatomic) NSMutableArray *sortIds;
 
 - (void)reset;
 

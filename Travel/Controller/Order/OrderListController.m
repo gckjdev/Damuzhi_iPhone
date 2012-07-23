@@ -13,6 +13,8 @@
 #import "TimeUtils.h"
 #import "CommonRouteDetailController.h"
 #import "TravelNetworkConstants.h"
+#import "AppManager.h"
+#import "RouteFeekbackController.h"
 
 #define HEIGHT_HEADER_VIEW 44
 #define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
@@ -22,6 +24,7 @@
 
 @property (assign, nonatomic) int orderType;
 @property (retain, nonatomic) NSMutableArray *sectionStat;
+@property (retain, nonatomic) NSDictionary *tipDic;
 
 @end
 
@@ -29,10 +32,12 @@
 
 @synthesize orderType = _orderType;
 @synthesize sectionStat = _sectionStat;
+@synthesize tipDic = _tipDic;
 
 - (void)dealloc
 {
     [_sectionStat release];
+    [_tipDic release];
     [super dealloc];
 }
 
@@ -41,6 +46,7 @@
     if (self = [super init]) {
         self.orderType = orderType;
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
+        self.tipDic = [NSDictionary dictionary];
     }
     
     return self;
@@ -56,6 +62,12 @@
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
+    [self setNavigationRightButton:NSLS(@"咨询") 
+                         imageName:@"topmenu_btn_right.png" 
+                            action:@selector(clickConsult:)];
+    
+    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过跟团游订单"), [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], NSLS(@"您还没有下过自由行订单"), [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], NSLS(@"您还没有下过定制游订单"), [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
+    
     
     if ([[UserManager defaultManager] isLogin]) {
         [[OrderService defaultService] findOrderUsingLoginId:[[UserManager defaultManager] loginId] 
@@ -67,6 +79,29 @@
                                                   orderType:_orderType
                                                    delegate:self];
     }
+}
+-(void)clickConsult:(id)sender
+{
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    for(NSString* title in [[AppManager defaultManager] getServicePhoneList]){
+        [actionSheet addButtonWithTitle:title];
+    }
+    [actionSheet addButtonWithTitle:NSLS(@"返回")];
+    [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
+    NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
+//    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    [UIUtils makeCall:phone];
 }
 
 - (void)viewDidUnload
@@ -100,6 +135,7 @@
     orderCell.delegate = self;
 
 	[orderCell setCellData:[dataList objectAtIndex:indexPath.row]];
+    orderCell.cellBgImageView.image = [[ImageManager defaultManager] orderListCellBgImage:indexPath.section rowCount:[dataList count]];
     
     return cell;
 }
@@ -129,15 +165,11 @@
     [view addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
     view.tag = section;
     
-    
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:view.bounds];
     bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
     
-    if (section >=1 && section == [dataList count] -1 && [[_sectionStat objectAtIndex:section] boolValue] == YES) {
-        bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:(section-1) rowCount:[dataList count]];
-    }else {
-        bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count]];
-    }
+    bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count] open:[[_sectionStat objectAtIndex:section] boolValue]];
+    
     [view addSubview:bgImageView];
     [bgImageView release];
     
@@ -154,7 +186,7 @@
     [view addSubview:routeIdLabel];
     [routeIdLabel release];
     
-    UILabel *bookDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(200, 0, 80, HEIGHT_HEADER_VIEW)];
+    UILabel *bookDateLabel = [[[UILabel alloc] initWithFrame:CGRectMake(200, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
     NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:[[dataList objectAtIndex:section] bookDate]];
     bookDateLabel.backgroundColor = [UIColor clearColor];
     bookDateLabel.font = [UIFont systemFontOfSize:15];
@@ -185,7 +217,7 @@
     }
     
     if ([list count] == 0) {
-        [self showTipsOnTableView:NSLS(@"您没有下过订单")];
+        [self showTipsOnTableView:[_tipDic objectForKey:[NSNumber numberWithInt:_orderType]]];
         return;
     }
     
@@ -232,16 +264,16 @@
 }
 
 
-- (void)didClickRouteDetail:(int)routeId
+- (void)didClickRouteDetail:(Order *)order
 {
-    CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:routeId routeType:[self routeType]];
+    CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:order.routeId routeType:[self routeType]];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
 
 - (int)routeType
 {
-    int routeType;
+    int routeType = 0;
     switch (_orderType) {
         case OBJECT_LIST_PACKAGE_TOUR_ORDER:
             routeType = OBJECT_LIST_ROUTE_PACKAGE_TOUR;
@@ -262,11 +294,14 @@
     return routeType;
 }
 
-- (void)didClickRouteFeekback:(int)routeId
+
+
+
+- (void)didClickRouteFeekback:(Order *)order
 {
-    
+    RouteFeekbackController *controller = [[RouteFeekbackController alloc] initWithOrder:order];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
-
-
 
 @end

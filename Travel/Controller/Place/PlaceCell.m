@@ -16,7 +16,6 @@
 #import "PPApplication.h"
 #import "AppManager.h"
 #import "AppUtils.h"
-#import "CommonPlace.h"
 #import "PlaceService.h"
 #import "PlaceStorage.h"
 #import "PlaceUtils.h"

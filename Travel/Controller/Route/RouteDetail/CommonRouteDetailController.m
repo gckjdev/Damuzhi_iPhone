@@ -10,13 +10,14 @@
 #import "TouristRoute.pb.h"
 #import "PPNetworkRequest.h"
 #import "ImageManager.h"
-#import "RouteFeekbackController.h"
+#import "RouteFeekbackListController.h"
 #import "PlaceOrderController.h"
 #import "CommonWebController.h"
 #import "CommonPlaceDetailController.h"
 #import "FlightController.h"
 #import "RouteUtils.h"
 #import "PPDebug.h"
+#import "UIUtils.h"
 
 @interface CommonRouteDetailController ()
 
@@ -27,9 +28,10 @@
 @property (retain, nonatomic) RouteIntroductionController *introductionController;
 @property (retain, nonatomic) CommonWebController *feeController;
 @property (retain, nonatomic) CommonWebController *bookingPolicyController;
-@property (retain, nonatomic) RouteFeekbackController *userFeekbackController;
+@property (retain, nonatomic) RouteFeekbackListController *feekbackListController;
 
 @property (retain, nonatomic) UIButton *currentSelectedButton;
+@property (retain, nonatomic) NSArray *phoneList;
 
 @end
 
@@ -42,22 +44,22 @@
 @synthesize introductionController = _introductionController;
 @synthesize feeController = _feeController;
 @synthesize bookingPolicyController = _bookingPolicyController;
-@synthesize userFeekbackController = _userFeekbackController;
+@synthesize feekbackListController = _feekbackListController;
 
 @synthesize introductionButton = _introductionButton;
 @synthesize costDescriptionButton = _costDescriptionButton;
 @synthesize bookingPolicyButton = _bookingPolicyButton;
 @synthesize userFeekbackButton = _userFeekbackButton;
 @synthesize buttonsHolderView = _buttonsHolderView;
-@synthesize contentScrollView = _contentScrollView;
+@synthesize contentView = _contentView;
 @synthesize currentSelectedButton = _currentSelectedButton;
-
+@synthesize phoneList = _phoneList;
 
 - (void)dealloc {
     [_route release];
     [_introductionController release];
     [_feeController release];
-    [_userFeekbackController release];
+    [_feekbackListController release];
     
     [_introductionButton release];
     [_costDescriptionButton release];
@@ -65,9 +67,9 @@
     [_userFeekbackButton release];
     
     [_buttonsHolderView release];
-    [_contentScrollView release];
+    [_contentView release];
     [_currentSelectedButton release];
-    
+    [_phoneList release];
     [super dealloc];
 }
 
@@ -95,6 +97,9 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
+
+//    self.phoneList = [NSArray arrayWithObjects:@"toBeFinished", nil];
+    
     self.buttonsHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] lineNavBgImage]];
     
     self.currentSelectedButton = self.introductionButton;
@@ -103,6 +108,38 @@
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
+- (void)clickConsult:(id)sender
+{
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    for(NSString* title in self.phoneList){
+        [actionSheet addButtonWithTitle:title];
+    }
+    [actionSheet addButtonWithTitle:NSLS(@"返回")];
+    [actionSheet setCancelButtonIndex:[self.phoneList count]];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
+    NSString *phone = [self.phoneList objectAtIndex:buttonIndex];
+//    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];    
+    [UIUtils makeCall:phone];
+}
+
+
+
 - (void)viewDidUnload
 {
     [self setIntroductionButton:nil];
@@ -110,7 +147,7 @@
     [self setBookingPolicyButton:nil];
     [self setUserFeekbackButton:nil];
     [self setButtonsHolderView:nil];
-    [self setContentScrollView:nil];
+    [self setContentView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -134,7 +171,7 @@
         _introductionController.aDelegate = self;
     }
     
-    [_introductionController showInView:self.contentScrollView];
+    [_introductionController showInView:self.contentView];
 }
 
 
@@ -147,7 +184,7 @@
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
     }
     
-    [_feeController showInView:self.contentScrollView];    
+    [_feeController showInView:self.contentView];    
 }
 
 
@@ -160,7 +197,7 @@
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
     }
     
-    [_bookingPolicyController showInView:self.contentScrollView];        
+    [_bookingPolicyController showInView:self.contentView];        
     
 }
 
@@ -169,12 +206,12 @@
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
     
-    if (_userFeekbackController == nil) {
-        self.userFeekbackController = [[[RouteFeekbackController alloc] initWithRouteId:_routeId] autorelease];
+    if (_feekbackListController == nil) {
+        self.feekbackListController = [[[RouteFeekbackListController alloc] initWithRouteId:_routeId] autorelease];
 
     }
 
-    [_userFeekbackController showInView:self.contentScrollView];   
+    [_feekbackListController showInView:self.contentView];   
 }
 
 - (void)findRequestDone:(int)result route:(TouristRoute *)route
@@ -186,6 +223,9 @@
     
     self.route = route;
     
+    self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
+//    NSLog(@"contact phone is %@", _route.contactPhone);
+    
     [self clickIntroductionButton:_introductionButton];
 }
 
@@ -195,10 +235,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)clickConsult:(id)sender
-{
-    [self popupMessage:NSLS(@"拨打电话") title:nil];
-}
 
 - (void)didSelectedPlace:(int)placeId
 {
@@ -230,13 +266,12 @@
     
     TravelPackage *package = [RouteUtils findPackageByPackageId:packageId fromPackageList:_route.packagesList];
     
-    FlightController *controller = [[FlightController alloc] initWithDepartFlight:package.departFlight returnFlight:package.returnFlight];
+    FlightController *controller = [[FlightController alloc] initWithDepartReturnFlight:package.departFlight returnFlight:package.returnFlight];
     
     
     
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
-
 
 @end

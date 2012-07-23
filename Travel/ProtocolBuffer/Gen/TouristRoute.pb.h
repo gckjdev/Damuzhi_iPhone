@@ -22,6 +22,14 @@
 @class TouristRoute_Builder;
 @class TravelPackage;
 @class TravelPackage_Builder;
+typedef enum {
+  BookingStatusNotInSale = 1,
+  BookingStatusInSale = 2,
+  BookingStatusSoldOut = 3,
+} BookingStatus;
+
+BOOL BookingStatusIsValidValue(BookingStatus value);
+
 
 @interface TouristRouteRoot : NSObject {
 }
@@ -87,6 +95,7 @@
   BOOL hasAgencyId_:1;
   BOOL hasDepartCityId_:1;
   BOOL hasRouteId_:1;
+  BOOL hasContactPhone_:1;
   BOOL hasBookingNotice_:1;
   BOOL hasFee_:1;
   BOOL hasReference_:1;
@@ -104,6 +113,7 @@
   int32_t agencyId;
   int32_t departCityId;
   int32_t routeId;
+  NSString* contactPhone;
   NSString* bookingNotice;
   NSString* fee;
   NSString* reference;
@@ -139,6 +149,7 @@
 - (BOOL) hasReference;
 - (BOOL) hasFee;
 - (BOOL) hasBookingNotice;
+- (BOOL) hasContactPhone;
 @property (readonly) int32_t routeId;
 @property (readonly, retain) NSString* name;
 @property (readonly) int32_t departCityId;
@@ -156,6 +167,7 @@
 @property (readonly, retain) NSString* reference;
 @property (readonly, retain) NSString* fee;
 @property (readonly, retain) NSString* bookingNotice;
+@property (readonly, retain) NSString* contactPhone;
 - (NSArray*) destinationCityIdsList;
 - (int32_t) destinationCityIdsAtIndex:(int32_t) index;
 - (NSArray*) themeIdsList;
@@ -338,6 +350,11 @@
 - (NSString*) bookingNotice;
 - (TouristRoute_Builder*) setBookingNotice:(NSString*) value;
 - (TouristRoute_Builder*) clearBookingNotice;
+
+- (BOOL) hasContactPhone;
+- (NSString*) contactPhone;
+- (TouristRoute_Builder*) setContactPhone:(NSString*) value;
+- (TouristRoute_Builder*) clearContactPhone;
 @end
 
 @interface DailySchedule : PBGeneratedMessage {
@@ -965,6 +982,7 @@
   BOOL hasAdult_:1;
   BOOL hasChildren_:1;
   BOOL hasStatus_:1;
+  BOOL hasPackageId_:1;
   BOOL hasRouteName_:1;
   BOOL hasDepartCityName_:1;
   BOOL hasPrice_:1;
@@ -977,6 +995,7 @@
   int32_t adult;
   int32_t children;
   int32_t status;
+  int32_t packageId;
   NSString* routeName;
   NSString* departCityName;
   NSString* price;
@@ -994,6 +1013,7 @@
 - (BOOL) hasPrice;
 - (BOOL) hasPriceStatus;
 - (BOOL) hasStatus;
+- (BOOL) hasPackageId;
 @property (readonly) int32_t orderId;
 @property (readonly) int32_t bookDate;
 @property (readonly) int32_t routeId;
@@ -1006,6 +1026,7 @@
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) NSString* priceStatus;
 @property (readonly) int32_t status;
+@property (readonly) int32_t packageId;
 
 + (Order*) defaultInstance;
 - (Order*) defaultInstance;
@@ -1100,5 +1121,10 @@
 - (int32_t) status;
 - (Order_Builder*) setStatus:(int32_t) value;
 - (Order_Builder*) clearStatus;
+
+- (BOOL) hasPackageId;
+- (int32_t) packageId;
+- (Order_Builder*) setPackageId:(int32_t) value;
+- (Order_Builder*) clearPackageId;
 @end
 

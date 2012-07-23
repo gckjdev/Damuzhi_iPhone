@@ -14,10 +14,15 @@
 #define COLOR_CONTENT [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
 
 @interface DailyScheduleCell ()
+{
+    int _hotelId;
+}
 
 @end
 
 @implementation DailyScheduleCell
+
+@synthesize aDelegate = _aDelegate;
 @synthesize titleButton;
 @synthesize placeToursBgImageView;
 @synthesize diningButton;
@@ -25,6 +30,18 @@
 @synthesize placeToursTagButton;
 @synthesize diningTagButton;
 @synthesize hotelTagButton;
+
+
+- (void)dealloc {
+    [titleButton release];
+    [diningButton release];
+    [hotelButton release];
+    [hotelTagButton release];
+    [placeToursTagButton release];
+    [diningTagButton release];
+    [placeToursBgImageView release];
+    [super dealloc];
+}
 
 + (NSString*)getCellIdentifier
 {
@@ -47,7 +64,7 @@
     [diningTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
     [hotelTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
     [diningButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
-    [hotelButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
+    [hotelButton setTitleColor:[UIColor colorWithRed:37/255. green:66/255. blue:80/255. alpha:1] forState:UIControlStateNormal];
     
     [titleButton setTitle:dailySchedule.title forState:UIControlStateNormal];
     [titleButton setBackgroundImage:[[ImageManager defaultManager] dailyScheduleTitleBgImageWithRowNum:rowNum rowCount:rowCount]forState:UIControlStateNormal];
@@ -94,16 +111,14 @@
     
     [hotelTagButton setBackgroundImage:[[ImageManager defaultManager] tableLeftBgImageWithRowNum:rowNum rowCount:rowCount] forState:UIControlStateNormal];
     [hotelButton setBackgroundImage:[[ImageManager defaultManager] tableRightBgImageWithRowNum:rowNum rowCount:rowCount] forState:UIControlStateNormal];
+    
+    _hotelId = dailySchedule.accommodation.hotelId;
 }
 
-- (void)dealloc {
-    [titleButton release];
-    [diningButton release];
-    [hotelButton release];
-    [hotelTagButton release];
-    [placeToursTagButton release];
-    [diningTagButton release];
-    [placeToursBgImageView release];
-    [super dealloc];
+- (IBAction)clickHotelButton:(id)sender {
+    if ([_aDelegate respondsToSelector:@selector(didClickHotel:)]) {
+        [_aDelegate didClickHotel:_hotelId];
+    }
 }
+
 @end

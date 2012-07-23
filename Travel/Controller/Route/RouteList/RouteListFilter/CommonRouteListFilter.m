@@ -27,78 +27,78 @@
     return button;
 }
 
-+ (NSArray *)filterRouteList:(NSArray *)routeList byAgencyIdList:(NSArray *)agencyIdList
-{
-    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
-    for (TouristRoute *route in routeList) {
-        NSNumber *agencyId = [NSNumber numberWithInt:route.agencyId];
-        if (NSNotFound != [agencyIdList indexOfObject:agencyId]) {
-            [retArray addObject:route];
-        }
-    }
-    
-    return retArray;
-}
-
-
-
-+ (NSArray *)filterRouteList:(NSArray *)routeList byThemeIdList:(NSArray *)themeIdList
-{
-    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
-    for (TouristRoute *route in routeList) {
-        for (NSNumber *themeId in route.themeIdsList) {
-            if (NSNotFound != [themeIdList indexOfObject:themeId]) {
-                [retArray addObject:route];
-            }
-        }
-    }
-    
-    return retArray;
-}
-
-+ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList
-{
-    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
-    for (TouristRoute *route in routeList) {
-        NSNumber *categoryId = [NSNumber numberWithInt:route.categoryId];
-        if (NSNotFound != [categoryIdList indexOfObject:categoryId]) {
-            [retArray addObject:route];
-        }
-    }
-    
-    return retArray;
-}
-
-+ (NSArray *)filterRouteList:(NSArray *)routeList byDepartCityId:(int)departCityId
-{    
-    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
-    
-    for (TouristRoute *route in routeList) {
-        if (route.departCityId == departCityId) {
-            [retArray addObject:route];
-        }
-    }
-    
-    return retArray;
-}
-
-+ (NSArray *)filterRouteList:(NSArray *)routeList byDestinationCityId:(int)destinationCityId
-{
-    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
-    
-    for (TouristRoute *route in routeList) {
-//        if (route.destinationCityId == destinationCityId) {
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byAgencyIdList:(NSArray *)agencyIdList
+//{
+//    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (TouristRoute *route in routeList) {
+//        NSNumber *agencyId = [NSNumber numberWithInt:route.agencyId];
+//        if (NSNotFound != [agencyIdList indexOfObject:agencyId]) {
 //            [retArray addObject:route];
 //        }
-        for (NSNumber *cityId in route.destinationCityIdsList) {
-            if ([cityId intValue] == destinationCityId) {
-                [retArray addObject:route];
-            }
-        }
-    }
-    
-    return retArray;
-}
+//    }
+//    
+//    return retArray;
+//}
+//
+//
+//
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byThemeIdList:(NSArray *)themeIdList
+//{
+//    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (TouristRoute *route in routeList) {
+//        for (NSNumber *themeId in route.themeIdsList) {
+//            if (NSNotFound != [themeIdList indexOfObject:themeId]) {
+//                [retArray addObject:route];
+//            }
+//        }
+//    }
+//    
+//    return retArray;
+//}
+//
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byCategoryIdList:(NSArray *)categoryIdList
+//{
+//    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (TouristRoute *route in routeList) {
+//        NSNumber *categoryId = [NSNumber numberWithInt:route.categoryId];
+//        if (NSNotFound != [categoryIdList indexOfObject:categoryId]) {
+//            [retArray addObject:route];
+//        }
+//    }
+//    
+//    return retArray;
+//}
+//
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byDepartCityId:(int)departCityId
+//{    
+//    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+//    
+//    for (TouristRoute *route in routeList) {
+//        if (route.departCityId == departCityId) {
+//            [retArray addObject:route];
+//        }
+//    }
+//    
+//    return retArray;
+//}
+//
+//+ (NSArray *)filterRouteList:(NSArray *)routeList byDestinationCityId:(int)destinationCityId
+//{
+//    NSMutableArray *retArray = [[[NSMutableArray alloc] init] autorelease];
+//    
+//    for (TouristRoute *route in routeList) {
+////        if (route.destinationCityId == destinationCityId) {
+////            [retArray addObject:route];
+////        }
+//        for (NSNumber *cityId in route.destinationCityIdsList) {
+//            if ([cityId intValue] == destinationCityId) {
+//                [retArray addObject:route];
+//            }
+//        }
+//    }
+//    
+//    return retArray;
+//}
 
 
 

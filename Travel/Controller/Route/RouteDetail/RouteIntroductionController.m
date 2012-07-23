@@ -11,7 +11,6 @@
 #import "AppManager.h"
 #import "ImageManager.h"
 #import "TravelNetworkConstants.h"
-#import "DailyScheduleCell.h"
 #import "CharacticsCell.h"
 #import "BookingCell.h"
 #import "SlideImageView.h"
@@ -19,6 +18,9 @@
 #import "RankView.h"
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
+#import "RouteStorage.h"
+#import "AnimationManager.h"
+
 
 #define CELL_IDENTIFY_CHARACTICS @"CharacticsCell"
 
@@ -72,6 +74,7 @@
 @synthesize imagesHolderView;
 @synthesize agencyNameLabel;
 @synthesize agencyInfoHolderView;
+@synthesize followButton;
 
 - (void)dealloc {
     [_sectionStat release];
@@ -83,6 +86,7 @@
     [agencyNameLabel release];
     [routeNameLabel release];
     [routeIdLabel release];
+    [followButton release];
     [super dealloc];
 }
 
@@ -125,10 +129,12 @@
     
     self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
     
-    SlideImageView *slideImageView = [[SlideImageView alloc] initWithFrame:imagesHolderView.bounds];
+    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
     [slideImageView setImages:_route.detailImagesList];
     [imagesHolderView addSubview:slideImageView];
+    
+    [self updateFollowButton];
     
     [self initSectionStat];
 }
@@ -148,7 +154,7 @@
                 [dic setObject:package.name forKey:[NSNumber numberWithInt:row++]];
             }
             [dic setObject:SECTION_TITLE_BOOKING forKey:[NSNumber numberWithInt:row++]];
-//            [dic setObject:SECTION_TITLE_REFERENCE forKey:[NSNumber numberWithInt:row++]];
+            [dic setObject:SECTION_TITLE_REFERENCE forKey:[NSNumber numberWithInt:row++]];
         }
         
         [dic setObject:SECTION_TITLE_RELATED_PLACE forKey:[NSNumber numberWithInt:row++]];
@@ -167,6 +173,7 @@
     [self setAgencyNameLabel:nil];
     [self setRouteNameLabel:nil];
     [self setRouteIdLabel:nil];
+    [self setFollowButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -177,7 +184,7 @@
 
 - (void)setAgencyInfoHolderViewAppearance
 {
-    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyName:_route.agencyId]];
+    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
     
     CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
     
@@ -192,9 +199,9 @@
     
     switch (_routeType) {
         case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
-            origin_x = 180;
+            origin_x = 140;
             origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
-            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x, origin_y, 40, HEIGHT_PRICE_LABEL)];
+            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x + 10, origin_y, 80, HEIGHT_PRICE_LABEL)];
             [agencyInfoHolderView addSubview:priceLabel];
             
             origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
@@ -204,7 +211,7 @@
             
             origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 10;
             origin_y = agencyNameLabel.frame.size.height/2 - 22/2; 
-            bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x, origin_y, 70, 22)];
+            bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x - 12, origin_y, 70, 22)];
             [agencyInfoHolderView addSubview:bookButton];
             
             break;
@@ -220,7 +227,7 @@
             
             origin_x = 220;
             origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
-            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x, origin_y, 70, HEIGHT_PRICE_LABEL)];
+            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x + 10, origin_y, 70, HEIGHT_PRICE_LABEL)];
             [agencyInfoHolderView addSubview:priceLabel];
             
             origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
@@ -240,7 +247,7 @@
     [priceLabel setTextColor:[UIColor colorWithRed:255.0/255.0 green:96.0/255.0 blue:0 alpha:1]];
     [priceLabel setTextAlignment:UITextAlignmentRight];
     [priceLabel setFont:[UIFont systemFontOfSize:16]];
-    [priceLabel setText:[NSString stringWithFormat:@"%d元", [_route.price intValue]]];
+    [priceLabel setText:_route.price];
     [priceLabel setBackgroundColor:[UIColor clearColor]];
     
     return priceLabel;
@@ -249,7 +256,7 @@
 - (UILabel *)genPriceSuffixLabelWithFrame:(CGRect)frame
 {
     UILabel *suffixLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
-    [suffixLabel setFont:[UIFont systemFontOfSize:12]];
+    [suffixLabel setFont:[UIFont systemFontOfSize:9]];
     suffixLabel.textColor = COLOR_CONTENT;
     [suffixLabel setText:NSLS(@"起")];
     [suffixLabel setBackgroundColor:[UIColor clearColor]];
@@ -267,11 +274,11 @@
     return bookButton;
 }
 
-- (void)showInView:(UIScrollView *)superView
+- (void)showInView:(UIView *)superView
 {
     [superView removeAllSubviews];
     
-    superView.contentSize = self.view.bounds.size;
+//    superView.contentSize = self.view.bounds.size;
     [superView addSubview:self.view];
 }
 
@@ -360,8 +367,8 @@
         cell = [self cellForBookingWithIndex:indexPath tableView:tableView];
     }else if ([title isEqualToString:SECTION_TITLE_RELATED_PLACE]) {
         cell = [self cellForRelatedPlaceWithIndex:indexPath tableView:tableView];
-//    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
-//        
+    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
+        cell = [self cellForReferenceWithIndex:indexPath tableView:tableView];
     }else{
         for (TravelPackage *package in _route.packagesList) {
             if ([title isEqualToString:package.name]) {
@@ -369,6 +376,8 @@
             }
         }
     }
+    
+    [cell setBackgroundColor:[UIColor clearColor]];
     
     return cell;
 }
@@ -397,6 +406,29 @@
     return size.height + 5;
 }
 
+- (UITableViewCell *)cellForReferenceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CharacticsCell getCellIdentifier]];
+    
+    if (cell == nil) {
+        cell = [CharacticsCell createCell:self];	
+    }
+    
+    CharacticsCell *characticsCell = (CharacticsCell *)cell;
+    characticsCell.characticsLabel.textColor = COLOR_CONTENT;
+    [characticsCell setCellData:_route.reference];
+    
+    return cell;
+}
+
+- (CGFloat)cellHeightForReferenceWithIndex:(NSIndexPath *)indexPath
+{
+    CGSize withinSize = CGSizeMake(WIDTH_CHARACTICS_LABEL, MAXFLOAT);
+    CGSize size = [_route.reference sizeWithFont:FONT_CHARACTICS_LABEL constrainedToSize:withinSize lineBreakMode:LINE_BREAK_MODE_CHARACTICS_LABEL];
+    
+    return size.height + 5;
+}
+
 - (UITableViewCell *)cellForDailyScheduleWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[DailyScheduleCell getCellIdentifier]];
@@ -407,7 +439,7 @@
     }
     
     DailyScheduleCell *dailySchedulesCell = (DailyScheduleCell *)cell;
-    
+    dailySchedulesCell.aDelegate = self;
     [dailySchedulesCell setCellData:[[_route dailySchedulesList] objectAtIndex:indexPath.row] rowNum:indexPath.row rowCount:[self cellCountForSection:indexPath.section]];
     
     return cell;
@@ -433,9 +465,9 @@
     }
     
     BookingCell *bookingCell = (BookingCell *)cell;
-    bookingCell.bookingBgImageView.image = [[ImageManager defaultManager] bookingBgImage];
+//    bookingCell.bookingBgImageView.image = [[ImageManager defaultManager] bookingBgImage];
     
-    [bookingCell setCellData:NO bookings:_route.bookingsList];
+    [bookingCell setCellData:NO bookings:_route.bookingsList routeType:_routeType];
     
     return cell;
 }
@@ -450,8 +482,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[RelatedPlaceCell getCellIdentifier]];
     
     if (cell == nil) {
-        cell = [RelatedPlaceCell createCell:self];				            
-
+        cell = [RelatedPlaceCell createCell:self];
     }
 
     RelatedPlaceCell *relatedPlaceCell = (RelatedPlaceCell *)cell;
@@ -520,8 +551,8 @@
         height = [self cellHeightForBookingWithIndex:indexPath];
     }else if ([title isEqualToString:SECTION_TITLE_RELATED_PLACE]) {
         height = [self cellHeightForRelatedPlaceWithIndex:indexPath];
-//    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
-        
+    }else if ([title isEqualToString:SECTION_TITLE_REFERENCE]) {
+         height = [self cellHeightForReferenceWithIndex:indexPath];
     }else{
         for (TravelPackage *package in _route.packagesList) {
             if ([title isEqualToString:package.name]) {
@@ -541,12 +572,8 @@
 #define HEIGHT_FOLLOW_VIEW 53
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-//    if (section == [self sectionCount] - 1) {
-//        return HEIGHT_FOLLOW_VIEW;
-//    }
-    
-    return HEIGHT_FOOTER_VIEW * [[_sectionStat objectAtIndex:section] boolValue];
+{    
+    return HEIGHT_FOOTER_VIEW * [self isSectionOpen:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -569,22 +596,9 @@
         return nil;
     }
     
-    CGRect rect;
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOOTER_VIEW);
     UIView *view = [[[UIView alloc] initWithFrame:rect] autorelease];
     view.backgroundColor = [UIColor clearColor];
-    
-//    PPDebug(@"section count: %d", [self sectionCount]);
-//    PPDebug(@"section = %d", section);
-//    if (section == [self sectionCount] - 1) {
-//        view.frame = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOLLOW_VIEW);
-//        UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(self.dataTableView.frame.size.width/2 - WIDTH_FOLLOW_BUTTON/2, 53/2 - HEIGHT_FOLLOW_BUTTOn/2, WIDTH_FOLLOW_BUTTON, HEIGHT_FOLLOW_BUTTOn)] autorelease];
-//        [button addTarget:self action:@selector(clickFollowRoute:) forControlEvents:UIControlEventTouchUpInside];
-//        [button setTitle:NSLS(@"关注路线") forState:UIControlStateNormal];
-//        [button setBackgroundImage:[UIImage imageNamed:@"favorites.png"] forState:UIControlStateNormal];
-//        [view addSubview:button];
-//    }
-
-    view.frame = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_FOOTER_VIEW);
     
     return view;
 }
@@ -635,6 +649,16 @@
         for (TravelPackage * package in _route.packagesList) {
             
             if ([label.text isEqualToString:package.name]) {
+                UILabel *noteLabel = [self headerNote];
+                if (package.note && [package.note length] >0) {
+                    noteLabel.text = [NSString  stringWithFormat:@"(%@)", package.note];
+                }
+                //noteLabel.text = @"(机票+酒店)";
+                CGSize labelTextSize = [label.text sizeWithFont:label.font];
+                noteLabel.frame = CGRectMake(label.frame.origin.x + labelTextSize.width + 5, noteLabel.frame.origin.y, noteLabel.frame.size.width, noteLabel.frame.size.height);
+                [headerView addSubview:noteLabel];
+                
+                
                 UILabel *priceLabel = [self genPriceLabelWithFrame:CGRectMake(150, 0, 40, 30)];
                 priceLabel.text = package.price;
                 [headerView addSubview:priceLabel];
@@ -658,8 +682,10 @@
     //出发日期
     if([label.text isEqualToString:SECTION_TITLE_BOOKING]) {
         UILabel *noteLabel = [self headerNote];
-        noteLabel.text = [NSString  stringWithFormat:@"(%@)", _route.bookingNote];
-        noteLabel.text = [NSString  stringWithFormat:@"(%@)", @"提前10天"];
+        if (_route.bookingNote && [_route.bookingNote length] >0) {
+            noteLabel.text = [NSString  stringWithFormat:@"(%@)", _route.bookingNote];
+        }
+        //noteLabel.text = @"提前10天";
         [headerView addSubview:noteLabel];
     }
         
@@ -673,7 +699,7 @@
     [headerView setBackgroundImage:[[ImageManager defaultManager] lineListBgImage] forState:UIControlStateNormal];
     [headerView addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280, HEIGHT_HEADER_VIEW/2-22/2, 22, 22)];
+    UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280 + 8, HEIGHT_HEADER_VIEW/2-22/2 + 1, 22 - 2, 22)];
     arrowImageView.image = [[ImageManager defaultManager] arrowImage];
     [headerView addSubview:arrowImageView];
     [arrowImageView release];
@@ -713,9 +739,32 @@
     }
 }
 
+#define FAVORITES_OK_VIEW 777
 - (IBAction)clickFollowRoute:(id)sender
 {
-    [self popupMessage:@"关注路线" title:nil]; 
+    CGRect rect = CGRectMake(0, 0, 109, 52);
+    UIButton *button = [[UIButton alloc] initWithFrame:rect];
+    button.tag = FAVORITES_OK_VIEW;
+    button.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"favorites_ok.png"]];
+    [button setTitle:NSLS(@"关注成功") forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(-8, 20, 0, 0)];
+    CGPoint fromPosition = CGPointMake(320/2, 345);
+    CGPoint toPosition = CGPointMake(320/2, 345);
+    [self.view addSubview:button];
+    [button release];
+    
+    [AnimationManager alertView:button fromPosition:fromPosition toPosition:toPosition interval:2 delegate:self];
+    
+    
+    [[RouteService defaultService] followRoute:_route routeType:_routeType viewController:self];
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    UIView *view = [self.view viewWithTag:FAVORITES_OK_VIEW];
+    [view removeFromSuperview];
 }
 
 - (void)didClickFlight:(int)packageId
@@ -730,6 +779,31 @@
     if ([_aDelegate respondsToSelector:@selector(didSelectedPlace:)]) {
         [_aDelegate didSelectedPlace:hotelId];
     }
+}
+
+- (void)didClickHotel:(int)hotelId
+{
+    if ([_aDelegate respondsToSelector:@selector(didSelectedPlace:)]) {
+        [_aDelegate didSelectedPlace:hotelId];
+    }
+}
+
+- (void)updateFollowButton
+{
+    if ([[RouteStorage followManager:_routeType] isExistRoute:_route.routeId]) {
+        [followButton setTitle:NSLS(@"已关注") forState:UIControlStateNormal];
+        [followButton setEnabled:NO];
+    }
+    else {
+        [followButton setTitle:NSLS(@"关注线路") forState:UIControlStateNormal];
+        [followButton setEnabled:YES];
+    }
+}
+
+#pragma mark - RouteServiceDelegate method
+- (void)followRouteDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    [self updateFollowButton]; 
 }
 
 

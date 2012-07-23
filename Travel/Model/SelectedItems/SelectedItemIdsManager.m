@@ -7,7 +7,6 @@
 //
 
 #import "SelectedItemIdsManager.h"
-#import "CommonPlace.h"
 #import "App.pb.h"
 #import "TravelNetworkConstants.h" 
 

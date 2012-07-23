@@ -12,6 +12,13 @@
 #import "AppManager.h"
 #import "AppUtils.h"
 
+@interface PlaceStorage()
+@property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) PlaceList* placeList;
+
+@end
+
+
 static PlaceStorage* _favoriteManager = nil;
 static PlaceStorage* _historyManager = nil;
 
@@ -61,7 +68,6 @@ static PlaceStorage* _historyManager = nil;
     else {
         filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
     }
-//    PPDebug(@"%@",filePath);
     
     return filePath;
 }
@@ -81,7 +87,9 @@ static PlaceStorage* _historyManager = nil;
 
 - (NSArray*)allPlaces
 {
-    [self loadPlaceList];
+    if ([self.placeList listList] == nil || [[self.placeList listList] count] < 1) {
+        [self loadPlaceList];
+    }
     return [self.placeList listList];
 }
 
@@ -99,8 +107,7 @@ static PlaceStorage* _historyManager = nil;
     } 
     [builder release];
     
-    // update current list data
-    self.placeList = newPlaceList;
+    [self loadPlaceList];
 }
 
 - (void)addPlace:(Place*)place
@@ -109,7 +116,13 @@ static PlaceStorage* _historyManager = nil;
     
     // generate new list by adding place into existing place list
     NSMutableArray* newList = [NSMutableArray arrayWithArray:[self allPlaces]];
-    [newList addObject:place];    
+    [newList addObject:place];  
+    
+    if (self.type == HISTORY_STORAGE) {
+        while ([newList count]>30) {
+            [newList removeObjectAtIndex:0];
+        }
+    }
     
     [self writeToFileWithList:newList];
 }
@@ -138,7 +151,6 @@ static PlaceStorage* _historyManager = nil;
 
 - (BOOL)isPlaceInFavorite:(int)placeId
 {
-    [self loadPlaceList];
     NSArray *arrary = [self allPlaces];
     for (Place *place in arrary) {
         if (place.placeId == placeId) {
@@ -146,6 +158,18 @@ static PlaceStorage* _historyManager = nil;
         }
     }
     return NO;
+}
+
+- (NSArray *)allPlacesSortByLatest
+{
+    NSArray *array = [self allPlaces];
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    int count = [array count];
+    for (int i = count-1 ; i >= 0 ; i--) {
+        [mutableArray addObject:[array objectAtIndex:i]];
+    }
+    return mutableArray;
 }
 
 @end

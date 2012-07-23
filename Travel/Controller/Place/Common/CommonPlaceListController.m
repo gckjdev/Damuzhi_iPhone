@@ -22,11 +22,41 @@
 #import "AppService.h"
 
 #define TAG_PLACE_COUNT_LABEL 1
+#define EACH_FETCH 20
+
+@implementation PlaceListFilter
+
+//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController
+//{
+//    return [[PlaceService defaultService] findPlaces:[self getCategoryId]  viewController:viewController];
+//}
+
+- (void)findAllPlacesWithStart:(int)start
+                         count:(int)count
+               selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+                needStatistics:(BOOL)needStatistics 
+                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+
+{
+    [[PlaceService defaultService] findPlacesWithCategoryId:[self getCategoryId]
+                                                             start:start 
+                                                             count:count
+                                                   selectedItemIds:selectedItemIds 
+                                                    needStatistics:needStatistics
+                                                    viewController:viewController];
+}
+
+@end
+
 
 @interface CommonPlaceListController ()
+{
+    int _start;
+    int _totalCount;
+}
 
 @property (retain, nonatomic) PlaceListController* placeListController;
-@property (retain, nonatomic) NSObject<PlaceListFilterProtocol> *filterHandler;
+@property (retain, nonatomic) PlaceListFilter<PlaceListFilterProtocol> *filterHandler;
 @property (assign, nonatomic) int currentCityId;
 
 @property (retain, nonatomic) NSArray *allPlaceList;
@@ -61,7 +91,7 @@
     [super dealloc];
 }
 
-- (id)initWithFilterHandler:(NSObject<PlaceListFilterProtocol>*)handler
+- (id)initWithFilterHandler:(PlaceListFilter<PlaceListFilterProtocol>*)handler
 {
     self = [super init];
     if (self) {
@@ -120,19 +150,27 @@
 
     self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getPlaceSelectedItems:[_filterHandler getCategoryId]];
     
-    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:YES pullDownDelegate:self] autorelease];
+    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:YES supportPullUpToLoadMore:YES pullDelegate:self] autorelease];
         
     [_placeListController showInView:_placeListHolderView];
 
-    [_filterHandler findAllPlaces:self];
+//    [_filterHandler findAllPlaces:self];
+    [_filterHandler findAllPlacesWithStart:_start 
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:YES
+                            viewController:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.hidesBottomBarWhenPushed = YES;
+    
     [super viewDidAppear:animated];
     
     [_placeListController viewDidAppear:animated];
 }
+
 
 
 - (void)clickBack:(id)sender
@@ -166,10 +204,10 @@
     [view release];
 }
 
-- (void)updateNavigationBarTitle:(int)count
+- (void)updateNavigationBarTitle
 {
     UILabel *placeCountLabel = (UILabel*)[self.navigationItem.titleView viewWithTag:TAG_PLACE_COUNT_LABEL];
-    [placeCountLabel setText:[NSString stringWithFormat:NSLS(@"(%d)"), count]];
+    [placeCountLabel setText:[NSString stringWithFormat:NSLS(@"(%d)"), _totalCount]];
 }
 
 - (void)viewDidUnload
@@ -183,27 +221,63 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)findRequestDone:(int)result placeList:(NSArray *)placeList
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+             totalCount:(int)totalCount
+              placeList:(NSArray *)placeList
 {
     [_placeListController dataSourceDidFinishLoadingNewData];
+    [_placeListController dataSourceDidFinishLoadingMoreData];
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }
-
-    self.allPlaceList = placeList;
-    self.placeList = [self filterAndSort:_allPlaceList];
-
+    
+    if (_start == 0) {
+        _placeListController.noMoreData = NO;
+        self.placeList = [NSArray array];
+    }
+    
+    _start += [placeList count];
+    _totalCount = totalCount;
+    
+    if (_start >= totalCount) {
+        _placeListController.noMoreData = YES;
+    }
+    
+//    self.allPlaceList = placeList;
+//    self.placeList = [self filterAndSort:_allPlaceList];
+    self.placeList = [_placeList arrayByAddingObjectsFromArray:placeList];
+    
     // Update place count in navigation bar.
-    [self updateNavigationBarTitle:_placeList.count];
+    [self updateNavigationBarTitle];
     
     // Reload place list.
     [_placeListController setPlaceList:_placeList];
+    
+    for (Place *place in _placeList) {
+        PPDebug(@"place name = %@", place.name);
+    }
+    
+    PPDebug(@"place count = %d", [_placeList count]);
 }
 
-- (void)didPullDown
+- (void)didPullDownToRefresh
 {
-    [_filterHandler findAllPlaces:self];
+//    [_filterHandler findAllPlaces:self];
+    _start = 0;
+    
+    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
+}
+
+- (void)didPullUpToLoadMore
+{
+    [_filterHandler findAllPlacesWithStart:_start 
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:NO
+                            viewController:self];
 }
 
 - (NSArray*)filterAndSort:(NSArray*)placeList
@@ -267,7 +341,7 @@
 
 - (void)clickCategoryButton:(id)sender
 {
-    NSArray *subCategoryItemList = [[AppManager defaultManager] getSubCategoryItemList:[_filterHandler getCategoryId] placeList:_allPlaceList];
+    NSArray *subCategoryItemList = [[AppManager defaultManager] getSubCategoryItemList:[_filterHandler getCategoryId]];
     
     [self pushSelectedControllerWithTitle:((UIButton*)sender).titleLabel.text 
                                  itemList:subCategoryItemList
@@ -303,7 +377,7 @@
 
 - (void)clickArea:(id)sender
 {
-    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:_currentCityId placeList:_allPlaceList];
+    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:_currentCityId];
     
     [self pushSelectedControllerWithTitle:((UIButton*)sender).titleLabel.text
                                  itemList:areaItemList
@@ -316,7 +390,7 @@
 - (void)clickService:(id)sender
 {
     
-    NSArray *serviceItemList = [[AppManager defaultManager] getServiceItemList:[_filterHandler getCategoryId] placeList:_allPlaceList];
+    NSArray *serviceItemList = [[AppManager defaultManager] getServiceItemList:[_filterHandler getCategoryId]];
     
     [self pushSelectedControllerWithTitle:((UIButton*)sender).titleLabel.text
                                  itemList:serviceItemList
@@ -356,13 +430,10 @@
 
 
 - (void)didSelectFinish:(NSArray*)selectedList
-{ 
-    self.placeList = [self filterAndSort:_allPlaceList];
+{     
+    _start = 0;
     
-    // Update place count in navigation bar.
-    [self updateNavigationBarTitle:_placeList.count];
-    
-    [_placeListController setPlaceList:_placeList];
+    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -57,6 +57,7 @@
 
 #define DIR_OF_FAVORITE                     @"app/user/favorite/"
 #define DIR_OF_HISTORY                      @"app/user/history/"
+#define DIR_OF_FOLLOW_ROUTES                @"app/user/followRoutes/"
 
 // Under city dir, relative.
 #define FLAG_OF_UNZIP_SUCCESS               @"unzip_success" 
@@ -81,5 +82,41 @@
 
 #define ALERT_USING_CELL_NEWORK 1
 #define ALERT_DELETE_CITY 2
+
+#define ALL_CATEGORY   (-1)
+
+// 地点排序方式
+enum{
+    SORT_BY_RECOMMEND = 1,
+    SORT_BY_DESTANCE_FROM_NEAR_TO_FAR = 2,
+    SORT_BY_DESTANCE_FROM_FAR_TO_NEAR = 3,
+    SORT_BY_PRICE_FROM_EXPENSIVE_TO_CHEAP = 4,
+    SORT_BY_PRICE_FROM_CHEAP_TO_EXPENSIVE = 5,
+    SORT_BY_HOTEL_STARTS = 6
+};
+
+// 线路排序方式
+enum{
+    ROUTE_SORT_BY_DEFAULT = 1,
+    ROUTE_SORT_BY_FOLLOW_COUNT_FROM_MORE_TO_LESS = 2,
+    ROUTE_SORT_BY_SORT_BY_RECOMMEND = 3,
+    ROUTE_SORT_BY_PRICE_FROM_CHEAP_TO_EXPENSIVE = 4,
+    ROUTE_SORT_BY_PRICE_FROM_EXPENSIVE_TO_CHEAP = 5,    
+    ROUTE_SORT_BY_DAYS_FROM_MORE_TO_LESS = 6,
+    ROUTE_SORT_BY_DAYS_FROM_LESS_TO_MORE = 7
+};
+
+enum{
+    PRICE_BELOW_1500 = 1,
+    PRICE_1500_4000 = 2,
+    PRICE_MORE_THAN_4000 = 3
+};
+
+enum{
+    DAYS_1_3 = 1,
+    DAYS_3_8 = 2,
+    DAYS_MORE_THAN_8 = 3
+};
+
 
 #endif

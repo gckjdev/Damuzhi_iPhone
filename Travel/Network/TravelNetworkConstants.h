@@ -12,19 +12,17 @@
 #define OS_IOS 1
 
 // for test service
-#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
 
-//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
-
-//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
-////#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
-
+//#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
 
 // URL
-#define URL_TRAVEL_REGISTER_USER    (URL_SERVICE@"RegisterUser.aspx?")
+#define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
+#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeekback.aspx?")
 
 //query place list
 #define URL_TRAVEL_QUERY_LIST       (URL_SERVICE@"queryList.aspx?")
@@ -44,8 +42,14 @@
 #define URL_TRAVEL_MEMBER_REGISTER      (URL_SERVICE@"memberRegister.aspx?")
 #define URL_TRAVEL_MEMBER_VERIFICATION  (URL_SERVICE@"memberVerification.aspx?")
 #define URL_TRAVEL_RETRIEVE_PASSWORD    (URL_SERVICE@"retrievePassword.aspx?")
+#define URL_TRAVEL_MODIFY_PASSWORD      (URL_SERVICE@"modifyPassword.aspx?")
+
+#define URL_TRAVEL_RETRIEVE_USER_INFO   (URL_SERVICE@"retrieveMemberData.aspx?")
+#define URL_TRAVEL_MODIFY_USER_INFO     (URL_SERVICE@"modifyMemberData.aspx?")
+
 #define URL_TRAVEL_PLACE_ORDER          (URL_SERVICE@"placeOrder.aspx?")
 
+#define URL_TRAVE_FOLLOW_ROUTE          (URL_SERVICE@"followRoute.aspx?")
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -56,6 +60,16 @@
 #define PARA_TRAVEL_LOGIN_ID        @"loginId"
 #define PARA_TRAVEL_PASSWORD        @"password"
 #define PARA_TRAVEL_TOKEN           @"token"
+#define PARA_TRAVEL_OLD_PASSWORD    @"oldPassword"
+#define PARA_TRAVEL_NEW_PASSWORD    @"newPassword"
+
+
+#define PARA_TRAVEL_FULL_NAME       @"fullName"
+#define PARA_TRAVEL_NICK_NAME       @"nickName"
+#define PARA_TRAVEL_GENDER          @"gender"
+#define PARA_TRAVEL_EMAIL           @"email"
+#define PARA_TRAVEL_ADRESS          @"adress"
+
 #define PARA_TRAVEL_TYPE            @"type"
 #define PARA_TRAVEL_DEVICE_TOKEN    @"deviceToken"
 #define PARA_TRAVEL_RESULT          @"result"
@@ -71,17 +85,29 @@
 #define PARA_TRAVEL_LANG            @"lang"
 #define PARA_TRAVEL_OS              @"os"
 
+#define PARA_TRAVEL_SUBCATEGORY_ID  @"subcategoryId"
+#define PARA_TRAVEL_AREA_ID         @"areaId"
+#define PARA_TRAVEL_SERVICE_ID      @"serviceId"
+
 #define PARA_TRAVEL_PLACE_ID        @"placeId"
 #define PARA_TRAVEL_LONGITUDE       @"longitude"
 #define PARA_TRAVEL_LATITUDE        @"latitude"
 
 #define PARA_TRAVEL_NUM             @"num"
 #define PARA_TRAVEL_DISTANCE        @"distance"
+#define PARA_TRAVEL_RANK            @"rank"
 
 #define PARA_TRAVEL_DEPART_CITY_ID          @"departCityId"
 #define PARA_TRAVEL_DESTINATION_CITY_ID     @"destinationCityId"
 #define PARA_TRAVEL_START                   @"start"
 #define PARA_TRAVEL_COUNT                   @"count"
+#define PARA_TRAVEL_AGENCY_ID               @"agencyId"
+#define PARA_TRAVEL_PRICE_RANK_ID           @"priceRankId"
+#define PARA_TRAVEL_DAYS_RANGE_ID           @"daysRangeId"
+#define PARA_TRAVEL_THEME_ID                @"themeId"
+#define PARA_TRAVEL_SORT_TYPE               @"sortType"
+#define PARA_TRAVEL_NEED_STATISTICS         @"needStatistics"
+#define PARA_TRAVEL_TEST                    @"test"
 
 
 #define PARA_TRAVEL_PLACE_FAVORITE_COUNT    @"placeFavoriteCount"
@@ -156,5 +182,8 @@
 #define OBJECT_TYPE_HELP_INOF                   8
 #define OBJECT_TYPE_APP_DATA                    10
 #define OBJECT_TYPE_ROUTE_DETAIL                50
+
+
+#define STRING_SEPARATOR    @","
 
 #endif

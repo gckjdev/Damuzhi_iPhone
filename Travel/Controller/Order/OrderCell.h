@@ -12,14 +12,20 @@
 @protocol OrderCellDelegate <NSObject>
 
 @optional
-- (void)didClickRouteFeekback:(int)routeId;
-- (void)didClickRouteDetail:(int)routeId;
-
+- (void)didClickRouteFeekback:(Order *)order;
+- (void)didClickRouteDetail:(Order *)order;
 @end
 
 @interface OrderCell : PPTableViewCell
 
 @property (assign, nonatomic) id<OrderCellDelegate> delegate;
+
+@property (retain, nonatomic) IBOutlet UIButton *orderPayButton;
+
+@property (retain, nonatomic) IBOutlet UIButton *routeFeedback;
+
+@property (retain, nonatomic) IBOutlet UIButton *routeDetail;
+
 
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
@@ -29,6 +35,10 @@
 @property (retain, nonatomic) IBOutlet UILabel *personCountLabel;
 @property (retain, nonatomic) IBOutlet UILabel *priceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *orderStatusLabel;
+@property (retain, nonatomic) IBOutlet UILabel *packageIdLabel;
+@property (retain, nonatomic) IBOutlet UILabel *packageIdTitleLabel;
+
+@property (retain, nonatomic) IBOutlet UIImageView *cellBgImageView;
 
 
 - (void)setCellData:(Order *)order;

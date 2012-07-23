@@ -35,6 +35,7 @@
 @synthesize contactPersonTextField;
 @synthesize telephoneTextField;
 @synthesize delegate;
+@synthesize backGroundScrollView;
 
 - (void)dealloc {
     [_route release];
@@ -43,6 +44,7 @@
     [routeNameLabel release];
     [contactPersonTextField release];
     [telephoneTextField release];
+    [backGroundScrollView release];
     [super dealloc];
 }
 
@@ -77,7 +79,9 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
     
-    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
+    self.backGroundScrollView.contentSize = CGSizeMake(self.backGroundScrollView.frame.size.width, self.backGroundScrollView.frame.size.height + 1);
     routeNameLabel.text = _route.name;
     
     contactPersonTextField.tag = TAG_TEXT_FIELD_CONTACT_PERSON;
@@ -100,6 +104,7 @@
 
     [self setContactPersonTextField:nil];
     [self setTelephoneTextField:nil];
+    [self setBackGroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -138,10 +143,11 @@
 {
     NSString *contactPerson = contactPersonTextField.text;
     NSString *telephone = telephoneTextField.text;
+    contactPerson = [contactPerson stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if (contactPerson == nil || [contactPerson length] == 0) {
-        [self popupMessage:NSLS(@"请输入你的姓名") title:nil];
-        return;
+        [self popupMessage:NSLS(@"姓名不能为空，请您重新输入") title:nil];
+        return;     
     }
     
     if (!NSStringIsValidPhone(telephoneTextField.text)) {
@@ -149,9 +155,8 @@
         return;
     }
     
-    if (delegate && [delegate respondsToSelector:@selector(didclickSubmit:telephone:)]) {
+    if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)]) {
         [delegate didclickSubmit:contactPerson telephone:telephone];
-        
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

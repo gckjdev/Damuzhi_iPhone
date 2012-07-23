@@ -10,6 +10,7 @@
 #import "UserManager.h"
 #import "PPNetworkRequest.h"
 #import "StringUtil.h"
+#import "UIImageUtil.h"
 
 @interface VerificationController ()
 
@@ -21,7 +22,9 @@
 @implementation VerificationController
 @synthesize telephone = _telephone;
 @synthesize code = _code;
+@synthesize backgroundScrollView;
 @synthesize loginController = _loginController;
+@synthesize retrieveCodeButton;
 
 @synthesize telephoneTextField;
 @synthesize codeTextField;
@@ -35,7 +38,18 @@
     [telephoneTextField release];
     [codeTextField release];
     [hideKeyboardButton release];
+    [retrieveCodeButton release];
+    [backgroundScrollView release];
     [super dealloc];
+}
+
+- (id)initWithTelephone:(NSString *)telephone
+{
+    if (self = [super init]) {
+        self.telephone = telephone;
+    }
+    
+    return self;
 }
 
 - (void)viewDidLoad
@@ -51,10 +65,16 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickFinish:)];
     
+    [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
+    [retrieveCodeButton setBackgroundImage:[UIImage strectchableImageName:@"order_btn_1.png" leftCapWidth:20] forState:(UIControlStateNormal)];
         
-    telephoneTextField.delegate = self;
+//    telephoneTextField.delegate = self;
     codeTextField.delegate = self;
+    
+    telephoneTextField.text = _telephone;
 }
 
 - (void)viewDidUnload
@@ -62,16 +82,17 @@
     [self setTelephoneTextField:nil];
     [self setCodeTextField:nil];
     [self setHideKeyboardButton:nil];
+    [self setRetrieveCodeButton:nil];
+    [self setBackgroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 - (IBAction)clickRetrieveCodeButton:(id)sender {
-    self.telephone = telephoneTextField.text;
-    
-    [self.navigationController popToViewController:self.loginController animated:YES];
-//    [[UserService defaultService] verificate:[[UserManager defaultManager] loginId] telephone:_telephone delegate:self];
+    retrieveCodeButton.enabled = NO;
+
+    [[UserService defaultService] verificate:_telephone telephone:_telephone delegate:self];
 }
 
 - (IBAction)clickHideKeyboardButton:(id)sender {
@@ -92,8 +113,14 @@
 
 - (void)clickFinish:(id)sender
 {
-    if (!NSStringIsValidPhone(telephoneTextField.text)) {
-        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+//    if (!NSStringIsValidPhone(telephoneTextField.text)) {
+//        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+//        return;
+//    }
+    NSString *str = codeTextField.text;
+    str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (0 == [str length]) {
+        [self popupMessage:@"您输入的验证码为空，请重新输入" title:nil];
         return;
     }
     
@@ -102,6 +129,7 @@
 
 - (void)verificationDidSend:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
 {
+    retrieveCodeButton.enabled = YES;
     if (resultCode != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"您的网络不稳定，获取验证码失败") title:nil];
         return;
@@ -128,7 +156,12 @@
     }
     
     [self popupMessage:NSLS(@"验证成功") title:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+-(IBAction)textFieldDoneEditing:(id)sender
+{
+    [sender resignFirstResponder];
+}
 
 @end

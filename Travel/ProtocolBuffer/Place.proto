@@ -50,3 +50,16 @@ message PlaceList {
   repeated Place list = 1;
   optional int32 cityId = 2;
 }
+
+message Statistics{
+  required int32 id = 1;                //  统计项的id，如统计项为“自然景观”，则id为“自然景观所对应的id”。
+  required string name = 2;             //  统计项的名称，如“自然景观”。
+  required int32 count = 3;             //  统计项的数量，如30
+}
+
+message PlaceStatistics{
+  repeated Statistics subCategoryStatics = 1;   // 地点子分类统计项
+  repeated Statistics areaStatics = 2;          // 区域分类统计项
+  repeated Statistics serviceStatics = 3;       // 服务分类统计项
+}
+

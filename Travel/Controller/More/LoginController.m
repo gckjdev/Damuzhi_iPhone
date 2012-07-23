@@ -14,7 +14,7 @@
 #import "OrderManagerController.h"
 
 #import "StringUtil.h"
-
+#import "RetrievePasswordController.h"
 @interface LoginController ()
 
 @property (copy, nonatomic) NSString *loginId;
@@ -27,6 +27,7 @@
 @synthesize autoLoginButton;
 @synthesize rememberLoginIdbutton;
 @synthesize rememberPasswordButton;
+@synthesize backgroundScrollView;
 
 @synthesize loginIdTextField;
 @synthesize passwordTextField;
@@ -52,6 +53,7 @@
     [rememberLoginIdbutton release];
     [rememberPasswordButton release];
 
+    [backgroundScrollView release];
     [super dealloc];
 }
 
@@ -67,6 +69,8 @@
     [self setNavigationRightButton:NSLS(@"登录") 
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickLogin:)];
+   [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     UIImage *buttonImageBackground = [UIImage strectchableImageName:@"line_btn1.png"leftCapWidth:20];
     [checkOrdersButton setBackgroundImage:buttonImageBackground forState:UIControlStateNormal];
@@ -82,6 +86,13 @@
     if ([[UserManager defaultManager]  isRememberPassword]) {
         passwordTextField.text = [[UserManager defaultManager] password];
     }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidUnload
@@ -94,6 +105,7 @@
     [self setAutoLoginButton:nil];
     [self setRememberLoginIdbutton:nil];
     [self setRememberPasswordButton:nil];
+    [self setBackgroundScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -110,22 +122,22 @@
                     stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     self.password = self.passwordTextField.text;
     
+ 
     
-    
-    if (!NSStringIsValidPhone(_loginId)) {
-        [self popupMessage:NSLS(@"您输入的号码格式不正确") title:nil];
+    if (!NSStringIsValidEmail(_loginId) && !NSStringIsValidPhone(_loginId)) {
+        [self popupMessage:NSLS(@"您输入的用户名格式不正确") title:nil];
         return;
     }
     
-    if (_password.length < 6) {
-        [self popupMessage:NSLS(@"您输入的密码太短") title:nil];
-        return;
-    }
-    
-    if (_password.length > 16) {
-        [self popupMessage:NSLS(@"您输入的密码长度太长") title:nil];
-        return;
-    }
+//    if (_password.length < 6) {
+//        [self popupMessage:NSLS(@"您输入的密码太短") title:nil];
+//        return;
+//    }
+//    
+//    if (_password.length > 16) {
+//        [self popupMessage:NSLS(@"您输入的密码长度太长") title:nil];
+//        return;
+//    }
     
     self.loginButton = (UIButton *)sender;
     _loginButton.enabled = NO;
@@ -142,27 +154,23 @@
 
 
 - (IBAction)clickSignUpButton:(id)sender {
-    SignUpController *contoller = [[[SignUpController alloc] init] autorelease];
-    contoller.superController = self;
-    [self.navigationController pushViewController:contoller animated:YES];
+    SignUpController *controller = [[[SignUpController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)clickRetrievePasswordButton:(id)sender {
-    
+    RetrievePasswordController *controller = [[RetrievePasswordController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
     
     
 }
-
-
-
 
 - (IBAction)clickCheckOrdersButton:(id)sender {
     OrderManagerController *controller = [[OrderManagerController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
-
-
 
 - (IBAction)clickAutoLoginButton:(id)sender {
     UIButton *button = (UIButton *)sender;
@@ -203,12 +211,12 @@
     }
     
     if (result != 0) {
-        NSString *str = [NSString stringWithFormat:NSLS(@"登陆失败：%@"), resultInfo];
+        NSString *str = [NSString stringWithFormat:NSLS(@"登录失败：%@"), resultInfo];
         [self popupMessage:str title:nil];
         return;
     }
     
-    [self popupMessage:NSLS(@"登陆成功") title:nil];
+    [self popupMessage:NSLS(@"登录成功") title:nil];
     [self.navigationController popViewControllerAnimated:YES];
     
 }

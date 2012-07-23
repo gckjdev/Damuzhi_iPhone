@@ -9,6 +9,8 @@
 #import "PPTableViewController.h"
 #import "RouteService.h"
 #import "SelectController.h"
+#import "SelectCityController.h"
+#import "RouteSelectController.h"
 
 @protocol RouteListFilterProtocol <NSObject>
 
@@ -20,15 +22,15 @@
 
 - (NSString*)getRouteTypeName;
 
-- (void)findRoutesWithDepartCityId:(int)departCityId
-                 destinationCityId:(int)destinationCityId
-                             start:(int)start
-                             count:(int)count
-                    viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+- (void)findRoutesWithStart:(int)start 
+                      count:(int)count 
+       RouteSelectedItemIds:(RouteSelectedItemIds *)routeSelectedItemIds
+             needStatistics:(BOOL)needStatistics 
+             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 @end
 
-@interface CommonRouteListController : PPTableViewController <RouteServiceDelegate, SelectControllerDelegate>
+@interface CommonRouteListController : PPTableViewController <RouteServiceDelegate, SelectControllerDelegate, SelectCityDelegate, RouteSelectControllerDelegate>
 
 - (id)initWithFilterHandler:(NSObject<RouteListFilterProtocol>*)filterHandler
                DepartCityId:(int)departCityId

@@ -17,7 +17,17 @@
 #define HEIGHT_DINING_LABEL 25
 #define HEIGHT_HOTEL_LABEL 25
 
+@protocol DailyScheduleCellDelegate <NSObject>
+
+@optional 
+- (void)didClickHotel:(int)hotelId;
+
+@end
+
 @interface DailyScheduleCell : PPTableViewCell
+
+@property (assign, nonatomic) id<DailyScheduleCellDelegate> aDelegate;
+
 @property (retain, nonatomic) IBOutlet UIButton *titleButton;
 @property (retain, nonatomic) IBOutlet UIImageView *placeToursBgImageView;
 @property (retain, nonatomic) IBOutlet UIButton *diningButton;
@@ -27,6 +37,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *hotelTagButton;
 
 - (void)setCellData:(DailySchedule *)dailySchedule rowNum:(int)rowNum rowCount:(int)rowCount;
+
 
 
 @end

@@ -10,10 +10,14 @@
 #import "CommonService.h"
 #import "App.pb.h"
 #import "LocalCity.h"
+#import "Package.pb.h"
+
+
 
 @interface AppManager : NSObject<CommonManagerProtocol>
 
 @property (retain, nonatomic) App *app;
+
 
 - (void)loadAppData;
 - (void)updateAppData:(App*)appData;
@@ -47,23 +51,46 @@
 - (void)setCurrentCityId:(int)newCity;
 
 // Get item list for select controller.
-- (NSArray *)getSubCategoryItemList:(int)categoryId placeList:(NSArray *)placeList;
-- (NSArray *)getServiceItemList:(int)categoryId placeList:(NSArray *)placeList;
-- (NSArray *)getAreaItemList:(int)cityId placeList:(NSArray *)placeList;
+//- (NSArray *)getSubCategoryItemList:(int)categoryId placeList:(NSArray *)placeList;
+//- (NSArray *)getServiceItemList:(int)categoryId placeList:(NSArray *)placeList;
+//- (NSArray *)getAreaItemList:(int)cityId placeList:(NSArray *)placeList;
 - (NSArray *)getPriceRankItemList:(int)cityId;
 - (NSArray *)getSortItemList:(int)categoryId;
 
+- (NSArray *)getSubCategoryItemList:(int)categoryId;
+- (NSArray *)getServiceItemList:(int)categoryId;
+- (NSArray *)getAreaItemList:(int)categoryId;
+
+- (void)updateSubCategoryItemList:(int)categoryId placeList:(NSArray*)placeList;
+- (void)updateSubCategoryItemList:(int)categoryId staticticsList:(NSArray *)staticticsList;
+- (void)updateServiceItemList:(int)categoryId placeList:(NSArray *)placeList;
+- (void)updateServiceItemList:(int)categoryId staticticsList:(NSArray *)staticticsList;
+- (void)updateAreaItemList:(int)categoryId cityId:(int)cityId placeList:(NSArray *)placeList;
+- (void)updateAreaItemList:(int)categoryId cityId:(int)cityId staticticsList:(NSArray *)staticticsList;
+
+
 // Get angency list 
-- (NSArray *)getDepartCityItemList:(NSArray *)routeList;
-- (NSArray *)getDestinationCityItemList:(NSArray *)routeList;
-- (NSArray *)getRouteThemeItemList:(NSArray *)routeList;
-- (NSArray *)getRouteCategoryItemList:(NSArray *)routeList;
-- (NSArray *)getAgencyItemList:(NSArray *)routeList;
+- (NSArray *)getRegions;
+- (int)getRegionIdByCityId:(int)cityId;
+- (NSArray *)getDepartCityItemList:(NSArray *)staticticsList;
+- (NSArray *)getDestinationCityItemList;
+- (NSArray *)getRouteThemeItemList;
+//- (NSArray *)getRouteCategoryItemList:(NSArray *)routeList;
+- (NSArray *)getAgencyItemList:(NSArray *)staticticsList;
 
 - (NSString*)getDepartCityName:(int)routeCityId;
 - (NSString*)getAgencyName:(int)agencyId;
+- (NSString*)getAgencyShortName:(int)agencyId;
 
 - (NSArray*)buildAdultItemList;
 - (NSArray*)buildChildrenItemList;
+
+- (NSArray *)buildRoutePriceRankItemList;
+- (NSArray *)buildDaysRangeItemList;
+- (NSArray *)buildRouteSortItemList;
+
+- (NSArray *)getServicePhoneList;
+
+
 
 @end

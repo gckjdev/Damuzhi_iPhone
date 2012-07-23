@@ -16,9 +16,6 @@
 
 @interface PlaceStorage : NSObject
 
-@property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) PlaceList* placeList;
-
 + (PlaceStorage*)favoriteManager;
 + (PlaceStorage*)historyManager;
 
@@ -28,5 +25,6 @@
 - (void)deletePlace:(Place*)place;
 - (void)deleteAllPlaces;
 - (BOOL)isPlaceInFavorite:(int)placeId;
+- (NSArray *)allPlacesSortByLatest;
 
 @end

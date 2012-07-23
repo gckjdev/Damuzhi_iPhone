@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "CommonPlaceListController.h"
 
-@interface ShoppingListFilter : NSObject<PlaceListFilterProtocol>
+@interface ShoppingListFilter : PlaceListFilter
 
 @end

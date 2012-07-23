@@ -13,11 +13,16 @@
 #define kAppId			@"531266294"
 
 @class MainController;
+@class PPTabBarController;
 
-@interface AppDelegate : PPApplication <UIApplicationDelegate, UserServiceDelegate>
+@interface AppDelegate : PPApplication <UIApplicationDelegate, UserServiceDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) MainController *mainController;
+
+@property (retain, nonatomic) PPTabBarController *tabBarController;
+
+- (void)hideTabBar:(BOOL)isHide;
 
 @end

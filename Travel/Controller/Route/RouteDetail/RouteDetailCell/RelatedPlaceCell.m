@@ -10,7 +10,7 @@
 #import "ImageManager.h"
 #import "PPDebug.h"
 
-#define CELL_HEIGHT 25
+#define CELL_HEIGHT 30
 
 @interface RelatedPlaceCell ()
 

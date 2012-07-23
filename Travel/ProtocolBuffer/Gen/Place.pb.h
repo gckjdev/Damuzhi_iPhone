@@ -5,7 +5,11 @@
 @class Place;
 @class PlaceList;
 @class PlaceList_Builder;
+@class PlaceStatistics;
+@class PlaceStatistics_Builder;
 @class Place_Builder;
+@class Statistics;
+@class Statistics_Builder;
 
 @interface PlaceRoot : NSObject {
 }
@@ -375,5 +379,140 @@
 - (int32_t) cityId;
 - (PlaceList_Builder*) setCityId:(int32_t) value;
 - (PlaceList_Builder*) clearCityId;
+@end
+
+@interface Statistics : PBGeneratedMessage {
+@private
+  BOOL hasId_:1;
+  BOOL hasCount_:1;
+  BOOL hasName_:1;
+  int32_t id;
+  int32_t count;
+  NSString* name;
+}
+- (BOOL) hasId;
+- (BOOL) hasName;
+- (BOOL) hasCount;
+@property (readonly) int32_t id;
+@property (readonly, retain) NSString* name;
+@property (readonly) int32_t count;
+
++ (Statistics*) defaultInstance;
+- (Statistics*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (Statistics_Builder*) builder;
++ (Statistics_Builder*) builder;
++ (Statistics_Builder*) builderWithPrototype:(Statistics*) prototype;
+
++ (Statistics*) parseFromData:(NSData*) data;
++ (Statistics*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (Statistics*) parseFromInputStream:(NSInputStream*) input;
++ (Statistics*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (Statistics*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (Statistics*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface Statistics_Builder : PBGeneratedMessage_Builder {
+@private
+  Statistics* result;
+}
+
+- (Statistics*) defaultInstance;
+
+- (Statistics_Builder*) clear;
+- (Statistics_Builder*) clone;
+
+- (Statistics*) build;
+- (Statistics*) buildPartial;
+
+- (Statistics_Builder*) mergeFrom:(Statistics*) other;
+- (Statistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (Statistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasId;
+- (int32_t) id;
+- (Statistics_Builder*) setId:(int32_t) value;
+- (Statistics_Builder*) clearId;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (Statistics_Builder*) setName:(NSString*) value;
+- (Statistics_Builder*) clearName;
+
+- (BOOL) hasCount;
+- (int32_t) count;
+- (Statistics_Builder*) setCount:(int32_t) value;
+- (Statistics_Builder*) clearCount;
+@end
+
+@interface PlaceStatistics : PBGeneratedMessage {
+@private
+  NSMutableArray* mutableSubCategoryStaticsList;
+  NSMutableArray* mutableAreaStaticsList;
+  NSMutableArray* mutableServiceStaticsList;
+}
+- (NSArray*) subCategoryStaticsList;
+- (Statistics*) subCategoryStaticsAtIndex:(int32_t) index;
+- (NSArray*) areaStaticsList;
+- (Statistics*) areaStaticsAtIndex:(int32_t) index;
+- (NSArray*) serviceStaticsList;
+- (Statistics*) serviceStaticsAtIndex:(int32_t) index;
+
++ (PlaceStatistics*) defaultInstance;
+- (PlaceStatistics*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (PlaceStatistics_Builder*) builder;
++ (PlaceStatistics_Builder*) builder;
++ (PlaceStatistics_Builder*) builderWithPrototype:(PlaceStatistics*) prototype;
+
++ (PlaceStatistics*) parseFromData:(NSData*) data;
++ (PlaceStatistics*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PlaceStatistics*) parseFromInputStream:(NSInputStream*) input;
++ (PlaceStatistics*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PlaceStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (PlaceStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface PlaceStatistics_Builder : PBGeneratedMessage_Builder {
+@private
+  PlaceStatistics* result;
+}
+
+- (PlaceStatistics*) defaultInstance;
+
+- (PlaceStatistics_Builder*) clear;
+- (PlaceStatistics_Builder*) clone;
+
+- (PlaceStatistics*) build;
+- (PlaceStatistics*) buildPartial;
+
+- (PlaceStatistics_Builder*) mergeFrom:(PlaceStatistics*) other;
+- (PlaceStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (PlaceStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) subCategoryStaticsList;
+- (Statistics*) subCategoryStaticsAtIndex:(int32_t) index;
+- (PlaceStatistics_Builder*) replaceSubCategoryStaticsAtIndex:(int32_t) index with:(Statistics*) value;
+- (PlaceStatistics_Builder*) addSubCategoryStatics:(Statistics*) value;
+- (PlaceStatistics_Builder*) addAllSubCategoryStatics:(NSArray*) values;
+- (PlaceStatistics_Builder*) clearSubCategoryStaticsList;
+
+- (NSArray*) areaStaticsList;
+- (Statistics*) areaStaticsAtIndex:(int32_t) index;
+- (PlaceStatistics_Builder*) replaceAreaStaticsAtIndex:(int32_t) index with:(Statistics*) value;
+- (PlaceStatistics_Builder*) addAreaStatics:(Statistics*) value;
+- (PlaceStatistics_Builder*) addAllAreaStatics:(NSArray*) values;
+- (PlaceStatistics_Builder*) clearAreaStaticsList;
+
+- (NSArray*) serviceStaticsList;
+- (Statistics*) serviceStaticsAtIndex:(int32_t) index;
+- (PlaceStatistics_Builder*) replaceServiceStaticsAtIndex:(int32_t) index with:(Statistics*) value;
+- (PlaceStatistics_Builder*) addServiceStatics:(Statistics*) value;
+- (PlaceStatistics_Builder*) addAllServiceStatics:(NSArray*) values;
+- (PlaceStatistics_Builder*) clearServiceStaticsList;
 @end
 

@@ -9,7 +9,7 @@
 #import "PackageCell.h"
 #import "LocaleUtils.h"
 
-
+#import "PPDebug.h"
 
 #define FONT_DURATION_LABEL [UIFont systemFontOfSize:13]
 #define TEXT_COLOR_DURATION_LABEL [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
@@ -44,7 +44,7 @@
 
 - (void)setCellData:(TravelPackage *)package
 {
-    self.package = _package;
+    self.package = package;
     
     NSString *flight = [NSString stringWithFormat:NSLS(@"往：%@%@ 返：%@%@"), package.departFlight.company, package.departFlight.flightId, package.returnFlight.company, package.returnFlight.flightId];
     
@@ -52,7 +52,7 @@
     self.flightLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
     self.flightLabel.font = FONT_HOTEL_NAME_LABEL;
     
-    CGFloat originX = flightButton.frame.origin.x;
+    CGFloat originX = flightButton.frame.origin.x + 10;
     CGFloat originY = flightButton.frame.origin.y + flightButton.frame.size.height + EDGE;    
     CGFloat width = flightButton.frame.size.width;
     CGFloat height = HEIGHT_ACCOMODATION_VIEW;
@@ -96,6 +96,11 @@
     hotelNameLabel.font = FONT_HOTEL_NAME_LABEL;
     hotelNameLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
     [button addSubview:hotelNameLabel];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(287, frame.size.height/2 - 6/2 , 5.5, 6)];
+    imageView.image = [UIImage imageNamed:@"go_btn.png"];
+    [button addSubview:imageView];
+    [imageView release];
     
     return button;
 }

@@ -13,7 +13,7 @@
 
 @class PlaceListController;
 
-@interface NearbyController : PPViewController<PlaceServiceDelegate, UIGestureRecognizerDelegate,PullToRefrshDelegate, UIAlertViewDelegate, PlaceListControllerDelegate>
+@interface NearbyController : PPViewController<PlaceServiceDelegate, UIGestureRecognizerDelegate,PullDelegate, UIAlertViewDelegate, PlaceListControllerDelegate>
 
 @property (retain, nonatomic) IBOutlet UIImageView *distanceView;
 @property (retain, nonatomic) IBOutlet UIView *categoryBtnsHolderView;

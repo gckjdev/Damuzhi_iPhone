@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "CommonPlaceListController.h"
-@interface SpotListFilter : NSObject<PlaceListFilterProtocol>
+@interface SpotListFilter : PlaceListFilter
 
 @end

@@ -43,13 +43,19 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickDelete:)];
     
-    self.placeList = [[PlaceStorage historyManager] allPlaces];
+    self.placeList = [[PlaceStorage historyManager] allPlacesSortByLatest];
     
-    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:NO pullDownDelegate:nil] autorelease];
+    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil] autorelease];
     
     [_placeListController showInView:placeListHolderView];
     
     [_placeListController setPlaceList:_placeList];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
 }
 
 
@@ -94,7 +100,7 @@
 {
     if (buttonIndex == 1) {
         [[PlaceStorage historyManager] deleteAllPlaces];
-         self.placeList = [[PlaceStorage historyManager] allPlaces];
+         self.placeList = [[PlaceStorage historyManager] allPlacesSortByLatest];
         [self.placeListController setPlaceList:_placeList];
     }
 }

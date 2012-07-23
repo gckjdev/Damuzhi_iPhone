@@ -18,7 +18,6 @@
 #import "TravelPreparationDataSource.h"
 #import "TravelUtilityDataSource.h"
 #import "TravelTransportDataSource.h"
-#import "CommonPlace.h"
 #import "AppDelegate.h"
 #import "PPNetworkRequest.h"
 
@@ -136,11 +135,36 @@
     [[UserService defaultService] autoLogin:self];
 }
 
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self hideTabBar:NO];
+    
     [self createButtonView];
     [super viewWillAppear:animated];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self hideTabBar:NO];
+    
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = NO;
+    [self hideTabBar:YES];
+    
+    [super viewDidDisappear:animated];
+}
+
 
 - (void)viewDidUnload
 {
@@ -241,15 +265,6 @@
     [controller release];  
 }
 
-- (IBAction)clickMoreButton:(id)sender
-{ 
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    MoreController *controller = [[MoreController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
-}
 
 
 - (void)updateSelectedButton:(UIButton *)button
@@ -259,35 +274,6 @@
     self.currentSelectedButton.selected = YES;
 }
 
-- (IBAction)clickHomeButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-
-    
-    
-    
-}
-- (IBAction)clickUnpackageTourButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    NSObject<RouteListFilterProtocol>* filter = [UnPackageTourListFilter createFilter];
-    CommonRouteListController *controller = [[CommonRouteListController alloc] initWithFilterHandler:filter DepartCityId:1 destinationCityId:0 hasStatisticsLabel:YES];
-        
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-
-
-- (IBAction)clickPackageTourButton:(id)sender {
-    UIButton *button  = (UIButton *)sender;
-    [self updateSelectedButton:button];
-    
-    NSObject<RouteListFilterProtocol>* filter = [PackageTourListFilter createFilter];
-    CommonRouteListController *controller = [[CommonRouteListController alloc] initWithFilterHandler:filter DepartCityId:1 destinationCityId:0 hasStatisticsLabel:NO];
-        
-    [self.navigationController pushViewController:controller animated:YES];
-}
 
 #pragma -mark share UIActionSheet delegate
 
@@ -338,12 +324,12 @@
     }
     
     if (result != 0) {
-        NSString *str = [NSString stringWithFormat:NSLS(@"登陆失败：%@"), resultInfo];
+        NSString *str = [NSString stringWithFormat:NSLS(@"登录失败：%@"), resultInfo];
         [self popupMessage:str title:nil];
         return;
     }
     
-    [self popupMessage:NSLS(@"登陆成功") title:nil];    
+    [self popupMessage:NSLS(@"登录成功") title:nil];    
 }
 
 @end

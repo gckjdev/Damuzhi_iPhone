@@ -11,7 +11,6 @@
 #import "FileUtil.h"
 #import "SSZipArchive.h"
 #import "PPDebug.h"
-#import "CommonPlace.h"
 #import "LocaleUtils.h"
 #import "AppConstants.h"
 #import "App.pb.h"
@@ -63,7 +62,8 @@ static BOOL _showUserLocateDenyAlert = YES;
     && [FileUtil createDir:[self getRecommendedAppIconsDir]]
     && [FileUtil createDir:[self getCategoryIconsDir]]
     && [FileUtil createDir:[self getFavoriteDir]]
-    && [FileUtil createDir:[self getHistoryDir]];
+    && [FileUtil createDir:[self getHistoryDir]] 
+    && [FileUtil createDir:[self getFollowRoutesDir]];
     
     return success;
 }
@@ -121,6 +121,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString*)getHistoryDir
 {
     return [FileUtil getFileFullPath:DIR_OF_HISTORY];
+}
+
++ (NSString*)getFollowRoutesDir
+{
+    return [FileUtil getFileFullPath:DIR_OF_FOLLOW_ROUTES];
 }
 
 + (NSString*)getDownloadPath:(int)cityId
@@ -290,6 +295,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString*)getHistoryFilePath:(int)cityId
 {
     return [[AppUtils getHistoryDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",cityId]];
+}
+
++ (NSString *)getFollowRoutesFilePath:(int)type
+{
+    return [[AppUtils getFollowRoutesDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",type]];
 }
 
 + (BOOL)isShowImage

@@ -19,6 +19,16 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
+BOOL BookingStatusIsValidValue(BookingStatus value) {
+  switch (value) {
+    case BookingStatusNotInSale:
+    case BookingStatusInSale:
+    case BookingStatusSoldOut:
+      return YES;
+    default:
+      return NO;
+  }
+}
 @interface TouristRouteList ()
 @property (retain) NSMutableArray* mutableRoutesList;
 @end
@@ -245,6 +255,7 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
 @property (retain) NSMutableArray* mutableRelatedplacesList;
 @property (retain) NSString* fee;
 @property (retain) NSString* bookingNotice;
+@property (retain) NSString* contactPhone;
 @end
 
 @implementation TouristRoute
@@ -375,6 +386,13 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   hasBookingNotice_ = !!value;
 }
 @synthesize bookingNotice;
+- (BOOL) hasContactPhone {
+  return !!hasContactPhone_;
+}
+- (void) setHasContactPhone:(BOOL) value {
+  hasContactPhone_ = !!value;
+}
+@synthesize contactPhone;
 - (void) dealloc {
   self.name = nil;
   self.mutableDestinationCityIdsList = nil;
@@ -393,6 +411,7 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
   self.mutableRelatedplacesList = nil;
   self.fee = nil;
   self.bookingNotice = nil;
+  self.contactPhone = nil;
   [super dealloc];
 }
 - (id) init {
@@ -414,6 +433,7 @@ static TouristRouteList* defaultTouristRouteListInstance = nil;
     self.reference = @"";
     self.fee = @"";
     self.bookingNotice = @"";
+    self.contactPhone = @"";
   }
   return self;
 }
@@ -583,6 +603,9 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (self.hasBookingNotice) {
     [output writeString:51 value:self.bookingNotice];
   }
+  if (self.hasContactPhone) {
+    [output writeString:100 value:self.contactPhone];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -678,6 +701,9 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   }
   if (self.hasBookingNotice) {
     size += computeStringSize(51, self.bookingNotice);
+  }
+  if (self.hasContactPhone) {
+    size += computeStringSize(100, self.contactPhone);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -847,6 +873,9 @@ static TouristRoute* defaultTouristRouteInstance = nil;
   if (other.hasBookingNotice) {
     [self setBookingNotice:other.bookingNotice];
   }
+  if (other.hasContactPhone) {
+    [self setContactPhone:other.contactPhone];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -970,6 +999,10 @@ static TouristRoute* defaultTouristRouteInstance = nil;
       }
       case 410: {
         [self setBookingNotice:[input readString]];
+        break;
+      }
+      case 802: {
+        [self setContactPhone:[input readString]];
         break;
       }
     }
@@ -1454,6 +1487,22 @@ static TouristRoute* defaultTouristRouteInstance = nil;
 - (TouristRoute_Builder*) clearBookingNotice {
   result.hasBookingNotice = NO;
   result.bookingNotice = @"";
+  return self;
+}
+- (BOOL) hasContactPhone {
+  return result.hasContactPhone;
+}
+- (NSString*) contactPhone {
+  return result.contactPhone;
+}
+- (TouristRoute_Builder*) setContactPhone:(NSString*) value {
+  result.hasContactPhone = YES;
+  result.contactPhone = value;
+  return self;
+}
+- (TouristRoute_Builder*) clearContactPhone {
+  result.hasContactPhone = NO;
+  result.contactPhone = @"";
   return self;
 }
 @end
@@ -4046,6 +4095,7 @@ static OrderList* defaultOrderListInstance = nil;
 @property (retain) NSString* price;
 @property (retain) NSString* priceStatus;
 @property int32_t status;
+@property int32_t packageId;
 @end
 
 @implementation Order
@@ -4134,6 +4184,13 @@ static OrderList* defaultOrderListInstance = nil;
   hasStatus_ = !!value;
 }
 @synthesize status;
+- (BOOL) hasPackageId {
+  return !!hasPackageId_;
+}
+- (void) setHasPackageId:(BOOL) value {
+  hasPackageId_ = !!value;
+}
+@synthesize packageId;
 - (void) dealloc {
   self.routeName = nil;
   self.departCityName = nil;
@@ -4155,6 +4212,7 @@ static OrderList* defaultOrderListInstance = nil;
     self.price = @"";
     self.priceStatus = @"";
     self.status = 0;
+    self.packageId = 0;
   }
   return self;
 }
@@ -4219,6 +4277,9 @@ static Order* defaultOrderInstance = nil;
   if (self.hasStatus) {
     [output writeInt32:12 value:self.status];
   }
+  if (self.hasPackageId) {
+    [output writeInt32:20 value:self.packageId];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -4263,6 +4324,9 @@ static Order* defaultOrderInstance = nil;
   }
   if (self.hasStatus) {
     size += computeInt32Size(12, self.status);
+  }
+  if (self.hasPackageId) {
+    size += computeInt32Size(20, self.packageId);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4375,6 +4439,9 @@ static Order* defaultOrderInstance = nil;
   if (other.hasStatus) {
     [self setStatus:other.status];
   }
+  if (other.hasPackageId) {
+    [self setPackageId:other.packageId];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4442,6 +4509,10 @@ static Order* defaultOrderInstance = nil;
       }
       case 96: {
         [self setStatus:[input readInt32]];
+        break;
+      }
+      case 160: {
+        [self setPackageId:[input readInt32]];
         break;
       }
     }
@@ -4637,6 +4708,22 @@ static Order* defaultOrderInstance = nil;
 - (Order_Builder*) clearStatus {
   result.hasStatus = NO;
   result.status = 0;
+  return self;
+}
+- (BOOL) hasPackageId {
+  return result.hasPackageId;
+}
+- (int32_t) packageId {
+  return result.packageId;
+}
+- (Order_Builder*) setPackageId:(int32_t) value {
+  result.hasPackageId = YES;
+  result.packageId = value;
+  return self;
+}
+- (Order_Builder*) clearPackageId {
+  result.hasPackageId = NO;
+  result.packageId = 0;
   return self;
 }
 @end

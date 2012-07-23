@@ -10,7 +10,7 @@
 #import "OrderService.h"
 #import "OrderCell.h"
 
-@interface OrderListController : PPTableViewController <OrderServiceDelegate, OrderCellDelegate>
+@interface OrderListController : PPTableViewController <OrderServiceDelegate, OrderCellDelegate, UIActionSheetDelegate>
 
 - (id)initWithOrderType:(int)orderType;
 

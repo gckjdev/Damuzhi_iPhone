@@ -12,6 +12,7 @@
 #import "UIImageUtil.h"
 #import "StringUtil.h"
 #import "PPNetworkRequest.h"
+#import "UIViewUtils.h"
 
 @implementation FeekbackController
 @synthesize viewCenter = _viewCenter;
@@ -233,7 +234,7 @@
     PPDebug(@"feekbackTextView.tag=%d, textField.tag=%d", feekbackTextView.tag, contactWayTextField.tag);
     PPDebug(@"moveDistance=%f", y);
     
-    [self moveView:self.view toCenter:newCenter needAnimation:YES];
+    [self.view moveTtoCenter:newCenter needAnimation:YES animationDuration:0.5];
 }
 
 - (CGFloat)getMoveDistance:(CGRect)frame keyboardHeight:(CGFloat)keyboardHeight
@@ -241,22 +242,22 @@
     return (self.view.frame.size.height-frame.origin.y-frame.size.height)-keyboardHeight-2;
 }
 
-- (void)moveView:(UIView*)view toCenter:(CGPoint)center needAnimation:(BOOL)need
-{
-    if (need) {
-        [UIView beginAnimations:nil context:nil];
-        [UIImageView setAnimationDuration:0.5];
-        [view setCenter:center];
-        [UIImageView commitAnimations];        
-    }else{
-        [view setCenter:center];        
-    }
-}
+//- (void)moveView:(UIView*)view toCenter:(CGPoint)center needAnimation:(BOOL)need
+//{
+//    if (need) {
+//        [UIView beginAnimations:nil context:nil];
+//        [UIImageView setAnimationDuration:0.5];
+//        [view setCenter:center];
+//        [UIImageView commitAnimations];        
+//    }else{
+//        [view setCenter:center];        
+//    }
+//}
 
 - (void)keyboardDidHide:(NSNotification *)notification
 {
     PPDebug(@"keyboardDidHide");
-    [self moveView:self.view toCenter:_viewCenter needAnimation:YES];
+    [self.view moveTtoCenter:_viewCenter needAnimation:YES animationDuration:0.5];
 }
 
 - (void)registerKeyboardNotification

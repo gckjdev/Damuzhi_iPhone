@@ -11,7 +11,6 @@
 #import "PlaceStorage.h"
 #import "LogUtil.h"
 #import "Place.pb.h"
-#import "CommonPlace.h"
 #import "ImageName.h"
 #import "PlaceService.h"
 #import "TravelNetworkConstants.h"
@@ -109,23 +108,29 @@
     
     [buttonHolderView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage strectchableImageName:@"options_bg2.png"]]];
 
-    PlaceListController *myController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:NO pullDownDelegate:nil];
+    PlaceListController *myController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
     self.myFavPlaceListController = myController;
     [myController release];
     [myFavPlaceListController showInView:myFavPlaceListView];    
     
-    PlaceListController *topController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:NO pullDownDelegate:nil];
+    PlaceListController *topController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
     
     self.topFavPlaceListController = topController;
     [topController release];
     [topFavPlaceListController showInView:topFavPlaceListView];
     
-    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlaces];
+    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlacesSortByLatest];
     if ([myAllFavoritePlaceList count] != 0) {
         [self clickMyFavorite:nil];
     }else {
         [self clickTopFavorite:nil];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
 }
 
 - (void)showPlaces{
@@ -243,7 +248,7 @@
 {
     [[PlaceService defaultService] deletePlaceFromFavorite:self place:place];
     [[PlaceStorage favoriteManager] deletePlace:place];
-    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlaces];
+    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlacesSortByLatest];
     
     if ([self.myFavPlaceListController.dataList count] == 0) {
         [self.myFavPlaceListController hideTipsOnTableView];
@@ -260,7 +265,7 @@
 }
 
 - (void)finishFindTopFavoritePlaces:(NSArray *)list type:(int)type result:(int)result
-{
+{    
     if (result != ERROR_SUCCESS ) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }
@@ -307,7 +312,7 @@
 
 - (void)clickMyFavorite:(id)sender
 {
-    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlaces];
+    self.myAllFavoritePlaceList = [[PlaceStorage favoriteManager] allPlacesSortByLatest];
     
     myFavoriteButton.selected = YES;
     topFavoriteButton.selected = NO;

@@ -10,7 +10,7 @@
 #import "PlaceListController.h"
 #import "PlaceService.h"
 #import "PPViewController.h"
-#import "CommonPlace.h"
+#import "AppConstants.h"
 #import "Place.pb.h"
 #import "ImageName.h"
 #import "UIImageUtil.h"
@@ -140,7 +140,7 @@
     
     [self setSelectedBtn:_categoryId];
     
-    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController wantPullDownToRefresh:YES pullDownDelegate:self] autorelease];
+    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:YES supportPullUpToLoadMore:NO pullDelegate:self] autorelease];
     _placeListController.aDelegate = self;
     
     [_placeListController showInView:placeListHolderView];
@@ -156,6 +156,12 @@
     self.testLocation = [[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease];
     [self addDoubleTapToView:self.view];
 #endif
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidUnload
@@ -461,7 +467,7 @@ UITextField * alertTextField;
     [_placeListController setPlaceList:_placeList];
 }
 
-- (void)didPullDown
+- (void)didPullDownToRefresh
 {
     [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
 }

@@ -77,6 +77,12 @@ static CityManagementController *_instance;
     _downloadTableView.tableFooterView = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 - (UILabel *)labelWithTitle:(NSString*)title
 {
     UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 10, _downloadTableView.frame.size.width, 30)] autorelease];

@@ -33,6 +33,11 @@
     return [[[Item alloc] initWithNameIdPair:pair count:count] autorelease];
 }
 
++ (Item *)itemWithStatistics:(Statistics *)statics
+{
+    return [[[Item alloc] initWithItemId:statics.id itemName:statics.name count:statics.count] autorelease];
+}
+
 - (Item*)initWithItemId:(int)itemId
                itemName:(NSString *)itemName
                   count:(int)count

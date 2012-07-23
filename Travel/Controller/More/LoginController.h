@@ -22,5 +22,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *autoLoginButton;
 @property (retain, nonatomic) IBOutlet UIButton *rememberLoginIdbutton;
 @property (retain, nonatomic) IBOutlet UIButton *rememberPasswordButton;
+@property (retain, nonatomic) IBOutlet UIScrollView *backgroundScrollView;
 
 @end

@@ -11,7 +11,6 @@
 #import "PPViewController.h"
 #import "LogUtil.h"
 #import "TravelNetworkRequest.h"
-#import "Package.pb.h"
 #import "AppManager.h"
 #import "TravelNetworkConstants.h"
 #import "AppUtils.h"
@@ -247,6 +246,100 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
     [self processLocalRemoteQuery:viewController
                      localHandler:localHandler
                     remoteHandler:remoteHandler];
+}
+
+- (void)findPlacesWithCategoryId:(int)categoryId 
+                           start:(int)start
+                           count:(int)count
+                 selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+                  needStatistics:(BOOL)needStatistics 
+                  viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+{
+    int currentCityId = [[AppManager defaultManager] getCurrentCityId];
+    
+    [viewController showActivityWithText:NSLS(@"数据加载中......")];
+    
+    NSOperationQueue* queue = [self getOperationQueue:@"SERACH_WORKING_QUEUE"];
+    [queue cancelAllOperations];
+    
+    [queue addOperationWithBlock:^{
+        NSArray* list = nil;
+        int resultCode = 0;
+        int result = 0;
+        NSString *resultInfo = @"";
+        int totalCount = 0;
+        PlaceStatistics *statistics = nil;
+        
+        if ([AppUtils hasLocalCityData:[[AppManager defaultManager] getCurrentCityId]] == YES){
+            // read local data firstly               
+            PPDebug(@"Has Local Data For City %@, Read Data Locally", [[AppManager defaultManager] getCurrentCityName]);
+            [_localPlaceManager switchCity:currentCityId];
+            list = [_localPlaceManager findPlacesByCategory:categoryId];   
+            totalCount = [list count];
+            [[AppManager defaultManager] updateSubCategoryItemList:categoryId 
+                                                         placeList:list];
+            
+            [[AppManager defaultManager] updateServiceItemList:categoryId
+                                                     placeList:list];
+            
+            [[AppManager defaultManager] updateAreaItemList:categoryId 
+                                                     cityId:currentCityId
+                                                  placeList:list];
+        }
+        else{
+            // if local data no exist, try to read data from remote            
+            PPDebug(@"No Local Data For City %@, Read Data Remotely", [[AppManager defaultManager] getCurrentCityName]);            
+            int listType = [self getListTypeByPlaceCategoryId:categoryId];
+            CommonNetworkOutput* output = [TravelNetworkRequest queryList:listType
+                                                                   cityId:currentCityId 
+                                                                    start:start
+                                                                    count:count
+                                                           subCategoryIds:selectedItemIds.subCategoryItemIds 
+                                                                  areaIds:selectedItemIds.areaItemIds
+                                                               serviceIds:selectedItemIds.serviceItemIds 
+                                                             priceRankIds:selectedItemIds.priceRankItemIds 
+                                                              sortTypeIds:selectedItemIds.sortItemIds 
+                                                           needStatistics:needStatistics 
+                                                                     lang:LanguageTypeZhHans];             
+            resultCode = output.resultCode;
+    
+            if (output.resultCode == ERROR_SUCCESS) {
+                @try {
+                    TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                    _onlinePlaceManager.placeList = [[travelResponse placeList] listList];    
+                    list = [_onlinePlaceManager findPlacesByCategory:categoryId]; 
+                    result = [travelResponse resultCode];
+                    resultInfo = [travelResponse resultInfo];
+                    totalCount = [travelResponse totalCount];
+                    statistics = [travelResponse placeStatistics];
+                    if (needStatistics) {
+                        [[AppManager defaultManager] updateSubCategoryItemList:categoryId staticticsList:statistics.subCategoryStaticsList];
+                        
+                        [[AppManager defaultManager] updateServiceItemList:categoryId staticticsList:statistics.serviceStaticsList];
+                        
+                        [[AppManager defaultManager] updateAreaItemList:categoryId cityId:currentCityId staticticsList:statistics.areaStaticsList];
+                    }
+                }
+                @catch (NSException *exception) {
+                    PPDebug(@"<findPlaces:%d> Caught %@%@", categoryId, [exception name], [exception reason]);
+                } 
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (viewController != nil) {
+                [viewController hideActivity];  
+            }
+            
+            if (viewController && [viewController respondsToSelector:@selector(findRequestDone:result:resultInfo:totalCount:placeList:)]){
+                [viewController findRequestDone:resultCode 
+                                         result:result
+                                     resultInfo:resultInfo 
+                                     totalCount:totalCount 
+                                      placeList:list];
+            }
+        });
+    }];
 }
 
 - (void)findPlacesNearby:(int)categoryId place:(Place*)place num:(int)num viewController:(PPViewController<PlaceServiceDelegate>*)viewController

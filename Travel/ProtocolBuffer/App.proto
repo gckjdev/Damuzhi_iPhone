@@ -71,15 +71,22 @@ message RecommendedApp {
 
 // 旅行社
 message Agency {
-  required int32 agencyId = 1;	// 旅行社id
-  required string name = 2;		// 旅行社名称
+  required int32 agencyId = 1;      // 旅行社id
+  required string name = 2;         // 旅行社名称
+  optional string shortName = 5;    // 旅行社简称
 }
 
 // 线路出发/目的城市
 message RouteCity {
-  required int32 routeCityId =1;		// 线路城市id
+  required int32 routeCityId = 1;		// 线路城市id
   required string cityName = 2;         // 城市名
   required string countryName = 3;		// 国家名称
+  optional int32 regionId = 8;          // 区域Id
+}
+
+message Region{
+  required int32 regionId = 1;          // 区域Id
+  required string regionName = 2;       // 区域名称，如"东南亚", "港澳台"等
 }
 
 // 应用相关的基础数据，和城市无关
@@ -90,11 +97,15 @@ message App {
   repeated PlaceMeta placeMetaDataList = 5;         // 每种地点分类的相关数据
   repeated RecommendedApp recommendedApps = 10;     // 应用推荐
   
+  repeated Region regions = 15;                     // 区域数据。
+  
   repeated RouteCity departCities = 20;             // 路线出发城市
   repeated RouteCity destinationCities  = 21;       // 路线目的城市
   repeated NameIdPair routeThemes = 25;             // 路线主题
   repeated NameIdPair routeCategorys = 26;          // 路线分类
   
-  repeated Agency agencies = 30;                   // 旅行社
+  repeated Agency agencies = 30;                    // 旅行社
+  
+  optional string serviceTelephone = 100;               // 客服电话
 }
 

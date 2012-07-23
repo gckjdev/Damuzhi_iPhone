@@ -10,6 +10,10 @@
 #import "TravelNetworkRequest.h"
 #import "LocaleUtils.h"
 #import "PPViewController.h"
+#import "SelectedItemIds.h"
+#import "RouteStorage.h"
+#import "UserManager.h"
+#import "JSON.h"
 
 @interface RouteService ()
 
@@ -42,46 +46,55 @@ static RouteService *_defaultRouteService = nil;
 }
 
 - (void)findRoutesWithType:(int)routeType
-              departCityId:(int)departCityId
-         destinationCityId:(int)destinationCityId
                      start:(int)start
-                     count:(int)count
+                     count:(int)count 
+           selectedItemIds:(RouteSelectedItemIds *)selectedItemIds
+            needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
     [viewController showActivityWithText:NSLS(@"数据加载中......")];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CommonNetworkOutput* output = [TravelNetworkRequest queryList:routeType 
-                                                         departCityId:departCityId 
-                                                    destinationCityId:destinationCityId 
                                                                 start:start 
                                                                 count:count 
-                                                                 lang:LanguageTypeZhHans];
+                                                     departCityIdList:selectedItemIds.departCityIds 
+                                                destinationCityIdList:selectedItemIds.destinationCityIds 
+                                                         agencyIdList:selectedItemIds.agencyIds 
+                                                      priceRankIdList:selectedItemIds.priceRankItemIds
+                                                      daysRangeIdList:selectedItemIds.daysRangeItemIds 
+                                                          themeIdList:selectedItemIds.themeIds 
+                                                         sortTypeList:selectedItemIds.sortIds 
+                                                       needStatistics:needStatistics 
+                                                                 lang:LanguageTypeZhHans 
+                                                                 test:NO];
+        
         int totalCount;
         NSArray *routeList;
+        RouteStatistics *statistics;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
             
                 totalCount = [travelResponse totalCount];
                 routeList = [[travelResponse routeList] routesList];
+                statistics = (needStatistics == NO) ? nil : [travelResponse routeStatistics];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [viewController hideActivity];   
                     
-                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:)]) {
+                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
                         [viewController findRequestDone:output.resultCode 
                                              totalCount:totalCount
-                                                   list:routeList];
+                                                   list:routeList
+                                             statistics:statistics];
                     }
                 });
-                
-
             }
             @catch (NSException *exception){
+                PPDebug(@"<Catch Exception in findRoutesWithType>");
             }
         }
-        
 
     });    
 }
@@ -140,5 +153,97 @@ static RouteService *_defaultRouteService = nil;
         }
     }); 
 }
+
+- (void)followRoute:(TouristRoute *)route 
+          routeType:(int)routeType 
+     viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    [[RouteStorage followManager:routeType] addRoute:route];
+    
+    NSString *userId = nil; 
+    NSString *loginId = nil;
+    NSString *token = nil;
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        loginId = [[UserManager defaultManager] loginId];
+        token = [[UserManager defaultManager] token];
+    }else {
+        userId = [[UserManager defaultManager] getUserId];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        CommonNetworkOutput *output = [TravelNetworkRequest followRoute:userId
+                                                                loginId:loginId 
+                                                                  token:token 
+                                                                routeId:route.routeId ];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            int result = -1;
+            NSString *resultInfo = nil;
+            
+            if (output.resultCode == ERROR_SUCCESS) {
+                NSDictionary* jsonDict = [output.textData JSONValue];
+                result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+                resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            }
+            
+            if ([viewController respondsToSelector:@selector(followRouteDone:result:resultInfo:)]) {
+                [viewController followRouteDone:output.resultCode result:result resultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
+- (void)unfollowRoute:(TouristRoute *)route 
+          routeType:(int)routeType 
+     viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    [[RouteStorage followManager:routeType] deleteRoute:route];
+    
+    //to do
+    //CommonNetworkOutput *output = 
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //to do
+        //if (output.resultCode == ERROR_SUCCESS) 
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([viewController respondsToSelector:@selector(unfollowRouteDone:result:resultInfo:)]) {
+                [viewController unfollowRouteDone:-1 result:-1 resultInfo:@"网络接口待实现"];
+            }
+        });                        
+    });
+}
+
+- (void)routeFeedbackWithRouteId:(int)routeId 
+                            rank:(int)rank
+                         content:(NSString *)content   
+                  viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *loginId = [[UserManager defaultManager] loginId];
+        NSString *token = [[UserManager defaultManager] token];
+        CommonNetworkOutput *output = [TravelNetworkRequest routeFeedback:loginId 
+                                                                    token:token 
+                                                                  routeId:routeId
+                                                                     rank:rank 
+                                                                  content:content];
+        int result;
+        NSString *resultInfo;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([viewController respondsToSelector:@selector(routeFeekBackDidSend:result:resultInfo:)]) {
+                [viewController routeFeekBackDidSend:output.resultCode result:result resultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
 
 @end

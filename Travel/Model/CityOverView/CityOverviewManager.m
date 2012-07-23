@@ -12,7 +12,6 @@
 #import "AppManager.h"
 #import "PPDebug.h"
 #import "LocaleUtils.h"
-#import "CommonPlace.h"
 #import "AppConstants.h"
 
 @implementation CityOverViewManager

@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "CommonService.h"
 #import <CoreLocation/CoreLocation.h>
-
+#import "SelectedItemIdsManager.h"
+#import "Package.pb.h"
 
 @class PlaceManager;
 @class PPViewController;
@@ -19,6 +20,13 @@
 
 @optional
 - (void)findRequestDone:(int)result placeList:(NSArray*)placeList;
+
+- (void)findRequestDone:(int)resultCode 
+                 result:(int)result 
+             resultInfo:(NSString *)resultInfo
+             totalCount:(int)totalCount
+              placeList:(NSArray*)placeList;
+
 - (void)finishAddFavourite:(NSNumber*)resultCode count:(NSNumber*)count;
 - (void)finishDeleteFavourite:(NSNumber*)resultCode count:(NSNumber*)count;
 - (void)finishFindTopFavoritePlaces:(NSArray*)list type:(int)type result:(int)result;
@@ -40,6 +48,13 @@
 + (PlaceService*)defaultService;
 
 - (void)findPlaces:(int)categoryId viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+
+- (void)findPlacesWithCategoryId:(int)categoryId 
+                           start:(int)start
+                           count:(int)count
+                 selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+                  needStatistics:(BOOL)needStatistics 
+                  viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
 
 - (void)findPlacesNearby:(int)categoryId place:(Place*)place num:(int)num viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
 

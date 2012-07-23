@@ -11,6 +11,7 @@
 #import "JSON.h"
 #import "Package.pb.h"
 #import "PPDebug.h"
+#import "TimeUtils.h"
 
 @implementation OrderService
 
@@ -28,7 +29,7 @@ static OrderService *_instance = nil;
 - (void)placeOrderUsingUserId:(NSString *)userId 
                       routeId:(int)routeId
                     packageId:(int)packageId
-                   departDate:(NSString *)departDate
+                   departDate:(NSDate *)departDate
                         adult:(int)adult
                      children:(int)children
                 contactPerson:(NSString *)contactPersion
@@ -36,10 +37,11 @@ static OrderService *_instance = nil;
                      delegate:(id<OrderServiceDelegate>)delegate
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *departDateStr = dateToStringByFormat(departDate, @"yyyyMMdd");
         CommonNetworkOutput *output = [TravelNetworkRequest placeOrderWithUserId:userId 
                                                                          routeId:routeId
                                                                        packageId:packageId 
-                                                                      departDate:departDate
+                                                                      departDate:departDateStr
                                                                            adult:adult 
                                                                         children:children 
                                                                    contactPerson:contactPersion 
@@ -65,7 +67,7 @@ static OrderService *_instance = nil;
                          token:(NSString *)token
                        routeId:(int)routeId
                      packageId:(int)packageId
-                    departDate:(NSString *)departDate
+                    departDate:(NSDate *)departDate
                          adult:(int)adult
                       children:(int)children
                  contactPerson:(NSString *)contactPersion
@@ -73,11 +75,12 @@ static OrderService *_instance = nil;
                       delegate:(id<OrderServiceDelegate>)delegate
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *departDateStr = dateToStringByFormat(departDate, @"yyyyMMdd");
         CommonNetworkOutput *output = [TravelNetworkRequest placeOrderWithLoginId:loginId
                                                                             token:token 
                                                                           routeId:routeId
                                                                         packageId:packageId 
-                                                                       departDate:departDate 
+                                                                       departDate:departDateStr 
                                                                             adult:adult 
                                                                          children:children 
                                                                     contactPerson:contactPersion 

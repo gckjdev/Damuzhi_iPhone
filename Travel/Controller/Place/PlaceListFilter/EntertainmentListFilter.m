@@ -7,7 +7,6 @@
 //
 
 #import "EntertainmentListFilter.h"
-#import "CommonPlace.h"
 #import "PlaceService.h"
 #import "LogUtil.h"
 #import "CommonPlaceListFilter.h"

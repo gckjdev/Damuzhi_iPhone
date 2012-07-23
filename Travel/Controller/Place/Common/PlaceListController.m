@@ -31,7 +31,6 @@
 {
     BOOL _showMap;
     BOOL _firstIn;
-    int _updateTimes;
 }
 
 @property (assign, nonatomic) BOOL canDelete;
@@ -46,7 +45,7 @@
 @synthesize canDelete = _canDelete;
 @synthesize mapView = _mapView;
 @synthesize aDelegate = _aDelegate;
-@synthesize pullDownDelegate = _pullDownDelegate;
+@synthesize pullDelegate = _pullDelegate;
 @synthesize locateButton = _locateButton;
 @synthesize alertViewType = _alertViewType;
 @synthesize isNearby = _isNearby;
@@ -82,8 +81,8 @@
 - (void) reloadTableViewDataSource
 {
 	NSLog(@"Please override reloadTableViewDataSource"); 
-    if (_pullDownDelegate && [_pullDownDelegate respondsToSelector:@selector(didPullDown)]) {
-        [_pullDownDelegate didPullDown];
+    if (_pullDelegate && [_pullDelegate respondsToSelector:@selector(didPullDownToRefresh)]) {
+        [_pullDelegate didPullDownToRefresh];
     }
 }
 
@@ -102,15 +101,16 @@
 }
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
-                  wantPullDownToRefresh:(BOOL)wantPullDownToRefresh
-                       pullDownDelegate:(id<PullToRefrshDelegate>)pullDownDelegate;
+               supportPullDownToRefresh:(BOOL)supportPullDownToRefresh
+                supportPullUpToLoadMore:(BOOL)supportPullUpToLoadMore
+                           pullDelegate:(id<PullDelegate>)pullDelegate
 {
     self = [super init];
     if (self) {
         self.superNavigationController = superNavigationController;
-        self.supportRefreshHeader = wantPullDownToRefresh;
-//        self.supportRefreshFooter = YES;
-        self.pullDownDelegate = pullDownDelegate;
+        self.supportRefreshHeader = supportPullDownToRefresh;
+        self.supportRefreshFooter = supportPullUpToLoadMore;
+        self.pullDelegate = pullDelegate;
         _firstIn = YES;
     }
     
@@ -180,11 +180,6 @@
 
 	if (cell == nil) { 
 		cell = [placeClass createCell:self];
-
-        UIImageView *view = [[UIImageView alloc] init];
-        [view setImage:[[ImageManager defaultManager] listBgImage]];
-        [cell setBackgroundView:view];
-        [view release];
 	}
 	
     PlaceCell *placeCell = (PlaceCell*)cell;
@@ -497,6 +492,13 @@
             
         default:
             break;
+    }
+}
+
+- (void)loadMoreTableViewDataSource
+{
+    if ([_pullDelegate respondsToSelector:@selector(didPullUpToLoadMore)]) {
+        [_pullDelegate didPullUpToLoadMore];
     }
 }
 

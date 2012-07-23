@@ -1681,3 +1681,591 @@ static PlaceList* defaultPlaceListInstance = nil;
 }
 @end
 
+@interface Statistics ()
+@property int32_t id;
+@property (retain) NSString* name;
+@property int32_t count;
+@end
+
+@implementation Statistics
+
+- (BOOL) hasId {
+  return !!hasId_;
+}
+- (void) setHasId:(BOOL) value {
+  hasId_ = !!value;
+}
+@synthesize id;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) value {
+  hasName_ = !!value;
+}
+@synthesize name;
+- (BOOL) hasCount {
+  return !!hasCount_;
+}
+- (void) setHasCount:(BOOL) value {
+  hasCount_ = !!value;
+}
+@synthesize count;
+- (void) dealloc {
+  self.name = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.id = 0;
+    self.name = @"";
+    self.count = 0;
+  }
+  return self;
+}
+static Statistics* defaultStatisticsInstance = nil;
++ (void) initialize {
+  if (self == [Statistics class]) {
+    defaultStatisticsInstance = [[Statistics alloc] init];
+  }
+}
++ (Statistics*) defaultInstance {
+  return defaultStatisticsInstance;
+}
+- (Statistics*) defaultInstance {
+  return defaultStatisticsInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasId) {
+    return NO;
+  }
+  if (!self.hasName) {
+    return NO;
+  }
+  if (!self.hasCount) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasId) {
+    [output writeInt32:1 value:self.id];
+  }
+  if (self.hasName) {
+    [output writeString:2 value:self.name];
+  }
+  if (self.hasCount) {
+    [output writeInt32:3 value:self.count];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasId) {
+    size += computeInt32Size(1, self.id);
+  }
+  if (self.hasName) {
+    size += computeStringSize(2, self.name);
+  }
+  if (self.hasCount) {
+    size += computeInt32Size(3, self.count);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (Statistics*) parseFromData:(NSData*) data {
+  return (Statistics*)[[[Statistics builder] mergeFromData:data] build];
+}
++ (Statistics*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (Statistics*)[[[Statistics builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (Statistics*) parseFromInputStream:(NSInputStream*) input {
+  return (Statistics*)[[[Statistics builder] mergeFromInputStream:input] build];
+}
++ (Statistics*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (Statistics*)[[[Statistics builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (Statistics*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (Statistics*)[[[Statistics builder] mergeFromCodedInputStream:input] build];
+}
++ (Statistics*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (Statistics*)[[[Statistics builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (Statistics_Builder*) builder {
+  return [[[Statistics_Builder alloc] init] autorelease];
+}
++ (Statistics_Builder*) builderWithPrototype:(Statistics*) prototype {
+  return [[Statistics builder] mergeFrom:prototype];
+}
+- (Statistics_Builder*) builder {
+  return [Statistics builder];
+}
+@end
+
+@interface Statistics_Builder()
+@property (retain) Statistics* result;
+@end
+
+@implementation Statistics_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[Statistics alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (Statistics_Builder*) clear {
+  self.result = [[[Statistics alloc] init] autorelease];
+  return self;
+}
+- (Statistics_Builder*) clone {
+  return [Statistics builderWithPrototype:result];
+}
+- (Statistics*) defaultInstance {
+  return [Statistics defaultInstance];
+}
+- (Statistics*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (Statistics*) buildPartial {
+  Statistics* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (Statistics_Builder*) mergeFrom:(Statistics*) other {
+  if (other == [Statistics defaultInstance]) {
+    return self;
+  }
+  if (other.hasId) {
+    [self setId:other.id];
+  }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
+  if (other.hasCount) {
+    [self setCount:other.count];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (Statistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (Statistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setName:[input readString]];
+        break;
+      }
+      case 24: {
+        [self setCount:[input readInt32]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasId {
+  return result.hasId;
+}
+- (int32_t) id {
+  return result.id;
+}
+- (Statistics_Builder*) setId:(int32_t) value {
+  result.hasId = YES;
+  result.id = value;
+  return self;
+}
+- (Statistics_Builder*) clearId {
+  result.hasId = NO;
+  result.id = 0;
+  return self;
+}
+- (BOOL) hasName {
+  return result.hasName;
+}
+- (NSString*) name {
+  return result.name;
+}
+- (Statistics_Builder*) setName:(NSString*) value {
+  result.hasName = YES;
+  result.name = value;
+  return self;
+}
+- (Statistics_Builder*) clearName {
+  result.hasName = NO;
+  result.name = @"";
+  return self;
+}
+- (BOOL) hasCount {
+  return result.hasCount;
+}
+- (int32_t) count {
+  return result.count;
+}
+- (Statistics_Builder*) setCount:(int32_t) value {
+  result.hasCount = YES;
+  result.count = value;
+  return self;
+}
+- (Statistics_Builder*) clearCount {
+  result.hasCount = NO;
+  result.count = 0;
+  return self;
+}
+@end
+
+@interface PlaceStatistics ()
+@property (retain) NSMutableArray* mutableSubCategoryStaticsList;
+@property (retain) NSMutableArray* mutableAreaStaticsList;
+@property (retain) NSMutableArray* mutableServiceStaticsList;
+@end
+
+@implementation PlaceStatistics
+
+@synthesize mutableSubCategoryStaticsList;
+@synthesize mutableAreaStaticsList;
+@synthesize mutableServiceStaticsList;
+- (void) dealloc {
+  self.mutableSubCategoryStaticsList = nil;
+  self.mutableAreaStaticsList = nil;
+  self.mutableServiceStaticsList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static PlaceStatistics* defaultPlaceStatisticsInstance = nil;
++ (void) initialize {
+  if (self == [PlaceStatistics class]) {
+    defaultPlaceStatisticsInstance = [[PlaceStatistics alloc] init];
+  }
+}
++ (PlaceStatistics*) defaultInstance {
+  return defaultPlaceStatisticsInstance;
+}
+- (PlaceStatistics*) defaultInstance {
+  return defaultPlaceStatisticsInstance;
+}
+- (NSArray*) subCategoryStaticsList {
+  return mutableSubCategoryStaticsList;
+}
+- (Statistics*) subCategoryStaticsAtIndex:(int32_t) index {
+  id value = [mutableSubCategoryStaticsList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) areaStaticsList {
+  return mutableAreaStaticsList;
+}
+- (Statistics*) areaStaticsAtIndex:(int32_t) index {
+  id value = [mutableAreaStaticsList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) serviceStaticsList {
+  return mutableServiceStaticsList;
+}
+- (Statistics*) serviceStaticsAtIndex:(int32_t) index {
+  id value = [mutableServiceStaticsList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  for (Statistics* element in self.subCategoryStaticsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (Statistics* element in self.areaStaticsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (Statistics* element in self.serviceStaticsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (Statistics* element in self.subCategoryStaticsList) {
+    [output writeMessage:1 value:element];
+  }
+  for (Statistics* element in self.areaStaticsList) {
+    [output writeMessage:2 value:element];
+  }
+  for (Statistics* element in self.serviceStaticsList) {
+    [output writeMessage:3 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  for (Statistics* element in self.subCategoryStaticsList) {
+    size += computeMessageSize(1, element);
+  }
+  for (Statistics* element in self.areaStaticsList) {
+    size += computeMessageSize(2, element);
+  }
+  for (Statistics* element in self.serviceStaticsList) {
+    size += computeMessageSize(3, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (PlaceStatistics*) parseFromData:(NSData*) data {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromData:data] build];
+}
++ (PlaceStatistics*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (PlaceStatistics*) parseFromInputStream:(NSInputStream*) input {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromInputStream:input] build];
+}
++ (PlaceStatistics*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PlaceStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromCodedInputStream:input] build];
+}
++ (PlaceStatistics*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PlaceStatistics*)[[[PlaceStatistics builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PlaceStatistics_Builder*) builder {
+  return [[[PlaceStatistics_Builder alloc] init] autorelease];
+}
++ (PlaceStatistics_Builder*) builderWithPrototype:(PlaceStatistics*) prototype {
+  return [[PlaceStatistics builder] mergeFrom:prototype];
+}
+- (PlaceStatistics_Builder*) builder {
+  return [PlaceStatistics builder];
+}
+@end
+
+@interface PlaceStatistics_Builder()
+@property (retain) PlaceStatistics* result;
+@end
+
+@implementation PlaceStatistics_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[PlaceStatistics alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (PlaceStatistics_Builder*) clear {
+  self.result = [[[PlaceStatistics alloc] init] autorelease];
+  return self;
+}
+- (PlaceStatistics_Builder*) clone {
+  return [PlaceStatistics builderWithPrototype:result];
+}
+- (PlaceStatistics*) defaultInstance {
+  return [PlaceStatistics defaultInstance];
+}
+- (PlaceStatistics*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (PlaceStatistics*) buildPartial {
+  PlaceStatistics* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (PlaceStatistics_Builder*) mergeFrom:(PlaceStatistics*) other {
+  if (other == [PlaceStatistics defaultInstance]) {
+    return self;
+  }
+  if (other.mutableSubCategoryStaticsList.count > 0) {
+    if (result.mutableSubCategoryStaticsList == nil) {
+      result.mutableSubCategoryStaticsList = [NSMutableArray array];
+    }
+    [result.mutableSubCategoryStaticsList addObjectsFromArray:other.mutableSubCategoryStaticsList];
+  }
+  if (other.mutableAreaStaticsList.count > 0) {
+    if (result.mutableAreaStaticsList == nil) {
+      result.mutableAreaStaticsList = [NSMutableArray array];
+    }
+    [result.mutableAreaStaticsList addObjectsFromArray:other.mutableAreaStaticsList];
+  }
+  if (other.mutableServiceStaticsList.count > 0) {
+    if (result.mutableServiceStaticsList == nil) {
+      result.mutableServiceStaticsList = [NSMutableArray array];
+    }
+    [result.mutableServiceStaticsList addObjectsFromArray:other.mutableServiceStaticsList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (PlaceStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (PlaceStatistics_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        Statistics_Builder* subBuilder = [Statistics builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addSubCategoryStatics:[subBuilder buildPartial]];
+        break;
+      }
+      case 18: {
+        Statistics_Builder* subBuilder = [Statistics builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addAreaStatics:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        Statistics_Builder* subBuilder = [Statistics builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addServiceStatics:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) subCategoryStaticsList {
+  if (result.mutableSubCategoryStaticsList == nil) { return [NSArray array]; }
+  return result.mutableSubCategoryStaticsList;
+}
+- (Statistics*) subCategoryStaticsAtIndex:(int32_t) index {
+  return [result subCategoryStaticsAtIndex:index];
+}
+- (PlaceStatistics_Builder*) replaceSubCategoryStaticsAtIndex:(int32_t) index with:(Statistics*) value {
+  [result.mutableSubCategoryStaticsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (PlaceStatistics_Builder*) addAllSubCategoryStatics:(NSArray*) values {
+  if (result.mutableSubCategoryStaticsList == nil) {
+    result.mutableSubCategoryStaticsList = [NSMutableArray array];
+  }
+  [result.mutableSubCategoryStaticsList addObjectsFromArray:values];
+  return self;
+}
+- (PlaceStatistics_Builder*) clearSubCategoryStaticsList {
+  result.mutableSubCategoryStaticsList = nil;
+  return self;
+}
+- (PlaceStatistics_Builder*) addSubCategoryStatics:(Statistics*) value {
+  if (result.mutableSubCategoryStaticsList == nil) {
+    result.mutableSubCategoryStaticsList = [NSMutableArray array];
+  }
+  [result.mutableSubCategoryStaticsList addObject:value];
+  return self;
+}
+- (NSArray*) areaStaticsList {
+  if (result.mutableAreaStaticsList == nil) { return [NSArray array]; }
+  return result.mutableAreaStaticsList;
+}
+- (Statistics*) areaStaticsAtIndex:(int32_t) index {
+  return [result areaStaticsAtIndex:index];
+}
+- (PlaceStatistics_Builder*) replaceAreaStaticsAtIndex:(int32_t) index with:(Statistics*) value {
+  [result.mutableAreaStaticsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (PlaceStatistics_Builder*) addAllAreaStatics:(NSArray*) values {
+  if (result.mutableAreaStaticsList == nil) {
+    result.mutableAreaStaticsList = [NSMutableArray array];
+  }
+  [result.mutableAreaStaticsList addObjectsFromArray:values];
+  return self;
+}
+- (PlaceStatistics_Builder*) clearAreaStaticsList {
+  result.mutableAreaStaticsList = nil;
+  return self;
+}
+- (PlaceStatistics_Builder*) addAreaStatics:(Statistics*) value {
+  if (result.mutableAreaStaticsList == nil) {
+    result.mutableAreaStaticsList = [NSMutableArray array];
+  }
+  [result.mutableAreaStaticsList addObject:value];
+  return self;
+}
+- (NSArray*) serviceStaticsList {
+  if (result.mutableServiceStaticsList == nil) { return [NSArray array]; }
+  return result.mutableServiceStaticsList;
+}
+- (Statistics*) serviceStaticsAtIndex:(int32_t) index {
+  return [result serviceStaticsAtIndex:index];
+}
+- (PlaceStatistics_Builder*) replaceServiceStaticsAtIndex:(int32_t) index with:(Statistics*) value {
+  [result.mutableServiceStaticsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (PlaceStatistics_Builder*) addAllServiceStatics:(NSArray*) values {
+  if (result.mutableServiceStaticsList == nil) {
+    result.mutableServiceStaticsList = [NSMutableArray array];
+  }
+  [result.mutableServiceStaticsList addObjectsFromArray:values];
+  return self;
+}
+- (PlaceStatistics_Builder*) clearServiceStaticsList {
+  result.mutableServiceStaticsList = nil;
+  return self;
+}
+- (PlaceStatistics_Builder*) addServiceStatics:(Statistics*) value {
+  if (result.mutableServiceStaticsList == nil) {
+    result.mutableServiceStaticsList = [NSMutableArray array];
+  }
+  [result.mutableServiceStaticsList addObject:value];
+  return self;
+}
+@end
+

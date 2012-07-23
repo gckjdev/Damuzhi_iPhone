@@ -46,10 +46,10 @@
     [super dealloc];
 }
 
-- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings
+- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings routeType:(int)routeType
 {    
     
-    self.monthViewcontroller = [[[MonthViewController alloc] initWithBookings:bookings] autorelease];
+    self.monthViewcontroller = [[[MonthViewController alloc] initWithBookings:bookings routeType:routeType] autorelease];
     [_monthViewcontroller showInView:self.monthHolderView];
 }
 

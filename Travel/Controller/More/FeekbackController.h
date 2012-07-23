@@ -21,6 +21,5 @@
 @property (retain, nonatomic) IBOutlet UITextField *contactWayTextField;
 
 - (CGFloat)getMoveDistance:(CGRect)frame keyboardHeight:(CGFloat)keyboardHeight;
-- (void)moveView:(UIView*)view toCenter:(CGPoint)center needAnimation:(BOOL)need;
 
 @end
