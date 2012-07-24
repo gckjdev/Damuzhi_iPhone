@@ -24,6 +24,8 @@
 		A31334E9152FFB460047D013 /* QWeiboSyncApi.m in Sources */ = {isa = PBXBuildFile; fileRef = A31334E6152FFB460047D013 /* QWeiboSyncApi.m */; };
 		A313DE5D152F02EB004E0964 /* ShareToSinaController.m in Sources */ = {isa = PBXBuildFile; fileRef = A313DE5A152F02EB004E0964 /* ShareToSinaController.m */; };
 		A313DE5E152F02EB004E0964 /* ShareToSinaController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A313DE5B152F02EB004E0964 /* ShareToSinaController.xib */; };
+		A31C974A15BE8EFA005752D8 /* ReferenceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A31C974815BE8EFA005752D8 /* ReferenceCell.m */; };
+		A31C974B15BE8EFA005752D8 /* ReferenceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A31C974915BE8EFA005752D8 /* ReferenceCell.xib */; };
 		A327DEEE15231A31003DEE8C /* FavoriteController.m in Sources */ = {isa = PBXBuildFile; fileRef = A327DEEC15231A31003DEE8C /* FavoriteController.m */; };
 		A327DEEF15231A31003DEE8C /* FavoriteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A327DEED15231A31003DEE8C /* FavoriteController.xib */; };
 		A34BDD3515B94A3800CD16C7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A34BDD3315B94A3800CD16C7 /* Default.png */; };
@@ -742,6 +744,9 @@
 		A313DE59152F02EB004E0964 /* ShareToSinaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareToSinaController.h; sourceTree = "<group>"; };
 		A313DE5A152F02EB004E0964 /* ShareToSinaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareToSinaController.m; sourceTree = "<group>"; };
 		A313DE5B152F02EB004E0964 /* ShareToSinaController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareToSinaController.xib; sourceTree = "<group>"; };
+		A31C974715BE8EF9005752D8 /* ReferenceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReferenceCell.h; sourceTree = "<group>"; };
+		A31C974815BE8EFA005752D8 /* ReferenceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReferenceCell.m; sourceTree = "<group>"; };
+		A31C974915BE8EFA005752D8 /* ReferenceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReferenceCell.xib; sourceTree = "<group>"; };
 		A327DEEB15231A31003DEE8C /* FavoriteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteController.h; sourceTree = "<group>"; };
 		A327DEEC15231A31003DEE8C /* FavoriteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteController.m; sourceTree = "<group>"; };
 		A327DEED15231A31003DEE8C /* FavoriteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteController.xib; sourceTree = "<group>"; };
@@ -2744,6 +2749,9 @@
 				A48A542515A2100C0012C782 /* PackageCell.h */,
 				A48A542615A2100E0012C782 /* PackageCell.m */,
 				A48A542715A210110012C782 /* PackageCell.xib */,
+				A31C974715BE8EF9005752D8 /* ReferenceCell.h */,
+				A31C974815BE8EFA005752D8 /* ReferenceCell.m */,
+				A31C974915BE8EFA005752D8 /* ReferenceCell.xib */,
 			);
 			path = RouteDetailCell;
 			sourceTree = "<group>";
@@ -4477,6 +4485,7 @@
 				A4446A0F15B9099000633E80 /* date_tile_bg@2x.png in Resources */,
 				A34BDD3515B94A3800CD16C7 /* Default.png in Resources */,
 				A34BDD3615B94A3800CD16C7 /* Default@2x.png in Resources */,
+				A31C974B15BE8EFA005752D8 /* ReferenceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4793,6 +4802,7 @@
 				A3E456B215B136A200430D2A /* FollowRouteController.m in Sources */,
 				A4BAD18415B4066000596460 /* PlaceItemList.m in Sources */,
 				A3C090E615B815090040053C /* CustomTourController.m in Sources */,
+				A31C974A15BE8EFA005752D8 /* ReferenceCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
