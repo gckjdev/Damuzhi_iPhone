@@ -22,7 +22,8 @@
 
 @end
 
-@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate>
+
+@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate, UIWebViewDelegate>
 
 
 @property (assign, nonatomic) id<RouteIntroductionControllerDelegate> aDelegate;
