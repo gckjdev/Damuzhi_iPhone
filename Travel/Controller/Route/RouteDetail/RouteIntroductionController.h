@@ -38,6 +38,7 @@
 @property (retain, nonatomic) IBOutlet UIView *agencyInfoHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *followButton;
 
+
 - (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
 - (void)showInView:(UIView *)superView;
 
