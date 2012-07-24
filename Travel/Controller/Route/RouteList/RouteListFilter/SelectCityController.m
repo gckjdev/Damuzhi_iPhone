@@ -339,6 +339,7 @@
     
     CGFloat totalHeight = (([_areaList count]-1) / 4 + 1) * buttonHeight; 
     _areaView.frame = CGRectMake(_areaView.frame.origin.x, _areaView.frame.origin.y, _areaView.frame.size.width, totalHeight);
+    dataTableView.frame = CGRectMake(0, _areaView.frame.origin.y + _areaView.frame.size.height, dataTableView.frame.size.width, self.view.frame.size.height - _searchBar.frame.size.height - _areaView.frame.size.height);
     
     CGFloat x;
     CGFloat y;
