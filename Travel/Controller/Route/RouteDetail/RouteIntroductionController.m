@@ -22,6 +22,8 @@
 #import "AnimationManager.h"
 #import "ReferenceCell.h"
 
+#define TAG_ARROW_IMAGE_VIEW 101 
+
 #define CELL_IDENTIFY_CHARACTICS @"CharacticsCell"
 
 #define SECTION_OPEN 1
@@ -58,6 +60,9 @@
 @property (assign, nonatomic) CGFloat referenceHeight;
 @property (assign, nonatomic) BOOL isLoadedReference;
 
+@property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
+
+
 - (RankView *)headerRankView;
 
 @end
@@ -71,6 +76,8 @@
 @synthesize sectionInfo = _sectionInfo;
 @synthesize referenceHeight = _referenceHeight;
 @synthesize isLoadedReference = _isLoadedReference;
+
+@synthesize sectionHeaderViews = _sectionHeaderViews;
 
 @synthesize titleHolerView;
 @synthesize routeNameLabel;
@@ -91,6 +98,7 @@
     [routeNameLabel release];
     [routeIdLabel release];
     [followButton release];
+    [_sectionHeaderViews release];
     [super dealloc];
 }
 
@@ -122,6 +130,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
+    
+    self.sectionHeaderViews = [NSMutableDictionary dictionary];
     
     [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
     
@@ -588,7 +598,13 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [self headerViewForSection:section];
+    UIView *view = (UIView *)[_sectionHeaderViews objectForKey:[NSNumber numberWithInt:section]];
+    if (view == nil) {
+        view = [self headerViewForSection:section];
+        [_sectionHeaderViews setObject:view forKey:[NSNumber numberWithInt:section]];
+    }
+    
+    return view;
 }
 
 - (NSString *)titleForSection:(NSInteger)section
@@ -710,8 +726,11 @@
     [headerView addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280 + 8, HEIGHT_HEADER_VIEW/2-22/2 + 1, 22 - 2, 22)];
+    arrowImageView.tag = TAG_ARROW_IMAGE_VIEW;
+
     arrowImageView.image = [[ImageManager defaultManager] arrowImage];
     [headerView addSubview:arrowImageView];
+
     [arrowImageView release];
     
     return headerView;
@@ -740,6 +759,13 @@
     UIButton *button = (UIButton *)sender;
     BOOL open = [self isSectionOpen:button.tag];
     [self setSection:button.tag Open:!open];
+    
+    UIView *arrowImageView = [button viewWithTag:TAG_ARROW_IMAGE_VIEW];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:2];
+    int angle = open ? (-90) : (90);
+    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*angle);
+    [CATransaction commit];
 }
 
 - (void)didSelectedRelatedPlace:(int)placeId

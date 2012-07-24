@@ -877,6 +877,17 @@ static AppManager* _defaultAppManager = nil;
                                   itemName:NSLS(@"成人7位") 
                                      count:0]];
     
+    [adultItems addObject:[Item itemWithId:8
+                                  itemName:NSLS(@"成人8位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:9
+                                  itemName:NSLS(@"成人9位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:10
+                                  itemName:NSLS(@"成人10位") 
+                                     count:0]];
     
     return adultItems;
 }
@@ -916,6 +927,18 @@ static AppManager* _defaultAppManager = nil;
     [childrenItems addObject:[Item itemWithId:7
                                   itemName:NSLS(@"儿童7位") 
                                      count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:8
+                                     itemName:NSLS(@"儿童8位") 
+                                        count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:9
+                                     itemName:NSLS(@"儿童9位") 
+                                        count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:10
+                                     itemName:NSLS(@"儿童10位") 
+                                        count:0]];
     
     return childrenItems;
 }
