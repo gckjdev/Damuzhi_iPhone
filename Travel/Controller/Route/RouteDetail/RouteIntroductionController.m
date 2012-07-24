@@ -20,7 +20,7 @@
 #import "UIViewUtils.h"
 #import "RouteStorage.h"
 #import "AnimationManager.h"
-
+#import "ReferenceCell.h"
 
 #define TAG_ARROW_IMAGE_VIEW 101 
 
@@ -57,6 +57,8 @@
 @property (retain, nonatomic) TouristRoute *route;
 @property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSMutableDictionary *sectionInfo;
+@property (assign, nonatomic) CGFloat referenceHeight;
+@property (assign, nonatomic) BOOL isLoadedReference;
 
 @property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
 
@@ -72,6 +74,8 @@
 @synthesize route = _route;
 @synthesize routeType = _routeType;
 @synthesize sectionInfo = _sectionInfo;
+@synthesize referenceHeight = _referenceHeight;
+@synthesize isLoadedReference = _isLoadedReference;
 
 @synthesize sectionHeaderViews = _sectionHeaderViews;
 
@@ -147,6 +151,8 @@
     [self updateFollowButton];
     
     [self initSectionStat];
+    
+    self.referenceHeight = 0;
 }
 
 - (NSMutableDictionary *)sectionInfo
@@ -418,25 +424,29 @@
 
 - (UITableViewCell *)cellForReferenceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CharacticsCell getCellIdentifier]];
+    UITableViewCell *cell = nil;
+    cell = [tableView dequeueReusableCellWithIdentifier:[ReferenceCell getCellIdentifier]];
     
     if (cell == nil) {
-        cell = [CharacticsCell createCell:self];	
+        cell = [ReferenceCell createCell:self];	
     }
     
-    CharacticsCell *characticsCell = (CharacticsCell *)cell;
-    characticsCell.characticsLabel.textColor = COLOR_CONTENT;
-    [characticsCell setCellData:_route.reference];
+    ReferenceCell *referenceCell = (ReferenceCell *)cell;
+   
+    NSURL *requestUrl = [NSURL URLWithString:_route.reference];
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    referenceCell.contentWebView.alpha = 0.0;
+    referenceCell.contentWebView.delegate = self;
+    [referenceCell.contentWebView loadRequest:request];
+    
+    PPDebug(@"<RouteIntroductionController> reference:%@",_route.reference);
     
     return cell;
 }
 
 - (CGFloat)cellHeightForReferenceWithIndex:(NSIndexPath *)indexPath
 {
-    CGSize withinSize = CGSizeMake(WIDTH_CHARACTICS_LABEL, MAXFLOAT);
-    CGSize size = [_route.reference sizeWithFont:FONT_CHARACTICS_LABEL constrainedToSize:withinSize lineBreakMode:LINE_BREAK_MODE_CHARACTICS_LABEL];
-    
-    return size.height + 5;
+    return _referenceHeight;
 }
 
 - (UITableViewCell *)cellForDailyScheduleWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -832,6 +842,22 @@
     [self updateFollowButton]; 
 }
 
+#pragma mark - UIWebViewDelegate methods
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGSize actualSize = [webView sizeThatFits:CGSizeZero];
+    CGRect newFrame = webView.frame;
+    newFrame.size.height = actualSize.height;
+    webView.frame = newFrame;
+    
+    webView.alpha = 1.0;
+    self.referenceHeight = newFrame.size.height;
+    
+    if (self.isLoadedReference == NO) {
+        self.isLoadedReference = YES;
+        [self.dataTableView reloadData];
+    }
+}
 
 
 @end

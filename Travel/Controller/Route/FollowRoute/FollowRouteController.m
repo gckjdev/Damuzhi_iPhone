@@ -150,7 +150,7 @@
 - (void)updateNoDataTips
 {
     if ([dataList count] ==0 ) {
-        [self showTipsOnTableView:NSLS(@"暂没关注信息")];
+        [self showTipsOnTableView:NSLS(@"您还没有关注线路")];
     } else {
         [self hideTipsOnTableView];
     }
