@@ -58,7 +58,7 @@
 @property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSMutableDictionary *sectionInfo;
 
-@property (retain, nonatomic) NSMutableArray *sectionHeaderViews;
+@property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
 
 
 - (RankView *)headerRankView;
@@ -127,7 +127,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
-    self.sectionHeaderViews = [NSMutableArray array];
+    self.sectionHeaderViews = [NSMutableDictionary dictionary];
     
     [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
     
@@ -588,13 +588,13 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section >= [_sectionHeaderViews count]) {
-        UIView *view = [self headerViewForSection:section];
-        [self.sectionHeaderViews addObject:view];
-        return view;
-    }else {
-        return [_sectionHeaderViews objectAtIndex:section];
+    UIView *view = (UIView *)[_sectionHeaderViews objectForKey:[NSNumber numberWithInt:section]];
+    if (view == nil) {
+        view = [self headerViewForSection:section];
+        [_sectionHeaderViews setObject:view forKey:[NSNumber numberWithInt:section]];
     }
+    
+    return view;
 }
 
 - (NSString *)titleForSection:(NSInteger)section
@@ -753,7 +753,8 @@
     UIView *arrowImageView = [button viewWithTag:TAG_ARROW_IMAGE_VIEW];
     [CATransaction begin];
     [CATransaction setAnimationDuration:2];
-    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*90);
+    int angle = open ? (-90) : (90);
+    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*angle);
     [CATransaction commit];
 }
 
