@@ -58,7 +58,6 @@
 @property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSMutableDictionary *sectionInfo;
 @property (assign, nonatomic) CGFloat referenceHeight;
-@property (assign, nonatomic) BOOL isLoadedReference;
 
 @property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
 
@@ -75,7 +74,6 @@
 @synthesize routeType = _routeType;
 @synthesize sectionInfo = _sectionInfo;
 @synthesize referenceHeight = _referenceHeight;
-@synthesize isLoadedReference = _isLoadedReference;
 
 @synthesize sectionHeaderViews = _sectionHeaderViews;
 
@@ -849,12 +847,12 @@
     CGRect newFrame = webView.frame;
     newFrame.size.height = actualSize.height;
     webView.frame = newFrame;
-    
     webView.alpha = 1.0;
-    self.referenceHeight = newFrame.size.height;
     
-    if (self.isLoadedReference == NO) {
-        self.isLoadedReference = YES;
+    PPDebug(@"<RouteIntroductionController> referenceHeight:%f",_referenceHeight);
+    
+    if (self.referenceHeight != newFrame.size.height) {
+        self.referenceHeight = newFrame.size.height;
         [self.dataTableView reloadData];
     }
 }
