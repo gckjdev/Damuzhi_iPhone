@@ -248,6 +248,13 @@
     cell.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [cell.leftButton setTitle:NSLS(@"会员确认预订") forState:UIControlStateNormal];
     [cell.rightButton setTitle:NSLS(@"非会员确认预订") forState:UIControlStateNormal];
+    
+    if ([[UserManager defaultManager]isLogin]) {
+        cell.rightButton.hidden = YES;
+        cell.leftButton.center = CGPointMake(160, cell.leftButton.center.y);
+        cell.titleLabel.hidden = YES;
+    }
+    
     [cell.leftButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cell.rightButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     cell.leftButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
@@ -353,6 +360,7 @@
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil] autorelease];
     [alert show];
+
     
 }
 
@@ -363,27 +371,42 @@
     NSString * str2 = [NSString stringWithFormat:@"确定"];
     if ([str1 isEqualToString: str2]) 
     {
+//        UserManager *manager = [UserManager defaultManager];
+//        if ([[UserManager defaultManager] isLogin]) 
+//        {
+//            OrderService *service = [OrderService defaultService];
+//            [service placeOrderUsingLoginId:[manager loginId] 
+//                                      token:[manager token]
+//                                    routeId:_route.routeId 
+//                                  packageId:_packageId
+//                                 departDate:_departDate
+//                                      adult:_adult 
+//                                   children:_children 
+//                              contactPerson:nil
+//                                  telephone:nil
+//                                   delegate:self];
+//        } 
+//        else 
+//        {
+//            LoginController *controller  = [[LoginController alloc] init];
+//            [self.navigationController pushViewController:controller animated:YES];
+//            [controller release];
+//        }
+//        return;
+//        
+        
         UserManager *manager = [UserManager defaultManager];
-        if ([[UserManager defaultManager] isLogin]) {
-            OrderService *service = [OrderService defaultService];
-            [service placeOrderUsingLoginId:[manager loginId] 
-                                      token:[manager token]
-                                    routeId:_route.routeId 
-                                  packageId:_packageId
-                                 departDate:_departDate
-                                      adult:_adult 
-                                   children:_children 
-                              contactPerson:nil
-                                  telephone:nil
-                                   delegate:self];
-        } 
-        else 
-        {
-            LoginController *controller  = [[LoginController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-            [controller release];
-        }
-        return;
+        OrderService *service = [OrderService defaultService];
+        [service placeOrderUsingLoginId:[manager loginId] 
+                                  token:[manager token]
+                                routeId:_route.routeId 
+                              packageId:_packageId
+                             departDate:_departDate
+                                  adult:_adult 
+                               children:_children 
+                          contactPerson:nil
+                              telephone:nil
+                               delegate:self];
     }
 }
 
@@ -408,7 +431,7 @@
     }
     
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
-//    [self popupMessage:@"yunyunyun" title:nil];
+
 }
 
 

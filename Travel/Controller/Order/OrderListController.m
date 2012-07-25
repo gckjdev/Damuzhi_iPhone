@@ -183,6 +183,7 @@
     routeIdLabel.backgroundColor = [UIColor clearColor];
     int orderId = [[dataList objectAtIndex:section] orderId];
     routeIdLabel.text = [NSString stringWithFormat:NSLS(@"订单编号：%d"), orderId];
+//    NSLog(@"%d", orderId);
     [view addSubview:routeIdLabel];
     [routeIdLabel release];
     

@@ -119,8 +119,13 @@
 //    }
     NSString *str = codeTextField.text;
     str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (0 == [str length]) {
-        [self popupMessage:@"您输入的验证码为空，请重新输入" title:nil];
+    if (0 == [str length]) 
+    {
+//        [self popupMessage:@"您输入的验证码为空，请重新输入" title:nil];
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:nil message:@"您输入的验证码为空，请重新输入" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+//        [self.navigationController popViewControllerAnimated:YES];
         return;
     }
     

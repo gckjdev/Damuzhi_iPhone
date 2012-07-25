@@ -21,6 +21,8 @@
 @property (retain, nonatomic) NSDate *departDate;
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
+@property (retain, nonatomic) NSString * contactPersonName;
+@property (retain, nonatomic) NSString * contactPhone;
 
 @end
 
@@ -30,7 +32,8 @@
 @synthesize departDate = _departDate;
 @synthesize adult = _adult;
 @synthesize children = _children;
-
+@synthesize contactPersonName = _contactPersonName;
+@synthesize contactPhone = _contactPhone;
 @synthesize routeNameLabel;
 @synthesize contactPersonTextField;
 @synthesize telephoneTextField;
@@ -45,6 +48,8 @@
     [contactPersonTextField release];
     [telephoneTextField release];
     [backGroundScrollView release];
+    [_contactPersonName release];
+    [_contactPhone release];
     [super dealloc];
 }
 
@@ -141,25 +146,52 @@
 
 - (void)clickSubmit:(id)sender
 {
+   
     NSString *contactPerson = contactPersonTextField.text;
     NSString *telephone = telephoneTextField.text;
     contactPerson = [contactPerson stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    
+    contactPerson = [contactPerson stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     if (contactPerson == nil || [contactPerson length] == 0) {
         [self popupMessage:NSLS(@"姓名不能为空，请您重新输入") title:nil];
         return;     
     }
     
-    if (!NSStringIsValidPhone(telephoneTextField.text)) {
+    if (!NSStringIsValidChinese(contactPerson) ) {
+        [self popupMessage:@"联系人姓名只能用中文，请重新输入" title:nil];
+        return;
+    }
+    
+    if (!NSStringIsValidPhone(telephone)) {
         [self popupMessage:NSLS(@"您输入的手机号码有误，请重新输入") title:nil];
         return;
     }
     
-    if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)]) {
-        [delegate didclickSubmit:contactPerson telephone:telephone];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+//    if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)]) {
+//                    [delegate didclickSubmit:contactPerson telephone:telephone];
+//                    [self.navigationController popViewControllerAnimated:YES];       
+//    }
+    
+    self.contactPersonName = contactPerson;
+    self.contactPhone = telephone;
+    
+    UIAlertView *alert = [[[UIAlertView alloc]initWithTitle:nil message:@"是否预订" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil] autorelease];
+    [alert show];
 }
 
+- (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
+    if ([str1 isEqualToString:@"确定"])
+    {
+        if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)])
+        {
+            [delegate didclickSubmit:_contactPersonName telephone:_contactPhone];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+}
 
 @end

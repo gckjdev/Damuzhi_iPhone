@@ -114,7 +114,10 @@
         [self popupMessage:text title:nil];
         return;
     }
-    [self popupMessage:@"密码已发送到您的手机，请查收" title:nil];
+    
+    UIAlertView *alert =[[UIAlertView alloc]initWithTitle:nil message:@"账号密码已发送到您的手机，请注意查收" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+    [alert show];
+    [alert release];
     [self.navigationController popViewControllerAnimated:YES];
 }
  

@@ -9,14 +9,14 @@
 #import "PPViewController.h"
 #import "TouristRoute.pb.h"
 
-@protocol NonMemberOrderDelegate <NSObject>
+@protocol NonMemberOrderDelegate <NSObject,UIAlertViewDelegate>
 
 - (void)didclickSubmit:(NSString *)contactPerson telephone:(NSString *)telephone;
 
 @end
 
 
-@interface NonMemberOrderController : PPViewController <UITextFieldDelegate>
+@interface NonMemberOrderController : PPViewController <UITextFieldDelegate,UIAlertViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
 @property (retain, nonatomic) IBOutlet UITextField *contactPersonTextField;
