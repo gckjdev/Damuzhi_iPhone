@@ -14,10 +14,12 @@
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
 
+#import "UserManager.h"
 @implementation FeekbackController
 @synthesize viewCenter = _viewCenter;
 @synthesize feekbackTextView;
 @synthesize contactWayTextField;
+@synthesize contactWayLabel;
 
 
 #pragma mark -
@@ -57,12 +59,19 @@
     
     // Set text field delegate
     self.contactWayTextField.delegate = self;
+    
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        self.contactWayLabel.hidden = YES;
+        self.contactWayTextField.hidden = YES;
+    }
 }
 
 - (void)viewDidUnload
 {
     [self setFeekbackTextView:nil];
     [self setContactWayTextField:nil];
+    [self setContactWayLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -92,6 +101,7 @@
 - (void)dealloc {
     PPRelease(feekbackTextView);
     PPRelease(contactWayTextField);
+    [contactWayLabel release];
     [super dealloc];
 }
 
@@ -171,6 +181,8 @@
         [self popupMessage:NSLS(@"联系方式字数太长") title:nil];
         return;
     }
+    
+    
 
     
     [self hideKeyboard];
