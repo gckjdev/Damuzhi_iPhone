@@ -217,6 +217,8 @@
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
 {
     if ([_aDelegate respondsToSelector:@selector(didSelecteDate:)]) {
+        [self clearUnPopupMessages];
+        
         Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
         
         if (booking.status == 1) {
@@ -227,9 +229,8 @@
         }else if (booking.status == 3) {
             [self popupMessage:NSLS(@"该日期已满") title:nil];
         }else {
-            [self popupMessage:NSLS(@"该日期不出团") title:nil];
+            [self popupMessage:NSLS(@"该日期没有行程") title:nil];
         }
-        
     }
 }
 

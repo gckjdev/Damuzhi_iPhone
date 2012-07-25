@@ -17,7 +17,7 @@
 #import "RouteFeekbackController.h"
 
 #define HEIGHT_HEADER_VIEW 44
-#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
+//#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
 
 
 @interface OrderListController ()
@@ -166,7 +166,7 @@
     view.tag = section;
     
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:view.bounds];
-    bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
+//    bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
     
     bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count] open:[[_sectionStat objectAtIndex:section] boolValue]];
     

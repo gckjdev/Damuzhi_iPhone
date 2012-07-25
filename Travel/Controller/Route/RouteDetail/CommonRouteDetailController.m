@@ -184,6 +184,8 @@
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
     }
     
+    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    
     [_feeController showInView:self.contentView];    
 }
 
@@ -197,8 +199,8 @@
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
     }
     
+    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
     [_bookingPolicyController showInView:self.contentView];        
-    
 }
 
 
