@@ -87,9 +87,7 @@ static PlaceStorage* _historyManager = nil;
 
 - (NSArray*)allPlaces
 {
-    if ([self.placeList listList] == nil || [[self.placeList listList] count] < 1) {
-        [self loadPlaceList];
-    }
+    [self loadPlaceList];
     return [self.placeList listList];
 }
 
