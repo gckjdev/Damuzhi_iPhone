@@ -78,6 +78,7 @@
 - (void)dealloc {
     [loginIdTextField release];
     [backgroundScrollView release];
+    [_loginId release];
     [super dealloc];
 }
 - (IBAction)hideKeyboard:(id)sender {
