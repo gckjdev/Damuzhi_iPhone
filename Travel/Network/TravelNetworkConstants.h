@@ -12,11 +12,11 @@
 #define OS_IOS 1
 
 // for test service
-//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
 
-#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
 //#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
 
@@ -126,6 +126,7 @@
 #define PARA_TRAVEL_ADULT                   @"adult"
 #define PARA_TRAVEL_CHILDREN                @"children"
 #define PARA_TRAVEL_CONTACT_PERSION         @"contactPersion"
+#define PARA_TRAVEL_CONTACT                 @"contact"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1

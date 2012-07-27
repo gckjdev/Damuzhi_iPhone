@@ -831,7 +831,7 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_FULL_NAME value:fullName];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_NICK_NAME value:nickName];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_GENDER intValue:gender];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_TELEPHONE value:telephone];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT   value:telephone];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_EMAIL value:email];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ADRESS value:address];
 
@@ -935,7 +935,7 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_TELEPHONE value:telephone];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT value:telephone];
 
         return str;
     };
@@ -977,7 +977,7 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_TELEPHONE value:telephone];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT value:telephone];
         
         return str;
     };
