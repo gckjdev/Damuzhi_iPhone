@@ -156,6 +156,11 @@
     [controller release];
 }
 
+- (void)clickHomeButton:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 - (void)clickMap:(id)sender
 {
     if (_nearbyRecommendController == nil) {
@@ -864,9 +869,21 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"") 
-                         imageName:@"map_po.png" 
-                            action:@selector(clickMap:)];
+    UIView *rightBarView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 73, 32)] autorelease];
+    UIButton *homeButon = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)] autorelease];
+    UIButton *mapButon = [[[UIButton alloc] initWithFrame:CGRectMake(40, 0, 32, 32)] autorelease];
+    
+    [homeButon setImage:[UIImage imageNamed:@"home_po.png"] forState:UIControlStateNormal];
+    [mapButon setImage:[UIImage imageNamed:@"map_po.png"] forState:UIControlStateNormal];
+    [homeButon addTarget:self action:@selector(clickHomeButton:) forControlEvents:UIControlEventTouchUpInside];
+    [mapButon addTarget:self action:@selector(clickMap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [rightBarView addSubview:homeButon];
+    [rightBarView addSubview:mapButon];
+    
+    UIBarButtonItem *rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightBarView] autorelease];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    
     
     [self setTitle:[self.place name]];
     

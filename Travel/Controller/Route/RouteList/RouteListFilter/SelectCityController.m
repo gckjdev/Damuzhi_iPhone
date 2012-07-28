@@ -28,8 +28,6 @@
 @end
 
 
-
-
 #define TAG_REGION_TABLEVIEW    12072701
 #define TAG_DATA_TABLEVIEW      12072702
 
@@ -168,9 +166,9 @@
         }
         cell.textLabel.font = [UIFont systemFontOfSize:16];
         
-        Region *region = nil;
+        
         if (indexPath.row < [_regionList count]) {
-            region = [_regionList objectAtIndex:indexPath.row];
+            Region *region = [_regionList objectAtIndex:indexPath.row];
             cell.textLabel.text = region.regionName;
         }else {
             cell.textLabel.text = nil;
