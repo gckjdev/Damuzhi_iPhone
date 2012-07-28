@@ -18,7 +18,7 @@
 
 @interface SelectCityController : PPTableViewController <UISearchBarDelegate>
 @property (retain, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (retain, nonatomic) IBOutlet UIView *areaView;
+@property (retain, nonatomic) IBOutlet UITableView *regionTableView;
 
 - (id)initWithTitle:(NSString *)title 
          regionList:(NSArray *)regionList

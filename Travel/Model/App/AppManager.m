@@ -723,7 +723,7 @@ static AppManager* _defaultAppManager = nil;
 
 - (int)getRegionIdByCityId:(int)cityId
 {
-    int reId = -1;
+    int reId = ALL_CATEGORY;
     
     for (RouteCity *city in _app.destinationCitiesList) {
         if (city.routeCityId == cityId) {
