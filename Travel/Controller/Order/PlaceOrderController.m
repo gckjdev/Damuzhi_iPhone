@@ -90,8 +90,7 @@
     if (self = [super init]) {
         self.route = route;
         self.routeType = routeType;
-//        self.packageId = packageId;
-        self.packageId = 1;
+        self.packageId = packageId;
         self.selectedAdultIdList = [NSMutableArray array];
         self.selectedChildrenIdList = [NSMutableArray array];
         self.selectPacekageIdList = [NSMutableArray array];
@@ -173,6 +172,19 @@
 }
 
 
+-(NSString *)getSelectedPackageName
+{
+    NSNumber *selectedPackageId = [_selectPacekageIdList objectAtIndex:0];
+    NSString *selectedPackageName = nil;
+    for (TravelPackage *package in _route.packagesList) {
+        if (package.packageId == [selectedPackageId intValue]) {
+            selectedPackageName = package.name;
+            break;
+        }
+    }
+    return selectedPackageName;
+}
+
 #define BUTTON_WIDTH_DEPART_DATE    130
 #define BUTTON_HEIGHT_DEPART_DATE   28
 #define BUTTON_WIDTH_PEOPLE         74
@@ -217,8 +229,8 @@
         cell.leftButton.hidden = NO;
         CGRect departFrame = cell.leftButton.frame;
         cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_DATE, departFrame.size.height);
-        [cell.leftButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"套餐%d"), _packageId]] forState:UIControlStateNormal];
-
+        [cell.leftButton setTitle:@"haha" forState:UIControlStateNormal];
+        [cell.leftButton setTitle:([self getSelectedPackageName] == nil) ? NSLS(@"套餐1") : [self getSelectedPackageName] forState:UIControlStateNormal];
     }
     else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         cell.leftButton.hidden = NO;
@@ -247,6 +259,7 @@
     
     return cell;
 }
+
 
 
 - (void)setDirectionsCell:(PlaceOrderCell *)cell
