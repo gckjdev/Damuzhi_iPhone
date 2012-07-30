@@ -18,6 +18,7 @@
 #import "RouteUtils.h"
 #import "PPDebug.h"
 #import "UIUtils.h"
+#import "AppManager.h"
 
 @interface CommonRouteDetailController ()
 
@@ -54,6 +55,7 @@
 @synthesize contentView = _contentView;
 @synthesize routeNameLabel = _routeNameLabel;
 @synthesize routeIdLabel = _routeIdLabel;
+@synthesize agencyNameLabel = _agencyNameLabel;
 @synthesize currentSelectedButton = _currentSelectedButton;
 @synthesize phoneList = _phoneList;
 
@@ -74,6 +76,7 @@
     [_phoneList release];
     [_routeNameLabel release];
     [_routeIdLabel release];
+    [_agencyNameLabel release];
     [super dealloc];
 }
 
@@ -105,6 +108,8 @@
     
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
+    
+
     
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
@@ -151,6 +156,7 @@
     [self setContentView:nil];
     [self setRouteNameLabel:nil];
     [self setRouteIdLabel:nil];
+    [self setAgencyNameLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -233,6 +239,9 @@
     [self.routeNameLabel setText:_route.name];
     [self.routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
     
+    
+    [_agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
+
     [self clickIntroductionButton:_introductionButton];
 }
 

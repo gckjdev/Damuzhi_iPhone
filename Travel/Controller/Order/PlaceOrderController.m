@@ -114,12 +114,17 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
+    if ([_route.packagesList count] >= 1) {
+        self.packageId = [[_route.packagesList objectAtIndex:0] packageId];
+    }
+    
+    [_selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
     [_selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
     [_selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
-    [_selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
     
     NSMutableArray *mutableArray = [NSMutableArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_ROUTE_ID, TITLE_DEPART_CITY, TITLE_PACKAGE_ID, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
     if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
@@ -404,6 +409,7 @@
 
 -(void)clickSelectPackageIdButton;
 {
+
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"套餐号")
                                                                   itemList:[[AppManager defaultManager] getSelectedPackageIdItemList: _route] 
                                                            selectedItemIds:_selectPacekageIdList
@@ -411,6 +417,7 @@
                                                                needConfirm:NO 
                                                              needShowCount:NO];
     controller.delegate = self;
+    
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

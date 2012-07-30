@@ -79,7 +79,8 @@
 
 @synthesize titleHolerView;
 @synthesize imagesHolderView;
-@synthesize agencyNameLabel;
+@synthesize departCityLabel = _departCityLabel;
+//@synthesize agencyNameLabel;
 @synthesize agencyInfoHolderView;
 @synthesize followButton;
 
@@ -90,9 +91,10 @@
     [titleHolerView release];
     [imagesHolderView release];
     [agencyInfoHolderView release];
-    [agencyNameLabel release];
+//    [agencyNameLabel release];
     [followButton release];
     [_sectionHeaderViews release];
+    [_departCityLabel release];
     [super dealloc];
 }
 
@@ -129,7 +131,10 @@
     
     [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
     
+    
     [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+    
+    
     [self setAgencyInfoHolderViewAppearance];
     
     self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
@@ -144,6 +149,8 @@
     [self initSectionStat];
     
     self.referenceHeight = 0;
+    
+    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
 }
 
 - (NSMutableDictionary *)sectionInfo
@@ -179,6 +186,7 @@
     [self setAgencyInfoHolderView:nil];
     [self setAgencyNameLabel:nil];
     [self setFollowButton:nil];
+    [self setDepartCityLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -189,7 +197,14 @@
 
 - (void)setAgencyInfoHolderViewAppearance
 {
-    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
+    
+    
+//    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
+    NSString *string = [[AppManager defaultManager]  getDepartCityName:_route.departCityId];
+    
+    NSString *departCityName = [NSString stringWithFormat:@"出发 : %@",string];
+    [_departCityLabel setText:departCityName];
+
     
     //CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
     
@@ -200,19 +215,17 @@
     UILabel *priceSuffixLabel;
     UIButton *bookButton;
     
-    origin_x = 140;
-    origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
-    priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x + 10, origin_y, 80, HEIGHT_PRICE_LABEL)];
+
+
+    priceLabel = [self genPriceLabelWithFrame:CGRectMake(123, 10, 80, HEIGHT_PRICE_LABEL)];
     [agencyInfoHolderView addSubview:priceLabel];
     
-    origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
-    origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_SUFFIX_LABEL/2 + 1; 
-    priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(origin_x, origin_y, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
+
+    priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(205 , 13, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
     [agencyInfoHolderView addSubview:priceSuffixLabel];
     
-    origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 10;
-    origin_y = agencyNameLabel.frame.size.height/2 - 22/2; 
-    bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x - 30 , origin_y - 10, 100, 40)];
+
+    bookButton = [self genBookBttonWithFrame:CGRectMake(215 , 0, 100, 40)];
     [agencyInfoHolderView addSubview:bookButton];
 }
 
