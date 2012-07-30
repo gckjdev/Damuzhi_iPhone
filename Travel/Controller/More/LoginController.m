@@ -29,6 +29,7 @@
 @synthesize rememberPasswordButton;
 @synthesize backgroundScrollView;
 
+
 @synthesize loginIdTextField;
 @synthesize passwordTextField;
 @synthesize checkOrdersButton;
@@ -44,7 +45,7 @@
     [_password release];
     [_loginButton release];
     
-    [loginIdTextField release];
+
     [passwordTextField release];
     
     [checkOrdersButton release];
@@ -54,6 +55,7 @@
     [rememberPasswordButton release];
 
     [backgroundScrollView release];
+    [loginIdTextField release];
     [super dealloc];
 }
 
@@ -106,6 +108,7 @@
     [self setRememberLoginIdbutton:nil];
     [self setRememberPasswordButton:nil];
     [self setBackgroundScrollView:nil];
+    [self setLoginIdTextField:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

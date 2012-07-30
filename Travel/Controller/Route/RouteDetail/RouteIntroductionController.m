@@ -212,7 +212,7 @@
     
     origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 10;
     origin_y = agencyNameLabel.frame.size.height/2 - 22/2; 
-    bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x - 12, origin_y, 70, 22)];
+    bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x - 30 , origin_y - 10, 100, 40)];
     [agencyInfoHolderView addSubview:bookButton];
 }
 
