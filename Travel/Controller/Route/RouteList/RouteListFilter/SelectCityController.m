@@ -161,7 +161,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIImageView *lineView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"city_bg3.png"]] autorelease];
-            lineView.frame = CGRectMake(0, 0, 79, 2);
+            lineView.frame = CGRectMake(0, 0, 79, 1.5);
             [cell.contentView addSubview:lineView];
         }
         cell.textLabel.font = [UIFont systemFontOfSize:16];
