@@ -29,12 +29,10 @@
 @property (assign, nonatomic) id<RouteIntroductionControllerDelegate> aDelegate;
 
 @property (retain, nonatomic) IBOutlet UIView *titleHolerView;
-@property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
-
 
 @property (retain, nonatomic) IBOutlet UIView *imagesHolderView;
-@property (retain, nonatomic) IBOutlet UILabel *agencyNameLabel;
+
+@property (retain, nonatomic) IBOutlet UILabel *departCityLabel;
 
 @property (retain, nonatomic) IBOutlet UIView *agencyInfoHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *followButton;

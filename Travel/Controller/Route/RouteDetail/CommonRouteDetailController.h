@@ -20,6 +20,9 @@
 @property (retain, nonatomic) IBOutlet UIView *buttonsHolderView;
 
 @property (retain, nonatomic) IBOutlet UIView *contentView;
+@property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
+@property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
+@property (retain, nonatomic) IBOutlet UILabel *agencyNameLabel;
 
 - (id)initWithRouteId:(int)routeId routeType:(int)routeType;
 

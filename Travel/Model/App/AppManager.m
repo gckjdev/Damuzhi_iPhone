@@ -19,6 +19,8 @@
 #import "RouteUtils.h"
 #import "PlaceItemList.h"
 
+#import "TouristRoute.pb.h"
+
 #define TEST_CITY
 
 #ifdef TEST_CITY
@@ -32,6 +34,7 @@
 @property (retain, nonatomic) NSArray *allCities;
 @property (retain, nonatomic) NSMutableDictionary *placeItemDic;
 
+@property (retain, nonatomic) TouristRoute *route;
 @end
 
 @implementation AppManager
@@ -42,7 +45,7 @@ static AppManager* _defaultAppManager = nil;
 @synthesize allCities = _allCities;
 @synthesize placeItemDic = _placeItemDic;
 
-
+@synthesize route = _route;
 + (id)defaultManager
 {
     if (_defaultAppManager == nil){
@@ -720,7 +723,7 @@ static AppManager* _defaultAppManager = nil;
 
 - (int)getRegionIdByCityId:(int)cityId
 {
-    int reId = -1;
+    int reId = ALL_CATEGORY;
     
     for (RouteCity *city in _app.destinationCitiesList) {
         if (city.routeCityId == cityId) {
@@ -892,6 +895,31 @@ static AppManager* _defaultAppManager = nil;
     return adultItems;
 }
 
+
+
+
+
+
+
+- (NSArray*)getSelectedPackageIdItemList:(TouristRoute *)aRoute
+{
+    NSMutableArray *packageIdItems = [[[NSMutableArray alloc] init] autorelease];    
+        
+    for (TravelPackage *package in aRoute.packagesList) {
+        [packageIdItems addObject:[Item itemWithId:package.packageId 
+                                          itemName:package.name 
+                                             count:0]];
+    }
+
+    return packageIdItems;
+}
+
+
+
+
+
+
+
 - (NSArray*)buildChildrenItemList
 {
     NSMutableArray *childrenItems = [[[NSMutableArray alloc] init] autorelease]; 
@@ -1028,6 +1056,8 @@ static AppManager* _defaultAppManager = nil;
 {
     return [NSArray arrayWithObjects:_app.serviceTelephone, nil];
 }
+
+
 
 
 @end

@@ -75,6 +75,7 @@
 				<reference key="IBUIBackgroundColor" ref="359216158"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="953624592"/>
+				<string key="IBUIReuseIdentifier">ReferenceCell</string>
 				<real value="26" key="IBUIRowHeight"/>
 			</object>
 		</array>

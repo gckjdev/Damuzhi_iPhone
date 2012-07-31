@@ -85,12 +85,15 @@
 - (NSArray*)buildAdultItemList;
 - (NSArray*)buildChildrenItemList;
 
+- (NSArray*)getSelectedPackageIdItemList:(TouristRoute *)aRoute;
+
+
+
 - (NSArray *)buildRoutePriceRankItemList;
 - (NSArray *)buildDaysRangeItemList;
 - (NSArray *)buildRouteSortItemList;
 
 - (NSArray *)getServicePhoneList;
-
 
 
 @end

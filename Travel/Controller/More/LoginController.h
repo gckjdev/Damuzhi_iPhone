@@ -12,7 +12,8 @@
 @interface LoginController : PPTableViewController <UserServiceDelegate>
 
 
-@property (retain, nonatomic) IBOutlet UILabel *loginIdTextField;
+
+@property (retain, nonatomic) IBOutlet UITextField *loginIdTextField;
 
 @property (retain, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (retain, nonatomic) IBOutlet UIButton *checkOrdersButton;

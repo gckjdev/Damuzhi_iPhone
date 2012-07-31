@@ -20,6 +20,9 @@
 
 @property (retain, nonatomic) IBOutlet UITextField *contactWayTextField;
 
+@property (retain, nonatomic) IBOutlet UILabel *contactWayLabel;
+
+
 - (CGFloat)getMoveDistance:(CGRect)frame keyboardHeight:(CGFloat)keyboardHeight;
 
 @end
