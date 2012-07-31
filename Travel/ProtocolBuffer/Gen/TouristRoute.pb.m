@@ -4096,6 +4096,7 @@ static OrderList* defaultOrderListInstance = nil;
 @property (retain) NSString* priceStatus;
 @property int32_t status;
 @property int32_t packageId;
+@property (retain) NSString* packageName;
 @end
 
 @implementation Order
@@ -4191,11 +4192,19 @@ static OrderList* defaultOrderListInstance = nil;
   hasPackageId_ = !!value;
 }
 @synthesize packageId;
+- (BOOL) hasPackageName {
+  return !!hasPackageName_;
+}
+- (void) setHasPackageName:(BOOL) value {
+  hasPackageName_ = !!value;
+}
+@synthesize packageName;
 - (void) dealloc {
   self.routeName = nil;
   self.departCityName = nil;
   self.price = nil;
   self.priceStatus = nil;
+  self.packageName = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4213,6 +4222,7 @@ static OrderList* defaultOrderListInstance = nil;
     self.priceStatus = @"";
     self.status = 0;
     self.packageId = 0;
+    self.packageName = @"";
   }
   return self;
 }
@@ -4280,6 +4290,9 @@ static Order* defaultOrderInstance = nil;
   if (self.hasPackageId) {
     [output writeInt32:20 value:self.packageId];
   }
+  if (self.hasPackageName) {
+    [output writeString:21 value:self.packageName];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -4327,6 +4340,9 @@ static Order* defaultOrderInstance = nil;
   }
   if (self.hasPackageId) {
     size += computeInt32Size(20, self.packageId);
+  }
+  if (self.hasPackageName) {
+    size += computeStringSize(21, self.packageName);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4442,6 +4458,9 @@ static Order* defaultOrderInstance = nil;
   if (other.hasPackageId) {
     [self setPackageId:other.packageId];
   }
+  if (other.hasPackageName) {
+    [self setPackageName:other.packageName];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4513,6 +4532,10 @@ static Order* defaultOrderInstance = nil;
       }
       case 160: {
         [self setPackageId:[input readInt32]];
+        break;
+      }
+      case 170: {
+        [self setPackageName:[input readString]];
         break;
       }
     }
@@ -4724,6 +4747,22 @@ static Order* defaultOrderInstance = nil;
 - (Order_Builder*) clearPackageId {
   result.hasPackageId = NO;
   result.packageId = 0;
+  return self;
+}
+- (BOOL) hasPackageName {
+  return result.hasPackageName;
+}
+- (NSString*) packageName {
+  return result.packageName;
+}
+- (Order_Builder*) setPackageName:(NSString*) value {
+  result.hasPackageName = YES;
+  result.packageName = value;
+  return self;
+}
+- (Order_Builder*) clearPackageName {
+  result.hasPackageName = NO;
+  result.packageName = @"";
   return self;
 }
 @end
