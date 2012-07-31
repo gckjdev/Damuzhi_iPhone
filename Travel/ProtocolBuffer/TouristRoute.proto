@@ -129,5 +129,6 @@ message Order {
   
     
   optional int32 packageId = 20;        // 套餐Id
+  optional string packageName = 21;     // 套餐名字
 }
 
