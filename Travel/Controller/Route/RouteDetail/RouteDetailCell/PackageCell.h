@@ -25,8 +25,8 @@
 - (void)setCellData:(TravelPackage *)package;
 
 @property (assign, nonatomic) id<PackageCellDelegate> aDelegate;
+@property (retain, nonatomic) IBOutlet UIButton *flightTitleButton;
 @property (retain, nonatomic) IBOutlet UIButton *flightButton;
-
-@property (retain, nonatomic) IBOutlet UILabel *flightLabel;
+@property (retain, nonatomic) IBOutlet UIButton *accommodationTitleButton;
 
 @end

@@ -30,6 +30,9 @@
 		A327DEEF15231A31003DEE8C /* FavoriteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A327DEED15231A31003DEE8C /* FavoriteController.xib */; };
 		A34BDD3515B94A3800CD16C7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = A34BDD3315B94A3800CD16C7 /* Default.png */; };
 		A34BDD3615B94A3800CD16C7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A34BDD3415B94A3800CD16C7 /* Default@2x.png */; };
+		A387DE1D15C7D78100507F95 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A387DE1C15C7D78100507F95 /* CoreText.framework */; };
+		A387DE4015C7D7BF00507F95 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = A387DE3015C7D7BF00507F95 /* NSAttributedString+Attributes.m */; };
+		A387DE4115C7D7BF00507F95 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A387DE3215C7D7BF00507F95 /* OHAttributedLabel.m */; };
 		A3A9796F15A5A3CA0071B282 /* ChangePasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A9796D15A5A3CA0071B282 /* ChangePasswordController.m */; };
 		A3A9797015A5A3CA0071B282 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3A9796E15A5A3CA0071B282 /* ChangePasswordController.xib */; };
 		A3ACE1121524459F00C9B3DD /* HistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3ACE1101524459F00C9B3DD /* HistoryController.m */; };
@@ -760,6 +763,11 @@
 		A327DEED15231A31003DEE8C /* FavoriteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteController.xib; sourceTree = "<group>"; };
 		A34BDD3315B94A3800CD16C7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A34BDD3415B94A3800CD16C7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		A387DE1C15C7D78100507F95 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		A387DE2F15C7D7BF00507F95 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
+		A387DE3015C7D7BF00507F95 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
+		A387DE3115C7D7BF00507F95 /* OHAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHAttributedLabel.h; sourceTree = "<group>"; };
+		A387DE3215C7D7BF00507F95 /* OHAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHAttributedLabel.m; sourceTree = "<group>"; };
 		A3A9796C15A5A3CA0071B282 /* ChangePasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordController.h; sourceTree = "<group>"; };
 		A3A9796D15A5A3CA0071B282 /* ChangePasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordController.m; sourceTree = "<group>"; };
 		A3A9796E15A5A3CA0071B282 /* ChangePasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordController.xib; sourceTree = "<group>"; };
@@ -1716,6 +1724,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A387DE1D15C7D78100507F95 /* CoreText.framework in Frameworks */,
 				A48E05EF15354BC100B2695E /* CoreTelephony.framework in Frameworks */,
 				A31334DF152FFB260047D013 /* libQWeiboSDK4iOS.a in Frameworks */,
 				A3EB740E152E96E4003BA8B8 /* Security.framework in Frameworks */,
@@ -1813,6 +1822,26 @@
 			path = Favorite;
 			sourceTree = "<group>";
 		};
+		A387DE1E15C7D7B500507F95 /* Component-View */ = {
+			isa = PBXGroup;
+			children = (
+				A387DE1F15C7D7BF00507F95 /* OHAttributedLabel */,
+			);
+			name = "Component-View";
+			sourceTree = "<group>";
+		};
+		A387DE1F15C7D7BF00507F95 /* OHAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				A387DE2F15C7D7BF00507F95 /* NSAttributedString+Attributes.h */,
+				A387DE3015C7D7BF00507F95 /* NSAttributedString+Attributes.m */,
+				A387DE3115C7D7BF00507F95 /* OHAttributedLabel.h */,
+				A387DE3215C7D7BF00507F95 /* OHAttributedLabel.m */,
+			);
+			name = OHAttributedLabel;
+			path = "../Common_iPhone_20/Components/Component-View/OHAttributedLabel";
+			sourceTree = "<group>";
+		};
 		A3CD5AE0152803830049D2F3 /* 3PP-SDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -1840,6 +1869,7 @@
 		A3CD5AE9152803AF0049D2F3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A387DE1E15C7D7B500507F95 /* Component-View */,
 				A3CD5AEA152803F80049D2F3 /* Component-Service */,
 			);
 			name = Components;
@@ -3900,6 +3930,7 @@
 		CA4906F714F5F05B00228C37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A387DE1C15C7D78100507F95 /* CoreText.framework */,
 				A48E05EE15354BC100B2695E /* CoreTelephony.framework */,
 				A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */,
 				A3EB740D152E96E4003BA8B8 /* Security.framework */,
@@ -4843,6 +4874,8 @@
 				A4BAD18415B4066000596460 /* PlaceItemList.m in Sources */,
 				A3C090E615B815090040053C /* CustomTourController.m in Sources */,
 				A31C974A15BE8EFA005752D8 /* ReferenceCell.m in Sources */,
+				A387DE4015C7D7BF00507F95 /* NSAttributedString+Attributes.m in Sources */,
+				A387DE4115C7D7BF00507F95 /* OHAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
