@@ -113,9 +113,10 @@
     [self setNavigationRightButton:NSLS(@"咨询") 
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
-    
+    PPDebug(@"_packageId isisisis: %d", _packageId);
     if ([_route.packagesList count] >= 1) {
         self.packageId = [[_route.packagesList objectAtIndex:0] packageId];
+        PPDebug(@"_packageId isisisis: %d", _packageId);
     }
     
     [_selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
