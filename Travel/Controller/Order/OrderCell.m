@@ -72,6 +72,7 @@
     return @"OrderCell";
 }
 
+
 - (void)setCellData:(Order *)order
 {
     self.order  = order;
@@ -98,7 +99,8 @@
     } else {
         packageIdTitleLabel.hidden = NO;
         packageIdTitleLabel.hidden = NO;
-        packageIdLabel.text = [NSString stringWithFormat:@"%d",  order.packageId];
+//        packageIdLabel.text = [NSString stringWithFormat:@"%d",  order.packageId];
+//        packageIdLabel.text = 
     }
     
     orderPayButton.hidden = YES;
