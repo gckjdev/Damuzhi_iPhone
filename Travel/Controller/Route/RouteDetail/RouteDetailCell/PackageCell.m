@@ -8,14 +8,13 @@
 
 #import "PackageCell.h"
 #import "LocaleUtils.h"
-
 #import "PPDebug.h"
+#import "OHAttributedLabel.h"
+#import "NSAttributedString+Attributes.h"
 
-#define FONT_DURATION_LABEL [UIFont systemFontOfSize:13]
-#define TEXT_COLOR_DURATION_LABEL [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
-
-#define FONT_HOTEL_NAME_LABEL [UIFont boldSystemFontOfSize:13]
-#define TEXT_COLOR_HOTEL_NAME_LABEL [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1]
+#define FONT_DURATION_LABEL     [UIFont systemFontOfSize:13]
+#define COLOR_DURATION_TITLE    [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
+#define COLOR_DURATION_CONTENT  [UIColor colorWithRed:41.0/255.0 green:65.0/255.0 blue:80.0/255.0 alpha:1]
 
 @interface PackageCell ()
 
@@ -26,14 +25,16 @@
 @implementation PackageCell
 
 @synthesize aDelegate = _aDelegate;
+@synthesize flightTitleButton = _flightTitleButton;
+@synthesize flightButton = _flightButton;
+@synthesize accommodationTitleButton = _accommodationTitleButton;
 @synthesize package = _package;
-@synthesize flightButton;
-@synthesize flightLabel = _flightLabel;
 
 - (void)dealloc {
-    [flightButton release];
     [_package release];
-    [_flightLabel release];
+    [_flightTitleButton release];
+    [_flightButton release];
+    [_accommodationTitleButton release];
     [super dealloc];
 }
 
@@ -45,80 +46,88 @@
 - (void)setCellData:(TravelPackage *)package
 {
     self.package = package;
+    self.flightTitleButton.enabled = NO;
+    self.accommodationTitleButton.enabled = NO;
     
-    NSString *flight = [NSString stringWithFormat:NSLS(@"往：%@%@ 返：%@%@"), package.departFlight.company, package.departFlight.flightId, package.returnFlight.company, package.returnFlight.flightId];
+    NSString *departTitle = NSLS(@"出发:");
+    NSString *departInfo = [NSString stringWithFormat:@"%@%@",package.departFlight.company, package.departFlight.flightId];
+    NSString *returnTitle = NSLS(@"回程:");
+    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",package.returnFlight.company, package.returnFlight.flightId];
+    NSString *flightInfo = [NSString stringWithFormat:@"%@%@  %@%@",departTitle, departInfo, returnTitle, returnInfo];
     
-    self.flightLabel.text = flight;
-    self.flightLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
-    self.flightLabel.font = FONT_HOTEL_NAME_LABEL;
+    NSMutableAttributedString *aString = [NSMutableAttributedString attributedStringWithString:flightInfo];
+    NSRange range1 = [flightInfo rangeOfString:departTitle];
+    NSRange range2 = [flightInfo rangeOfString:departInfo];
+    NSRange range3 = [flightInfo rangeOfString:returnTitle];
+    NSRange range4 = [flightInfo rangeOfString:returnInfo];
+    [aString setTextColor:COLOR_DURATION_TITLE range:range1];
+    [aString setTextColor:COLOR_DURATION_TITLE range:range3];
+    [aString setTextColor:COLOR_DURATION_CONTENT range:range2];
+    [aString setTextColor:COLOR_DURATION_CONTENT range:range4];
+    [aString setFont:FONT_DURATION_LABEL];
+    [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
+    [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
     
-    CGFloat originX = flightButton.frame.origin.x + 10;
-    CGFloat originY = flightButton.frame.origin.y + flightButton.frame.size.height + EDGE;    
-    CGFloat width = flightButton.frame.size.width;
-    CGFloat height = HEIGHT_ACCOMODATION_VIEW;
+    OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(10, 4, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
+    flightLabel.backgroundColor = [UIColor clearColor];
+    flightLabel.attributedText = aString;
+    [_flightButton addSubview:flightLabel];
+    
+    CGFloat originX = _accommodationTitleButton.frame.origin.x + 10;
+    CGFloat originY = _accommodationTitleButton.frame.origin.y + _accommodationTitleButton.frame.size.height;    
+    CGFloat width = _accommodationTitleButton.frame.size.width;
+    CGFloat height = _flightButton.frame.size.height;
     
     CGRect frame = CGRectMake(originX, originY, width, height);
+    int count=0;
     for (Accommodation *accommodation in package.accommodationsList) {
-        UIView *view = [self acommodationViewWithFrame:frame accommodation:accommodation];
+        count++;
+        BOOL isLast = (count == [package.accommodationsList count] ? YES : NO);
+        
+        UIView *view = [self acommodationViewWithFrame:frame accommodation:accommodation isLast:isLast];
         [self addSubview:view];
         
-        originY += height + EDGE;
+        originY += height;
         frame = CGRectMake(originX, originY , width, height);
     }
 }
 
-
+#define WIDTH_DURATION  86.0
 - (UIView *)acommodationViewWithFrame:(CGRect)frame
-                        accommodation:(Accommodation *)accommodation
-{    
+                        accommodation:(Accommodation *)accommodation 
+                               isLast:(BOOL)isLast
+{
     UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
     
-    [button setBackgroundImage:[UIImage imageNamed:@"line_tr2.png"] forState:UIControlStateNormal];
+    PPDebug(@"acommodationViewWithFrame h:%f", frame.origin.x);
     
-    [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
-    
-    button.tag = accommodation.hotelId;
-    
-    CGRect rect = CGRectMake(30, 2, self.flightLabel.frame.size.width, frame.size.height/2);
-    UILabel *durationLabel = [[[UILabel alloc] initWithFrame:rect] autorelease];
+    CGRect durationFrame = CGRectMake(0, 1, WIDTH_DURATION, frame.size.height);
+    UIImage *durationImage = [UIImage imageNamed:(isLast ? @"line_table_4a.png" : @"line_table_3a.png")];
+    UIImageView *durationImageView = [[[UIImageView alloc] initWithImage:durationImage] autorelease];
+    durationImageView.frame = durationFrame;
+    UILabel *durationLabel = [[[UILabel alloc] initWithFrame:durationFrame] autorelease];
     durationLabel.backgroundColor = [UIColor clearColor];
-    durationLabel.text =  accommodation.duration;
+    durationLabel.textColor = COLOR_DURATION_TITLE;
     durationLabel.font = FONT_DURATION_LABEL;
-    durationLabel.textColor = TEXT_COLOR_DURATION_LABEL;
-    
+    durationLabel.textAlignment = UITextAlignmentCenter;
+    durationLabel.text = accommodation.duration;
+    [button addSubview:durationImageView];
     [button addSubview:durationLabel];
     
-    rect = CGRectMake(30, durationLabel.frame.origin.y+durationLabel.frame.size.height - 4, self.flightLabel.frame.size.width, durationLabel.frame.size.height);
-    
-    UILabel *hotelNameLabel = [[[UILabel alloc] initWithFrame:rect] autorelease];
-    hotelNameLabel.backgroundColor = [UIColor clearColor];
-    hotelNameLabel.text =  accommodation.hotelName;
-    hotelNameLabel.font = FONT_HOTEL_NAME_LABEL;
-    hotelNameLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
-    [button addSubview:hotelNameLabel];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(287, frame.size.height/2 - 6/2 , 5.5, 6)];
-    imageView.image = [UIImage imageNamed:@"go_btn.png"];
-    [button addSubview:imageView];
-    [imageView release];
+    CGRect hotelFrame = CGRectMake(WIDTH_DURATION, 1, frame.size.width - WIDTH_DURATION, frame.size.height);
+     UIImage *hotelImage = [UIImage imageNamed:(isLast ? @"line_table_4b.png" : @"line_table_3b.png")];
+    UIImageView *hotelImageView = [[[UIImageView alloc] initWithImage:hotelImage] autorelease];
+    hotelImageView.frame = hotelFrame;
+    UILabel *hotelLable = [[[UILabel alloc] initWithFrame:hotelFrame] autorelease];
+    hotelLable.backgroundColor = [UIColor clearColor];
+    hotelLable.textColor = COLOR_DURATION_CONTENT;
+    hotelLable.font = FONT_DURATION_LABEL;
+    hotelLable.textAlignment = UITextAlignmentCenter;
+    hotelLable.text = accommodation.hotelName;
+    [button addSubview:hotelImageView];
+    [button addSubview:hotelLable];
     
     return button;
-}
-
-- (void)clickAcommodation:(id)sender
-{
-    UIButton *button = (UIButton *)sender;
-    int hotelId = button.tag;
-    
-    if ([_aDelegate respondsToSelector:@selector(didClickAccommodation:)]) {
-        [_aDelegate didClickAccommodation:hotelId];
-    }
-}
-
-- (IBAction)clickFilghtButton:(id)sender {
-    if ([_aDelegate respondsToSelector:@selector(didClickFlight:)]) {
-        [_aDelegate didClickFlight:_package.packageId];
-    }
 }
 
 
