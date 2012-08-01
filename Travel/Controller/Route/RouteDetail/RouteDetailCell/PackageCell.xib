@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -185,6 +185,15 @@
 					</object>
 					<int key="connectionID">33</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">clickFilghtButton:</string>
+						<reference key="source" ref="828618056"/>
+						<reference key="destination" ref="1032956911"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">34</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -247,7 +256,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">33</int>
+			<int key="maxID">34</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -262,6 +271,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PackageCell</string>
 					<string key="superclassName">PPTableViewCell</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">clickFilghtButton:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">clickFilghtButton:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">clickFilghtButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="accommodationTitleButton">UIButton</string>
 						<string key="flightButton">UIButton</string>
@@ -301,6 +321,6 @@
 			<string key="line_table_2b@2x.png">{514, 88}</string>
 			<string key="line_table_5@2x.png">{616, 68}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>

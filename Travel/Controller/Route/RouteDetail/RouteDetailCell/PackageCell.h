@@ -22,11 +22,12 @@
 
 @interface PackageCell : PPTableViewCell
 
-- (void)setCellData:(TravelPackage *)package;
-
 @property (assign, nonatomic) id<PackageCellDelegate> aDelegate;
 @property (retain, nonatomic) IBOutlet UIButton *flightTitleButton;
 @property (retain, nonatomic) IBOutlet UIButton *flightButton;
 @property (retain, nonatomic) IBOutlet UIButton *accommodationTitleButton;
+
+- (void)setCellData:(TravelPackage *)package;
+- (IBAction)clickFilghtButton:(id)sender;
 
 @end
