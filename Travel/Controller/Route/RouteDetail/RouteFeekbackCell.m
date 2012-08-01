@@ -11,7 +11,7 @@
 #import "PPDebug.h"
 
 #import "ImageManager.h"
-
+#import "UserManager.h"
 @interface RouteFeekbackCell ()
 
 @end
@@ -37,8 +37,17 @@
 
 - (void)setCellData:(RouteFeekback *)routeFeekback
 {
-
-    userNameLabel.text = routeFeekback.nickName;
+    // routeFeekback.nickName is already trimmed by method stringByTrimmingCharactersInSet:
+    if (routeFeekback.nickName == nil || [routeFeekback.nickName isEqualToString:@""]) 
+    {
+        NSString *loginIdString = [[UserManager defaultManager] loginId];
+        NSString *str1 = [loginIdString substringToIndex:3]; 
+        NSString *str2 = [loginIdString substringFromIndex:7];
+        NSString *modifiedLoginIdString = [NSString stringWithFormat:@"%@****%@", str1, str2];
+        userNameLabel.text = modifiedLoginIdString;
+    }else {
+        userNameLabel.text = routeFeekback.nickName;
+    }
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:routeFeekback.date];
     dateLabel.text = dateToStringByFormat(date, DATE_FORMAT);
     contentLabel.text = routeFeekback.content;
@@ -62,13 +71,13 @@
            
     }
     
-    static int count = 1;
-    if(count % 2 == 1){
+    static int methodCalledTimes = 1;
+    if(methodCalledTimes % 2 == 1){
         bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage1];
     }
     else
         bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage2]; 
-    count++;
+    methodCalledTimes++;
     
     CGSize withinSize = CGSizeMake(contentLabel.frame.size.width, MAXFLOAT);
     CGSize size = [routeFeekback.content sizeWithFont:contentLabel.font constrainedToSize:withinSize lineBreakMode:contentLabel.lineBreakMode];

@@ -53,6 +53,8 @@
 
 - (void)viewDidLoad
 {
+    self.supportRefreshHeader = YES;
+    self.supportRefreshFooter = YES;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
@@ -70,8 +72,7 @@
     
     [RouteService defaultService] ;
     
-    
-    [[RouteService defaultService] queryRouteFeekbacks:_routeId start:0 count:EACH_COUNT viewController:self];
+    [[RouteService defaultService] queryRouteFeekbacks:_routeId start:_start count:EACH_COUNT viewController:self];
 }
 
 - (void)viewDidUnload
@@ -85,7 +86,6 @@
 {
     return [RouteFeekbackCell getCellHeight];
 }
-
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -116,7 +116,7 @@
     return cell;
 }
 
-// essential
+
 - (void)updateStatisticsData
 {
 
@@ -154,6 +154,29 @@
     [self updateStatisticsData];
     
     [dataTableView reloadData];
+}
+
+
+- (void)fetchMoreFeedback
+{
+    if (_start >= _totalCount) {
+        return;
+    }
+    else {
+        [[RouteService defaultService] queryRouteFeekbacks:_routeId start:_start count:EACH_COUNT viewController:self];
+    }
+}
+
+- (void)loadMoreTableViewDataSource
+{
+    [self fetchMoreFeedback];
+}
+
+- (void)reloadTableViewDataSource
+{
+    self.start = 0;
+    // Find route list
+    [[RouteService defaultService] queryRouteFeekbacks:_routeId start:_start count:EACH_COUNT viewController:self];
 }
 
 -(void) showInView:(UIView *)superView
