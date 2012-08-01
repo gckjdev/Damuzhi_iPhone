@@ -11,6 +11,7 @@
 #import "PPDebug.h"
 #import "OHAttributedLabel.h"
 #import "NSAttributedString+Attributes.h"
+#import "ImageManager.h"
 
 #define FONT_DURATION_LABEL     [UIFont systemFontOfSize:13]
 #define COLOR_DURATION_TITLE    [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
@@ -43,16 +44,20 @@
     return @"PackageCell";
 }
 
-- (void)setCellData:(TravelPackage *)package
+- (UIImageView *)createAccessoryImage
 {
-    self.package = package;
-    self.flightTitleButton.enabled = NO;
-    self.accommodationTitleButton.enabled = NO;
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[[ImageManager defaultManager] accessoryImage]] autorelease];
+    imageView.frame = CGRectMake(_flightButton.frame.size.width - 13, 10, 8, 8);
     
+    return imageView;
+}
+
+- (void)createLightLabel
+{
     NSString *departTitle = NSLS(@"出发:");
-    NSString *departInfo = [NSString stringWithFormat:@"%@%@",package.departFlight.company, package.departFlight.flightId];
+    NSString *departInfo = [NSString stringWithFormat:@"%@%@",_package.departFlight.company, _package.departFlight.flightId];
     NSString *returnTitle = NSLS(@"回程:");
-    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",package.returnFlight.company, package.returnFlight.flightId];
+    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",_package.returnFlight.company, _package.returnFlight.flightId];
     NSString *flightInfo = [NSString stringWithFormat:@"%@%@  %@%@",departTitle, departInfo, returnTitle, returnInfo];
     
     NSMutableAttributedString *aString = [NSMutableAttributedString attributedStringWithString:flightInfo];
@@ -68,10 +73,23 @@
     [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
     [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
     
-    OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(10, 4, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
+    OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
     flightLabel.backgroundColor = [UIColor clearColor];
     flightLabel.attributedText = aString;
     [_flightButton addSubview:flightLabel];
+    
+    UIImageView *accessoryImage = [self createAccessoryImage];
+    [_flightButton addSubview:accessoryImage];
+}
+
+
+- (void)setCellData:(TravelPackage *)package
+{
+    self.package = package;
+    self.flightTitleButton.enabled = NO;
+    self.accommodationTitleButton.enabled = NO;
+
+    [self createLightLabel];
     
     CGFloat originX = _accommodationTitleButton.frame.origin.x + 10;
     CGFloat originY = _accommodationTitleButton.frame.origin.y + _accommodationTitleButton.frame.size.height;    
@@ -91,6 +109,7 @@
         frame = CGRectMake(originX, originY , width, height);
     }
 }
+
 
 #define WIDTH_DURATION  86.0
 - (UIView *)acommodationViewWithFrame:(CGRect)frame
@@ -120,13 +139,16 @@
     UIImageView *hotelImageView = [[[UIImageView alloc] initWithImage:hotelImage] autorelease];
     hotelImageView.frame = hotelFrame;
     UILabel *hotelLable = [[[UILabel alloc] init] autorelease];
-    hotelLable.frame = CGRectMake(hotelFrame.origin.x +10 , hotelFrame.origin.y, hotelFrame.size.width-10, hotelFrame.size.height);
+    hotelLable.frame = CGRectMake(hotelFrame.origin.x +8 , hotelFrame.origin.y, hotelFrame.size.width-8, hotelFrame.size.height);
     hotelLable.backgroundColor = [UIColor clearColor];
     hotelLable.textColor = COLOR_DURATION_CONTENT;
     hotelLable.font = FONT_DURATION_LABEL;
     hotelLable.text = accommodation.hotelName;
     [button addSubview:hotelImageView];
     [button addSubview:hotelLable];
+    
+    UIImageView *accessoryImage = [self createAccessoryImage];
+    [button addSubview:accessoryImage];
     
     return button;
 }

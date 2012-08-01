@@ -71,4 +71,6 @@
                                       totalRows:(int)totalRows  
                                     totalColumn:(int)totalColumn;
 
+- (UIImage *)flyImage;
+
 @end

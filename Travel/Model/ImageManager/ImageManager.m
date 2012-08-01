@@ -364,5 +364,9 @@ static ImageManager *_defaultManager = nil;
     }
 }
 
+- (UIImage *)flyImage
+{
+    return [UIImage imageNamed:@"fly_p1.png"];
+}
 
 @end
