@@ -99,17 +99,18 @@
 {
     UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
     
-    PPDebug(@"acommodationViewWithFrame h:%f", frame.origin.x);
+    [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
+    button.tag = accommodation.hotelId;
     
     CGRect durationFrame = CGRectMake(0, 1, WIDTH_DURATION, frame.size.height);
     UIImage *durationImage = [UIImage imageNamed:(isLast ? @"line_table_4a.png" : @"line_table_3a.png")];
     UIImageView *durationImageView = [[[UIImageView alloc] initWithImage:durationImage] autorelease];
     durationImageView.frame = durationFrame;
-    UILabel *durationLabel = [[[UILabel alloc] initWithFrame:durationFrame] autorelease];
+    UILabel *durationLabel = [[[UILabel alloc] init] autorelease];
+    durationLabel.frame = CGRectMake(durationFrame.origin.x + 10, durationFrame.origin.y, durationFrame.size.width-10, durationFrame.size.height);
     durationLabel.backgroundColor = [UIColor clearColor];
     durationLabel.textColor = COLOR_DURATION_TITLE;
     durationLabel.font = FONT_DURATION_LABEL;
-    durationLabel.textAlignment = UITextAlignmentCenter;
     durationLabel.text = accommodation.duration;
     [button addSubview:durationImageView];
     [button addSubview:durationLabel];
@@ -118,17 +119,34 @@
      UIImage *hotelImage = [UIImage imageNamed:(isLast ? @"line_table_4b.png" : @"line_table_3b.png")];
     UIImageView *hotelImageView = [[[UIImageView alloc] initWithImage:hotelImage] autorelease];
     hotelImageView.frame = hotelFrame;
-    UILabel *hotelLable = [[[UILabel alloc] initWithFrame:hotelFrame] autorelease];
+    UILabel *hotelLable = [[[UILabel alloc] init] autorelease];
+    hotelLable.frame = CGRectMake(hotelFrame.origin.x +10 , hotelFrame.origin.y, hotelFrame.size.width-10, hotelFrame.size.height);
     hotelLable.backgroundColor = [UIColor clearColor];
     hotelLable.textColor = COLOR_DURATION_CONTENT;
     hotelLable.font = FONT_DURATION_LABEL;
-    hotelLable.textAlignment = UITextAlignmentCenter;
     hotelLable.text = accommodation.hotelName;
     [button addSubview:hotelImageView];
     [button addSubview:hotelLable];
     
     return button;
 }
+
+- (void)clickAcommodation:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    int hotelId = button.tag;
+    
+    if ([_aDelegate respondsToSelector:@selector(didClickAccommodation:)]) {
+        [_aDelegate didClickAccommodation:hotelId];
+    }
+}
+
+- (IBAction)clickFilghtButton:(id)sender {
+    if ([_aDelegate respondsToSelector:@selector(didClickFlight:)]) {
+        [_aDelegate didClickFlight:_package.packageId];
+    }
+}
+
 
 
 @end
