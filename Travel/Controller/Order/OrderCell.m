@@ -20,7 +20,6 @@
 #define ORDER_ITEM_LABEL_WIDTH 250
 #define ORDER_ITEM_LABEL_HEIGHT 25
 
-int gAdaptiveCellHeight;
 @interface OrderCell ()
 
 @property (retain, nonatomic) Order *order;
@@ -45,12 +44,12 @@ int gAdaptiveCellHeight;
     [super dealloc];
 }
 
-+ (CGFloat)getCellHeight
-{
-     return (CGFloat)gAdaptiveCellHeight;
-}
 
 
+//+ (CGFloat)getCellHeight
+//{
+//    return 248;
+//}
 
 + (NSString *)getCellIdentifier
 {
@@ -66,11 +65,10 @@ int gAdaptiveCellHeight;
     return label;
 }
 
+
 - (void)setCellData:(Order *)order
 {
     self.order  = order;
-    gAdaptiveCellHeight = [order hasPackageName]? 270 : 248;
-    
     
     NSString *routeNameLabelText = [NSString stringWithFormat:@"路线名称: %@",order.routeName];
     UILabel *routeNameLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, 5, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:routeNameLabelText];
