@@ -217,7 +217,7 @@
     
 
 
-    priceLabel = [self genPriceLabelWithFrame:CGRectMake(123, 10, 80, HEIGHT_PRICE_LABEL)];
+    priceLabel = [self genPriceLabelWithFrame:CGRectMake(123, 12, 80, HEIGHT_PRICE_LABEL)];
     [agencyInfoHolderView addSubview:priceLabel];
     
 

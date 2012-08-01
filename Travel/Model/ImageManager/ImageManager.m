@@ -105,7 +105,7 @@ static ImageManager *_defaultManager = nil;
 
 - (UIImage *)routeDetailAgencyBgImage
 {
-    return [UIImage strectchableImageName:@"line_title_bg2.png"];
+    return [UIImage strectchableImageName:@"line_title_bg2@2x.png"];
 }
 
 - (UIImage *)bookButtonImage

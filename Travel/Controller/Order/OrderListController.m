@@ -143,7 +143,8 @@
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [OrderCell getCellHeight];
+//    return [OrderCell getCellHeight];
+    return  [[dataList objectAtIndex:indexPath.row] hasPackageName]? 270 : 248;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
