@@ -40,6 +40,11 @@
 @synthesize departCityId = _departCityId;
 @synthesize statisticsView = _statisticsView;
 
+-(void)dealloc
+{
+    [_allRouteFeekback release];
+    [super dealloc];
+}
 
 - (id)initWithRouteId:(int)routeId
 {
