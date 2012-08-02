@@ -40,20 +40,22 @@
 
 @synthesize routeId = _routeId;
 @synthesize routeType = _routeType;
-@synthesize route = _route;
 
+@synthesize route = _route;
 @synthesize introductionController = _introductionController;
 @synthesize feeController = _feeController;
 @synthesize bookingPolicyController = _bookingPolicyController;
-@synthesize feekbackListController = _feekbackListController;
 
+@synthesize feekbackListController = _feekbackListController;
 @synthesize introductionButton = _introductionButton;
 @synthesize costDescriptionButton = _costDescriptionButton;
 @synthesize bookingPolicyButton = _bookingPolicyButton;
+
 @synthesize userFeekbackButton = _userFeekbackButton;
 @synthesize buttonsHolderView = _buttonsHolderView;
 @synthesize contentView = _contentView;
 @synthesize routeNameLabel = _routeNameLabel;
+
 @synthesize routeIdLabel = _routeIdLabel;
 @synthesize agencyNameLabel = _agencyNameLabel;
 @synthesize currentSelectedButton = _currentSelectedButton;
@@ -74,9 +76,11 @@
     [_contentView release];
     [_currentSelectedButton release];
     [_phoneList release];
+    
     [_routeNameLabel release];
     [_routeIdLabel release];
     [_agencyNameLabel release];
+    [_bookingPolicyController release];
     [super dealloc];
 }
 
@@ -237,9 +241,11 @@
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
     
     [self.routeNameLabel setText:_route.name];
+    self.routeNameLabel.textColor = [UIColor colorWithRed:255/255.0 green:102/255.0 blue:0.0 alpha:1.0];
+    _routeIdLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
     [self.routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
     
-    
+    _agencyNameLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
     [_agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
 
     [self clickIntroductionButton:_introductionButton];

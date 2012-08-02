@@ -77,7 +77,7 @@
     PPRelease(_selectedChildrenIdList);
     PPRelease(_departDate);
     PPRelease(_phoneList);
-    
+    PPRelease(_nonMemberOrderController);
     PPRelease(_selectPacekageIdList);
     [super dealloc];
 }

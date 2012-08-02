@@ -744,8 +744,8 @@
     button.titleLabel.font = [UIFont systemFontOfSize:14];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(-8, 20, 0, 0)];
-    CGPoint fromPosition = CGPointMake(320/2, 345);
-    CGPoint toPosition = CGPointMake(320/2, 345);
+    CGPoint fromPosition = CGPointMake(320/2, 308);
+    CGPoint toPosition = CGPointMake(320/2, 308);
     [self.view addSubview:button];
     [button release];
     
