@@ -43,7 +43,7 @@
 							<object class="IBUIButton" id="486799364">
 								<reference key="NSNextResponder" ref="300812876"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-3, 1}, {306, 34}}</string>
+								<string key="NSFrame">{{-4, 1}, {308, 34}}</string>
 								<reference key="NSSuperview" ref="300812876"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="504572767"/>
@@ -70,7 +70,7 @@
 								</object>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">line_table_1@2x.png</string>
+									<string key="NSResourceName">line_table_1.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="575701372">
 									<int key="type">1</int>
@@ -85,7 +85,7 @@
 							<object class="IBUIButton" id="828618056">
 								<reference key="NSNextResponder" ref="300812876"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-3, 35}, {306, 30}}</string>
+								<string key="NSFrame">{{-4, 35}, {308, 30}}</string>
 								<reference key="NSSuperview" ref="300812876"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="414974630"/>
@@ -102,7 +102,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="488026653"/>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">line_table_2b@2x.png</string>
+									<string key="NSResourceName">line_n_t5@2x.png</string>
 								</object>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
 									<int key="type">2</int>
@@ -117,7 +117,7 @@
 							<object class="IBUIButton" id="414974630">
 								<reference key="NSNextResponder" ref="300812876"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{-3, 65}, {306, 30}}</string>
+								<string key="NSFrame">{{-4, 65}, {308, 30}}</string>
 								<reference key="NSSuperview" ref="300812876"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="524868021"/>
@@ -135,7 +135,7 @@
 								<reference key="IBUINormalTitleShadowColor" ref="488026653"/>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">line_table_5@2x.png</string>
+									<string key="NSResourceName">line_table_5.png</string>
 								</object>
 								<reference key="IBUIFontDescription" ref="575701372"/>
 								<reference key="IBUIFont" ref="1047165520"/>
@@ -143,7 +143,7 @@
 							<object class="IBUIImageView" id="504572767">
 								<reference key="NSNextResponder" ref="300812876"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{4, 9}, {18, 17}}</string>
+								<string key="NSFrame">{{3, 9}, {18, 17}}</string>
 								<reference key="NSSuperview" ref="300812876"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="828618056"/>
@@ -158,7 +158,7 @@
 							<object class="IBUIImageView" id="524868021">
 								<reference key="NSNextResponder" ref="300812876"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{4, 71}, {18, 18}}</string>
+								<string key="NSFrame">{{3, 71}, {18, 18}}</string>
 								<reference key="NSSuperview" ref="300812876"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -258,9 +258,9 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="486799364"/>
 							<reference ref="414974630"/>
-							<reference ref="828618056"/>
 							<reference ref="504572767"/>
 							<reference ref="524868021"/>
+							<reference ref="828618056"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -300,6 +300,7 @@
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="22.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="23.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="2" key="23.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<string key="24.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -371,9 +372,9 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="fly_p1@2x.png">{32, 32}</string>
 			<string key="ht@2x.png">{40, 40}</string>
-			<string key="line_table_1@2x.png">{616, 72}</string>
-			<string key="line_table_2b@2x.png">{514, 88}</string>
-			<string key="line_table_5@2x.png">{616, 68}</string>
+			<string key="line_n_t5@2x.png">{616, 60}</string>
+			<string key="line_table_1.png">{16, 16}</string>
+			<string key="line_table_5.png">{16, 16}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
