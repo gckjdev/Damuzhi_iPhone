@@ -52,6 +52,7 @@
     return imageView;
 }
 
+
 - (void)createLightLabel
 {
     NSString *departTitle = NSLS(@"出发:");
@@ -73,6 +74,8 @@
     [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
     [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
     
+    [[_flightButton subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
     flightLabel.backgroundColor = [UIColor clearColor];
     flightLabel.attributedText = aString;
@@ -80,6 +83,44 @@
     
     UIImageView *accessoryImage = [self createAccessoryImage];
     [_flightButton addSubview:accessoryImage];
+}
+
+
+#define WIDTH_DURATION  86.0
+- (UIView *)acommodationViewWithFrame:(CGRect)frame
+                        accommodation:(Accommodation *)accommodation 
+                               isLast:(BOOL)isLast
+{
+    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+    
+    [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImage *buttonBackgroundImage = [UIImage imageNamed:(isLast ? @"line_n_t4.png" : @"line_n_t7.png")];
+    [button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
+    button.tag = accommodation.hotelId;
+    
+    CGRect durationFrame = CGRectMake(0, 1, WIDTH_DURATION, frame.size.height);
+    UILabel *durationLabel = [[[UILabel alloc] init] autorelease];
+    durationLabel.frame = CGRectMake(durationFrame.origin.x + 10, durationFrame.origin.y, durationFrame.size.width-10, durationFrame.size.height);
+    durationLabel.backgroundColor = [UIColor clearColor];
+    durationLabel.textColor = COLOR_DURATION_TITLE;
+    durationLabel.font = FONT_DURATION_LABEL;
+    durationLabel.text = accommodation.duration;
+    [button addSubview:durationLabel];
+    
+    CGRect hotelFrame = CGRectMake(WIDTH_DURATION, 1, frame.size.width - WIDTH_DURATION, frame.size.height);
+    UILabel *hotelLable = [[[UILabel alloc] init] autorelease];
+    hotelLable.frame = CGRectMake(hotelFrame.origin.x +8 , hotelFrame.origin.y, hotelFrame.size.width-8, hotelFrame.size.height);
+    hotelLable.backgroundColor = [UIColor clearColor];
+    hotelLable.textColor = COLOR_DURATION_CONTENT;
+    hotelLable.font = FONT_DURATION_LABEL;
+    hotelLable.text = accommodation.hotelName;
+    [button addSubview:hotelLable];
+    
+    UIImageView *accessoryImage = [self createAccessoryImage];
+    [button addSubview:accessoryImage];
+    
+    return button;
 }
 
 
@@ -110,48 +151,6 @@
     }
 }
 
-
-#define WIDTH_DURATION  86.0
-- (UIView *)acommodationViewWithFrame:(CGRect)frame
-                        accommodation:(Accommodation *)accommodation 
-                               isLast:(BOOL)isLast
-{
-    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
-    
-    [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
-    button.tag = accommodation.hotelId;
-    
-    CGRect durationFrame = CGRectMake(0, 1, WIDTH_DURATION, frame.size.height);
-    UIImage *durationImage = [UIImage imageNamed:(isLast ? @"line_table_4a.png" : @"line_table_3a.png")];
-    UIImageView *durationImageView = [[[UIImageView alloc] initWithImage:durationImage] autorelease];
-    durationImageView.frame = durationFrame;
-    UILabel *durationLabel = [[[UILabel alloc] init] autorelease];
-    durationLabel.frame = CGRectMake(durationFrame.origin.x + 10, durationFrame.origin.y, durationFrame.size.width-10, durationFrame.size.height);
-    durationLabel.backgroundColor = [UIColor clearColor];
-    durationLabel.textColor = COLOR_DURATION_TITLE;
-    durationLabel.font = FONT_DURATION_LABEL;
-    durationLabel.text = accommodation.duration;
-    [button addSubview:durationImageView];
-    [button addSubview:durationLabel];
-    
-    CGRect hotelFrame = CGRectMake(WIDTH_DURATION, 1, frame.size.width - WIDTH_DURATION, frame.size.height);
-     UIImage *hotelImage = [UIImage imageNamed:(isLast ? @"line_table_4b.png" : @"line_table_3b.png")];
-    UIImageView *hotelImageView = [[[UIImageView alloc] initWithImage:hotelImage] autorelease];
-    hotelImageView.frame = hotelFrame;
-    UILabel *hotelLable = [[[UILabel alloc] init] autorelease];
-    hotelLable.frame = CGRectMake(hotelFrame.origin.x +8 , hotelFrame.origin.y, hotelFrame.size.width-8, hotelFrame.size.height);
-    hotelLable.backgroundColor = [UIColor clearColor];
-    hotelLable.textColor = COLOR_DURATION_CONTENT;
-    hotelLable.font = FONT_DURATION_LABEL;
-    hotelLable.text = accommodation.hotelName;
-    [button addSubview:hotelImageView];
-    [button addSubview:hotelLable];
-    
-    UIImageView *accessoryImage = [self createAccessoryImage];
-    [button addSubview:accessoryImage];
-    
-    return button;
-}
 
 - (void)clickAcommodation:(id)sender
 {
