@@ -514,7 +514,12 @@
 {
     TravelPackage *package = [[_route packagesList] objectAtIndex:indexPath.row];
     
-    CGFloat height = 96 + 28 * [package.accommodationsList count];
+    CGFloat height = 0;
+    if ([package.accommodationsList count] > 0) {
+        height = 96 + 28 * [package.accommodationsList count];
+    } else {
+        height = 96 + 28;
+    }
     
     //CGFloat height = 5 + 32 + (HEIGHT_ACCOMODATION_VIEW + EDGE) * [package.accommodationsList count];
     
