@@ -12,6 +12,7 @@
 #import "OHAttributedLabel.h"
 #import "NSAttributedString+Attributes.h"
 #import "ImageManager.h"
+#import "LocaleUtils.h"
 
 #define FONT_DURATION_LABEL     [UIFont systemFontOfSize:13]
 #define COLOR_DURATION_TITLE    [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
@@ -53,6 +54,7 @@
 }
 
 
+#define TAG_LIGHTLABEL  12080301
 - (void)createLightLabel
 {
     NSString *departTitle = NSLS(@"出发:");
@@ -74,10 +76,13 @@
     [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
     [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
     
-    [[_flightButton subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
+    OHAttributedLabel *flightLabel = (OHAttributedLabel*)[_flightButton viewWithTag:TAG_LIGHTLABEL];
+    [flightLabel removeFromSuperview];
+    flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
     flightLabel.backgroundColor = [UIColor clearColor];
+    flightLabel.tag = TAG_LIGHTLABEL;
+    
     flightLabel.attributedText = aString;
     [_flightButton addSubview:flightLabel];
     
@@ -95,7 +100,7 @@
     
     [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImage *buttonBackgroundImage = [UIImage imageNamed:(isLast ? @"line_n_t4.png" : @"line_n_t7.png")];
+    UIImage *buttonBackgroundImage = [[ImageManager defaultManager] accommodationBgImage:isLast];
     [button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
     button.tag = accommodation.hotelId;
     
@@ -148,6 +153,17 @@
         
         originY += height;
         frame = CGRectMake(originX, originY , width, height);
+    }
+    
+    if (count == 0) {
+        UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+        UIImage *image = [[ImageManager defaultManager] accommodationBgImage:YES];
+        [button setBackgroundImage:image forState:UIControlStateNormal];
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitle:NSLS(@"暂无信息") forState:UIControlStateNormal];
+        [button setTitleColor:COLOR_DURATION_CONTENT forState:UIControlStateNormal];
+        button.titleLabel.font = FONT_DURATION_LABEL;
+        [self addSubview:button];
     }
 }
 

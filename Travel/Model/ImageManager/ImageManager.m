@@ -369,4 +369,9 @@ static ImageManager *_defaultManager = nil;
     return [UIImage imageNamed:@"fly_p1.png"];
 }
 
+- (UIImage *)accommodationBgImage:(BOOL)isLast
+{
+    return [UIImage imageNamed:(isLast ? @"line_n_t4.png" : @"line_n_t7.png")];
+}
+
 @end
