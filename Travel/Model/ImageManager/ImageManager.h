@@ -73,4 +73,7 @@
 
 - (UIImage *)flyImage;
 
+- (UIImage *)placeTourBgImage;
+- (UIImage *)placeTourBtnBgImage;
+
 @end

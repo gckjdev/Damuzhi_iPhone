@@ -369,4 +369,15 @@ static ImageManager *_defaultManager = nil;
     return [UIImage imageNamed:@"fly_p1.png"];
 }
 
+- (UIImage *)placeTourBgImage
+{
+    return [UIImage strectchableImageName:@"line_table_2b.png" topCapHeight:5];
+}
+
+- (UIImage *)placeTourBtnBgImage
+{
+    return [UIImage strectchableImageName:@"line_table_2a.png" topCapHeight:5];
+    
+}
+
 @end

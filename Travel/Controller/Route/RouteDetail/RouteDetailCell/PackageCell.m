@@ -74,7 +74,7 @@
     [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
     [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
     
-    [[_flightButton subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    //[[_flightButton subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     OHAttributedLabel *flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
     flightLabel.backgroundColor = [UIColor clearColor];
