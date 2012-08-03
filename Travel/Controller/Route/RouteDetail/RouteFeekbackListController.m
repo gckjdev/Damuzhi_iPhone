@@ -98,7 +98,6 @@
     return [dataList count];
 }
 
-
 - (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -143,6 +142,7 @@
         [self.allRouteFeekback removeAllObjects];
         self.dataList = [NSArray array];
     }
+    
   
     self.start += [routeFeekback count];
     self.totalCount = totalCount;
@@ -151,6 +151,13 @@
     self.dataList = [dataList arrayByAddingObjectsFromArray:routeFeekback];     
     
     PPDebug(@"dalist count %d", [dataList count]);
+    
+    if ([dataList count] == 0) {
+        [self showTipsOnTableView:@"暂无反馈信息"];
+        return;
+    }else {
+        [self hideTipsOnTableView];
+    }
     
     if (_start >= totalCount) {
         self.noMoreData = YES;
