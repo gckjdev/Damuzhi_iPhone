@@ -90,7 +90,13 @@
     for (PlaceTour *placeTour in dailySchedule.placeToursList) {
         UILabel *placeTourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, EDGE_TOP +HEIGHT_PLACE_TOUR_LABEL * (i++), placeToursBgImageView.frame.size.width, HEIGHT_PLACE_TOUR_LABEL)];
         placeTourLabel.backgroundColor = [UIColor clearColor];
-        placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
+        
+        if (placeTour.duration == nil && [placeTour.duration isEqualToString:@""]) {
+            placeTourLabel.text = placeTour.name;
+        }else {
+            placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
+        }
+
         placeTourLabel.font = [UIFont systemFontOfSize:13];
         [placeToursBgImageView addSubview:placeTourLabel];
         placeTourLabel.textColor = COLOR_CONTENT;

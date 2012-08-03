@@ -879,6 +879,7 @@ static CityArea* defaultCityAreaInstance = nil;
 @property (retain) NSString* currencyId;
 @property (retain) NSString* currencyName;
 @property int32_t priceRank;
+@property int32_t groupId;
 @end
 
 @implementation City
@@ -954,6 +955,13 @@ static CityArea* defaultCityAreaInstance = nil;
   hasPriceRank_ = !!value;
 }
 @synthesize priceRank;
+- (BOOL) hasGroupId {
+  return !!hasGroupId_;
+}
+- (void) setHasGroupId:(BOOL) value {
+  hasGroupId_ = !!value;
+}
+@synthesize groupId;
 - (void) dealloc {
   self.cityName = nil;
   self.latestVersion = nil;
@@ -977,6 +985,7 @@ static CityArea* defaultCityAreaInstance = nil;
     self.currencyId = @"";
     self.currencyName = @"";
     self.priceRank = 3;
+    self.groupId = 0;
   }
   return self;
 }
@@ -1056,6 +1065,9 @@ static City* defaultCityInstance = nil;
   if (self.hasPriceRank) {
     [output writeInt32:20 value:self.priceRank];
   }
+  if (self.hasGroupId) {
+    [output writeInt32:50 value:self.groupId];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -1097,6 +1109,9 @@ static City* defaultCityInstance = nil;
   }
   if (self.hasPriceRank) {
     size += computeInt32Size(20, self.priceRank);
+  }
+  if (self.hasGroupId) {
+    size += computeInt32Size(50, self.groupId);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1209,6 +1224,9 @@ static City* defaultCityInstance = nil;
   if (other.hasPriceRank) {
     [self setPriceRank:other.priceRank];
   }
+  if (other.hasGroupId) {
+    [self setGroupId:other.groupId];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1274,6 +1292,10 @@ static City* defaultCityInstance = nil;
       }
       case 160: {
         [self setPriceRank:[input readInt32]];
+        break;
+      }
+      case 400: {
+        [self setGroupId:[input readInt32]];
         break;
       }
     }
@@ -1466,6 +1488,22 @@ static City* defaultCityInstance = nil;
 - (City_Builder*) clearPriceRank {
   result.hasPriceRank = NO;
   result.priceRank = 3;
+  return self;
+}
+- (BOOL) hasGroupId {
+  return result.hasGroupId;
+}
+- (int32_t) groupId {
+  return result.groupId;
+}
+- (City_Builder*) setGroupId:(int32_t) value {
+  result.hasGroupId = YES;
+  result.groupId = value;
+  return self;
+}
+- (City_Builder*) clearGroupId {
+  result.hasGroupId = NO;
+  result.groupId = 0;
   return self;
 }
 @end
@@ -3051,6 +3089,228 @@ static Region* defaultRegionInstance = nil;
 }
 @end
 
+@interface CityGroup ()
+@property int32_t groupId;
+@property (retain) NSString* name;
+@end
+
+@implementation CityGroup
+
+- (BOOL) hasGroupId {
+  return !!hasGroupId_;
+}
+- (void) setHasGroupId:(BOOL) value {
+  hasGroupId_ = !!value;
+}
+@synthesize groupId;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) value {
+  hasName_ = !!value;
+}
+@synthesize name;
+- (void) dealloc {
+  self.name = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.groupId = 0;
+    self.name = @"";
+  }
+  return self;
+}
+static CityGroup* defaultCityGroupInstance = nil;
++ (void) initialize {
+  if (self == [CityGroup class]) {
+    defaultCityGroupInstance = [[CityGroup alloc] init];
+  }
+}
++ (CityGroup*) defaultInstance {
+  return defaultCityGroupInstance;
+}
+- (CityGroup*) defaultInstance {
+  return defaultCityGroupInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasGroupId) {
+    return NO;
+  }
+  if (!self.hasName) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasGroupId) {
+    [output writeInt32:1 value:self.groupId];
+  }
+  if (self.hasName) {
+    [output writeString:2 value:self.name];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasGroupId) {
+    size += computeInt32Size(1, self.groupId);
+  }
+  if (self.hasName) {
+    size += computeStringSize(2, self.name);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (CityGroup*) parseFromData:(NSData*) data {
+  return (CityGroup*)[[[CityGroup builder] mergeFromData:data] build];
+}
++ (CityGroup*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityGroup*)[[[CityGroup builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (CityGroup*) parseFromInputStream:(NSInputStream*) input {
+  return (CityGroup*)[[[CityGroup builder] mergeFromInputStream:input] build];
+}
++ (CityGroup*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityGroup*)[[[CityGroup builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityGroup*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (CityGroup*)[[[CityGroup builder] mergeFromCodedInputStream:input] build];
+}
++ (CityGroup*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CityGroup*)[[[CityGroup builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CityGroup_Builder*) builder {
+  return [[[CityGroup_Builder alloc] init] autorelease];
+}
++ (CityGroup_Builder*) builderWithPrototype:(CityGroup*) prototype {
+  return [[CityGroup builder] mergeFrom:prototype];
+}
+- (CityGroup_Builder*) builder {
+  return [CityGroup builder];
+}
+@end
+
+@interface CityGroup_Builder()
+@property (retain) CityGroup* result;
+@end
+
+@implementation CityGroup_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[CityGroup alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (CityGroup_Builder*) clear {
+  self.result = [[[CityGroup alloc] init] autorelease];
+  return self;
+}
+- (CityGroup_Builder*) clone {
+  return [CityGroup builderWithPrototype:result];
+}
+- (CityGroup*) defaultInstance {
+  return [CityGroup defaultInstance];
+}
+- (CityGroup*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (CityGroup*) buildPartial {
+  CityGroup* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (CityGroup_Builder*) mergeFrom:(CityGroup*) other {
+  if (other == [CityGroup defaultInstance]) {
+    return self;
+  }
+  if (other.hasGroupId) {
+    [self setGroupId:other.groupId];
+  }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (CityGroup_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (CityGroup_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setGroupId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setName:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasGroupId {
+  return result.hasGroupId;
+}
+- (int32_t) groupId {
+  return result.groupId;
+}
+- (CityGroup_Builder*) setGroupId:(int32_t) value {
+  result.hasGroupId = YES;
+  result.groupId = value;
+  return self;
+}
+- (CityGroup_Builder*) clearGroupId {
+  result.hasGroupId = NO;
+  result.groupId = 0;
+  return self;
+}
+- (BOOL) hasName {
+  return result.hasName;
+}
+- (NSString*) name {
+  return result.name;
+}
+- (CityGroup_Builder*) setName:(NSString*) value {
+  result.hasName = YES;
+  result.name = value;
+  return self;
+}
+- (CityGroup_Builder*) clearName {
+  result.hasName = NO;
+  result.name = @"";
+  return self;
+}
+@end
+
 @interface App ()
 @property (retain) NSString* dataVersion;
 @property (retain) NSMutableArray* mutableCitiesList;
@@ -3064,6 +3324,7 @@ static Region* defaultRegionInstance = nil;
 @property (retain) NSMutableArray* mutableRouteCategorysList;
 @property (retain) NSMutableArray* mutableAgenciesList;
 @property (retain) NSString* serviceTelephone;
+@property (retain) NSMutableArray* mutableCityGroupsList;
 @end
 
 @implementation App
@@ -3092,6 +3353,7 @@ static Region* defaultRegionInstance = nil;
   hasServiceTelephone_ = !!value;
 }
 @synthesize serviceTelephone;
+@synthesize mutableCityGroupsList;
 - (void) dealloc {
   self.dataVersion = nil;
   self.mutableCitiesList = nil;
@@ -3105,6 +3367,7 @@ static Region* defaultRegionInstance = nil;
   self.mutableRouteCategorysList = nil;
   self.mutableAgenciesList = nil;
   self.serviceTelephone = nil;
+  self.mutableCityGroupsList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3196,6 +3459,13 @@ static App* defaultAppInstance = nil;
   id value = [mutableAgenciesList objectAtIndex:index];
   return value;
 }
+- (NSArray*) cityGroupsList {
+  return mutableCityGroupsList;
+}
+- (CityGroup*) cityGroupsAtIndex:(int32_t) index {
+  id value = [mutableCityGroupsList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
   if (!self.hasDataVersion) {
     return NO;
@@ -3250,6 +3520,11 @@ static App* defaultAppInstance = nil;
       return NO;
     }
   }
+  for (CityGroup* element in self.cityGroupsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -3285,6 +3560,9 @@ static App* defaultAppInstance = nil;
   }
   for (Agency* element in self.agenciesList) {
     [output writeMessage:30 value:element];
+  }
+  for (CityGroup* element in self.cityGroupsList) {
+    [output writeMessage:80 value:element];
   }
   if (self.hasServiceTelephone) {
     [output writeString:100 value:self.serviceTelephone];
@@ -3330,6 +3608,9 @@ static App* defaultAppInstance = nil;
   }
   for (Agency* element in self.agenciesList) {
     size += computeMessageSize(30, element);
+  }
+  for (CityGroup* element in self.cityGroupsList) {
+    size += computeMessageSize(80, element);
   }
   if (self.hasServiceTelephone) {
     size += computeStringSize(100, self.serviceTelephone);
@@ -3475,6 +3756,12 @@ static App* defaultAppInstance = nil;
   if (other.hasServiceTelephone) {
     [self setServiceTelephone:other.serviceTelephone];
   }
+  if (other.mutableCityGroupsList.count > 0) {
+    if (result.mutableCityGroupsList == nil) {
+      result.mutableCityGroupsList = [NSMutableArray array];
+    }
+    [result.mutableCityGroupsList addObjectsFromArray:other.mutableCityGroupsList];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3558,6 +3845,12 @@ static App* defaultAppInstance = nil;
         Agency_Builder* subBuilder = [Agency builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addAgencies:[subBuilder buildPartial]];
+        break;
+      }
+      case 642: {
+        CityGroup_Builder* subBuilder = [CityGroup builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addCityGroups:[subBuilder buildPartial]];
         break;
       }
       case 802: {
@@ -3887,6 +4180,35 @@ static App* defaultAppInstance = nil;
 - (App_Builder*) clearServiceTelephone {
   result.hasServiceTelephone = NO;
   result.serviceTelephone = @"";
+  return self;
+}
+- (NSArray*) cityGroupsList {
+  if (result.mutableCityGroupsList == nil) { return [NSArray array]; }
+  return result.mutableCityGroupsList;
+}
+- (CityGroup*) cityGroupsAtIndex:(int32_t) index {
+  return [result cityGroupsAtIndex:index];
+}
+- (App_Builder*) replaceCityGroupsAtIndex:(int32_t) index with:(CityGroup*) value {
+  [result.mutableCityGroupsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllCityGroups:(NSArray*) values {
+  if (result.mutableCityGroupsList == nil) {
+    result.mutableCityGroupsList = [NSMutableArray array];
+  }
+  [result.mutableCityGroupsList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearCityGroupsList {
+  result.mutableCityGroupsList = nil;
+  return self;
+}
+- (App_Builder*) addCityGroups:(CityGroup*) value {
+  if (result.mutableCityGroupsList == nil) {
+    result.mutableCityGroupsList = [NSMutableArray array];
+  }
+  [result.mutableCityGroupsList addObject:value];
   return self;
 }
 @end

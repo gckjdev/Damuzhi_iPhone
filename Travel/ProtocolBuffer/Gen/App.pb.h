@@ -15,6 +15,8 @@
 @class City;
 @class CityArea;
 @class CityArea_Builder;
+@class CityGroup;
+@class CityGroup_Builder;
 @class CityList;
 @class CityList_Builder;
 @class City_Builder;
@@ -269,6 +271,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   BOOL hasCityId_:1;
   BOOL hasDataSize_:1;
   BOOL hasPriceRank_:1;
+  BOOL hasGroupId_:1;
   BOOL hasCityName_:1;
   BOOL hasLatestVersion_:1;
   BOOL hasCountryName_:1;
@@ -279,6 +282,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   int32_t cityId;
   int32_t dataSize;
   int32_t priceRank;
+  int32_t groupId;
   NSString* cityName;
   NSString* latestVersion;
   NSString* countryName;
@@ -298,6 +302,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hasCurrencyId;
 - (BOOL) hasCurrencyName;
 - (BOOL) hasPriceRank;
+- (BOOL) hasGroupId;
 @property (readonly) int32_t cityId;
 @property (readonly, retain) NSString* cityName;
 @property (readonly, retain) NSString* latestVersion;
@@ -308,6 +313,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 @property (readonly, retain) NSString* currencyId;
 @property (readonly, retain) NSString* currencyName;
 @property (readonly) int32_t priceRank;
+@property (readonly) int32_t groupId;
 - (NSArray*) areaListList;
 - (CityArea*) areaListAtIndex:(int32_t) index;
 
@@ -401,6 +407,11 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (int32_t) priceRank;
 - (City_Builder*) setPriceRank:(int32_t) value;
 - (City_Builder*) clearPriceRank;
+
+- (BOOL) hasGroupId;
+- (int32_t) groupId;
+- (City_Builder*) setGroupId:(int32_t) value;
+- (City_Builder*) clearGroupId;
 @end
 
 @interface CityList : PBGeneratedMessage {
@@ -800,6 +811,63 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (Region_Builder*) clearRegionName;
 @end
 
+@interface CityGroup : PBGeneratedMessage {
+@private
+  BOOL hasGroupId_:1;
+  BOOL hasName_:1;
+  int32_t groupId;
+  NSString* name;
+}
+- (BOOL) hasGroupId;
+- (BOOL) hasName;
+@property (readonly) int32_t groupId;
+@property (readonly, retain) NSString* name;
+
++ (CityGroup*) defaultInstance;
+- (CityGroup*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (CityGroup_Builder*) builder;
++ (CityGroup_Builder*) builder;
++ (CityGroup_Builder*) builderWithPrototype:(CityGroup*) prototype;
+
++ (CityGroup*) parseFromData:(NSData*) data;
++ (CityGroup*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityGroup*) parseFromInputStream:(NSInputStream*) input;
++ (CityGroup*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityGroup*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (CityGroup*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface CityGroup_Builder : PBGeneratedMessage_Builder {
+@private
+  CityGroup* result;
+}
+
+- (CityGroup*) defaultInstance;
+
+- (CityGroup_Builder*) clear;
+- (CityGroup_Builder*) clone;
+
+- (CityGroup*) build;
+- (CityGroup*) buildPartial;
+
+- (CityGroup_Builder*) mergeFrom:(CityGroup*) other;
+- (CityGroup_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (CityGroup_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasGroupId;
+- (int32_t) groupId;
+- (CityGroup_Builder*) setGroupId:(int32_t) value;
+- (CityGroup_Builder*) clearGroupId;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (CityGroup_Builder*) setName:(NSString*) value;
+- (CityGroup_Builder*) clearName;
+@end
+
 @interface App : PBGeneratedMessage {
 @private
   BOOL hasDataVersion_:1;
@@ -816,6 +884,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   NSMutableArray* mutableRouteThemesList;
   NSMutableArray* mutableRouteCategorysList;
   NSMutableArray* mutableAgenciesList;
+  NSMutableArray* mutableCityGroupsList;
 }
 - (BOOL) hasDataVersion;
 - (BOOL) hasServiceTelephone;
@@ -841,6 +910,8 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (NameIdPair*) routeCategorysAtIndex:(int32_t) index;
 - (NSArray*) agenciesList;
 - (Agency*) agenciesAtIndex:(int32_t) index;
+- (NSArray*) cityGroupsList;
+- (CityGroup*) cityGroupsAtIndex:(int32_t) index;
 
 + (App*) defaultInstance;
 - (App*) defaultInstance;
@@ -955,5 +1026,12 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (NSString*) serviceTelephone;
 - (App_Builder*) setServiceTelephone:(NSString*) value;
 - (App_Builder*) clearServiceTelephone;
+
+- (NSArray*) cityGroupsList;
+- (CityGroup*) cityGroupsAtIndex:(int32_t) index;
+- (App_Builder*) replaceCityGroupsAtIndex:(int32_t) index with:(CityGroup*) value;
+- (App_Builder*) addCityGroups:(CityGroup*) value;
+- (App_Builder*) addAllCityGroups:(NSArray*) values;
+- (App_Builder*) clearCityGroupsList;
 @end
 
