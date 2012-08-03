@@ -377,6 +377,7 @@ static ImageManager *_defaultManager = nil;
 - (UIImage *)placeTourBtnBgImage
 {
     return [UIImage strectchableImageName:@"line_table_2a.png" topCapHeight:5];
+}
     
 - (UIImage *)accommodationBgImage:(BOOL)isLast
 {
