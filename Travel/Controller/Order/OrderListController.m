@@ -221,6 +221,8 @@
     if ([list count] == 0) {
         [self showTipsOnTableView:[_tipDic objectForKey:[NSNumber numberWithInt:_orderType]]];
         return;
+    }else {
+        [self hideTipsOnTableView];
     }
     
     [self updateSectionStatWithSectionCount:[list count]];
