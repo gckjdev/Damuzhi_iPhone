@@ -74,4 +74,7 @@
 - (UIImage *)flyImage;
 - (UIImage *)accommodationBgImage:(BOOL)isLast;
 
+- (UIImage *)placeTourBgImage;
+- (UIImage *)placeTourBtnBgImage;
+
 @end

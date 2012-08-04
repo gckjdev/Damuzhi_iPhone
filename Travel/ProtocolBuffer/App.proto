@@ -49,6 +49,8 @@ message City {
   required string currencyName = 13;                    // 货币显示名字，如“人民币”，“美元”，“欧元”
 
   optional int32 priceRank = 20 [default=3];            // 城市查询价格等级，默认为3
+  
+  optional int32 groupId = 50;                  // 分组Id
 }
 
 message CityList {
@@ -89,6 +91,11 @@ message Region{
   required string regionName = 2;       // 区域名称，如"东南亚", "港澳台"等
 }
 
+message CityGroup {
+  required int32 groupId = 1;
+  required string name = 2;
+}
+
 // 应用相关的基础数据，和城市无关
 message App {
   required string dataVersion = 1;                  // 数据的版本，如1.0
@@ -106,6 +113,8 @@ message App {
   
   repeated Agency agencies = 30;                    // 旅行社
   
-  optional string serviceTelephone = 100;               // 客服电话
+  optional string serviceTelephone = 100;           // 客服电话
+  
+  repeated CityGroup cityGroups = 80;                // 城市分组
 }
 

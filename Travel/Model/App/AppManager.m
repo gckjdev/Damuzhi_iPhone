@@ -1057,6 +1057,33 @@ static AppManager* _defaultAppManager = nil;
     return [NSArray arrayWithObjects:_app.serviceTelephone, nil];
 }
 
+- (NSString *)getCityGroupName:(int)groupId
+{
+    for (CityGroup *group in _app.cityGroupsList) {
+        if (group.groupId == groupId) {
+            return group.name;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSArray *)getCityListInGroup:(int)groundId
+{
+    NSMutableArray *cityList = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if (city.groupId == groundId) {
+            [cityList addObject:city];
+        }
+    } 
+    
+    return cityList;
+}
+
+- (NSArray *)getGroupCityDicList
+{
+    return nil;
+}
 
 
 

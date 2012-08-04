@@ -184,7 +184,7 @@
     [self setTitleHolerView:nil];
     [self setImagesHolderView:nil];
     [self setAgencyInfoHolderView:nil];
-    [self setAgencyNameLabel:nil];
+//    [self setAgencyNameLabel:nil];
     [self setFollowButton:nil];
     [self setDepartCityLabel:nil];
     [super viewDidUnload];
@@ -208,8 +208,8 @@
     
     //CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
     
-    CGFloat origin_x;
-    CGFloat origin_y;
+//    CGFloat origin_x;
+//    CGFloat origin_y;
 
     UILabel *priceLabel;
     UILabel *priceSuffixLabel;
@@ -465,7 +465,7 @@
 }
 
 - (CGFloat)cellHeightForBookingWithIndex:(NSIndexPath *)indexPath
-{
+{    
     return [BookingCell getCellHeight];
 }
 

@@ -19,6 +19,8 @@
 @class City;
 @class CityArea;
 @class CityArea_Builder;
+@class CityGroup;
+@class CityGroup_Builder;
 @class CityImage;
 @class CityImageList;
 @class CityImageList_Builder;

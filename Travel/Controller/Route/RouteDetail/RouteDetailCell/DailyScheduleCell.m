@@ -73,7 +73,9 @@
     NSString *text;
     placeToursTagButton.frame = CGRectMake(placeToursTagButton.frame.origin.x, placeToursTagButton.frame.origin.y, placeToursTagButton.frame.size.width, height);
     placeToursBgImageView.frame = CGRectMake(placeToursBgImageView.frame.origin.x, placeToursBgImageView.frame.origin.y, placeToursBgImageView.frame.size.width, height);
+    placeToursBgImageView.image = [[ImageManager defaultManager] placeTourBgImage];
     [placeToursTagButton setTitle:NSLS(@"景点") forState:UIControlStateNormal];
+    [placeToursTagButton setBackgroundImage:[[ImageManager defaultManager] placeTourBtnBgImage] forState:UIControlStateNormal];
 
     if ([dailySchedule.placeToursList count] == 0) {
         UILabel *placeTourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, EDGE_TOP, placeToursBgImageView.frame.size.width, HEIGHT_PLACE_TOUR_LABEL)];
@@ -88,7 +90,13 @@
     for (PlaceTour *placeTour in dailySchedule.placeToursList) {
         UILabel *placeTourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, EDGE_TOP +HEIGHT_PLACE_TOUR_LABEL * (i++), placeToursBgImageView.frame.size.width, HEIGHT_PLACE_TOUR_LABEL)];
         placeTourLabel.backgroundColor = [UIColor clearColor];
-        placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
+        
+        if (placeTour.duration == nil && [placeTour.duration isEqualToString:@""]) {
+            placeTourLabel.text = placeTour.name;
+        }else {
+            placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
+        }
+
         placeTourLabel.font = [UIFont systemFontOfSize:13];
         [placeToursBgImageView addSubview:placeTourLabel];
         placeTourLabel.textColor = COLOR_CONTENT;
