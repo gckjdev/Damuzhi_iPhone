@@ -160,7 +160,7 @@
         UIImage *image = [[ImageManager defaultManager] accommodationBgImage:YES];
         [button setBackgroundImage:image forState:UIControlStateNormal];
         [button setBackgroundColor:[UIColor clearColor]];
-        [button setTitle:NSLS(@"暂无信息") forState:UIControlStateNormal];
+        [button setTitle:NSLS(@"暂没有信息") forState:UIControlStateNormal];
         [button setTitleColor:COLOR_DURATION_CONTENT forState:UIControlStateNormal];
         button.titleLabel.font = FONT_DURATION_LABEL;
         [self addSubview:button];
