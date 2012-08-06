@@ -112,9 +112,13 @@
     
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
-    
 
-    
+    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+
+
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
 
@@ -172,34 +176,40 @@
     self.currentSelectedButton.selected = NO;
     self.currentSelectedButton = button;
     self.currentSelectedButton.selected = YES;
+    UIColor *color = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+    [button setTitleColor:color forState:UIControlStateSelected];
 }
 
 
 - (IBAction)clickIntroductionButton:(id)sender {
+    
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
-    
     if (_introductionController == nil) {
         self.introductionController = [[[RouteIntroductionController alloc] initWithRoute:_route routeType:_routeType] autorelease];
         _introductionController.aDelegate = self;
     }
-    
+
     [_introductionController showInView:self.contentView];
+    
 }
 
 
 
 - (IBAction)clickCostDecriptionButton:(id)sender {
+
+
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
     
     if (_feeController == nil) {
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
     }
-    
+
     _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
     
-    [_feeController showInView:self.contentView];    
+    [_feeController showInView:self.contentView];
+    
 }
 
 

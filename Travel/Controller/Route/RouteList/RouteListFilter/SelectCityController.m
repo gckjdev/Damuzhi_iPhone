@@ -301,7 +301,7 @@
 - (void)clickSubmit:(id)sender
 {
     if ([_selectedItemIdsBeforConfirm count] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"亲，您还没有选择哦！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"您还没有进行选择！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
         [alert show];
         [alert release];
         return;

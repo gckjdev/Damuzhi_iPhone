@@ -237,7 +237,7 @@
     NSDictionary *dic = [self checkSelectItemList];
     for (NSString *key in [dic allKeys]) {
         if ([[dic valueForKey:key] boolValue] == NO) {
-            NSString *message = [NSString stringWithFormat:NSLS(@"亲，您还没有选择%@哦！"), key];
+            NSString *message = [NSString stringWithFormat:NSLS(@"您还没有选择%@！"), key];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:message delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
             
             [alert show];
