@@ -230,6 +230,12 @@
     [_placeListController dataSourceDidFinishLoadingNewData];
     [_placeListController dataSourceDidFinishLoadingMoreData];
     
+    for (Place *place in placeList) {
+        PPDebug(@"place name = %@", place.name);
+    }
+    
+    PPDebug(@"place count = %d", [placeList count]);
+    
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }
@@ -256,11 +262,7 @@
     // Reload place list.
     [_placeListController setPlaceList:_placeList];
     
-    for (Place *place in _placeList) {
-        PPDebug(@"place name = %@", place.name);
-    }
-    
-    PPDebug(@"place count = %d", [_placeList count]);
+
 }
 
 - (void)didPullDownToRefresh
