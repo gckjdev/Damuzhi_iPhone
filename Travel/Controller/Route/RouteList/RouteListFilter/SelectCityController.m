@@ -81,6 +81,27 @@
 }
 
 
+- (NSArray *)sortsCityList:(NSArray *)sourceList
+{
+    NSMutableArray *selectedList = [[NSMutableArray alloc] init];
+    NSMutableArray *noSelectedList = [[NSMutableArray alloc] init];
+    
+    for (Item *item in sourceList){
+        if (item.itemId == ALL_CATEGORY || [self isSelectedId:item.itemId]) {
+            [selectedList addObject:item];
+        }else {
+            [noSelectedList addObject:item];
+        }
+    }
+    
+    NSMutableArray *returnList = [[[NSMutableArray alloc] initWithArray:selectedList] autorelease];
+    [returnList addObjectsFromArray:noSelectedList];
+    [selectedList release];
+    [noSelectedList release];
+    
+    return returnList;
+}
+
 #define WIDTH_REGION_TABLEVIEW  85
 #define WIDTH_DATA_TABLEVIEW    235
 
@@ -101,6 +122,8 @@
     UIColor *backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:239.0/255.0 alpha:1];
     self.dataTableView.backgroundColor = backgroundColor;
     self.regionTableView.backgroundColor = backgroundColor;
+    
+    self.allDataList = [self sortsCityList:_allDataList];
     
     if (_typeCity == destination) {
         _regionTableView.frame = CGRectMake(_regionTableView.frame.origin.x, _regionTableView.frame.origin.y, WIDTH_REGION_TABLEVIEW, _regionTableView.frame.size.height);
@@ -301,7 +324,7 @@
 - (void)clickSubmit:(id)sender
 {
     if ([_selectedItemIdsBeforConfirm count] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"亲，您还没有选择哦！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"您还没有进行选择！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
         [alert show];
         [alert release];
         return;
@@ -409,22 +432,28 @@
 
 - (void)filterCityByRegionRow:(int)row;
 {
+    self.allDataList = [self sortsCityList:_allDataList];
+    
     _selectedRegionRow = row;
     [_regionTableView reloadData];
     
     Region *region = [_regionList objectAtIndex:_selectedRegionRow];
     
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    for(Item *item in self.allDataList){
-        int cityRegionId = [[AppManager defaultManager] getRegionIdByCityId:item.itemId];
-        if (cityRegionId == region.regionId) {
-            [array addObject:item];
+    if (region.regionId == ALL_CATEGORY) {
+        self.dataList = _allDataList;
+    }else {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        for(Item *item in self.allDataList){
+            int cityRegionId = [[AppManager defaultManager] getRegionIdByCityId:item.itemId];
+            if (cityRegionId == region.regionId) {
+                [array addObject:item];
+            }
         }
+        
+        self.dataList = array;
+        [array release];
     }
-    
-    self.dataList = array;
-    [array release];
+
     [dataTableView reloadData];
 }
 
