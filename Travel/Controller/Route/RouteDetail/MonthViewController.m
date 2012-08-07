@@ -15,6 +15,8 @@
 #import "UIViewUtils.h"
 #import "RouteUtils.h"
 #import "TravelNetworkConstants.h"
+#import "LogUtil.h"
+#import "TimeUtils.h"
 
 @interface MonthViewController ()
 {
@@ -219,6 +221,13 @@
     if ([_aDelegate respondsToSelector:@selector(didSelecteDate:)]) {
         [self clearUnPopupMessages];
         
+        NSDate *nowStartDate = getDateStart([NSDate date]);
+        NSTimeInterval diffTimeInterval = [date timeIntervalSinceDate:nowStartDate];
+        if (diffTimeInterval < 0 ) {
+            [self popupMessage:NSLS(@"不能预订今天之前的日期") title:nil];
+            return;
+        }
+        
         Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
         
         if (booking.status == 1) {
@@ -226,6 +235,7 @@
         }else if (booking.status == 2) {
             [_aDelegate didSelecteDate:date];
             [self.navigationController popViewControllerAnimated:YES];
+            
         }else if (booking.status == 3) {
             [self popupMessage:NSLS(@"该日期已满") title:nil];
         }else {

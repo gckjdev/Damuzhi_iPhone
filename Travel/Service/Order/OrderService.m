@@ -48,7 +48,7 @@ static OrderService *_instance = nil;
                                                                        telephone:telephone];   
 
         int result = -1;
-        NSString *resultInfo;
+        NSString *resultInfo = nil;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
@@ -86,7 +86,7 @@ static OrderService *_instance = nil;
                                                                     contactPerson:contactPersion 
                                                                         telephone:telephone];   
         int result = -1;
-        NSString *resultInfo;
+        NSString *resultInfo = nil;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];

@@ -230,7 +230,7 @@ static RouteService *_defaultRouteService = nil;
                                                                      rank:rank 
                                                                   content:content];
         int result;
-        NSString *resultInfo;
+        NSString *resultInfo = nil;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];

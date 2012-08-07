@@ -124,6 +124,7 @@
     self.regionTableView.backgroundColor = backgroundColor;
     
     self.allDataList = [self sortsCityList:_allDataList];
+    self.dataList = _allDataList;
     
     if (_typeCity == destination) {
         _regionTableView.frame = CGRectMake(_regionTableView.frame.origin.x, _regionTableView.frame.origin.y, WIDTH_REGION_TABLEVIEW, _regionTableView.frame.size.height);
