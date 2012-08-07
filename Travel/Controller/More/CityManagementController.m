@@ -19,8 +19,9 @@
 static CityManagementController *_instance;
 
 @synthesize downloadList = _downloadList;
-@synthesize promptLabel = _promptLabel;
 @synthesize downloadTableView = _downloadTableView;
+@synthesize promptLabel = _promptLabel;
+@synthesize citySearchBar = _citySearchBar;
 @synthesize cityListBtn = _cityListBtn;
 @synthesize downloadListBtn = _downloadListBtn;
 
@@ -38,8 +39,9 @@ static CityManagementController *_instance;
     [_downloadTableView release];
     [_downloadList release];
     [_tipsLabel release];
-    [_promptLabel release];
     [_cityListBtn release];
+    [_promptLabel release];
+    [_citySearchBar release];
     [super dealloc];
 }
 
@@ -65,16 +67,39 @@ static CityManagementController *_instance;
     // Show city list table view.
     self.dataTableView.hidden = NO;
     self.downloadTableView.hidden = YES;
-        
+    
+    self.promptLabel.hidden = NO;
+    self.citySearchBar.hidden = YES;
+//    self.citySearchBar.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+  
+//    self.citySearchBar.showsCancelButton = YES;
+
+    
+
+    
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
+ 
+    
+    
+    [self setNavigationRightButton:@"" 
+                         imageName:@"search_btn.png" 
+                            action:@selector(clickSearch:)];
+      
+    
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)];
     [imageView setImage:[UIImage imageNamed:@"city_ing.png"]];
     dataTableView.tableFooterView = imageView; 
     
     _downloadTableView.tableFooterView = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
+}
+
+-(void)clickSearch:(id)sender
+{
+    self.promptLabel.hidden = !self.promptLabel.hidden;
+    self.citySearchBar.hidden = !self.promptLabel.hidden;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -100,8 +125,9 @@ static CityManagementController *_instance;
     // Release any retained subviews of the main view
     // e.g. self.myOutlet = nil;
     [self setTipsLabel:nil];
-    [self setPromptLabel:nil];
     
+    [self setPromptLabel:nil];
+    [self setCitySearchBar:nil];
     [super viewDidUnload];
 }
 
@@ -273,6 +299,10 @@ static CityManagementController *_instance;
 
 - (void)clickDownloadListButton:(id)sender
 {
+//    self.citySearchBar.hidden = YES;
+//    self.promptLabel.hidden = YES;
+    
+    
     // Set buttons status.
     _downloadListBtn.selected = YES;
     _cityListBtn.selected = NO;

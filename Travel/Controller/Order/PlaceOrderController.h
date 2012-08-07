@@ -14,10 +14,11 @@
 #import "NonMemberOrderController.h"
 #import "PlaceOrderCell.h"
 
-@interface PlaceOrderController : PPTableViewController <PlaceOrderCellDelegate, MonthViewControllerDelegate, SelectControllerDelegate, OrderServiceDelegate, NonMemberOrderDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
+
+@interface PlaceOrderController : PPTableViewController <PlaceOrderCellDelegate, MonthViewControllerDelegate, SelectControllerDelegate, OrderServiceDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 - (id)initWithRoute:(TouristRoute *)route 
           routeType:(int)routeType
-          packageId:(int)packageId;
+          packageId:(int)packageId ;
 
 @end

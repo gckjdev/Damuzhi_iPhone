@@ -33,6 +33,7 @@
 
 @implementation RouteFeekbackListController
 
+
 @synthesize routeId = _routeId;
 @synthesize start = _start;
 @synthesize allRouteFeekback = _allRouteFeekback;
@@ -73,8 +74,12 @@
     
     self.navigationItem.title = NSLS(@"路线详情");
     
-    dataTableView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:227.0/255.0 alpha:1];
     
+    dataTableView.backgroundColor = [UIColor clearColor];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
+
+
     [RouteService defaultService] ;
     
     [[RouteService defaultService] queryRouteFeekbacks:_routeId start:_start count:EACH_COUNT viewController:self];

@@ -12,6 +12,7 @@
 #import "PPNetworkRequest.h"
 #import "TimeUtils.h"
 
+
 #define TAG_TEXT_FIELD_CONTACT_PERSON 111
 #define TAG_TEXT_FIELD_TELEPHONE 112
 
@@ -23,6 +24,7 @@
 @property (assign, nonatomic) int children;
 @property (retain, nonatomic) NSString * contactPersonName;
 @property (retain, nonatomic) NSString * contactPhone;
+@property (assign, nonatomic) int packageId;
 
 @end
 
@@ -37,13 +39,12 @@
 @synthesize routeNameLabel;
 @synthesize contactPersonTextField;
 @synthesize telephoneTextField;
-@synthesize delegate;
 @synthesize backGroundScrollView;
+@synthesize packageId = _packageId;
 
 - (void)dealloc {
     [_route release];
     [_departDate release];
-    
     [routeNameLabel release];
     [contactPersonTextField release];
     [telephoneTextField release];
@@ -56,13 +57,15 @@
 - (id)initWithRoute:(TouristRoute *)route
          departDate:(NSDate *)departDate
               adult:(int)adult
-           children:(int)children;
+           children:(int)children 
+          packageId:(int)packageId
 {
     if (self = [super init]) {
         self.route = route;
         self.departDate = departDate;
         self.adult = adult;
         self.children = children;
+        self.packageId = packageId;
     }
     
     return self;
@@ -169,11 +172,6 @@
         return;
     }
     
-//    if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)]) {
-//                    [delegate didclickSubmit:contactPerson telephone:telephone];
-//                    [self.navigationController popViewControllerAnimated:YES];       
-//    }
-    
     self.contactPersonName = contactPerson;
     self.contactPhone = telephone;
     
@@ -185,13 +183,45 @@
 {
     NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
     if ([str1 isEqualToString:@"确定"])
-    {
-        if ([delegate respondsToSelector:@selector(didclickSubmit:telephone:)])
-        {
-            [delegate didclickSubmit:_contactPersonName telephone:_contactPhone];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
+    {        
+        UserManager *manager = [UserManager defaultManager];
+        
+        OrderService *service = [OrderService defaultService];
+        [service placeOrderUsingUserId:[manager getUserId]  
+                               routeId:_route.routeId  
+                             packageId:_packageId 
+                            departDate:_departDate 
+                                 adult:_adult 
+                              children:_children 
+                         contactPerson:_contactPersonName 
+                             telephone:_contactPhone
+                              delegate:self];
     }
 }
+
+
+#pragma - mark OrderServiceDelegate methods
+- (void)placeOrderDone:(int)resultCode
+                result:(int)result
+           reusultInfo:(NSString *)resultInfo
+{
+    if (resultCode == 0) {
+        if ( result == 0) {
+            [self popupMessage:NSLS(@"预订成功") title:nil];
+            
+            NSArray *controllers = self.navigationController.viewControllers;
+            UIViewController *controller = [controllers objectAtIndex:[controllers count] -3];
+            [self.navigationController popToViewController:controller animated:YES];
+            
+        } else {
+            [self popupMessage:resultInfo title:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }else {
+        [self popupMessage:NSLS(@"网络弱，请稍后再试") title:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 
 @end
