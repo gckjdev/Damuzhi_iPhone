@@ -411,16 +411,20 @@
 -(void)clickSelectPackageIdButton;
 {
 
-    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"套餐号")
+    SelectController *controller = [[[SelectController alloc] initWithTitle:NSLS(@"套餐号")
                                                                   itemList:[[AppManager defaultManager] getSelectedPackageIdItemList: _route] 
                                                            selectedItemIds:_selectPacekageIdList
                                                               multiOptions:NO 
                                                                needConfirm:NO 
-                                                             needShowCount:NO];
+                                                             needShowCount:NO] autorelease];
     controller.delegate = self;
     
+    if ([_route.packagesList count] == 1) {
+        [self popupMessage:@"只有一个套餐可供选择" title:nil];
+        return;
+    }
+    
     [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
 }
 
 

@@ -22,9 +22,17 @@
 
 @property (nonatomic, retain) NSArray *downloadList;
 @property (nonatomic, retain) IBOutlet UITableView *downloadTableView;
+
 @property (retain, nonatomic) IBOutlet UILabel *promptLabel;
+
+@property (retain, nonatomic) IBOutlet UISearchBar *citySearchBar;
+
+
+
 @property (retain, nonatomic) UIButton *cityListBtn;
 @property (retain, nonatomic) UIButton *downloadListBtn;
+
+
 
 + (CityManagementController*)getInstance;
 - (void)clickDownloadListButton:(id)sender;

@@ -914,7 +914,10 @@ static AppManager* _defaultAppManager = nil;
     return packageIdItems;
 }
 
-
+//- (NSInteger)getTotalSelectedPackageIds:(TouristRoute *)aRoute
+//{
+//    return [aRoute.packagesList count];
+//}
 
 
 
@@ -1057,6 +1060,8 @@ static AppManager* _defaultAppManager = nil;
     return [NSArray arrayWithObjects:_app.serviceTelephone, nil];
 }
 
+
+
 - (NSString *)getCityGroupName:(int)groupId
 {
     for (CityGroup *group in _app.cityGroupsList) {
@@ -1064,15 +1069,15 @@ static AppManager* _defaultAppManager = nil;
             return group.name;
         }
     }
-    
     return nil;
 }
 
-- (NSArray *)getCityListInGroup:(int)groundId
+
+- (NSArray *)getCityListInGroup:(int)groupId
 {
     NSMutableArray *cityList = [NSMutableArray array];
     for (City *city in CITY_LIST) {
-        if (city.groupId == groundId) {
+        if (city.groupId == groupId) {
             [cityList addObject:city];
         }
     } 
@@ -1082,6 +1087,10 @@ static AppManager* _defaultAppManager = nil;
 
 - (NSArray *)getGroupCityDicList
 {
+    NSMutableDictionary *dataList = [NSMutableDictionary dictionary];
+//    for() {
+//        <#statements#>
+//    }
     return nil;
 }
 
