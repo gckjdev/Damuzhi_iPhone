@@ -4097,6 +4097,8 @@ static OrderList* defaultOrderListInstance = nil;
 @property int32_t status;
 @property int32_t packageId;
 @property (retain) NSString* packageName;
+@property int32_t praiseRank;
+@property (retain) NSString* feedback;
 @end
 
 @implementation Order
@@ -4199,12 +4201,27 @@ static OrderList* defaultOrderListInstance = nil;
   hasPackageName_ = !!value;
 }
 @synthesize packageName;
+- (BOOL) hasPraiseRank {
+  return !!hasPraiseRank_;
+}
+- (void) setHasPraiseRank:(BOOL) value {
+  hasPraiseRank_ = !!value;
+}
+@synthesize praiseRank;
+- (BOOL) hasFeedback {
+  return !!hasFeedback_;
+}
+- (void) setHasFeedback:(BOOL) value {
+  hasFeedback_ = !!value;
+}
+@synthesize feedback;
 - (void) dealloc {
   self.routeName = nil;
   self.departCityName = nil;
   self.price = nil;
   self.priceStatus = nil;
   self.packageName = nil;
+  self.feedback = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4223,6 +4240,8 @@ static OrderList* defaultOrderListInstance = nil;
     self.status = 0;
     self.packageId = 0;
     self.packageName = @"";
+    self.praiseRank = 0;
+    self.feedback = @"";
   }
   return self;
 }
@@ -4293,6 +4312,12 @@ static Order* defaultOrderInstance = nil;
   if (self.hasPackageName) {
     [output writeString:21 value:self.packageName];
   }
+  if (self.hasPraiseRank) {
+    [output writeInt32:30 value:self.praiseRank];
+  }
+  if (self.hasFeedback) {
+    [output writeString:31 value:self.feedback];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -4343,6 +4368,12 @@ static Order* defaultOrderInstance = nil;
   }
   if (self.hasPackageName) {
     size += computeStringSize(21, self.packageName);
+  }
+  if (self.hasPraiseRank) {
+    size += computeInt32Size(30, self.praiseRank);
+  }
+  if (self.hasFeedback) {
+    size += computeStringSize(31, self.feedback);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4461,6 +4492,12 @@ static Order* defaultOrderInstance = nil;
   if (other.hasPackageName) {
     [self setPackageName:other.packageName];
   }
+  if (other.hasPraiseRank) {
+    [self setPraiseRank:other.praiseRank];
+  }
+  if (other.hasFeedback) {
+    [self setFeedback:other.feedback];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4536,6 +4573,14 @@ static Order* defaultOrderInstance = nil;
       }
       case 170: {
         [self setPackageName:[input readString]];
+        break;
+      }
+      case 240: {
+        [self setPraiseRank:[input readInt32]];
+        break;
+      }
+      case 250: {
+        [self setFeedback:[input readString]];
         break;
       }
     }
@@ -4763,6 +4808,38 @@ static Order* defaultOrderInstance = nil;
 - (Order_Builder*) clearPackageName {
   result.hasPackageName = NO;
   result.packageName = @"";
+  return self;
+}
+- (BOOL) hasPraiseRank {
+  return result.hasPraiseRank;
+}
+- (int32_t) praiseRank {
+  return result.praiseRank;
+}
+- (Order_Builder*) setPraiseRank:(int32_t) value {
+  result.hasPraiseRank = YES;
+  result.praiseRank = value;
+  return self;
+}
+- (Order_Builder*) clearPraiseRank {
+  result.hasPraiseRank = NO;
+  result.praiseRank = 0;
+  return self;
+}
+- (BOOL) hasFeedback {
+  return result.hasFeedback;
+}
+- (NSString*) feedback {
+  return result.feedback;
+}
+- (Order_Builder*) setFeedback:(NSString*) value {
+  result.hasFeedback = YES;
+  result.feedback = value;
+  return self;
+}
+- (Order_Builder*) clearFeedback {
+  result.hasFeedback = NO;
+  result.feedback = @"";
   return self;
 }
 @end

@@ -983,11 +983,13 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   BOOL hasChildren_:1;
   BOOL hasStatus_:1;
   BOOL hasPackageId_:1;
+  BOOL hasPraiseRank_:1;
   BOOL hasRouteName_:1;
   BOOL hasDepartCityName_:1;
   BOOL hasPrice_:1;
   BOOL hasPriceStatus_:1;
   BOOL hasPackageName_:1;
+  BOOL hasFeedback_:1;
   int32_t orderId;
   int32_t bookDate;
   int32_t routeId;
@@ -997,11 +999,13 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   int32_t children;
   int32_t status;
   int32_t packageId;
+  int32_t praiseRank;
   NSString* routeName;
   NSString* departCityName;
   NSString* price;
   NSString* priceStatus;
   NSString* packageName;
+  NSString* feedback;
 }
 - (BOOL) hasOrderId;
 - (BOOL) hasBookDate;
@@ -1017,6 +1021,8 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (BOOL) hasStatus;
 - (BOOL) hasPackageId;
 - (BOOL) hasPackageName;
+- (BOOL) hasPraiseRank;
+- (BOOL) hasFeedback;
 @property (readonly) int32_t orderId;
 @property (readonly) int32_t bookDate;
 @property (readonly) int32_t routeId;
@@ -1031,6 +1037,8 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 @property (readonly) int32_t status;
 @property (readonly) int32_t packageId;
 @property (readonly, retain) NSString* packageName;
+@property (readonly) int32_t praiseRank;
+@property (readonly, retain) NSString* feedback;
 
 + (Order*) defaultInstance;
 - (Order*) defaultInstance;
@@ -1135,5 +1143,15 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (NSString*) packageName;
 - (Order_Builder*) setPackageName:(NSString*) value;
 - (Order_Builder*) clearPackageName;
+
+- (BOOL) hasPraiseRank;
+- (int32_t) praiseRank;
+- (Order_Builder*) setPraiseRank:(int32_t) value;
+- (Order_Builder*) clearPraiseRank;
+
+- (BOOL) hasFeedback;
+- (NSString*) feedback;
+- (Order_Builder*) setFeedback:(NSString*) value;
+- (Order_Builder*) clearFeedback;
 @end
 
