@@ -45,9 +45,12 @@
         NSString *str2 = [loginIdString substringFromIndex:7];
         NSString *modifiedLoginIdString = [NSString stringWithFormat:@"%@****%@", str1, str2];
         userNameLabel.text = modifiedLoginIdString;
-    }else {
+    }
+    else 
+    {
         userNameLabel.text = routeFeekback.nickName;
     }
+    
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:routeFeekback.date];
     dateLabel.text = dateToStringByFormat(date, DATE_FORMAT);
     contentLabel.text = routeFeekback.content;
@@ -71,18 +74,22 @@
            
     }
     
-    static int methodCalledTimes = 1;
-    if(methodCalledTimes % 2 == 1){
-        bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage1];
-    }
-    else
-        bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage2]; 
-    methodCalledTimes++;
-    
     CGSize withinSize = CGSizeMake(contentLabel.frame.size.width, MAXFLOAT);
     CGSize size = [routeFeekback.content sizeWithFont:contentLabel.font constrainedToSize:withinSize lineBreakMode:contentLabel.lineBreakMode];
     
     contentLabel.frame = CGRectMake(contentLabel.frame.origin.x, contentLabel.frame.origin.y, contentLabel.frame.size.width, size.height);
+    
+    static int methodCalledTimes = 1;
+    if(methodCalledTimes % 2 == 1){
+        bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage1];
+        bgImageView.frame = CGRectMake(11 + 4, bgImageView.frame.origin.y, bgImageView.frame.size.width, size.height + 40);
+    }
+    else
+    {
+        bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage2]; 
+        bgImageView.frame = CGRectMake(11 - 4, bgImageView.frame.origin.y, bgImageView.frame.size.width, size.height + 40);
+    }
+    methodCalledTimes++;
     
 }
 

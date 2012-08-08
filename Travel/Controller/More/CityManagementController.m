@@ -14,12 +14,19 @@
 #import "PackageManager.h"
 #import "AppUtils.h"
 
+
+
+@interface CityManagementController ()
+
+@end
+
 @implementation CityManagementController 
 
 static CityManagementController *_instance;
 
 @synthesize downloadList = _downloadList;
 @synthesize downloadTableView = _downloadTableView;
+
 @synthesize promptLabel = _promptLabel;
 @synthesize citySearchBar = _citySearchBar;
 @synthesize cityListBtn = _cityListBtn;
@@ -53,10 +60,7 @@ static CityManagementController *_instance;
     // Do any additional setup after loading the view from its nib.
     self.dataList = [[AppManager defaultManager] getCityList];
     self.downloadList = [[PackageManager defaultManager] getLocalCityList];
-    
-    UIColor *color = [[UIColor alloc] initWithRed:121.0/255.0 green:164.0/255.0 blue:180.0/255.0 alpha:1]; 
-    [self.promptLabel setBackgroundColor:color];
-    [color release];
+
     
     [self addCityManageButtons];
     
@@ -64,42 +68,49 @@ static CityManagementController *_instance;
     _downloadListBtn.selected = NO;
     _cityListBtn.selected = YES;
     
-    // Show city list table view.
+    self.promptLabel.backgroundColor = [UIColor colorWithRed:121.0/255.0 green:164.0/255.0 blue:180.0/255.0 alpha:1]; 
+    dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+    [self.view addSubview:self.promptLabel];
+    
+    self.downloadTableView.frame = CGRectMake(0, 0, 320, 416);
     self.dataTableView.hidden = NO;
     self.downloadTableView.hidden = YES;
     
     self.promptLabel.hidden = NO;
     self.citySearchBar.hidden = YES;
-//    self.citySearchBar.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-  
-//    self.citySearchBar.showsCancelButton = YES;
-
-    
-
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
- 
-    
     
     [self setNavigationRightButton:@"" 
                          imageName:@"search_btn.png" 
                             action:@selector(clickSearch:)];
-      
-    
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)];
     [imageView setImage:[UIImage imageNamed:@"city_ing.png"]];
     dataTableView.tableFooterView = imageView; 
     
     _downloadTableView.tableFooterView = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
+    
+//    [self.citySearchBar setTintColor:[UIColor redColor]];
+//     [self.citySearchBar setShowsCancelButton:YES animated:YES];
 }
 
 -(void)clickSearch:(id)sender
 {
+    if (self.dataTableView.hidden == YES) {
+        return;
+    }
     self.promptLabel.hidden = !self.promptLabel.hidden;
-    self.citySearchBar.hidden = !self.promptLabel.hidden;
+    self.citySearchBar.hidden = !self.citySearchBar.hidden;
+    if (self.promptLabel.hidden == YES) {
+        dataTableView.frame = CGRectMake(0, 44, 320, 416 - 44);
+    }else {
+        dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+    }
+    
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -120,12 +131,63 @@ static CityManagementController *_instance;
     return label;
 }
 
+#define HIDE_KEYBOARDBUTTON_TAG 1
+- (void)updateHideKeyboardButton
+{
+    if ([self.citySearchBar.text length] == 0) {
+        [self addHideKeyboardButton];
+    } else {
+        [self removeHideKeyboardButton];
+    }
+}
+
+
+- (void)addHideKeyboardButton
+{
+    [self removeHideKeyboardButton];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, self.citySearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height-self.citySearchBar.frame.size.height)];
+    button.backgroundColor = [UIColor blackColor];
+    button.alpha = 0.5;
+    button.tag = HIDE_KEYBOARDBUTTON_TAG;
+    [button addTarget:self action:@selector(clickHideKeyboardButton:) forControlEvents:UIControlEventAllTouchEvents];
+    [self.view addSubview:button];
+    [button release];
+}
+
+- (void)removeHideKeyboardButton
+{
+    UIButton *button = (UIButton*)[self.view viewWithTag:HIDE_KEYBOARDBUTTON_TAG];
+    [button removeFromSuperview];
+}
+
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar; 
+{
+    [self.citySearchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self clickHideKeyboardButton:nil];
+}
+
+- (void)clickHideKeyboardButton:(id)sender
+{
+    [self.citySearchBar resignFirstResponder];
+    [sender removeHideKeyboardButton];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.citySearchBar resignFirstResponder];
+}
+
+
 - (void)viewDidUnload
 {
     // Release any retained subviews of the main view
     // e.g. self.myOutlet = nil;
     [self setTipsLabel:nil];
-    
     [self setPromptLabel:nil];
     [self setCitySearchBar:nil];
     [super viewDidUnload];
@@ -189,11 +251,12 @@ static CityManagementController *_instance;
 #pragma mark: Table View Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 54;
+	return 56;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;		// default implementation
+//    return 0;
 }
 
 // Customize the number of rows in the table view.
@@ -281,10 +344,40 @@ static CityManagementController *_instance;
     }
 }
 
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    
+    
+    NSMutableArray *tempArray = [NSMutableArray array];
+    NSString *tempString;
+    [tempArray addObject:@"热门"];
+    for(int i = 0; i < 26; i++)
+    {
+        tempString = [NSString stringWithFormat:@"%c", 'A' + i];
+        [tempArray addObject:tempString];
+    }
+    return tempArray;
+}
+
+//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    
+//    NSMutableArray *testArray = [NSMutableArray array];
+//    [testArray addObject:@"haha1"];
+//    [testArray addObject:@"haha2"];
+//    [testArray addObject:@"haha3"];
+//    
+//    NSString *key = [testArray objectAtIndex:section];
+//    return key;
+//}
+
+
+
 #pragma mark -
 #pragma mark: implementation of buttons event
 - (void)clickCityListButton:(id)sender
 {
+
     // Set buttons status.
     _downloadListBtn.selected = NO;
     _cityListBtn.selected = YES;
@@ -293,16 +386,32 @@ static CityManagementController *_instance;
     self.dataTableView.hidden = NO;
     self.downloadTableView.hidden = YES;
     
+    
+    int downloadListButtonClickedFlag1 = 0;
+    int downloadListButtonClickedFlag2 = 1;
+    if (self.promptLabel.hidden == NO) {
+        self.dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+        downloadListButtonClickedFlag1 = 1;
+    }
+    if (self.citySearchBar.hidden == NO) {
+        self.dataTableView.frame = CGRectMake(0, 44, 320, 416 - 44);
+        downloadListButtonClickedFlag2 = 0;
+    }
+   
+    if (downloadListButtonClickedFlag1 < downloadListButtonClickedFlag2) {
+        self.promptLabel.hidden = NO;
+        self.dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+    } 
+    
+    
     // reload city list table view
     [self.dataTableView reloadData];
 }
 
 - (void)clickDownloadListButton:(id)sender
 {
-//    self.citySearchBar.hidden = YES;
-//    self.promptLabel.hidden = YES;
-    
-    
+
+
     // Set buttons status.
     _downloadListBtn.selected = YES;
     _cityListBtn.selected = NO;
@@ -310,6 +419,9 @@ static CityManagementController *_instance;
     // Show download management table view.
     dataTableView.hidden = YES;
     _downloadTableView.hidden = NO;
+
+    self.promptLabel.hidden = YES;
+    self.citySearchBar.hidden = YES;
     
     // Reload download table view
     [_downloadTableView reloadData];
@@ -471,5 +583,7 @@ static CityManagementController *_instance;
     self.downloadList = [[PackageManager defaultManager] getLocalCityList];
     [_downloadTableView reloadData];
 }
+
+
 
 @end

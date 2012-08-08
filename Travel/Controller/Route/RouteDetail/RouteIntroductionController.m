@@ -21,6 +21,8 @@
 #import "RouteStorage.h"
 #import "AnimationManager.h"
 #import "ReferenceCell.h"
+#import "ImageManager.h"
+#import "UIImageUtil.h"
 
 #define TAG_ARROW_IMAGE_VIEW 101 
 
@@ -141,7 +143,13 @@
     
     SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
     [slideImageView setImages:_route.detailImagesList];
+    
+ 
+    
+    
+    
     [imagesHolderView addSubview:slideImageView];
     
     [self updateFollowButton];

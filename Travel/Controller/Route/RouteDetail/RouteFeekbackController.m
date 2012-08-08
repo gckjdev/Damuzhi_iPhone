@@ -90,7 +90,8 @@
 -(void) clickSubmit: (id) sender
 {
 
-    NSString *feekback = [self.feekbackTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];   
+    NSString *feekback = [self.feekbackTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]; 
+    feekback = [feekback stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
     if ([feekback compare:@""] == 0) {
         [self popupMessage:NSLS(@"请输入意见或建议") title:nil];
