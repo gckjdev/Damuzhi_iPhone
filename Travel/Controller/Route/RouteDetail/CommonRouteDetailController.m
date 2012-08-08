@@ -113,10 +113,10 @@
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
 
-    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
-    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
-    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
-    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
+    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
+    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
+    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
 
 
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];

@@ -14,6 +14,12 @@
 #import "PackageManager.h"
 #import "AppUtils.h"
 
+#define PROMPT_LABEL_HEIGHT 30
+#define CITY_SEARCH_BAR_HEIGHT 44
+#define SELF_VIEW_WIDTH 320
+#define NAVIGATION_BAR_HEIGHT 44
+#define SELF_VIEW_HEIGHT (460 - NAVIGATION_BAR_HEIGHT)
+
 
 
 @interface CityManagementController ()
@@ -69,10 +75,10 @@ static CityManagementController *_instance;
     _cityListBtn.selected = YES;
     
     self.promptLabel.backgroundColor = [UIColor colorWithRed:121.0/255.0 green:164.0/255.0 blue:180.0/255.0 alpha:1]; 
-    dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+    dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
     [self.view addSubview:self.promptLabel];
     
-    self.downloadTableView.frame = CGRectMake(0, 0, 320, 416);
+    self.downloadTableView.frame = CGRectMake(0, 0, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT);
     self.dataTableView.hidden = NO;
     self.downloadTableView.hidden = YES;
     
@@ -93,8 +99,6 @@ static CityManagementController *_instance;
     
     _downloadTableView.tableFooterView = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
     
-//    [self.citySearchBar setTintColor:[UIColor redColor]];
-//     [self.citySearchBar setShowsCancelButton:YES animated:YES];
 }
 
 -(void)clickSearch:(id)sender
@@ -105,9 +109,9 @@ static CityManagementController *_instance;
     self.promptLabel.hidden = !self.promptLabel.hidden;
     self.citySearchBar.hidden = !self.citySearchBar.hidden;
     if (self.promptLabel.hidden == YES) {
-        dataTableView.frame = CGRectMake(0, 44, 320, 416 - 44);
+        dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT);
     }else {
-        dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+        dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
     }
     
     
@@ -131,35 +135,6 @@ static CityManagementController *_instance;
     return label;
 }
 
-#define HIDE_KEYBOARDBUTTON_TAG 1
-- (void)updateHideKeyboardButton
-{
-    if ([self.citySearchBar.text length] == 0) {
-        [self addHideKeyboardButton];
-    } else {
-        [self removeHideKeyboardButton];
-    }
-}
-
-
-- (void)addHideKeyboardButton
-{
-    [self removeHideKeyboardButton];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, self.citySearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height-self.citySearchBar.frame.size.height)];
-    button.backgroundColor = [UIColor blackColor];
-    button.alpha = 0.5;
-    button.tag = HIDE_KEYBOARDBUTTON_TAG;
-    [button addTarget:self action:@selector(clickHideKeyboardButton:) forControlEvents:UIControlEventAllTouchEvents];
-    [self.view addSubview:button];
-    [button release];
-}
-
-- (void)removeHideKeyboardButton
-{
-    UIButton *button = (UIButton*)[self.view viewWithTag:HIDE_KEYBOARDBUTTON_TAG];
-    [button removeFromSuperview];
-}
-
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar; 
 {
@@ -174,7 +149,6 @@ static CityManagementController *_instance;
 - (void)clickHideKeyboardButton:(id)sender
 {
     [self.citySearchBar resignFirstResponder];
-    [sender removeHideKeyboardButton];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -256,7 +230,6 @@ static CityManagementController *_instance;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;		// default implementation
-//    return 0;
 }
 
 // Customize the number of rows in the table view.
@@ -345,19 +318,19 @@ static CityManagementController *_instance;
 }
 
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    
-    
-    NSMutableArray *tempArray = [NSMutableArray array];
-    NSString *tempString;
-    [tempArray addObject:@"热门"];
-    for(int i = 0; i < 26; i++)
-    {
-        tempString = [NSString stringWithFormat:@"%c", 'A' + i];
-        [tempArray addObject:tempString];
-    }
-    return tempArray;
-}
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+//    
+//    
+//    NSMutableArray *tempArray = [NSMutableArray array];
+//    NSString *tempString;
+//    [tempArray addObject:@"热门"];
+//    for(int i = 0; i < 26; i++)
+//    {
+//        tempString = [NSString stringWithFormat:@"%c", 'A' + i];
+//        [tempArray addObject:tempString];
+//    }
+//    return tempArray;
+//}
 
 //-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 //{
@@ -387,20 +360,28 @@ static CityManagementController *_instance;
     self.downloadTableView.hidden = YES;
     
     
+    
+    
     int downloadListButtonClickedFlag1 = 0;
     int downloadListButtonClickedFlag2 = 1;
     if (self.promptLabel.hidden == NO) {
-        self.dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
         downloadListButtonClickedFlag1 = 1;
     }
     if (self.citySearchBar.hidden == NO) {
-        self.dataTableView.frame = CGRectMake(0, 44, 320, 416 - 44);
+        self.dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT);
         downloadListButtonClickedFlag2 = 0;
     }
    
-    if (downloadListButtonClickedFlag1 < downloadListButtonClickedFlag2) {
+    
+    if (downloadListButtonClickedFlag1 < downloadListButtonClickedFlag2)
+    {
+        /*
+         When clickDownloadListButton: is called, both promptLabel and citySearchBar are hidden.
+         In this case(and only in this case), downloadListButtonClickedFlag1 is 0,downloadListButtonClickedFlag2 is 1.
+        */
         self.promptLabel.hidden = NO;
-        self.dataTableView.frame = CGRectMake(0, 30, 320, 416 - 30);
+        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
     } 
     
     
@@ -564,7 +545,7 @@ static CityManagementController *_instance;
     NSString *type = @"";
     (localCity.updateStatus == UPDATE_FAILED) ? (type=NSLS(@"更新")) : (type=NSLS(@"下载"));
     
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据%@失败"), city.countryName, city.cityName, type];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据%@暂停"), city.countryName, city.cityName, type];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];

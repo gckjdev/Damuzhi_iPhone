@@ -128,7 +128,8 @@ static ImageManager *_defaultManager = nil;
 
 - (UIImage *)lineNavBgImage
 {
-    return [UIImage strectchableImageName:@"line_nav_bg.png"];
+//    return [UIImage strectchableImageName:@"line_nav_bg.png"];
+    return [UIImage strectchableImageName:@"line_n_bg1@2x.png"];
 }
 
 - (UIImage *)lineListBgImage

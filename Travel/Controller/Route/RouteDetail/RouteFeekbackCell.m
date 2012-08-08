@@ -37,10 +37,11 @@
 
 - (void)setCellData:(RouteFeekback *)routeFeekback
 {
+    
     // routeFeekback.nickName is already trimmed by method stringByTrimmingCharactersInSet:
     if (routeFeekback.nickName == nil || [routeFeekback.nickName isEqualToString:@""]) 
     {
-        NSString *loginIdString = [[UserManager defaultManager] loginId];
+        NSString *loginIdString = routeFeekback.loginId;
         NSString *str1 = [loginIdString substringToIndex:3]; 
         NSString *str2 = [loginIdString substringFromIndex:7];
         NSString *modifiedLoginIdString = [NSString stringWithFormat:@"%@****%@", str1, str2];
@@ -79,7 +80,7 @@
     
     contentLabel.frame = CGRectMake(contentLabel.frame.origin.x, contentLabel.frame.origin.y, contentLabel.frame.size.width, size.height);
     
-    static int methodCalledTimes = 1;
+    static long methodCalledTimes = 1;
     if(methodCalledTimes % 2 == 1){
         bgImageView.image = [[ImageManager defaultManager] routeFeekbackBgImage1];
         bgImageView.frame = CGRectMake(11 + 4, bgImageView.frame.origin.y, bgImageView.frame.size.width, size.height + 40);
