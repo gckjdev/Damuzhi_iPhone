@@ -74,9 +74,11 @@
     
     self.navigationItem.title = NSLS(@"路线详情");
     
-//    dataTableView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:227.0/255.0 alpha:1];
     
-    dataTableView.backgroundColor = [UIColor colorWithRed:222/255.0 green:239/255.0 blue:247/225.0 alpha:1.0];
+    dataTableView.backgroundColor = [UIColor clearColor];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
+
 
     [RouteService defaultService] ;
     

@@ -10,6 +10,7 @@
 #import "RouteService.h"
 #import "RouteIntroductionController.h"
 #import "PlaceService.h"
+#import "PlaceOrderController.h"
 
 @interface CommonRouteDetailController : PPTableViewController <RouteServiceDelegate, RouteIntroductionControllerDelegate, PlaceServiceDelegate, UIActionSheetDelegate>
 

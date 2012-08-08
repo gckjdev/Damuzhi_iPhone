@@ -9,11 +9,13 @@
 #import "PPTableViewCell.h"
 #import "TouristRoute.pb.h"
 
+#define HEIGHT_DAILY_SCHEDULE_TITLE_LABEL 36
+
 #define WIDTH_DAILY_SCHEDULE_VIEW 308
 
 #define HEIGHT_PLACE_TOUR_LABEL 21
-#define EDGE_TOP 1
-#define EDGE_BOTTOM 3
+#define EDGE_TOP 4
+#define EDGE_BOTTOM 5
 #define HEIGHT_DINING_LABEL 25
 #define HEIGHT_HOTEL_LABEL 25
 
@@ -37,7 +39,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *hotelTagButton;
 
 - (void)setCellData:(DailySchedule *)dailySchedule rowNum:(int)rowNum rowCount:(int)rowCount;
-
++ (CGFloat)height:(DailySchedule *)dailySchedule;
 
 
 @end

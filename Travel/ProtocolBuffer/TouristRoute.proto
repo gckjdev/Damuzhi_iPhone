@@ -127,8 +127,10 @@ message Order {
   optional string priceStatus = 11;     // 价格状态
   optional int32 status = 12;           // 订单状态
   
-    
   optional int32 packageId = 20;        // 套餐Id
   optional string packageName = 21;     // 套餐名字
+  
+  optional int32 praiseRank = 30;         // 大拇指等级
+  optional string feedback = 31;         // 用户评价
 }
 

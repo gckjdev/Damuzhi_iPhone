@@ -267,7 +267,6 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
 - (void)didSelectedPlace:(int)placeId
 {
     [[PlaceService defaultService] findPlace:placeId viewController:self];
@@ -299,7 +298,6 @@
     TravelPackage *package = [RouteUtils findPackageByPackageId:packageId fromPackageList:_route.packagesList];
     
     FlightController *controller = [[FlightController alloc] initWithDepartReturnFlight:package.departFlight returnFlight:package.returnFlight];
-    
     
     
     [self.navigationController pushViewController:controller animated:YES];

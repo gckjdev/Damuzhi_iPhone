@@ -85,15 +85,15 @@
 
 - (id)initWithRoute:(TouristRoute *)route 
           routeType:(int)routeType
-          packageId:(int)packageId
+          packageId:(int)packageId 
 {
     if (self = [super init]) {
         self.route = route;
         self.routeType = routeType;
         self.packageId = packageId;
-        self.selectedAdultIdList = [NSMutableArray array];
-        self.selectedChildrenIdList = [NSMutableArray array];
-        self.selectPacekageIdList = [NSMutableArray array];
+        self.selectedAdultIdList = [[[NSMutableArray alloc] init] autorelease];
+        self.selectedChildrenIdList = [[[NSMutableArray alloc] init] autorelease];
+        self.selectPacekageIdList = [[[NSMutableArray alloc] init] autorelease];
         self.adult = 1;
         self.children = 0;
     }
@@ -119,13 +119,13 @@
         PPDebug(@"_packageId isisisis: %d", _packageId);
     }
     
-    [_selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
+    [self.selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
-    [_selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
-    [_selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
+    [self.selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
+    [self.selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
     
     NSMutableArray *mutableArray = [NSMutableArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_ROUTE_ID, TITLE_DEPART_CITY, TITLE_PACKAGE_ID, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
     if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
@@ -470,14 +470,12 @@
         NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithRoute:_route 
                                                                                     departDate:_departDate 
                                                                                          adult:_adult 
-                                                                                      children:_children];
-        controller.delegate = self;
+                                                                                      children:_children 
+                                                                                     packageId:_packageId];
         self.nonMemberOrderController = controller;
         [controller release];
     }
-    
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
-
 }
 
 
@@ -508,8 +506,10 @@
 - (void)placeOrderDone:(int)resultCode result:(int)result reusultInfo:(NSString *)resultInfo
 {
     if (resultCode == 0) {
-        if ( result == 0) {
+        if ( result == 0) {;
             [self popupMessage:NSLS(@"预订成功") title:nil];
+            [self.navigationController popViewControllerAnimated:NO];
+            
         } else {
             [self popupMessage:resultInfo title:nil];
         }
@@ -517,24 +517,5 @@
         [self popupMessage:NSLS(@"网络弱，请稍后再试") title:nil];
     }
 }
-
-
-#pragma mark - NonMemberOrderDelegate
-- (void)didclickSubmit:(NSString *)contactPerson telephone:(NSString *)telephone
-{
-    UserManager *manager = [UserManager defaultManager];
-    
-    OrderService *service = [OrderService defaultService];
-    [service placeOrderUsingUserId:[manager getUserId]  
-                           routeId:_route.routeId  
-                         packageId:_packageId 
-                        departDate:_departDate 
-                             adult:_adult 
-                          children:_children 
-                     contactPerson:contactPerson 
-                         telephone:telephone 
-                          delegate:self];
-}
-
 
 @end

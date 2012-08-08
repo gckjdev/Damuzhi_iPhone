@@ -217,6 +217,7 @@ static RouteService *_defaultRouteService = nil;
 }
 
 - (void)routeFeedbackWithRouteId:(int)routeId 
+                         orderId:(int)orderId
                             rank:(int)rank
                          content:(NSString *)content   
                   viewController:(PPViewController<RouteServiceDelegate>*)viewController
@@ -227,10 +228,11 @@ static RouteService *_defaultRouteService = nil;
         CommonNetworkOutput *output = [TravelNetworkRequest routeFeedback:loginId 
                                                                     token:token 
                                                                   routeId:routeId
+                                                                  orderId:orderId 
                                                                      rank:rank 
                                                                   content:content];
         int result;
-        NSString *resultInfo;
+        NSString *resultInfo = nil;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
