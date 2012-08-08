@@ -1119,7 +1119,8 @@
 
 + (CommonNetworkOutput*)routeFeedback:(NSString *)loginId 
                                 token:(NSString *)token 
-                              routeId:(int)routeId
+                              routeId:(int)routeId 
+                              orderId:(int)orderId
                                  rank:(int)rank 
                               content:(NSString *)content
 {
@@ -1133,6 +1134,7 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LOGIN_ID value:loginId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TOKEN value:token];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ORDER_ID intValue:orderId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_RANK intValue:rank];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTENT value:content];
         

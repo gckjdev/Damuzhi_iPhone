@@ -22,7 +22,7 @@
 
 // URL
 #define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
-#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeekback.aspx?")
+#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeedback.aspx?")
 
 //query place list
 #define URL_TRAVEL_QUERY_LIST       (URL_SERVICE@"queryList.aspx?")
@@ -127,6 +127,7 @@
 #define PARA_TRAVEL_CHILDREN                @"children"
 #define PARA_TRAVEL_CONTACT_PERSION         @"contactPersion"
 #define PARA_TRAVEL_CONTACT                 @"contact"
+#define PARA_TRAVEL_ORDER_ID                @"orderId"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1

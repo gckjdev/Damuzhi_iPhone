@@ -13,6 +13,8 @@
 
 #define COLOR_CONTENT [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
 
+#define FONT_PLACE  [UIFont systemFontOfSize:13] 
+
 @interface DailyScheduleCell ()
 {
     int _hotelId;
@@ -58,6 +60,30 @@
     return [stringArray componentsJoinedByString:@"\n "];
 }
 
++ (CGFloat)height:(DailySchedule *)dailySchedule
+{
+    NSMutableString *placesText = [[[NSMutableString alloc] init] autorelease];
+    if ([dailySchedule.placeToursList count] == 0) {
+        [placesText appendString:NSLS(@" ")];
+    }else {
+        int index = 0;
+        for (PlaceTour *placeTour in dailySchedule.placeToursList) {
+            [placesText appendString:placeTour.name];
+            if (index < [dailySchedule.placeToursList count] - 1) {
+                [placesText appendString:@" - "];
+            }
+            index ++;
+        }
+    }
+    
+    CGFloat widthLabel = 255;
+    CGSize placesTextSize = [placesText sizeWithFont:FONT_PLACE constrainedToSize:CGSizeMake(widthLabel, 1000) lineBreakMode:UILineBreakModeWordWrap];
+    CGFloat height = placesTextSize.height + EDGE_TOP + EDGE_BOTTOM;
+    
+    
+    return HEIGHT_DAILY_SCHEDULE_TITLE_LABEL + height + HEIGHT_DINING_LABEL + HEIGHT_HOTEL_LABEL;
+}
+
 - (void)setCellData:(DailySchedule *)dailySchedule rowNum:(int)rowNum rowCount:(int)rowCount
 {
     [placeToursTagButton setTitleColor:COLOR_CONTENT forState:UIControlStateNormal];
@@ -69,44 +95,49 @@
     [titleButton setTitle:dailySchedule.title forState:UIControlStateNormal];
     [titleButton setBackgroundImage:[[ImageManager defaultManager] dailyScheduleTitleBgImageWithRowNum:rowNum rowCount:rowCount]forState:UIControlStateNormal];
     
-    CGFloat height = MAX([dailySchedule.placeToursList count], 1)* HEIGHT_PLACE_TOUR_LABEL + EDGE_TOP + EDGE_BOTTOM;
-    NSString *text;
-    placeToursTagButton.frame = CGRectMake(placeToursTagButton.frame.origin.x, placeToursTagButton.frame.origin.y, placeToursTagButton.frame.size.width, height);
-    placeToursBgImageView.frame = CGRectMake(placeToursBgImageView.frame.origin.x, placeToursBgImageView.frame.origin.y, placeToursBgImageView.frame.size.width, height);
-    placeToursBgImageView.image = [[ImageManager defaultManager] placeTourBgImage];
     [placeToursTagButton setTitle:NSLS(@"景点") forState:UIControlStateNormal];
     [placeToursTagButton setBackgroundImage:[[ImageManager defaultManager] placeTourBtnBgImage] forState:UIControlStateNormal];
-
+    
+    
+    
+    NSMutableString *placesText = [[[NSMutableString alloc] init] autorelease];
     if ([dailySchedule.placeToursList count] == 0) {
-        UILabel *placeTourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, EDGE_TOP, placeToursBgImageView.frame.size.width, HEIGHT_PLACE_TOUR_LABEL)];
-        placeTourLabel.backgroundColor = [UIColor clearColor];
-        placeTourLabel.text = NSLS(@" 无相关信息");
-        placeTourLabel.font = [UIFont systemFontOfSize:13];
-        [placeToursBgImageView addSubview:placeTourLabel];
-        [placeTourLabel release];
+        [placesText appendString:NSLS(@" 无相关信息")];
+    }else {
+        int index = 0;
+        for (PlaceTour *placeTour in dailySchedule.placeToursList) {
+            [placesText appendString:placeTour.name];
+            if (index < [dailySchedule.placeToursList count] - 1) {
+                [placesText appendString:@" - "];
+            }
+            index ++;
+        }
     }
     
-    int i = 0;
-    for (PlaceTour *placeTour in dailySchedule.placeToursList) {
-        UILabel *placeTourLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, EDGE_TOP +HEIGHT_PLACE_TOUR_LABEL * (i++), placeToursBgImageView.frame.size.width, HEIGHT_PLACE_TOUR_LABEL)];
-        placeTourLabel.backgroundColor = [UIColor clearColor];
-        
-        if (placeTour.duration == nil && [placeTour.duration isEqualToString:@""]) {
-            placeTourLabel.text = placeTour.name;
-        }else {
-            placeTourLabel.text = [NSString stringWithFormat:(@" %@(%@)"), placeTour.name, placeTour.duration];
-        }
-
-        placeTourLabel.font = [UIFont systemFontOfSize:13];
-        [placeToursBgImageView addSubview:placeTourLabel];
-        placeTourLabel.textColor = COLOR_CONTENT;
-        [placeTourLabel release];
-    }
+    CGFloat widthLabel = 255;
+    CGSize placesTextSize = [placesText sizeWithFont:FONT_PLACE constrainedToSize:CGSizeMake(widthLabel, 1000) lineBreakMode:UILineBreakModeWordWrap];
+    CGFloat height = placesTextSize.height + EDGE_TOP + EDGE_BOTTOM;
+    
+    placeToursTagButton.frame = CGRectMake(placeToursTagButton.frame.origin.x, placeToursTagButton.frame.origin.y, placeToursTagButton.frame.size.width, height);
+    
+    placeToursBgImageView.frame = CGRectMake(placeToursBgImageView.frame.origin.x, placeToursBgImageView.frame.origin.y, placeToursBgImageView.frame.size.width, height);
+    placeToursBgImageView.image = [[ImageManager defaultManager] placeTourBgImage];
+    
+    UILabel *placesLabel = [[[UILabel alloc] initWithFrame:CGRectMake(2, EDGE_TOP, widthLabel, placesTextSize.height)] autorelease];
+    placesLabel.backgroundColor = [UIColor clearColor];
+    placesLabel.font = FONT_PLACE;
+    placesLabel.textColor = COLOR_CONTENT;
+    placesLabel.text = placesText;
+    placesLabel.numberOfLines = 0;
+    placesLabel.lineBreakMode = UILineBreakModeWordWrap;
+    [placeToursBgImageView addSubview:placesLabel];
+    
 
     CGFloat originY = placeToursTagButton.frame.origin.y + placeToursBgImageView.frame.size.height;
     diningTagButton.frame = CGRectMake(diningTagButton.frame.origin.x, originY, diningTagButton.frame.size.width, HEIGHT_DINING_LABEL);
     diningButton.frame = CGRectMake(diningButton.frame.origin.x, originY, diningButton.frame.size.width, HEIGHT_DINING_LABEL);
     [diningTagButton setTitle:NSLS(@"用餐") forState:UIControlStateNormal];
+    NSString *text;
     text = [NSString stringWithFormat:NSLS(@"早：%@ 午：%@ 晚：%@"), dailySchedule.breakfast, dailySchedule.lunch, dailySchedule.dinner];
     [diningButton setTitle:text forState:UIControlStateNormal];
     
