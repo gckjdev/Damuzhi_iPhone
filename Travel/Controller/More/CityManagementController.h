@@ -14,7 +14,7 @@
 #import "CityDownloadService.h"
 
 
-@interface CityManagementController : PPTableViewController <CityListCellDelegate, DownloadListCellDelegate, CityDownloadServiceDelegate>
+@interface CityManagementController : PPTableViewController <CityListCellDelegate, DownloadListCellDelegate, CityDownloadServiceDelegate, UISearchBarDelegate>
 {
     UITableView *_downloadTableView;
     NSArray *_downloadList;
@@ -23,11 +23,12 @@
 @property (nonatomic, retain) NSArray *downloadList;
 @property (nonatomic, retain) IBOutlet UITableView *downloadTableView;
 
+//@property (retain, nonatomic) IBOutlet UILabel *promptLabel;
+//@property (retain, nonatomic) IBOutlet UISearchBar *citySearchBar;
+
 @property (retain, nonatomic) IBOutlet UILabel *promptLabel;
 
 @property (retain, nonatomic) IBOutlet UISearchBar *citySearchBar;
-
-
 
 @property (retain, nonatomic) UIButton *cityListBtn;
 @property (retain, nonatomic) UIButton *downloadListBtn;
