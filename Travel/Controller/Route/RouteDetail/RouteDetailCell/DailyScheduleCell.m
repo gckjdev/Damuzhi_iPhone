@@ -64,7 +64,7 @@
 {
     NSMutableString *placesText = [[[NSMutableString alloc] init] autorelease];
     if ([dailySchedule.placeToursList count] == 0) {
-        [placesText appendString:NSLS(@" ")];
+        [placesText appendString:NSLS(@" 无相关信息")];
     }else {
         int index = 0;
         for (PlaceTour *placeTour in dailySchedule.placeToursList) {

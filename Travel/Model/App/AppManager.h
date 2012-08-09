@@ -95,8 +95,8 @@
 
 - (NSArray *)getServicePhoneList;
 
-- (NSString *)getCityGroupName:(int)groupId;
 - (NSArray *)getCityListInGroup:(int)groupId;
-- (NSArray *)getGroupCityDicList;
+- (NSDictionary *)getGroupCitysDicList;
+- (NSArray *)getGroupNameList;
 
 @end

@@ -13,6 +13,7 @@
 #import "ImageName.h"
 #import "PackageManager.h"
 #import "AppUtils.h"
+#import "StringUtil.h"
 
 #define PROMPT_LABEL_HEIGHT 30
 #define CITY_SEARCH_BAR_HEIGHT 44
@@ -24,6 +25,11 @@
 
 @interface CityManagementController ()
 
+@property (retain, nonatomic) NSDictionary *groupCitysDic;
+@property (retain, nonatomic) NSArray *groupNameList;
+@property (retain, nonatomic) NSArray *firstPinyinList;
+@property (nonatomic, retain) NSMutableArray *filteredListContent;
+
 @end
 
 @implementation CityManagementController 
@@ -32,11 +38,14 @@ static CityManagementController *_instance;
 
 @synthesize downloadList = _downloadList;
 @synthesize downloadTableView = _downloadTableView;
-
 @synthesize promptLabel = _promptLabel;
 @synthesize citySearchBar = _citySearchBar;
 @synthesize cityListBtn = _cityListBtn;
 @synthesize downloadListBtn = _downloadListBtn;
+@synthesize groupCitysDic = _groupCitysDic;
+@synthesize groupNameList = _groupNameList;
+@synthesize firstPinyinList = _firstPinyinList;
+@synthesize filteredListContent = _filteredListContent;
 
 
 + (CityManagementController*)getInstance
@@ -55,7 +64,27 @@ static CityManagementController *_instance;
     [_cityListBtn release];
     [_promptLabel release];
     [_citySearchBar release];
+    [_groupCitysDic release];
+    [_groupNameList release];
+    [_firstPinyinList release];
+    [_filteredListContent release];
     [super dealloc];
+}
+
+- (void)getCityData
+{
+    self.downloadList = [[PackageManager defaultManager] getLocalCityList];
+    self.groupCitysDic = [[AppManager defaultManager] getGroupCitysDicList];
+    self.groupNameList = [[AppManager defaultManager] getGroupNameList];
+    self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
+    
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    for (int index = 0 ; index < 26 ; index ++) {
+        char c = 'A';
+        NSString *letter = [NSString stringWithFormat:@"%c", c + index];
+        [mutableArray addObject:letter];
+    }
+    self.firstPinyinList = mutableArray;
 }
 
 - (void)viewDidLoad
@@ -63,10 +92,8 @@ static CityManagementController *_instance;
     [self setBackgroundImageName:IMAGE_CITY_MAIN_BOTTOM];
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view from its nib.
-    self.dataList = [[AppManager defaultManager] getCityList];
-    self.downloadList = [[PackageManager defaultManager] getLocalCityList];
-
+    
+    [self getCityData];
     
     [self addCityManageButtons];
     
@@ -100,6 +127,7 @@ static CityManagementController *_instance;
     _downloadTableView.tableFooterView = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
     
 }
+
 
 -(void)clickSearch:(id)sender
 {
@@ -135,26 +163,36 @@ static CityManagementController *_instance;
     return label;
 }
 
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar; 
+#pragma mark -
+#pragma mark Content Filtering
+- (void)filterContentForSearchText:(NSString*)searchText
 {
-    [self.citySearchBar setShowsCancelButton:YES animated:YES];
+	[self.filteredListContent removeAllObjects];
+    
+    for (NSString *group in _groupNameList) {
+        NSArray *citys = [_groupCitysDic objectForKey:group];
+        for (City *city in citys) {
+            int countryLocation = [city.countryName rangeOfString:searchText].location;
+            int cityLocation = [city.cityName rangeOfString:searchText].location;
+            
+            if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] || [searchText isEqualToString:[city.countryName pinyinFirstLetter]] || [searchText isEqualToString:[city.cityName pinyinFirstLetter]]) {
+                [self.filteredListContent addObject:city];
+            }
+            
+        }
+    }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    [self clickHideKeyboardButton:nil];
+    [self filterContentForSearchText:searchString];
+    
+    return YES;
 }
 
-- (void)clickHideKeyboardButton:(id)sender
-{
-    [self.citySearchBar resignFirstResponder];
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self.citySearchBar resignFirstResponder];
-}
 
 
 - (void)viewDidUnload
@@ -169,11 +207,7 @@ static CityManagementController *_instance;
 
 - (void)didReceiveMemoryWarning
 {
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-    
 }
 
 #define WIDTH_BUTTON  80
@@ -220,7 +254,6 @@ static CityManagementController *_instance;
 //    [barButton release];
 }
 
-
 #pragma mark - 
 #pragma mark: Table View Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -229,7 +262,11 @@ static CityManagementController *_instance;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;		// default implementation
+    if (tableView == dataTableView) {
+        return [_groupNameList count];
+    }else {
+        return 1;
+    }
 }
 
 // Customize the number of rows in the table view.
@@ -240,14 +277,50 @@ static CityManagementController *_instance;
         }
         else {
             _downloadTableView.tableFooterView.hidden = YES;
-
         }
-        
         return [_downloadList count];
     }
-    else{
-        return [dataList count];			// default implementation
+    else if (tableView == dataTableView){
+        NSString *groupName = [_groupNameList objectAtIndex:section];
+        NSArray *citys = [_groupCitysDic valueForKey:groupName];
+        return [citys count];
+    }else if (tableView == self.searchDisplayController.searchResultsTableView){
+        return [_filteredListContent count];
+    }else {
+        return 0;
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (tableView == dataTableView) {
+        NSString *groupName = [_groupNameList objectAtIndex:section];
+        return groupName;
+    }else {
+        return nil;
+    }
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if (tableView == self.dataTableView) {
+        return _firstPinyinList;
+    }else {
+        return nil;
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    int reSection = 0;
+    for (NSString *groupName in _groupNameList) {
+        if ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]]) {
+            break;
+        }
+        reSection ++;
+    }
+    
+    return reSection;
 }
 
 
@@ -292,15 +365,19 @@ static CityManagementController *_instance;
             [view release];
         }
         
-        // set text label
-        int row = [indexPath row];	
-        int count = [dataList count];
-        if (row >= count){
-            PPDebug(@"[WARN] cellForRowAtIndexPath, row(%d) > data list total number(%d)", row, count);
-            return cell;
+        
+        City *city;
+        if (theTableView == dataTableView) {
+            NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
+            NSArray *citys = [_groupCitysDic valueForKey:groupName];
+            city = [citys objectAtIndex:indexPath.row];
+        }else if (theTableView == self.searchDisplayController.searchResultsTableView){
+            city = [_filteredListContent objectAtIndex:indexPath.row];
         }
+        
+        
         CityListCell* cityCell = (CityListCell*)cell;
-        [cityCell setCellData:[self.dataList objectAtIndex:row]];
+        [cityCell setCellData:city];
         cityCell.cityListCellDelegate = self;
     }
 
@@ -309,40 +386,19 @@ static CityManagementController *_instance;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    City *city;
     if (tableView == self.dataTableView) {
-        City *city = [self.dataList objectAtIndex:indexPath.row];
-        [[AppManager defaultManager] setCurrentCityId:city.cityId];
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        [self didSelectCurrendCity:[dataList objectAtIndex:indexPath.row]];
+        NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
+        NSArray *citys = [_groupCitysDic valueForKey:groupName];
+        city = [citys objectAtIndex:indexPath.row];
+    }else {
+        city = [_filteredListContent objectAtIndex:indexPath.row];
     }
+   
+    [[AppManager defaultManager] setCurrentCityId:city.cityId];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self didSelectCurrendCity:city];
 }
-
-
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-//    
-//    
-//    NSMutableArray *tempArray = [NSMutableArray array];
-//    NSString *tempString;
-//    [tempArray addObject:@"热门"];
-//    for(int i = 0; i < 26; i++)
-//    {
-//        tempString = [NSString stringWithFormat:@"%c", 'A' + i];
-//        [tempArray addObject:tempString];
-//    }
-//    return tempArray;
-//}
-
-//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    
-//    NSMutableArray *testArray = [NSMutableArray array];
-//    [testArray addObject:@"haha1"];
-//    [testArray addObject:@"haha2"];
-//    [testArray addObject:@"haha3"];
-//    
-//    NSString *key = [testArray objectAtIndex:section];
-//    return key;
-//}
 
 
 

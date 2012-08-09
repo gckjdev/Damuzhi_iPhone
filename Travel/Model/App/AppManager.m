@@ -18,6 +18,7 @@
 #import "PlaceUtils.h"
 #import "RouteUtils.h"
 #import "PlaceItemList.h"
+#import "StringUtil.h"
 
 #import "TouristRoute.pb.h"
 
@@ -1061,7 +1062,6 @@ static AppManager* _defaultAppManager = nil;
 }
 
 
-
 - (NSString *)getCityGroupName:(int)groupId
 {
     for (CityGroup *group in _app.cityGroupsList) {
@@ -1085,15 +1085,26 @@ static AppManager* _defaultAppManager = nil;
     return cityList;
 }
 
-- (NSArray *)getGroupCityDicList
+- (NSDictionary *)getGroupCitysDicList
 {
-    NSMutableDictionary *dataList = [NSMutableDictionary dictionary];
-//    for() {
-//        <#statements#>
-//    }
-    return nil;
+    NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc] init] autorelease];
+    for (CityGroup *cityGroup in _app.cityGroupsList) {
+        NSArray *citys = [self getCityListInGroup:cityGroup.groupId];
+        [dictionary setValue:citys forKey:cityGroup.name];
+    }
+    
+    return dictionary;
 }
 
+
+- (NSArray *)getGroupNameList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    for (CityGroup *cityGroup in _app.cityGroupsList) {
+        [mutableArray addObject:cityGroup.name];
+    }
+    return mutableArray;
+}
 
 
 @end

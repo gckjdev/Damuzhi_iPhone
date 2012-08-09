@@ -14,7 +14,7 @@
 #import "CityDownloadService.h"
 
 
-@interface CityManagementController : PPTableViewController <CityListCellDelegate, DownloadListCellDelegate, CityDownloadServiceDelegate, UISearchBarDelegate>
+@interface CityManagementController : PPTableViewController <CityListCellDelegate, DownloadListCellDelegate, CityDownloadServiceDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 {
     UITableView *_downloadTableView;
     NSArray *_downloadList;
