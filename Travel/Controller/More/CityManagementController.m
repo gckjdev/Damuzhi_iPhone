@@ -481,7 +481,7 @@ static CityManagementController *_instance;
     [self killTimer];
     
     PPDebug(@"download failed, error = %@", error.description);
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据下载失败"), city.countryName, city.cityName];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据下载暂停"), city.countryName, city.cityName];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
@@ -527,7 +527,7 @@ static CityManagementController *_instance;
     [self killTimer];
     
     PPDebug(@"update failed, error = %@", error.description);
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据更新失败"), city.countryName, city.cityName];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据更新暂停"), city.countryName, city.cityName];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
