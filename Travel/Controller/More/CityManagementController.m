@@ -396,6 +396,7 @@ static CityManagementController *_instance;
     }
    
     [[AppManager defaultManager] setCurrentCityId:city.cityId];
+    self.searchDisplayController.active = NO;
     [self.navigationController popToRootViewControllerAnimated:YES];
     [self didSelectCurrendCity:city];
 }
@@ -499,24 +500,28 @@ static CityManagementController *_instance;
     NSString *message = [NSString stringWithFormat:NSLS(@"已设置查看%@.%@!"), city.countryName, city.cityName];
     [self popupMessage:message title:NSLS(@"提示")];
     [self.dataTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didStartDownload:(City*)city
 {
     [self createTimer];
     [dataTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didCancelDownload:(City*)city
 {
     [self killTimer];
     [dataTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didPauseDownload:(City*)city
 {
     [self killTimer];
     [dataTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didClickOnlineBtn:(City*)city
@@ -528,6 +533,7 @@ static CityManagementController *_instance;
 {
     [self killTimer];
     [dataTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
     
     [[CityDownloadService defaultService] UnzipCityDataAsynchronous:city.cityId unzipDelegate:self];
 }
