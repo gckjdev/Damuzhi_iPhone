@@ -20,7 +20,7 @@
     
     [controller addSegmentViewWith:NSLS(@"人均消费") description:[PlaceUtils getDetailPrice:place]];
     
-    [controller addSegmentViewWith: NSLS(@"推荐理由") description:[place.keywordsList componentsJoinedByString:@"、"]];
+    //[controller addSegmentViewWith: NSLS(@"推荐理由") description:[place.keywordsList componentsJoinedByString:@"、"]];
     
     [controller addSegmentViewWith: NSLS(@"交通信息") description:[place transportation]];
     
