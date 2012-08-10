@@ -68,7 +68,12 @@
     }else {
         int index = 0;
         for (PlaceTour *placeTour in dailySchedule.placeToursList) {
-            [placesText appendString:placeTour.name];
+            if ([placeTour.name length] == 0) {
+                [placesText appendString:@" "];
+            }else {
+                [placesText appendString:placeTour.name];
+            }
+            
             if (index < [dailySchedule.placeToursList count] - 1) {
                 [placesText appendString:@" - "];
             }
@@ -106,7 +111,12 @@
     }else {
         int index = 0;
         for (PlaceTour *placeTour in dailySchedule.placeToursList) {
-            [placesText appendString:placeTour.name];
+            if ([placeTour.name length] == 0) {
+                [placesText appendString:@" "];
+            }else {
+                [placesText appendString:placeTour.name];
+            }
+            
             if (index < [dailySchedule.placeToursList count] - 1) {
                 [placesText appendString:@" - "];
             }
