@@ -216,6 +216,7 @@
     if ([_downloadListCellDelegate respondsToSelector:@selector(didDeleteCity:)]) {
         if (_downloadListCellDelegate && [_downloadListCellDelegate respondsToSelector:@selector(didDeleteCity:)]) {
             [_downloadListCellDelegate didDeleteCity:_city];
+            
         }
     }
 }

@@ -1073,6 +1073,7 @@ static AppManager* _defaultAppManager = nil;
 }
 
 
+
 - (NSArray *)getCityListInGroup:(int)groupId
 {
     NSMutableArray *cityList = [NSMutableArray array];
@@ -1096,7 +1097,6 @@ static AppManager* _defaultAppManager = nil;
     return dictionary;
 }
 
-
 - (NSArray *)getGroupNameList
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
@@ -1105,6 +1105,5 @@ static AppManager* _defaultAppManager = nil;
     }
     return mutableArray;
 }
-
 
 @end
