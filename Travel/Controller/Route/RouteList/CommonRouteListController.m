@@ -102,6 +102,9 @@
         
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
+        self.footerRefreshType = LiftAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
         
         self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getRouteSelectedItems:[_filterHandler getRouteType]];
     }
@@ -242,6 +245,7 @@
         [self hideTipsOnTableView];
     }
     
+    self.dataTableView.tableFooterView.hidden = NO;
     [dataTableView reloadData];
 }
 
