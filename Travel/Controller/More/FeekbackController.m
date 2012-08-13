@@ -162,12 +162,12 @@
         return;
     }
     
-    if ([contact compare:@""] == 0) {
+    if ([contact compare:@""] == 0 && ![[UserManager defaultManager] isLogin]) {
         [self popupMessage:NSLS(@"请输入联系方式") title:nil];
         return;
     }
     
-    if (!((NSStringIsValidEmail(contact)) || (NSStringIsValidPhone(contact)))) {
+    if ((!((NSStringIsValidEmail(contact)) || (NSStringIsValidPhone(contact)))) && ![[UserManager defaultManager] isLogin]) {
         [self popupMessage:NSLS(@"请输入正确的Email或手机号码") title:nil];
         return;
     }
