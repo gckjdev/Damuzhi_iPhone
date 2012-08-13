@@ -13,6 +13,7 @@
 
 @protocol  DownloadListCellDelegate <NSObject>
 @optional
+
 - (void)didDeleteCity:(City*)city;
 - (void)didStartUpdate:(City*)city;
 - (void)didCancelUpdate:(City*)city;

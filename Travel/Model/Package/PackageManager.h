@@ -19,6 +19,8 @@
 
 - (NSString*)getCityVersion:(int)cityId;
 - (LanguageType)getLanguageType:(int)cityId;
-- (NSArray*)getLocalCityList;
+- (NSArray*)getDownLoadLocalCityList;
+- (NSArray*)getDownLoadCountryGroupList;
+- (NSMutableArray *)getdownLoadCityListFromCountry:(NSString *) countryName;
 
 @end
