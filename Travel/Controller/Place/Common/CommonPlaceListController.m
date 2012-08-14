@@ -259,10 +259,11 @@
     // Update place count in navigation bar.
     [self updateNavigationBarTitle];
     
+    
+    self.dataTableView.tableFooterView.hidden = NO;
+    
     // Reload place list.
     [_placeListController setPlaceList:_placeList];
-    
-
 }
 
 - (void)didPullDownToRefresh

@@ -102,6 +102,9 @@
         
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
+        self.footerRefreshType = LiftAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
         
         self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getRouteSelectedItems:[_filterHandler getRouteType]];
     }
@@ -205,44 +208,43 @@
                    list:(NSArray *)routeList 
              statistics:(RouteStatistics *)statistics
 {
-    [self dataSourceDidFinishLoadingNewData];
-    [self dataSourceDidFinishLoadingMoreData];
-    
     if (_routeStatistics == nil) {
         self.routeStatistics = statistics;
     }
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
-        return;
+    } else {
+        if (_start == 0) {
+            self.noMoreData = NO;
+            self.dataList = [NSArray array];
+        }
+        
+        self.start += [routeList count];
+        self.totalCount = totalCount;
+        
+        self.dataList = [dataList arrayByAddingObjectsFromArray:routeList];     
+        
+        
+        if (_start >= totalCount) {
+            self.noMoreData = YES;
+        }
+        
+        if (_hasStatisticsView) {
+            [self updateStatisticsData];
+        }
+        
+        if ([self.dataList count] == 0) {
+            [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+        }else {
+            [self hideTipsOnTableView];
+        }
+        
+        [dataTableView reloadData];
     }
     
-    if (_start == 0) {
-        self.noMoreData = NO;
-        self.dataList = [NSArray array];
-    }
-    
-    self.start += [routeList count];
-    self.totalCount = totalCount;
-    
-    self.dataList = [dataList arrayByAddingObjectsFromArray:routeList];     
-    
-    
-    if (_start >= totalCount) {
-        self.noMoreData = YES;
-    }
-    
-    if (_hasStatisticsView) {
-        [self updateStatisticsData];
-    }
-    
-    if ([self.dataList count] == 0) {
-        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
-    }else {
-        [self hideTipsOnTableView];
-    }
-    
-    [dataTableView reloadData];
+    [self dataSourceDidFinishLoadingNewData];
+    [self dataSourceDidFinishLoadingMoreData];
 }
 
 #pragma mark - TableView delegate
@@ -377,6 +379,8 @@
 - (void)fechMoreRouteList
 {
     if (_start >= _totalCount) {
+        self.noMoreData = YES;
+        [self dataSourceDidFinishLoadingMoreData];
         return;
     }
     
