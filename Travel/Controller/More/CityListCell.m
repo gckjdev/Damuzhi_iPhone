@@ -16,7 +16,7 @@
 #import "CityDownloadService.h"
 #import "SSZipArchive.h"
 #import "AppConstants.h"
-
+#import "PPViewController.h"
 @implementation CityListCell
 
 @synthesize city = _city;
@@ -243,10 +243,13 @@
 }
 
 - (IBAction)clickPauseBtn:(id)sender {
+    PPViewController *pointer = [[[PPViewController alloc]init] autorelease];
     UIButton *button = (UIButton *)sender;
     button.selected = !button.selected;
     if (button.selected) {
+        [pointer popupMessage:@"已暂停" title:nil];
         [self pause];
+        
     }
     else {
         //TODO, resume download request
@@ -255,6 +258,7 @@
             [AppUtils showAlertViewWhenUsingCellNetworkForDownloadWithTag:ALERT_USING_CELL_NEWORK delegate:self];
         }
         else {
+            [pointer popupMessage:@"开始下载" title:nil];
             [self download];
         }
     }
@@ -282,13 +286,26 @@
 }
 
 - (IBAction)clickCancel:(id)sender {
-    [[CityDownloadService defaultService] cancel:_city];
     
-    self.pauseDownloadBtn.selected = NO;
-    if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
-        [_cityListCellDelegate didCancelDownload:_city];
-    }
+    
+    UIAlertView *alert = [[[UIAlertView alloc]initWithTitle:nil message:@"是否取消下载" delegate:self cancelButtonTitle:@"是" otherButtonTitles:@"否", nil] autorelease];
+    [alert show];
 }
+
+//delegate method
+- (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
+    if ([str1 isEqualToString:@"是"])
+    {
+        [[CityDownloadService defaultService] cancel:_city];
+        self.pauseDownloadBtn.selected = NO;
+        if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
+            [_cityListCellDelegate didCancelDownload:_city];
+        } 
+    }
+
+}  
 
 - (IBAction)clickOnlineBtn:(id)sender {
     [self selectCurrentCity];
