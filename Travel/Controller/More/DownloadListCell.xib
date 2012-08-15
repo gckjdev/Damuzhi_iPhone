@@ -48,6 +48,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 7}, {190, 20}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="969795915"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -80,8 +81,9 @@
 							<object class="IBUIImageView" id="608224041">
 								<reference key="NSNextResponder" ref="522195839"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{16, 13}, {44, 26}}</string>
+								<string key="NSFrame">{{10, 14}, {51, 28}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="39680355"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -94,8 +96,9 @@
 							<object class="IBUIButton" id="973367149">
 								<reference key="NSNextResponder" ref="522195839"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{13, 4}, {50, 44}}</string>
+								<string key="NSFrame">{{0, 7}, {66, 43}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="608224041"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="516861022">
@@ -111,7 +114,7 @@
 								<double key="IBUIContentEdgeInsets.bottom">0.0</double>
 								<double key="IBUIContentEdgeInsets.left">1</double>
 								<double key="IBUIContentEdgeInsets.right">0.0</double>
-								<string key="IBUINormalTitle">删除</string>
+								<string key="IBUINormalTitle">       删除</string>
 								<reference key="IBUIHighlightedTitleColor" ref="974380483"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -136,6 +139,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{280, 7}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="700784025"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -164,6 +168,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 27}, {66, 21}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="934698341"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -191,6 +196,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{74, 34}, {90, 9}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="964201640"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -206,6 +212,7 @@
 								<int key="NSvFlags">319</int>
 								<string key="NSFrame">{{194, 25}, {34, 28}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="766675987"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -234,6 +241,8 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{282, 17}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -244,6 +253,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{169, 26}, {29, 22}}</string>
 								<reference key="NSSuperview" ref="522195839"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="980023434"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -263,6 +273,7 @@
 						</array>
 						<string key="NSFrameSize">{320, 54}</string>
 						<reference key="NSSuperview" ref="1065211855"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="973367149"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<reference key="IBUIBackgroundColor" ref="516861022"/>
@@ -275,6 +286,7 @@
 				</array>
 				<string key="NSFrameSize">{320, 55}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="522195839"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -400,8 +412,6 @@
 						<int key="objectID">4</int>
 						<reference key="object" ref="1065211855"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="39680355"/>
-							<reference ref="973367149"/>
 							<reference ref="969795915"/>
 							<reference ref="934698341"/>
 							<reference ref="980023434"/>
@@ -409,6 +419,8 @@
 							<reference ref="964201640"/>
 							<reference ref="608224041"/>
 							<reference ref="766675987"/>
+							<reference ref="39680355"/>
+							<reference ref="973367149"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -421,6 +433,7 @@
 						<int key="objectID">6</int>
 						<reference key="object" ref="973367149"/>
 						<reference key="parent" ref="1065211855"/>
+						<string key="objectName">Button -       删除</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">11</int>
@@ -476,6 +489,7 @@
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="6.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -483,7 +497,70 @@
 			<nil key="sourceID"/>
 			<int key="maxID">40</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">DownloadListCell</string>
+					<string key="superclassName">PPTableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="activityIndicator">UIActivityIndicatorView</string>
+						<string key="cityNameLabel">UILabel</string>
+						<string key="dataSizeLabel">UILabel</string>
+						<string key="deleteButton">UIButton</string>
+						<string key="pauseBtn">UIButton</string>
+						<string key="updateButton">UIButton</string>
+						<string key="updatePercentLabel">UILabel</string>
+						<string key="updateProgressView">UIProgressView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="activityIndicator">
+							<string key="name">activityIndicator</string>
+							<string key="candidateClassName">UIActivityIndicatorView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="cityNameLabel">
+							<string key="name">cityNameLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="dataSizeLabel">
+							<string key="name">dataSizeLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deleteButton">
+							<string key="name">deleteButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="pauseBtn">
+							<string key="name">pauseBtn</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="updateButton">
+							<string key="name">updateButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="updatePercentLabel">
+							<string key="name">updatePercentLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="updateProgressView">
+							<string key="name">updateProgressView</string>
+							<string key="candidateClassName">UIProgressView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/DownloadListCell.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PPTableViewCell</string>
+					<string key="superclassName">UITableViewCell</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PPTableViewCell.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
@@ -493,7 +570,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="del@2x.png">{88, 52}</string>
+			<string key="del@2x.png">{106, 52}</string>
 			<string key="play.png">{16, 16}</string>
 			<string key="stop.png">{16, 16}</string>
 		</dictionary>

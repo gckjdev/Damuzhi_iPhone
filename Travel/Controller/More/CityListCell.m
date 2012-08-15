@@ -160,7 +160,7 @@
     
     downloadButton.hidden = YES;
     cancelDownloadBtn.hidden = NO;
-    onlineButton.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -173,10 +173,10 @@
     dataSizeLabel.hidden = YES;
     downloadProgressView.hidden = NO;
     downloadPersentLabel.hidden = NO;
-    pauseDownloadBtn.hidden = NO;
+    pauseDownloadBtn.hidden = YES;
     
-    downloadButton.hidden = YES;
-    cancelDownloadBtn.hidden = NO;
+    downloadButton.hidden = NO;
+    cancelDownloadBtn.hidden = YES;
     onlineButton.hidden = NO;
     
     downloadDoneLabel.hidden = YES;
