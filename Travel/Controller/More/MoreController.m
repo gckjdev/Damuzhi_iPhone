@@ -48,7 +48,7 @@
 #define ORDER_NON_MEMBER    NSLS(@"非会员订单查询")
 #define USER_INFO           NSLS(@"个人资料")
 #define ORDER_MANAGER       NSLS(@"订单管理")
-#define MY_FAVORITE         NSLS(@"我的收藏")
+//#define MY_FAVORITE         NSLS(@"我的收藏")
 #define SHARE               NSLS(@"推荐给好友")
 
 
@@ -141,7 +141,7 @@
     
     [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
     
-    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
+//    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
     
     [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
@@ -358,9 +358,9 @@
     else if ([title isEqualToString:USER_INFO]) {
         [self showUserInfo];
     }
-    else if ([title isEqualToString:MY_FAVORITE]) {
-        [self showFavorite];
-    }
+//    else if ([title isEqualToString:MY_FAVORITE]) {
+//        [self showFavorite];
+//    }
     else if ([title isEqualToString:SHARE]) {
         [self showShare];
     }
@@ -397,9 +397,9 @@
 
 - (void)showFavorite
 {
-    FavoriteController *fc = [[FavoriteController alloc] init];
-    [self.navigationController pushViewController:fc animated:YES];
-    [fc release];
+//    FavoriteController *fc = [[FavoriteController alloc] init];
+//    [self.navigationController pushViewController:fc animated:YES];
+//    [fc release];
 }
 
 - (void)showShare
