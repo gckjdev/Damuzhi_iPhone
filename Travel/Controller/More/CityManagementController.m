@@ -95,6 +95,7 @@ static CityManagementController *_instance;
     self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
 
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    [mutableArray addObject:@"热门"];
     for (int index = 0 ; index < 26 ; index ++) 
     {
         char c = 'A';
@@ -289,18 +290,12 @@ static CityManagementController *_instance;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
  
     if (tableView == self.downloadTableView) {
-        if ([_downloadList count] == 0) {         
-            _downloadTableView.tableFooterView.hidden = NO;
-        }
-        else {
-            _downloadTableView.tableFooterView.hidden = YES;
-        }
-        
         NSArray *downLoadCityListFromCountry = [[PackageManager defaultManager] getdownLoadCityListFromCountry:[self.countryNameList objectAtIndex:section]];
         return [downLoadCityListFromCountry count];
     }
     else if (tableView == dataTableView){
         NSString *groupName = [_groupNameList objectAtIndex:section];
+//        NSLog(@"groupName is %@", groupName);
         NSArray *citys = [_groupCitysDic valueForKey:groupName];
         return [citys count];
     }else if (tableView == self.searchDisplayController.searchResultsTableView){
