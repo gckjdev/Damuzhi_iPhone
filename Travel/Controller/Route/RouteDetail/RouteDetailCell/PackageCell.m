@@ -156,7 +156,7 @@
     
     if (count == 0) {
         UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
-        UIImage *image = [[ImageManager defaultManager] accommodationBgImage:YES];
+        UIImage *image = [UIImage imageNamed:@"line_table_6@2x.png"];
         [button setBackgroundImage:image forState:UIControlStateNormal];
         [button setBackgroundColor:[UIColor clearColor]];
         [button setTitle:NSLS(@"暂没有信息") forState:UIControlStateNormal];
