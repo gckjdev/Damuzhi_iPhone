@@ -468,12 +468,16 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   BOOL hasName_:1;
   BOOL hasNote_:1;
   BOOL hasPrice_:1;
+  BOOL hasFlightNote_:1;
+  BOOL hasAccommodationNote_:1;
   BOOL hasDepartFlight_:1;
   BOOL hasReturnFlight_:1;
   int32_t packageId;
   NSString* name;
   NSString* note;
   NSString* price;
+  NSString* flightNote;
+  NSString* accommodationNote;
   Flight* departFlight;
   Flight* returnFlight;
   NSMutableArray* mutableAccommodationsList;
@@ -484,12 +488,16 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (BOOL) hasPrice;
 - (BOOL) hasDepartFlight;
 - (BOOL) hasReturnFlight;
+- (BOOL) hasFlightNote;
+- (BOOL) hasAccommodationNote;
 @property (readonly) int32_t packageId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* note;
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) Flight* departFlight;
 @property (readonly, retain) Flight* returnFlight;
+@property (readonly, retain) NSString* flightNote;
+@property (readonly, retain) NSString* accommodationNote;
 - (NSArray*) accommodationsList;
 - (Accommodation*) accommodationsAtIndex:(int32_t) index;
 
@@ -567,6 +575,16 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (TravelPackage_Builder*) addAccommodations:(Accommodation*) value;
 - (TravelPackage_Builder*) addAllAccommodations:(NSArray*) values;
 - (TravelPackage_Builder*) clearAccommodationsList;
+
+- (BOOL) hasFlightNote;
+- (NSString*) flightNote;
+- (TravelPackage_Builder*) setFlightNote:(NSString*) value;
+- (TravelPackage_Builder*) clearFlightNote;
+
+- (BOOL) hasAccommodationNote;
+- (NSString*) accommodationNote;
+- (TravelPackage_Builder*) setAccommodationNote:(NSString*) value;
+- (TravelPackage_Builder*) clearAccommodationNote;
 @end
 
 @interface Booking : PBGeneratedMessage {

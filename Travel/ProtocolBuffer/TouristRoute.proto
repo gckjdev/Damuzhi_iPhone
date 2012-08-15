@@ -62,6 +62,9 @@ message TravelPackage {
   optional Flight departFlight = 10;            // 出发航班
   optional Flight returnFlight = 11;            // 回程航班
   repeated Accommodation accommodations = 15;	// 入住
+  
+  optional string flightNote = 50;              // 当没有具体航班时的显示信息
+  optional string accommodationNote = 51;       // 当没有酒店信息时的显示信息    
 }
 
 enum BookingStatus{
