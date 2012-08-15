@@ -1979,6 +1979,8 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
 @property (retain) Flight* departFlight;
 @property (retain) Flight* returnFlight;
 @property (retain) NSMutableArray* mutableAccommodationsList;
+@property (retain) NSString* flightNote;
+@property (retain) NSString* accommodationNote;
 @end
 
 @implementation TravelPackage
@@ -2026,6 +2028,20 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
 }
 @synthesize returnFlight;
 @synthesize mutableAccommodationsList;
+- (BOOL) hasFlightNote {
+  return !!hasFlightNote_;
+}
+- (void) setHasFlightNote:(BOOL) value {
+  hasFlightNote_ = !!value;
+}
+@synthesize flightNote;
+- (BOOL) hasAccommodationNote {
+  return !!hasAccommodationNote_;
+}
+- (void) setHasAccommodationNote:(BOOL) value {
+  hasAccommodationNote_ = !!value;
+}
+@synthesize accommodationNote;
 - (void) dealloc {
   self.name = nil;
   self.note = nil;
@@ -2033,6 +2049,8 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
   self.departFlight = nil;
   self.returnFlight = nil;
   self.mutableAccommodationsList = nil;
+  self.flightNote = nil;
+  self.accommodationNote = nil;
   [super dealloc];
 }
 - (id) init {
@@ -2043,6 +2061,8 @@ static DailySchedule* defaultDailyScheduleInstance = nil;
     self.price = @"";
     self.departFlight = [Flight defaultInstance];
     self.returnFlight = [Flight defaultInstance];
+    self.flightNote = @"";
+    self.accommodationNote = @"";
   }
   return self;
 }
@@ -2111,6 +2131,12 @@ static TravelPackage* defaultTravelPackageInstance = nil;
   for (Accommodation* element in self.accommodationsList) {
     [output writeMessage:15 value:element];
   }
+  if (self.hasFlightNote) {
+    [output writeString:50 value:self.flightNote];
+  }
+  if (self.hasAccommodationNote) {
+    [output writeString:51 value:self.accommodationNote];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -2140,6 +2166,12 @@ static TravelPackage* defaultTravelPackageInstance = nil;
   }
   for (Accommodation* element in self.accommodationsList) {
     size += computeMessageSize(15, element);
+  }
+  if (self.hasFlightNote) {
+    size += computeStringSize(50, self.flightNote);
+  }
+  if (self.hasAccommodationNote) {
+    size += computeStringSize(51, self.accommodationNote);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -2240,6 +2272,12 @@ static TravelPackage* defaultTravelPackageInstance = nil;
     }
     [result.mutableAccommodationsList addObjectsFromArray:other.mutableAccommodationsList];
   }
+  if (other.hasFlightNote) {
+    [self setFlightNote:other.flightNote];
+  }
+  if (other.hasAccommodationNote) {
+    [self setAccommodationNote:other.accommodationNote];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -2299,6 +2337,14 @@ static TravelPackage* defaultTravelPackageInstance = nil;
         Accommodation_Builder* subBuilder = [Accommodation builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addAccommodations:[subBuilder buildPartial]];
+        break;
+      }
+      case 402: {
+        [self setFlightNote:[input readString]];
+        break;
+      }
+      case 410: {
+        [self setAccommodationNote:[input readString]];
         break;
       }
     }
@@ -2455,6 +2501,38 @@ static TravelPackage* defaultTravelPackageInstance = nil;
     result.mutableAccommodationsList = [NSMutableArray array];
   }
   [result.mutableAccommodationsList addObject:value];
+  return self;
+}
+- (BOOL) hasFlightNote {
+  return result.hasFlightNote;
+}
+- (NSString*) flightNote {
+  return result.flightNote;
+}
+- (TravelPackage_Builder*) setFlightNote:(NSString*) value {
+  result.hasFlightNote = YES;
+  result.flightNote = value;
+  return self;
+}
+- (TravelPackage_Builder*) clearFlightNote {
+  result.hasFlightNote = NO;
+  result.flightNote = @"";
+  return self;
+}
+- (BOOL) hasAccommodationNote {
+  return result.hasAccommodationNote;
+}
+- (NSString*) accommodationNote {
+  return result.accommodationNote;
+}
+- (TravelPackage_Builder*) setAccommodationNote:(NSString*) value {
+  result.hasAccommodationNote = YES;
+  result.accommodationNote = value;
+  return self;
+}
+- (TravelPackage_Builder*) clearAccommodationNote {
+  result.hasAccommodationNote = NO;
+  result.accommodationNote = @"";
   return self;
 }
 @end
