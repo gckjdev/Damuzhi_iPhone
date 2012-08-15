@@ -13,9 +13,11 @@
 #import "LocaleUtils.h"
 #import "TimeUtils.h"
 #import "TouristRoute.pb.h"
-#import "MonthViewController.h"
 
 @interface BookingCell ()
+{
+    BOOL _showInView;
+}
 @property (retain, nonatomic) MonthViewController *monthViewcontroller;
 
 @end
@@ -46,11 +48,19 @@
     [super dealloc];
 }
 
-- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings routeType:(int)routeType
+//- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings routeType:(int)routeType
+//{    
+//    
+//    self.monthViewcontroller = [[[MonthViewController alloc] initWithBookings:bookings routeType:routeType] autorelease];
+//    [_monthViewcontroller showInView:self.monthHolderView];
+//}
+
+- (void)setCellData:(MonthViewController *)monthViewController
 {    
-    
-    self.monthViewcontroller = [[[MonthViewController alloc] initWithBookings:bookings routeType:routeType] autorelease];
-    [_monthViewcontroller showInView:self.monthHolderView];
+    if (!_showInView) {
+        _showInView = YES;
+        [monthViewController showInView:self.monthHolderView];
+    }
 }
 
 @end

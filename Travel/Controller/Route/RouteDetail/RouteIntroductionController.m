@@ -63,6 +63,8 @@
 
 @property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
 
+@property (assign, nonatomic) CGRect bookingCellFrame;
+@property (retain, nonatomic) MonthViewController *monthViewController;
 
 - (RankView *)headerRankView;
 
@@ -85,6 +87,8 @@
 //@synthesize agencyNameLabel;
 @synthesize agencyInfoHolderView;
 @synthesize followButton;
+@synthesize bookingCellFrame = _bookingCellFrame;
+@synthesize monthViewController = _monthViewController;
 
 - (void)dealloc {
     [_sectionStat release];
@@ -97,6 +101,7 @@
     [followButton release];
     [_sectionHeaderViews release];
     [_departCityLabel release];
+    [_monthViewController release];
     [super dealloc];
 }
 
@@ -128,6 +133,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
+    
+    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
+    self.monthViewController.aDelegate = self;
+    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+                                                                           date:[NSDate date]
+                                                           hasMonthYearAndArrow:NO 
+                                                               hasTopBackground:NO
+                                                                      hasShadow:NO 
+                                                          userInteractionEnable:YES] autorelease];
+    self.bookingCellFrame = view.frame;
     
     self.sectionHeaderViews = [NSMutableDictionary dictionary];
     
@@ -463,15 +478,24 @@
     BookingCell *bookingCell = (BookingCell *)cell;
 //    bookingCell.bookingBgImageView.image = [[ImageManager defaultManager] bookingBgImage];
     
-    [bookingCell setCellData:NO bookings:_route.bookingsList routeType:_routeType];
+//    [bookingCell setCellData:NO bookings:_route.bookingsList routeType:_routeType];
+    [bookingCell setCellData:_monthViewController];
     
     return cell;
 }
 
 - (CGFloat)cellHeightForBookingWithIndex:(NSIndexPath *)indexPath
-{    
-    return [BookingCell getCellHeight];
+{   
+    return _bookingCellFrame.size.height;    
+//    return [BookingCell getCellHeight];
 }
+
+- (void)didChangeFrame:(CGRect)frame
+{
+    self.bookingCellFrame = frame;
+    [dataTableView reloadData];
+}
+
 
 - (UITableViewCell *)cellForRelatedPlaceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {

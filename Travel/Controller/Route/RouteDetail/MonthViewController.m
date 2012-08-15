@@ -23,9 +23,9 @@
     int _routeType;
 }
 
-@property (retain, nonatomic) TKCalendarMonthView *monthView;
 @property (retain, nonatomic) NSArray *bookings;
 @property (retain, nonatomic) NSMutableArray *dataArray;
+//@property (retain, nonatomic) NSDate *date;
 
 @end
 
@@ -40,7 +40,7 @@
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
 @synthesize dataArray = _dataArray;
-
+//@synthesize date = _date;
 - (void)dealloc {
     [_monthView release];
     [_bookings release];
@@ -51,6 +51,7 @@
     [_monthHolderView release];
     [_aBgView release];
     [_buttonHolderView release];
+//    [_date release];
     [super dealloc];
 }
 
@@ -123,6 +124,12 @@
     [_monthView performSelector:@selector(changeMonth:) withObject:button];
     self.currentMonthButton.selected = YES;
     self.nextMonthButton.selected = NO;
+    
+    PPDebug(@"height: %f", self.monthView.frame.size.height);
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (IBAction)clickNextMonthButton:(id)sender {
@@ -135,6 +142,13 @@
     
     self.nextMonthButton.selected = YES;
     self.currentMonthButton.selected = NO;
+    
+    PPDebug(@"height: %f", self.monthView.frame.size.height);
+
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (void) generateRandomDataForStartDate:(NSDate*)start endDate:(NSDate*)end{
