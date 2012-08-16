@@ -81,12 +81,23 @@
     flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
     flightLabel.backgroundColor = [UIColor clearColor];
     flightLabel.tag = TAG_LIGHTLABEL;
-    
-    flightLabel.attributedText = aString;
-    [_flightButton addSubview:flightLabel];
-    
-    UIImageView *accessoryImage = [self createAccessoryImage];
-    [_flightButton addSubview:accessoryImage];
+    if (_package.returnFlight.flightId == 0 && _package.departFlight.flightId == 0) {
+        aString =  [NSMutableAttributedString attributedStringWithString:@"                               暂没有信息"];
+        _flightButton.userInteractionEnabled = NO;
+        [aString setFont:FONT_DURATION_LABEL];// do not delete
+        flightLabel.attributedText = aString;
+        [_flightButton addSubview:flightLabel];
+        flightLabel.textColor = COLOR_DURATION_CONTENT;
+
+    }
+    else
+    {
+        flightLabel.attributedText = aString;
+        [_flightButton addSubview:flightLabel];
+        UIImageView *accessoryImage = [self createAccessoryImage];
+        [_flightButton addSubview:accessoryImage];
+    }
+  
 }
 
 
@@ -156,16 +167,16 @@
     
     if (count == 0) {
         UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
-        UIImage *image = [[ImageManager defaultManager] accommodationBgImage:YES];
+        UIImage *image = [UIImage imageNamed:@"line_table_6@2x.png"];
         [button setBackgroundImage:image forState:UIControlStateNormal];
         [button setBackgroundColor:[UIColor clearColor]];
         [button setTitle:NSLS(@"暂没有信息") forState:UIControlStateNormal];
         [button setTitleColor:COLOR_DURATION_CONTENT forState:UIControlStateNormal];
         button.titleLabel.font = FONT_DURATION_LABEL;
+        button.userInteractionEnabled = NO;
         [self addSubview:button];
     }
 }
-
 
 - (void)clickAcommodation:(id)sender
 {
@@ -182,7 +193,5 @@
         [_aDelegate didClickFlight:_package.packageId];
     }
 }
-
-
 
 @end

@@ -176,8 +176,9 @@
     pauseDownloadBtn.hidden = YES;
     
     downloadButton.hidden = NO;
-    cancelDownloadBtn.hidden = YES;
-    onlineButton.hidden = NO;
+    downloadButton.selected = YES;
+    cancelDownloadBtn.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -300,6 +301,7 @@
     {
         [[CityDownloadService defaultService] cancel:_city];
         self.pauseDownloadBtn.selected = NO;
+        downloadButton.selected = NO;
         if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
             [_cityListCellDelegate didCancelDownload:_city];
         } 
