@@ -160,7 +160,7 @@
     
     downloadButton.hidden = YES;
     cancelDownloadBtn.hidden = NO;
-    onlineButton.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -173,11 +173,12 @@
     dataSizeLabel.hidden = YES;
     downloadProgressView.hidden = NO;
     downloadPersentLabel.hidden = NO;
-    pauseDownloadBtn.hidden = NO;
+    pauseDownloadBtn.hidden = YES;
     
-    downloadButton.hidden = YES;
+    downloadButton.hidden = NO;
+    downloadButton.selected = YES;
     cancelDownloadBtn.hidden = NO;
-    onlineButton.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -300,6 +301,7 @@
     {
         [[CityDownloadService defaultService] cancel:_city];
         self.pauseDownloadBtn.selected = NO;
+        downloadButton.selected = NO;
         if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
             [_cityListCellDelegate didCancelDownload:_city];
         } 

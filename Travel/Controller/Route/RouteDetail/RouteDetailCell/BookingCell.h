@@ -8,12 +8,17 @@
 
 #import "PPTableViewCell.h"
 #import "TKCalendarMonthView.h"
+#import "MonthViewController.h"
+
 
 @interface BookingCell : PPTableViewCell
 
 @property (retain, nonatomic) IBOutlet UIImageView *bookingBgImageView;
 @property (retain, nonatomic) IBOutlet UIView *monthHolderView;
 
-- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings routeType:(int)routeType;
+//- (void)setCellData:(BOOL)sundayFirst bookings:(NSArray*)bookings routeType:(int)routeType;
+- (void)setCellData:(MonthViewController *)monthViewController;
+
+
 
 @end

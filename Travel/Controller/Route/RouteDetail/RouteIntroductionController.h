@@ -12,6 +12,7 @@
 #import "PackageCell.h"
 #import "DailyScheduleCell.h"
 #import "RouteService.h"
+#import "MonthViewController.h"
 
 @protocol RouteIntroductionControllerDelegate <NSObject>
 
@@ -23,7 +24,7 @@
 @end
 
 
-@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate, UIWebViewDelegate>
+@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate, UIWebViewDelegate, MonthViewControllerDelegate>
 
 
 @property (assign, nonatomic) id<RouteIntroductionControllerDelegate> aDelegate;

@@ -422,6 +422,7 @@
 {
     NSArray *regionList = [[AppManager defaultManager] getRegions];
     NSArray *itemList = [[AppManager defaultManager] getDestinationCityItemList];
+    [_selectedItemIds reset]; // reset to the default choice(choose all)
     SelectCityController *controller = [[SelectCityController alloc] initWithTitle:NSLS(@"目的城市") 
                                                                         regionList:regionList 
                                                                           itemList:itemList
@@ -433,6 +434,7 @@
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
+
 
 - (void)pushAgencySelectController
 {

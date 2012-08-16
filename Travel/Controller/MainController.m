@@ -40,7 +40,7 @@
 #import "PackageTourListFilter.h"
 #import "UnPackageTourListFilter.h"
 
-
+#import "FavoriteController.h"
 @interface MainController()
 
 @property (retain, nonatomic) UIButton *currentSelectedButton;
@@ -240,9 +240,14 @@
 
 - (IBAction)clickTravelTransportButton:(id)sender
 {
-    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
+//    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];  
+    
+    FavoriteController *controller = [[FavoriteController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
-    [controller release];  
+    [controller release];
+    
 }
 
 - (IBAction)clickTraveGuideButton:(id)sender

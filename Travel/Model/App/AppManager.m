@@ -1086,6 +1086,7 @@ static AppManager* _defaultAppManager = nil;
     return cityList;
 }
 
+
 - (NSDictionary *)getGroupCitysDicList
 {
     NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc] init] autorelease];
