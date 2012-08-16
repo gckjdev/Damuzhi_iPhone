@@ -45,7 +45,7 @@
 
 
 
-
+#define HEIGHT_DAILY_SCHEDULE_TITLE_LABEL 36
 
 #define HEIGHT_HEADER_VIEW 30
 #define HEIGHT_FOOTER_VIEW 8
@@ -447,7 +447,11 @@
 
 - (CGFloat)cellHeightForDailyScheduleWithIndex:(NSIndexPath *)indexPath
 {
-    return [DailyScheduleCell height:[_route.dailySchedulesList objectAtIndex:indexPath.row]];
+    int count = [[[_route.dailySchedulesList objectAtIndex:indexPath.row] placeToursList] count];
+    
+    CGFloat placeToursheight = MAX(count, 1)* HEIGHT_PLACE_TOUR_LABEL + EDGE_TOP + EDGE_BOTTOM;
+    
+    return HEIGHT_DAILY_SCHEDULE_TITLE_LABEL + placeToursheight + HEIGHT_DINING_LABEL + HEIGHT_HOTEL_LABEL;
 }
 
 
