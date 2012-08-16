@@ -314,6 +314,7 @@
     }else {
         [self hideTipsOnTableView];
     }
+    
 }
 
 - (void)addMyLocationBtnTo:(UIView*)view
