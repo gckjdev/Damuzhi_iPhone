@@ -136,8 +136,7 @@ static PackageManager *_instance = nil;
 
 -(NSMutableArray *)deleteRepeatedObjectsFromArray:(NSArray *) originalArray
 {
-    NSMutableArray *deletedArray = [NSMutableArray array];
-    deletedArray = [[NSMutableArray alloc] init];  
+    NSMutableArray *deletedArray = [[[NSMutableArray alloc] init] autorelease];
     for (unsigned i = 0; i < [originalArray count]; i++){  
         if ([deletedArray containsObject:[originalArray objectAtIndex:i]] == NO){  
             [deletedArray addObject:[originalArray objectAtIndex:i]];  
