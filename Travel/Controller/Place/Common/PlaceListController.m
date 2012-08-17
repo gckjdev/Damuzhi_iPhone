@@ -110,7 +110,7 @@
         self.superNavigationController = superNavigationController;
         self.supportRefreshHeader = supportPullDownToRefresh;
         self.supportRefreshFooter = supportPullUpToLoadMore;
-        self.footerRefreshType = LiftAndAddMore;
+        self.footerRefreshType = AutoAndAddMore;
         self.footerLoadMoreTitle = NSLS(@"更多...");
         self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
         self.pullDelegate = pullDelegate;
