@@ -140,10 +140,9 @@ static CityManagementController *_instance;
                          imageName:@"search_btn.png" 
                             action:@selector(clickSearch:)];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)];
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)] autorelease];
     [imageView setImage:[UIImage imageNamed:@"city_ing.png"]];
     dataTableView.tableFooterView = imageView; 
-    
 }
 
 
@@ -280,7 +279,10 @@ static CityManagementController *_instance;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == dataTableView) {
         return [self.groupNameList count];
-    }else {
+    } else if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 1;
+    }
+    else{
         return [self.countryNameList count];
     }
 }
@@ -310,7 +312,9 @@ static CityManagementController *_instance;
     if (tableView == dataTableView) {
         NSString *groupName = [self.groupNameList objectAtIndex:section];
         return groupName;
-    }else {
+    } else if (tableView == self.searchDisplayController.searchResultsTableView){
+        return nil;
+    } else {
         return  [self.countryNameList objectAtIndex:section];
     }
 }
@@ -383,7 +387,7 @@ static CityManagementController *_instance;
         }
         
         
-        City *city;
+        City *city = nil;
         if (theTableView == dataTableView) {
             NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
             NSArray *citys = [_groupCitysDic valueForKey:groupName];

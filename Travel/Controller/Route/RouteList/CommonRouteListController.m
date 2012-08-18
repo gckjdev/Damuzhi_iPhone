@@ -102,7 +102,7 @@
         
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
-        self.footerRefreshType = LiftAndAddMore;
+        self.footerRefreshType = AutoAndAddMore;
         self.footerLoadMoreTitle = NSLS(@"更多...");
         self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
         
@@ -110,6 +110,11 @@
     }
     
     return self;
+}
+
+- (CGFloat)offsetStartLoadMoreData
+{
+    return 0;
 }
 
 - (void)hideTabBar:(BOOL)isHide
