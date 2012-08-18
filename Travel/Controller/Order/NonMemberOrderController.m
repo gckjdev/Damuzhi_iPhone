@@ -11,14 +11,15 @@
 #import "UserManager.h"
 #import "PPNetworkRequest.h"
 #import "TimeUtils.h"
-
-
+#import "TravelNetworkConstants.h"
+#import "OrderListController.h"
 #define TAG_TEXT_FIELD_CONTACT_PERSON 111
 #define TAG_TEXT_FIELD_TELEPHONE 112
 
 @interface NonMemberOrderController ()
 
 @property (retain, nonatomic) TouristRoute *route;
+@property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSDate *departDate;
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
@@ -31,6 +32,7 @@
 @implementation NonMemberOrderController
 
 @synthesize route = _route;
+@synthesize routeType = _routeType;
 @synthesize departDate = _departDate;
 @synthesize adult = _adult;
 @synthesize children = _children;
@@ -55,6 +57,7 @@
 }
 
 - (id)initWithRoute:(TouristRoute *)route
+          routeType:(int)routeType
          departDate:(NSDate *)departDate
               adult:(int)adult
            children:(int)children 
@@ -62,6 +65,7 @@
 {
     if (self = [super init]) {
         self.route = route;
+        self.routeType = routeType;
         self.departDate = departDate;
         self.adult = adult;
         self.children = children;
@@ -205,22 +209,39 @@
                 result:(int)result
            reusultInfo:(NSString *)resultInfo
 {
-    if (resultCode == 0) {
-        if ( result == 0) {
-            [self popupMessage:NSLS(@"预订成功") title:nil];
-            
-            NSArray *controllers = self.navigationController.viewControllers;
-            UIViewController *controller = [controllers objectAtIndex:[controllers count] -3];
-            [self.navigationController popToViewController:controller animated:YES];
-            
-        } else {
-            [self popupMessage:resultInfo title:nil];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    }else {
+    if (resultCode != 0) 
+    {
         [self popupMessage:NSLS(@"网络弱，请稍后再试") title:nil];
         [self.navigationController popViewControllerAnimated:YES];
+        return;
     }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    
+    int orderType;
+    [self popupMessage:NSLS(@"预订成功") title:nil];
+    switch (_routeType) 
+    {
+        case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
+            orderType = OBJECT_LIST_PACKAGE_TOUR_ORDER;
+            break;
+        case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+            orderType = OBJECT_LIST_UNPACKAGE_TOUR_ORDER;
+            break;
+        case OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR:
+            orderType = OBJECT_LIST_SELF_GUIDE_TOUR_ORDER;
+            break;
+        default:
+            break;
+    }
+    
+    OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 

@@ -93,7 +93,6 @@
     }
         
     [_monthView reload];
-    
     [self.monthHolderView addSubview:_monthView];
 }
 

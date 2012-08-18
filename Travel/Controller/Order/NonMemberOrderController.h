@@ -20,6 +20,7 @@
 @property (retain, nonatomic) IBOutlet UIScrollView *backGroundScrollView;
 
 - (id)initWithRoute:(TouristRoute *)route
+          routeType:(int)routeType
          departDate:(NSDate *)departDate
               adult:(int)adult
            children:(int)children 

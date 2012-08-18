@@ -15,7 +15,7 @@
 #import "UserManager.h"
 #import "LoginController.h"
 #import "TravelNetworkConstants.h"
-
+#import "OrderListController.h"
 
 
 @interface PlaceOrderController ()
@@ -113,7 +113,7 @@
     [self setNavigationRightButton:NSLS(@"咨询") 
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
-    PPDebug(@"_packageId isisisis: %d", _packageId);
+//    PPDebug(@"_packageId isisisis: %d", _packageId);
     if ([_route.packagesList count] >= 1) {
         self.packageId = [[_route.packagesList objectAtIndex:0] packageId];
         PPDebug(@"_packageId isisisis: %d", _packageId);
@@ -468,6 +468,7 @@
     
     if (_nonMemberOrderController == nil) {
         NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithRoute:_route 
+                                                                                     routeType:_routeType
                                                                                     departDate:_departDate 
                                                                                          adult:_adult 
                                                                                       children:_children 
@@ -477,11 +478,6 @@
     }
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
 }
-
-
-
-
-
 
 
 
@@ -508,7 +504,24 @@
     if (resultCode == 0) {
         if ( result == 0) {;
             [self popupMessage:NSLS(@"预订成功") title:nil];
-            [self.navigationController popViewControllerAnimated:NO];
+            int orderType;
+            switch (_routeType) {
+                case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
+                    orderType = OBJECT_LIST_PACKAGE_TOUR_ORDER;
+                    break;
+                case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+                    orderType = OBJECT_LIST_UNPACKAGE_TOUR_ORDER;
+                    break;
+                case OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR:
+                    orderType = OBJECT_LIST_SELF_GUIDE_TOUR_ORDER;
+                    break;
+                default:
+                    break;
+            }
+            
+            OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
+            [self.navigationController pushViewController:controller animated:YES];
+
             
         } else {
             [self popupMessage:resultInfo title:nil];
