@@ -125,9 +125,9 @@
     [diningTagButton setTitle:NSLS(@"用餐") forState:UIControlStateNormal];
     
     breakfastButton.frame = CGRectMake(breakfastButton.frame.origin.x, originY, breakfastButton.frame.size.width, breakfastButton.frame.size.height);
-    originY = breakfastButton.frame.origin.y + breakfastButton.frame.size.height;
+    originY = breakfastButton.frame.origin.y /* + breakfastButton.frame.size.height*/;
     lunchButton.frame = CGRectMake(lunchButton.frame.origin.x, originY, lunchButton.frame.size.width, lunchButton.frame.size.height);
-    originY = lunchButton.frame.origin.y + lunchButton.frame.size.height;
+    originY = lunchButton.frame.origin.y /* +lunchButton.frame.size.height*/;
     dinnerButton.frame = CGRectMake(dinnerButton.frame.origin.x, originY, dinnerButton.frame.size.width, dinnerButton.frame.size.height);
     
     

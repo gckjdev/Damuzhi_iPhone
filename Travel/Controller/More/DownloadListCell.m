@@ -60,7 +60,7 @@
 {
     self.city = city;
     
-    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@.%@"), _city.countryName, _city.cityName];
+    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@"),_city.cityName];
         
     [self setApperance:city];
 }

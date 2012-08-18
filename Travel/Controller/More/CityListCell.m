@@ -71,7 +71,7 @@
 {
     self.city = city;    
     self.selectCurrentCityBtn.selected = ([[AppManager defaultManager] getCurrentCityId] == _city.cityId); 
-    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@.%@"), _city.countryName, _city.cityName];
+    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@"),_city.cityName];
     self.cityNameLabel.textColor = ([[AppManager defaultManager] getCurrentCityId] == _city.cityId)?[UIColor redColor]:[UIColor darkGrayColor];
     self.dataSizeLabel.text = [self getCityDataSizeString];
     self.downloadDoneLabel.textColor = [UIColor darkGrayColor];

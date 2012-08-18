@@ -44,14 +44,17 @@
     [self setNavigationLeftButton:NSLS(@" 返回") 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
-    
-    UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 11, 46, 22)];
+    UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 7, 46, 30)];
     [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-    [deleteButton setImageEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    deleteButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"topmenu_btn_right.png"]];
+    [deleteButton setImageEdgeInsets:UIEdgeInsetsMake(2, 3, 0, 0)];
     [deleteButton addTarget:self action:@selector(clickClear:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+
+    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50 , 44)];
     [rightButtonView addSubview:deleteButton];
     [deleteButton release];
+    
+    
     
     UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButtonView];
     [rightButtonView release];

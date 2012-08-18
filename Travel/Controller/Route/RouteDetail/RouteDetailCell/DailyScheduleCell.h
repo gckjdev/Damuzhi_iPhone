@@ -14,7 +14,7 @@
 #define HEIGHT_PLACE_TOUR_LABEL 21
 #define EDGE_TOP 1
 #define EDGE_BOTTOM 3
-#define HEIGHT_DINING_LABEL 68
+#define HEIGHT_DINING_LABEL 68/3
 #define HEIGHT_HOTEL_LABEL 25
 
 @protocol DailyScheduleCellDelegate <NSObject>
