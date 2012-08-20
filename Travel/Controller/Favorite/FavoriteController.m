@@ -53,6 +53,7 @@
 @synthesize myFavPlaceListController;
 @synthesize showMyList = _showMyList;
 @synthesize topFavPlaceListView;
+@synthesize scrollView;
 @synthesize topFavPlaceListController;
 @synthesize showTopList = _showTopList;
 @synthesize canDelete;
@@ -85,6 +86,7 @@
     PPRelease(topRestaurantFavoritePlaceList);
     PPRelease(topShoppingFavoritePlaceList);
     PPRelease(topEntertainmentFavoritePlaceList);
+    [scrollView release];
     [super dealloc];
 }
 
@@ -125,6 +127,14 @@
     }else {
         [self clickTopFavorite:nil];
     }
+    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+    [scrollView addSubview:imageView];
+    [imageView release];
+    
+    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -173,6 +183,7 @@
     [self setTopRestaurantFavoritePlaceList:nil];
     [self setTopShoppingFavoritePlaceList:nil];
     [self setTopEntertainmentFavoritePlaceList:nil];
+    [self setScrollView:nil];
     [super viewDidUnload];
 }
 

@@ -11,5 +11,6 @@
 #import "PPTableViewController.h"
 
 @interface GuideController : PPTableViewController<TravelTipsServiceDelegate>
+@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end

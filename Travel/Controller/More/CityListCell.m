@@ -61,7 +61,7 @@
 
 + (CGFloat)getCellHeight
 {
-    return 56.0f;
+    return 54.0f;
 }
 
 

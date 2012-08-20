@@ -90,7 +90,7 @@
     [self addSubview:departCityLabel];
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:order.departDate];
-    NSString *departDateLabelText = [NSString stringWithFormat:NSLS(@"%@ %@"), dateToStringByFormat(departDate, @"MM月dd日"), chineseWeekDayFromDate(departDate)]; 
+    NSString *departDateLabelText = [NSString stringWithFormat:NSLS(@"%@ %@"), dateToStringByFormat(departDate, @"yyyy年MM月dd日"), chineseWeekDayFromDate(departDate)]; 
     departDateLabelText = [NSString stringWithFormat:@"出发时间: %@",departDateLabelText];
     UILabel *departDateLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departDateLabelText];
     [self addSubview:departDateLabel];

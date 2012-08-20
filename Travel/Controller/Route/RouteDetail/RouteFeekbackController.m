@@ -78,7 +78,7 @@
     // Set feekback text view delegate.
     self.feekbackTextView.text = _order.feedback;
     self.feekbackTextView.delegate = self;
-    self.feekbackTextView.placeholder = NSLS(@"请输入您的评价!(小于等于160个字)");
+    self.feekbackTextView.placeholder = NSLS(@"请输入您的评价!");
     self.feekbackTextView.font = [UIFont systemFontOfSize:13];
 
     self.feekbackTextView.placeholderColor = [UIColor lightGrayColor];    

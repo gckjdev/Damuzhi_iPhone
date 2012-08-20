@@ -119,7 +119,7 @@
 							<object class="IBUIButton" id="355442117">
 								<reference key="NSNextResponder" ref="535391295"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{165, 13}, {51, 28}}</string>
+								<string key="NSFrame">{{165, 13}, {53, 26}}</string>
 								<reference key="NSSuperview" ref="535391295"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="75717447"/>
@@ -161,7 +161,7 @@
 							<object class="IBUIButton" id="390226681">
 								<reference key="NSNextResponder" ref="535391295"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{223, 13}, {51, 28}}</string>
+								<string key="NSFrame">{{223, 13}, {53, 26}}</string>
 								<reference key="NSSuperview" ref="535391295"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="811365441"/>
@@ -244,7 +244,7 @@
 							<object class="IBUIButton" id="75717447">
 								<reference key="NSNextResponder" ref="535391295"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{165, 13}, {51, 28}}</string>
+								<string key="NSFrame">{{165, 13}, {53, 26}}</string>
 								<reference key="NSSuperview" ref="535391295"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="126646383"/>
@@ -269,7 +269,7 @@
 							<object class="IBUIButton" id="811365441">
 								<reference key="NSNextResponder" ref="535391295"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{223, 13}, {51, 28}}</string>
+								<string key="NSFrame">{{223, 13}, {53, 26}}</string>
 								<reference key="NSSuperview" ref="535391295"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="675870005"/>
@@ -349,6 +349,7 @@
 								<string key="NSFrame">{{39, 34}, {76, 9}}</string>
 								<reference key="NSSuperview" ref="535391295"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="IBUIContentStretch">{{1, 0}, {1, 1}}</string>
@@ -360,7 +361,7 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 51}</string>
+						<string key="NSFrameSize">{320, 53}</string>
 						<reference key="NSSuperview" ref="406497911"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1042213644"/>
@@ -376,7 +377,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
-				<string key="NSFrameSize">{320, 52}</string>
+				<string key="NSFrameSize">{320, 54}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="535391295"/>

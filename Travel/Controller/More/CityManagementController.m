@@ -319,6 +319,39 @@ static CityManagementController *_instance;
     }
 }
 
+//The following delegate method is used to change the attributes of the Header(font size .e.g)
+
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    if (tableView == self.searchDisplayController.searchResultsTableView)
+//    {
+//        return nil;
+//    }
+//    
+//    NSString * groupName;
+//    if (tableView == dataTableView) 
+//    {
+//        groupName = [self.groupNameList objectAtIndex:section];
+//
+//    } 
+//    else 
+//    {
+//        groupName =  [self.countryNameList objectAtIndex:section];
+//    }
+//    
+//    UIView* headerView = [[[UIView alloc] init] autorelease];
+//    headerView.backgroundColor = [UIColor clearColor];
+//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -1, 320, 23)];
+//    titleLabel.textColor=[UIColor whiteColor];
+//    titleLabel.font = [UIFont boldSystemFontOfSize:15];
+//    titleLabel.backgroundColor = [UIColor colorWithRed:157/255.0 green:170/255.0 blue:179/255.0 alpha:1.0];
+//    titleLabel.text = [NSString stringWithFormat:@"   %@",groupName];
+//    [headerView addSubview:titleLabel];
+//    [titleLabel release];
+//    return headerView;
+//}
+
+
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     if (tableView == self.dataTableView) {

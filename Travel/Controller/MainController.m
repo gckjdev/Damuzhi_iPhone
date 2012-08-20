@@ -103,7 +103,8 @@
     CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
-    
+//    button.titleLabel.shadowColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
     

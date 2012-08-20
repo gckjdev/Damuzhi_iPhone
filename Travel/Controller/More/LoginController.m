@@ -15,6 +15,7 @@
 
 #import "StringUtil.h"
 #import "RetrievePasswordController.h"
+#import "FontSize.h"
 @interface LoginController ()
 
 @property (copy, nonatomic) NSString *loginId;
@@ -64,11 +65,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                          imageName:@"back.png"
                             action:@selector(clickBack:)];
     
     self.navigationItem.title = NSLS(@"登录");
-    [self setNavigationRightButton:NSLS(@"登录") 
+    [self setNavigationRightButton:NSLS(@"登录")
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickLogin:)];
    [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];

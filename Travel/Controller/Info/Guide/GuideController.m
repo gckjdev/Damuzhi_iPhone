@@ -16,6 +16,7 @@
 #import "PPNetworkRequest.h"
 
 @implementation GuideController
+@synthesize scrollView;
 
 - (void)viewDidLoad
 {
@@ -27,6 +28,13 @@
     [self.navigationItem setTitle:NSLS(@"游记攻略")];
     
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeGuide viewController:self];
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 280);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+    [scrollView addSubview:imageView];
+    [imageView release];
+    
+    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -37,6 +45,7 @@
 
 - (void)viewDidUnload
 {
+    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -123,4 +132,8 @@
     [controller release];
 }
 
+- (void)dealloc {
+    [scrollView release];
+    [super dealloc];
+}
 @end
