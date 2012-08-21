@@ -19,6 +19,7 @@
 #import "PPDebug.h"
 #import "UIUtils.h"
 #import "AppManager.h"
+#import "FontSize.h"
 
 @interface CommonRouteDetailController ()
 
@@ -101,10 +102,12 @@
     // Do any additional setup after loading the view from its nib.
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"咨询") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
@@ -113,10 +116,10 @@
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
 
-    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
-    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
-    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
-    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(3, 3, 3, 3)];
+    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
+    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
+    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
+    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
 
 
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
@@ -206,7 +209,7 @@
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
     }
 
-    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 60);
     
     [_feeController showInView:self.contentView];
     
@@ -222,7 +225,7 @@
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
     }
     
-    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height);
+    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 60);
     [_bookingPolicyController showInView:self.contentView];        
 }
 

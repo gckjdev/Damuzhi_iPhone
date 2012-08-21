@@ -20,7 +20,7 @@
 #import "Item.h"
 #import "FollowRouteController.h"
 #import "AppDelegate.h"
-
+#import "FontSize.h"
 #define TAG_DEPART_CITY_LABEL 18
 #define TAG_AGENCY_LABEL 19
 #define TAG_ROUTE_COUNT_LABEL 20
@@ -104,7 +104,7 @@
         self.supportRefreshFooter = YES;
         self.footerRefreshType = AutoAndAddMore;
         self.footerLoadMoreTitle = NSLS(@"更多...");
-        self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"正在加载...");
         
         self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getRouteSelectedItems:[_filterHandler getRouteType]];
     }
@@ -156,6 +156,7 @@
     // Init UI Interface
     
     [self setNavigationRightButton:NSLS(@"我的关注") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn2.png"
                             action:@selector(clickMyFollow:)];
     

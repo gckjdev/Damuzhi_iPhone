@@ -11,7 +11,7 @@
 #import "AppConstants.h"
 #import "AppManager.h"
 #import "StringUtil.h"
-
+#import "FontSize.h"
 @interface SelectCityController ()
 {
     typeCity _typeCity;
@@ -110,9 +110,11 @@
     [super viewDidLoad];
     [self setTitle:_navigationTitle];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
     

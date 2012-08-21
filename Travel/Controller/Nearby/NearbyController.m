@@ -21,6 +21,7 @@
 #import "UIUtils.h"
 #import "PlaceUtils.h"
 #import "AppUtils.h"
+#import "FontSize.h"
 
 //#define TEST_FOR_SIMULATE__LOCATION
 
@@ -116,10 +117,12 @@
     self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"地图") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickMapBtn:)];
     

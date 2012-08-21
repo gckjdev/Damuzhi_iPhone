@@ -14,6 +14,7 @@
 #import "PackageManager.h"
 //#import "AppUtils.h"
 #import "StringUtil.h"
+#import "FontSize.h"
 
 #define PROMPT_LABEL_HEIGHT 30
 #define CITY_SEARCH_BAR_HEIGHT 44
@@ -133,10 +134,12 @@ static CityManagementController *_instance;
     self.citySearchBar.hidden = YES;
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:@"" 
+                          fontSize:FONT_SIZE
                          imageName:@"search_btn.png" 
                             action:@selector(clickSearch:)];
     

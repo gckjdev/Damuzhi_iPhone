@@ -23,7 +23,7 @@
 #import "ShareToSinaController.h"
 #import "ShareToQQController.h"
 #import "UserInfoController.h"
-
+#import "FontSize.h"
 @interface MoreController ()
 
 @property (retain, nonatomic) UIButton *loginoutButton;
@@ -125,6 +125,7 @@
     
     if ([[UserManager defaultManager] isLogin]) {
         [self setNavigationRightButton:NSLS(@"退出登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
@@ -133,6 +134,7 @@
         
     }else {
         [self setNavigationRightButton:NSLS(@"会员登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
         

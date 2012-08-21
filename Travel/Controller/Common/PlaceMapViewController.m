@@ -54,7 +54,7 @@
 #import "MapUtils.h"
 #import "AppUtils.h"
 #import "UIViewUtils.h"
-
+#import "FontSize.h"
 @interface PlaceMapViewController ()
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
@@ -76,7 +76,8 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view from its nib.
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     

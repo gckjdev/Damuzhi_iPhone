@@ -14,7 +14,7 @@
 #import "UserManager.h"
 #import "LoginController.h"
 #import "AppManager.h"
-
+#import "FontSize.h"
 @interface OrderManagerController ()
 
 @property (retain, nonatomic) NSArray *orderTypeList;
@@ -47,6 +47,7 @@
     
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
 
@@ -60,11 +61,13 @@
 {
     if ([[UserManager defaultManager] isLogin]) {
         [self setNavigationRightButton:NSLS(@"退出登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
     }else {
         [self setNavigationRightButton:NSLS(@"会员登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
     }

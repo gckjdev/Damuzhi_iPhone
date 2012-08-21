@@ -13,6 +13,7 @@
 #import "TimeUtils.h"
 #import "TravelNetworkConstants.h"
 #import "OrderListController.h"
+#import "FontSize.h"
 #define TAG_TEXT_FIELD_CONTACT_PERSON 111
 #define TAG_TEXT_FIELD_TELEPHONE 112
 
@@ -82,12 +83,14 @@
     
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     self.navigationItem.title = NSLS(@"确认预订");
     
     [self setNavigationRightButton:NSLS(@"确认") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
     

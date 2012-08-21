@@ -11,7 +11,7 @@
 #import "LocaleUtils.h"
 #import "AppDelegate.h"
 #import "MobClick.h"
-
+#import "FontSize.h"
 #define UMENG_ONLINE_SINA_WEIBO_APP_KEY       @"sina_weibo_app_key"
 #define UMENG_ONLINE_SINA_WEIBO_APP_SECRET    @"sina_weibo_app_secret"
 
@@ -51,10 +51,12 @@
     [super viewDidLoad];
     //self.view.backgroundColor = [UIColor colorWithRed:84.0/255.0 green:154.0/255.0 blue:182.0/255.0 alpha:1.0];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"发送") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(sendSinaWeibo:)];
     

@@ -15,6 +15,7 @@
 #import "AppConstants.h"
 #import "RouteDetailController.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
 
 @implementation RouteController
 @synthesize scrollView;
@@ -24,7 +25,8 @@
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     

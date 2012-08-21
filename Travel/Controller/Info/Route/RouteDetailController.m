@@ -12,7 +12,7 @@
 #import "AppManager.h"
 #import "ImageName.h"
 #import "SlideImageView.h"
-
+#import "FontSize.h"
 @implementation RouteDetailController
 
 @synthesize tip = _tip;
@@ -29,6 +29,7 @@
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     
     [self setNavigationLeftButton:@" 返回" 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
 

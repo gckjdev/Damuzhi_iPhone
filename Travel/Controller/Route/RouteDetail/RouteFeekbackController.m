@@ -11,7 +11,7 @@
 #import "PPTableViewController.h"   //(have not found the exact header for using NSLS)
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
-
+#import "FontSize.h"
 #define MAX_LENGTH_OF_FEEKBACK 160
 
 @interface RouteFeekbackController ()
@@ -66,10 +66,12 @@
    
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"评价");
     [self setNavigationRightButton:NSLS(@"发送")
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png"  
                             action:@selector(clickSubmit:)];
     

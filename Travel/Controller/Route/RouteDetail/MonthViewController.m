@@ -17,7 +17,7 @@
 #import "TravelNetworkConstants.h"
 #import "LogUtil.h"
 #import "TimeUtils.h"
-
+#import "FontSize.h"
 @interface MonthViewController ()
 {
     int _routeType;
@@ -71,6 +71,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     

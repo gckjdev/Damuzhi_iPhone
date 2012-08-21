@@ -12,6 +12,7 @@
 #import "RouteStorage.h"
 #import "CommonRouteDetailController.h"
 #import "TravelNetworkConstants.h"
+#import "FontSize.h"
 
 @interface FollowRouteController ()
 
@@ -42,6 +43,7 @@
     [super viewDidLoad];
     self.title = @"我的关注";
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 7, 46, 30)];

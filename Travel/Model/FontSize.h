@@ -6,4 +6,4 @@
 //  Copyright (c) 2012年 orange. All rights reserved.
 //
 
-#define FONT_SIZE 16
+#define FONT_SIZE 15

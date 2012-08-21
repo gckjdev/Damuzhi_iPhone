@@ -15,7 +15,7 @@
 #import "TravelNetworkConstants.h"
 #import "AppManager.h"
 #import "RouteFeekbackController.h"
-
+#import "FontSize.h"
 #define HEIGHT_HEADER_VIEW 44
 //#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
 
@@ -60,9 +60,11 @@
     // Do any additional setup after loading the view from its nib.
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self setNavigationRightButton:NSLS(@"咨询") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     

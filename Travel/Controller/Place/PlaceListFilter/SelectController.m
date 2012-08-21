@@ -14,7 +14,7 @@
 #import "PlaceUtils.h"
 #import "Item.h"
 #import "AppConstants.h"
-
+#import "FontSize.h"
 @interface SelectController ()
 
 @property (copy, nonatomic) NSString *navigationTitle;
@@ -81,11 +81,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     if (_needConfirm) {
         [self setNavigationRightButton:NSLS(@"确定") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn_right.png" 
                                 action:@selector(clickFinish:)];
     }

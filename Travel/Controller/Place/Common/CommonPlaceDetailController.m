@@ -26,6 +26,7 @@
 #import "AppService.h"
 #import "MapUtils.h"
 #import "UIImageUtil.h"
+#import "FontSize.h"
 
 #define NO_DETAIL_DATA NSLS(@"暂无")
 
@@ -867,6 +868,7 @@
     [super viewDidLoad];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     

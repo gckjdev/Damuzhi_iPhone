@@ -15,6 +15,7 @@
 #import "UIViewUtils.h"
 
 #import "UserManager.h"
+#import "FontSize.h"
 @implementation FeekbackController
 @synthesize viewCenter = _viewCenter;
 @synthesize feekbackTextView;
@@ -40,10 +41,12 @@
     
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"提交") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
         

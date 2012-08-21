@@ -17,6 +17,7 @@
 #import "UIImageUtil.h"
 #import "App.pb.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
 
 @interface FavoriteController ()
 
@@ -103,6 +104,7 @@
 {
     [super viewDidLoad];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self createRightBarButton];

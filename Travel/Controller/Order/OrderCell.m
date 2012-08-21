@@ -89,17 +89,18 @@
     UILabel *departCityLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departCityLabelText];
     [self addSubview:departCityLabel];
     
-    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:order.departDate];
+    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:order.departDate - 8 * 3600];
     NSString *departDateLabelText = [NSString stringWithFormat:NSLS(@"%@ %@"), dateToStringByFormat(departDate, @"yyyy年MM月dd日"), chineseWeekDayFromDate(departDate)]; 
     departDateLabelText = [NSString stringWithFormat:@"出发时间: %@",departDateLabelText];
     UILabel *departDateLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departDateLabelText];
     [self addSubview:departDateLabel];
     
-    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:order.bookDate];
-    NSString *bookingDateLabelText = [NSString stringWithFormat:@"预订时间: %@",dateToStringByFormat(bookDate, @"yyyy-MM-dd HH:mm")];
+    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:order.bookDate - 8 * 3600];
+    NSString *bookingDateLabelText = dateToStringByFormat(bookDate, @"yyyy年MM月dd日 HH:mm");
+    bookingDateLabelText = [NSString stringWithFormat:@"预订时间: %@",bookingDateLabelText];
     UILabel *bookingDateLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:bookingDateLabelText];
     [self addSubview:bookingDateLabel];
-    
+
     NSString *personCountLabelText = [NSString stringWithFormat:@"出发城市: 成人%d位 儿童%d位",order.adult, order.children];
     UILabel *personCountLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:personCountLabelText];
     [self addSubview:personCountLabel];

@@ -16,7 +16,7 @@
 #import "LoginController.h"
 #import "TravelNetworkConstants.h"
 #import "OrderListController.h"
-
+#import "FontSize.h"
 
 @interface PlaceOrderController ()
 
@@ -107,10 +107,12 @@
     [super viewDidLoad];
     self.title = @"线路预订";
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"咨询") 
+    [self setNavigationRightButton:NSLS(@"咨询")
+                          fontSize:FONT_SIZE 
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
 //    PPDebug(@"_packageId isisisis: %d", _packageId);

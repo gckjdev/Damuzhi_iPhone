@@ -103,8 +103,6 @@
     CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
-//    button.titleLabel.shadowColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
-
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
     
@@ -113,6 +111,10 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
     
+    button.titleLabel.shadowColor = [UIColor redColor];
+    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
+    
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
     
     self.navigationItem.titleView = button;

@@ -8,7 +8,7 @@
 
 #import "UnPackageTourHomePageController.h"
 #import "LocaleUtils.h"
-
+#import "FontSize.h"
 @interface UnPackageTourHomePageController ()
 
 @end
@@ -23,6 +23,7 @@
     
     // Init UI Interface
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
 }

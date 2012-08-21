@@ -14,8 +14,8 @@
 #import "NSURL+QAdditions.h"
 #import "UIUtils.h"
 #import "AppDelegate.h"
-#include "MobClick.h"
-
+#import "MobClick.h"
+#import "FontSize.h"
 #define kQQAccessTokenKey       @"QQAccessTokenKey"
 #define kQQAccessTokenSecret	@"QQAccessTokenSecret"
 #define VERIFY_URL      @"http://open.t.qq.com/cgi-bin/authorize?oauth_token="
@@ -89,10 +89,12 @@
     [self loadDefaultKey];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"发送") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(sendQQWeibo:)];
     

@@ -20,7 +20,7 @@
 #import "PlaceUtils.h"
 #import "ImageManager.h"
 #import "AppService.h"
-
+#import "FontSize.h"
 #define TAG_PLACE_COUNT_LABEL 1
 #define EACH_FETCH 20
 
@@ -133,10 +133,12 @@
 
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"帮助") 
+    [self setNavigationRightButton:NSLS(@"帮助")
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickHelp:)];
     

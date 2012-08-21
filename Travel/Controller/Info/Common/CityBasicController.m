@@ -15,7 +15,7 @@
 #import "PPNetworkRequest.h"
 #import "PPDebug.h"
 #import "UIImageUtil.h"
-
+#import "FontSize.h"
 @implementation CityBasicController
 
 @synthesize scrollView;
@@ -68,6 +68,7 @@
     [self.navigationItem setTitle:[dataSource getTitleName]];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
         

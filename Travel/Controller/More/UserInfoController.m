@@ -14,7 +14,7 @@
 #import "StringUtil.h"
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
-
+#import "FontSize.h"
 enum{
     SECTION_0 = 0,
     SECTION_1 = 1,
@@ -78,11 +78,13 @@ enum{
 {
     [super viewDidLoad];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"个人资料");
     
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickOk:)];
     

@@ -13,7 +13,7 @@
 #import "ImageManager.h"
 #import "UIViewUtils.h"
 #import "AppManager.h"
-
+#import "FontSize.h"
 #define TAG_DEPART_CITY_LABEL 18
 
 #define EACH_COUNT 20
@@ -65,10 +65,12 @@
     // Do any additional setup after loading the view from its nib.
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"咨询") 
+    [self setNavigationRightButton:NSLS(@"咨询")
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn2.png"
                             action:@selector(query:)];
     

@@ -16,7 +16,7 @@
 #import "MapUtils.h"
 #import "Reachability.h"
 #import "AppService.h"
-
+#import "FontSize.h"
 #define TAG_USER_LOCATE_DENY_ALERT_VIEW 111
 
 @interface NearByRecommendController ()
@@ -83,6 +83,7 @@
     
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     

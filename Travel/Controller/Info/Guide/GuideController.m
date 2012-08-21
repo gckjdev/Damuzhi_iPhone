@@ -14,6 +14,7 @@
 #import "AppUtils.h"
 #import "CommonWebController.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
 
 @implementation GuideController
 @synthesize scrollView;
@@ -22,7 +23,8 @@
 {
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self.navigationItem setTitle:NSLS(@"游记攻略")];
