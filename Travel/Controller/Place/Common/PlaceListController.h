@@ -39,6 +39,7 @@
 @property (assign, nonatomic) int alertViewType;
 @property (assign, nonatomic) int isNearby;
 
+
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
                supportPullDownToRefresh:(BOOL)supportPullDownToRefresh
                 supportPullUpToLoadMore:(BOOL)supportPullUpToLoadMore

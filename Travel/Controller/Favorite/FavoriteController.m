@@ -54,7 +54,7 @@
 @synthesize myFavPlaceListController;
 @synthesize showMyList = _showMyList;
 @synthesize topFavPlaceListView;
-@synthesize scrollView;
+@synthesize holderScrollView;
 @synthesize topFavPlaceListController;
 @synthesize showTopList = _showTopList;
 @synthesize canDelete;
@@ -87,7 +87,7 @@
     PPRelease(topRestaurantFavoritePlaceList);
     PPRelease(topShoppingFavoritePlaceList);
     PPRelease(topEntertainmentFavoritePlaceList);
-    [scrollView release];
+    [holderScrollView release];
     [super dealloc];
 }
 
@@ -130,13 +130,13 @@
         [self clickTopFavorite:nil];
     }
     
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
+    self.holderScrollView.contentSize = CGSizeMake(self.holderScrollView.frame.size.width, self.holderScrollView.frame.size.height + 1);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-    [scrollView addSubview:imageView];
+    [holderScrollView addSubview:imageView];
     [imageView release];
     
-    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    holderScrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -185,7 +185,7 @@
     [self setTopRestaurantFavoritePlaceList:nil];
     [self setTopShoppingFavoritePlaceList:nil];
     [self setTopEntertainmentFavoritePlaceList:nil];
-    [self setScrollView:nil];
+    [self setHolderScrollView:nil];
     [super viewDidUnload];
 }
 
@@ -255,6 +255,7 @@
 {
     [[PlaceService defaultService] findTopFavoritePlaces:self type:type];
 }
+
 
 #pragma mark - deletePlaceDelegate 
 - (void)deletedPlace:(Place *)place
@@ -493,6 +494,25 @@
         }
     }
     return array;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{	
+    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
+    if (scrollPosition < 0)  
+    {
+        static BOOL controlFlag = YES;
+        if (controlFlag) 
+        {
+            NSLog(@"hahhahahha is %f", scrollView.contentSize.height);
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 8, 320, 250)];
+            [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+            [scrollView addSubview:imageView];
+            [imageView release];
+            controlFlag = NO;
+        }
+        
+    }
 }
 
 @end

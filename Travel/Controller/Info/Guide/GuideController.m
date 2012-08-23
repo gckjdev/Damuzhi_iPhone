@@ -19,6 +19,13 @@
 @implementation GuideController
 @synthesize scrollView;
 
+
+- (void)dealloc 
+{
+    [scrollView release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad
 {
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
@@ -30,7 +37,7 @@
     [self.navigationItem setTitle:NSLS(@"游记攻略")];
     
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeGuide viewController:self];
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 280);
+//    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
     [scrollView addSubview:imageView];
@@ -134,8 +141,23 @@
     [controller release];
 }
 
-- (void)dealloc {
-    [scrollView release];
-    [super dealloc];
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)localScrollView
+{	
+//    CGFloat scrollPosition = localScrollView.contentSize.height - localScrollView.frame.size.height - localScrollView.contentOffset.y;
+//    if (scrollPosition > 0) 
+//    {
+//        static BOOL controlFlag = YES;
+//        if (controlFlag) 
+//        {
+//            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, localScrollView.contentSize.height, 320, 250)];
+//            [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+//            [scrollView addSubview:imageView];
+//            [imageView release];
+//            controlFlag = NO;
+//        }
+//        
+//    }
 }
 @end

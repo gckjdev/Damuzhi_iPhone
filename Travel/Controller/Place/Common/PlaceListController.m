@@ -280,7 +280,14 @@
     }else {
         [self reloadTableView];
     }
+    
+//    [self addBottomImage];
 }
+
+//- (void)addBottomImage
+//{
+//    CGFloat offset = [PlaceCell getCellHeight] * [dataList count] < self.dataTableView.frame.size.height ? self.dataTableView.frame.size.height : [PlaceCell getCellHeight] * [dataList count];
+//}
 
 - (void)reloadMap
 {   

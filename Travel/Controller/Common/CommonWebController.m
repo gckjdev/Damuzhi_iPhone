@@ -115,6 +115,11 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+  
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height, 320, 250)];
+//    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+//    [scrollView addSubview:imageView];
+//    [imageView release];
     [self hideActivity];
 }
 

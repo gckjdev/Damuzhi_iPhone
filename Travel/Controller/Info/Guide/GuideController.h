@@ -10,7 +10,7 @@
 #import "TravelTipsService.h"
 #import "PPTableViewController.h"
 
-@interface GuideController : PPTableViewController<TravelTipsServiceDelegate>
+@interface GuideController : PPTableViewController<TravelTipsServiceDelegate,UIScrollViewDelegate>
 @property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end

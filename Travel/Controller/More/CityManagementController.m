@@ -8,11 +8,8 @@
 
 #import "CityManagementController.h"
 #import "AppManager.h"
-//#import "App.pb.h"
-//#import "LogUtil.h"
 #import "ImageName.h"
 #import "PackageManager.h"
-//#import "AppUtils.h"
 #import "StringUtil.h"
 #import "FontSize.h"
 
@@ -21,8 +18,6 @@
 #define SELF_VIEW_WIDTH 320
 #define NAVIGATION_BAR_HEIGHT 44
 #define SELF_VIEW_HEIGHT (460 - NAVIGATION_BAR_HEIGHT)
-
-
 
 @interface CityManagementController ()
 
@@ -89,9 +84,6 @@ static CityManagementController *_instance;
     
     self.label.hidden = ([self.downloadList count] == 0)? NO:YES;
     [self.downloadTableView addSubview:self.label];
-    
-
-    
     
     self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
 
@@ -300,7 +292,6 @@ static CityManagementController *_instance;
     }
     else if (tableView == dataTableView){
         NSString *groupName = [_groupNameList objectAtIndex:section];
-//        NSLog(@"groupName is %@", groupName);
         NSArray *citys = [_groupCitysDic valueForKey:groupName];
         return [citys count];
     }else if (tableView == self.searchDisplayController.searchResultsTableView){
@@ -368,7 +359,7 @@ static CityManagementController *_instance;
 {
     int reSection = 0;
     for (NSString *groupName in _groupNameList) {
-        if ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]]) {
+        if ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]] || [groupName isEqualToString:title]) {
             break;
         }
         reSection ++;
