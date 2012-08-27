@@ -112,9 +112,7 @@
     
     [buttonHolderView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage strectchableImageName:@"options_bg2.png"]]];
 
-    PlaceListController *myController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
-    self.myFavPlaceListController = myController;
-    [myController release];
+    self.myFavPlaceListController =[[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil] autorelease];
     [myFavPlaceListController showInView:myFavPlaceListView];    
     
     PlaceListController *topController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
@@ -137,6 +135,7 @@
     [imageView release];
     
     holderScrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    topFavPlaceListView.backgroundColor = holderScrollView.backgroundColor;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -241,7 +240,6 @@
     delImageView.frame = CGRectMake(14, 4, DELETE_IMAGE_WIDTH, DELETE_IMAGE_HIGHT);
     [self.deleteButton addSubview:delImageView];
     [delImageView release];
-    //deleteButton.backgroundColor = [UIColor blueColor];
     [self.deleteButton addTarget:self action:@selector(clickDelete:) forControlEvents:UIControlEventTouchUpInside];
     [rightButtonView addSubview:self.deleteButton];
     

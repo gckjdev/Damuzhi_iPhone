@@ -186,7 +186,7 @@ static CityManagementController *_instance;
         for (City *city in citys) {
             int countryLocation = [city.countryName rangeOfString:searchText].location;
             int cityLocation = [city.cityName rangeOfString:searchText].location;
-            if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] || [searchText isEqualToString:[city.countryName pinyinFirstLetter]] || [searchText isEqualToString:[city.cityName pinyinFirstLetter]]) {
+            if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] /*|| [searchText isEqualToString:[city.countryName pinyinFirstLetter]] */|| [searchText isEqualToString:[city.cityName pinyinFirstLetter]]) {
                 [self.filteredListContent addObject:city];
             }
             
@@ -584,7 +584,7 @@ static CityManagementController *_instance;
     [self killTimer];
     
     PPDebug(@"download failed, error = %@", error.description);
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据下载暂停"), city.countryName, city.cityName];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@下载暂停"), city.countryName, city.cityName];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
@@ -630,7 +630,7 @@ static CityManagementController *_instance;
     [self killTimer];
     
     PPDebug(@"update failed, error = %@", error.description);
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据更新暂停"), city.countryName, city.cityName];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@更新暂停"), city.countryName, city.cityName];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];
@@ -649,7 +649,7 @@ static CityManagementController *_instance;
     NSString *type = @"";
     (localCity.updateStatus == UPDATE_FAILED) ? (type=NSLS(@"更新")) : (type=NSLS(@"下载"));
     
-    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@城市数据%@暂停"), city.countryName, city.cityName, type];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@%@暂停"), city.countryName, city.cityName, type];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
     [alert show];

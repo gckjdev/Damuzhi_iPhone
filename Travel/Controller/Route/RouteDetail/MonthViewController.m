@@ -82,7 +82,6 @@
                                                         hasTopBackground:NO
                                                                hasShadow:NO 
                                                    userInteractionEnable:YES] autorelease];
-    
     [self.currentMonthButton setTitle:dateToStringByFormat(now, @"yyyy年MM月") forState:UIControlStateNormal];
     [self.nextMonthButton  setTitle:dateToStringByFormat([now nextMonth], @"yyyy年MM月") forState:UIControlStateNormal];
     

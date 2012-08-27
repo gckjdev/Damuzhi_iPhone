@@ -141,7 +141,9 @@
                                                            hasMonthYearAndArrow:NO 
                                                                hasTopBackground:NO
                                                                       hasShadow:NO 
-                                                          userInteractionEnable:YES] autorelease];
+                                                        userInteractionEnable:YES] autorelease];
+    self.monthViewController.view.userInteractionEnabled = NO; // the calendar cannot be clicked
+    
     self.bookingCellFrame = view.frame;
     
     self.sectionHeaderViews = [NSMutableDictionary dictionary];

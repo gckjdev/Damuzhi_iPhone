@@ -67,7 +67,6 @@
             [self.webView loadRequest:request];        
         }
     }
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
     [scrollView addSubview:imageView];
@@ -108,18 +107,30 @@
 {
     return YES;
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(UIWebView *)webView1
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(UIWebView *)webView1
 {
-  
-//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height, 320, 250)];
-//    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-//    [scrollView addSubview:imageView];
-//    [imageView release];
+    NSString *heightString = [webView1 stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"];
+ 
+    
+    //set webview frame
+    CGRect webViewFrame = webView1.frame;
+    webViewFrame.size = CGSizeMake(webView1.frame.size.width, [heightString floatValue]);
+    webView1.frame = webViewFrame;
+    
+    //set scrollview frame
+    CGSize sz = scrollView.bounds.size;
+    sz.height = webView1.frame.size.height;
+    scrollView.contentSize = sz;
+
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [scrollView addSubview:imageView];
+    [imageView release];
     [self hideActivity];
 }
 

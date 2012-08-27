@@ -297,6 +297,11 @@ static BOOL _showUserLocateDenyAlert = YES;
     return [[AppUtils getHistoryDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",cityId]];
 }
 
++ (NSString*)getDefaultHistoryFilePath
+{
+    return [[AppUtils getHistoryDir] stringByAppendingPathComponent:@"history.dat"];
+}
+
 + (NSString *)getFollowRoutesFilePath:(int)type
 {
     return [[AppUtils getFollowRoutesDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",type]];

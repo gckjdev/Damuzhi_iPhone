@@ -66,7 +66,8 @@ static PlaceStorage* _historyManager = nil;
         filePath = [AppUtils getFavoriteFilePath:[[AppManager defaultManager] getCurrentCityId]];
     }
     else {
-        filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
+        //filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
+        filePath = [AppUtils getDefaultHistoryFilePath];
     }
     
     return filePath;

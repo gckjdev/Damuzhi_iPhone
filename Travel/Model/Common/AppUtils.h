@@ -112,6 +112,7 @@
 
 // For getting history file path
 + (NSString*)getHistoryFilePath:(int)cityId;
++ (NSString*)getDefaultHistoryFilePath;
 
 // For getting follow routes file path 
 + (NSString *)getFollowRoutesFilePath:(int)type;

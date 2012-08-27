@@ -80,7 +80,6 @@
     [imageView release];
 
     scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
-    
     [dataSource requestDataWithDelegate:self];
     
     
