@@ -149,20 +149,15 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)localScrollView
 {	
+    PPDebug(@"local scroll contentSize height is %f", localScrollView.contentSize.height);
     CGFloat scrollPosition = localScrollView.contentSize.height - localScrollView.frame.size.height - localScrollView.contentOffset.y;
 
     if (scrollPosition < 0) 
     {
-        static BOOL controlFlag = YES;
-        if (controlFlag) 
-        {
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 416, 320, 250)];
-            [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-            [scrollView addSubview:imageView];
-            [imageView release];
-            controlFlag = NO;
-        }
-        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, localScrollView.contentSize.height - 1, 320, 250)];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [scrollView addSubview:imageView];
+        [imageView release];
     }
 }
 @end

@@ -41,6 +41,8 @@
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeRoute viewController:self];
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
+    
+    PPDebug(@"self.scrollView.contentSize.height is %f",self.scrollView.contentSize.height);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
     [scrollView addSubview:imageView];
@@ -141,31 +143,15 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)localScrollView
 {	
-  
-//    CGFloat tableViewSizeHeight = [self.dataList count] * TABLE_VIEW_CELL_HEIGHT;
-//    
-//    
-////    NSLog(@"table view size height is %f", tableViewSizeHeight);
-//    if (tableViewSizeHeight > localScrollView.contentSize.height) 
-//    {
-//        localScrollView.contentSize = CGSizeMake(localScrollView.frame.size.width, tableViewSizeHeight);
-//    }
-//    
+    PPDebug(@"local scroll contentSize height is %f", localScrollView.contentSize.height);
     CGFloat scrollPosition = localScrollView.contentSize.height - localScrollView.frame.size.height - localScrollView.contentOffset.y;
 
-    
     if (scrollPosition < 0) 
     {
-        static BOOL controlFlag = YES;
-        if (controlFlag) 
-        {
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, /*localScrollView.contentSize.height,*/416, 320, 250)];
-            [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-            [scrollView addSubview:imageView];
-            [imageView release];
-            controlFlag = NO;
-        }
-        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, /*localScrollView.contentSize.height,*/416 - 1, 320, 250)];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [scrollView addSubview:imageView];
+        [imageView release];
     }
 }
 
