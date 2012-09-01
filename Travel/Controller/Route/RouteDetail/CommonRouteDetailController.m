@@ -121,6 +121,13 @@
     [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
     [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
 
+    self.introductionController = [[[RouteIntroductionController alloc] init] autorelease];
+    [self.introductionController showInView:self.contentView];
+    _introductionController.aDelegate = self;
+    self.introductionButton.selected = YES;
+    self.costDescriptionButton.userInteractionEnabled = NO;
+    self.userFeekbackButton.userInteractionEnabled = NO;
+    self.bookingPolicyButton.userInteractionEnabled = NO;
 
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
@@ -188,13 +195,11 @@
     
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
-    if (_introductionController == nil) {
-        self.introductionController = [[[RouteIntroductionController alloc] initWithRoute:_route routeType:_routeType] autorelease];
-        _introductionController.aDelegate = self;
-        [_introductionController showInView:self.contentView];
-
-    }
-    
+//    if (_introductionController == nil) {
+//        self.introductionController = [[[RouteIntroductionController alloc] init] autorelease];
+//        _introductionController.aDelegate = self;
+//        [_introductionController showInView:self.contentView];
+//    }
     [self.contentView bringSubviewToFront:_introductionController.view];
 }
 
@@ -245,6 +250,10 @@
 
 - (void)findRequestDone:(int)result route:(TouristRoute *)route
 {
+    self.costDescriptionButton.userInteractionEnabled = YES;
+    self.userFeekbackButton.userInteractionEnabled = YES;
+    self.bookingPolicyButton.userInteractionEnabled = YES;
+    
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
         return;
@@ -262,7 +271,7 @@
     _agencyNameLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
     [_agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
 
-    [self clickIntroductionButton:_introductionButton];
+    [_introductionController updateWithRoute:_route routeType:_routeType];
 }
 
 - (void)didClickBookButton:(int)packageId

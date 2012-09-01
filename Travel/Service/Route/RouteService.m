@@ -121,6 +121,7 @@ static RouteService *_defaultRouteService = nil;
                 });
             }
             @catch (NSException *exception){
+                PPDebug(@"findRouteWithRouteId NSException");
             }
         }
     }); 

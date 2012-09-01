@@ -39,7 +39,8 @@
 @property (retain, nonatomic) IBOutlet UIButton *followButton;
 
 
-- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
+//- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
+- (void)updateWithRoute:(TouristRoute *)route routeType:(int)routeType;
 - (void)showInView:(UIView *)superView;
 
 @end

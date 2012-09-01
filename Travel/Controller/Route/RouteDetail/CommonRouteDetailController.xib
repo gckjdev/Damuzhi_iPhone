@@ -43,7 +43,6 @@
 						<string key="NSFrame">{{0, 79}, {320, 337}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -170,7 +169,7 @@
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="35945425"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
+								<object class="NSColor" key="IBUIBackgroundColor" id="1057222791">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
@@ -201,20 +200,20 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MAA</bytes>
 								</object>
+								<reference key="IBUIHighlightedTitleShadowColor" ref="1057222791"/>
 								<object class="NSColor" key="IBUINormalTitleShadowColor" id="232793389">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="289398100">
+								<object class="NSCustomResource" key="IBUIDisabledBackgroundImage" id="678754935">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">line_n_off1@2x.png</string>
 								</object>
-								<reference key="IBUIDisabledBackgroundImage" ref="289398100"/>
 								<object class="NSCustomResource" key="IBUISelectedBackgroundImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">line_n_on1@2x.png</string>
 								</object>
-								<reference key="IBUINormalBackgroundImage" ref="289398100"/>
+								<reference key="IBUINormalBackgroundImage" ref="678754935"/>
 								<object class="IBUIFontDescription" key="IBUIFontDescription" id="663101692">
 									<int key="type">2</int>
 									<double key="pointSize">14</double>
@@ -244,8 +243,8 @@
 								<string key="IBUINormalTitle">费用说明</string>
 								<reference key="IBUIHighlightedTitleColor" ref="713974892"/>
 								<reference key="IBUINormalTitleColor" ref="316756249"/>
+								<reference key="IBUIHighlightedTitleShadowColor" ref="1057222791"/>
 								<reference key="IBUINormalTitleShadowColor" ref="232793389"/>
-								<reference key="IBUIHighlightedBackgroundImage" ref="289398100"/>
 								<object class="NSCustomResource" key="IBUIDisabledBackgroundImage" id="691641143">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">line_n_off2@2x.png</string>
@@ -277,8 +276,8 @@
 								<string key="IBUINormalTitle">预订须知</string>
 								<reference key="IBUIHighlightedTitleColor" ref="713974892"/>
 								<reference key="IBUINormalTitleColor" ref="316756249"/>
+								<reference key="IBUIHighlightedTitleShadowColor" ref="1057222791"/>
 								<reference key="IBUINormalTitleShadowColor" ref="232793389"/>
-								<reference key="IBUIHighlightedBackgroundImage" ref="289398100"/>
 								<reference key="IBUISelectedBackgroundImage" ref="424483643"/>
 								<reference key="IBUINormalBackgroundImage" ref="691641143"/>
 								<reference key="IBUIFontDescription" ref="663101692"/>
@@ -303,8 +302,8 @@
 								<string key="IBUINormalTitle">用户反馈</string>
 								<reference key="IBUIHighlightedTitleColor" ref="713974892"/>
 								<reference key="IBUINormalTitleColor" ref="316756249"/>
+								<reference key="IBUIHighlightedTitleShadowColor" ref="1057222791"/>
 								<reference key="IBUINormalTitleShadowColor" ref="232793389"/>
-								<reference key="IBUIHighlightedBackgroundImage" ref="289398100"/>
 								<object class="NSCustomResource" key="IBUIDisabledBackgroundImage" id="17506791">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">line_n_off3@2x.png</string>
@@ -501,9 +500,9 @@
 							<reference ref="442819169"/>
 							<reference ref="909593076"/>
 							<reference ref="931221298"/>
-							<reference ref="287876386"/>
-							<reference ref="955511076"/>
 							<reference ref="56345260"/>
+							<reference ref="955511076"/>
+							<reference ref="287876386"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 					</object>

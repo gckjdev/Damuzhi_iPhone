@@ -105,14 +105,66 @@
     [super dealloc];
 }
 
-- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType
+//- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType
+//{
+//    if (self = [super init]) {
+//        self.route = route;
+//        self.routeType = routeType;
+//    }
+//    
+//    return self;
+//}
+
+- (void)updateWithRoute:(TouristRoute *)route routeType:(int)routeType
 {
-    if (self = [super init]) {
-        self.route = route;
-        self.routeType = routeType;
-    }
+    self.route = route;
+    self.routeType = routeType;
     
-    return self;
+    // Do any additional setup after loading the view from its nib
+    
+    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
+    self.monthViewController.aDelegate = self;
+    
+    //    // the following view is used here just to get its frame.
+    //    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+    //                                                                           date:[NSDate date]
+    //                                                           hasMonthYearAndArrow:NO 
+    //                                                               hasTopBackground:NO
+    //                                                                      hasShadow:NO 
+    //                                                        userInteractionEnable:YES] autorelease];
+    //    self.bookingCellFrame = view.frame;
+    
+    
+    self.sectionHeaderViews = [NSMutableDictionary dictionary];
+    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
+    
+    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+    
+    [self setAgencyInfoHolderViewAppearance];
+    
+    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
+    
+    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
+    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
+    [slideImageView setImages:_route.detailImagesList];
+    
+    
+    
+    
+    
+    [imagesHolderView addSubview:slideImageView];
+    
+    [self updateFollowButton];
+    
+    [self initSectionStat];
+    
+    self.referenceHeight = 0;
+    
+    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
+    
+    
+    [self.dataTableView reloadData];
 }
 
 - (int)sectionCount
@@ -134,51 +186,46 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
-    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
-    self.monthViewController.aDelegate = self;
-    
-//    self.monthViewController.view.userInteractionEnabled = NO;
-
-
-    // the following view is used here just to get its frame.
-    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
-                                                                           date:[NSDate date]
-                                                           hasMonthYearAndArrow:NO 
-                                                               hasTopBackground:NO
-                                                                      hasShadow:NO 
-                                                        userInteractionEnable:YES] autorelease];
-    self.bookingCellFrame = view.frame;
-    
-    
-    self.sectionHeaderViews = [NSMutableDictionary dictionary];
-    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
-    
-    
-    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
-    
-    
-    [self setAgencyInfoHolderViewAppearance];
-    
-    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
-    
-    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
-    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
-    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
-    [slideImageView setImages:_route.detailImagesList];
-    
- 
-    
-    
-    
-    [imagesHolderView addSubview:slideImageView];
-    
-    [self updateFollowButton];
-    
-    [self initSectionStat];
-    
-    self.referenceHeight = 0;
-    
-    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
+//    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
+//    self.monthViewController.aDelegate = self;
+//    
+////    // the following view is used here just to get its frame.
+////    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+////                                                                           date:[NSDate date]
+////                                                           hasMonthYearAndArrow:NO 
+////                                                               hasTopBackground:NO
+////                                                                      hasShadow:NO 
+////                                                        userInteractionEnable:YES] autorelease];
+////    self.bookingCellFrame = view.frame;
+//    
+//    
+//    self.sectionHeaderViews = [NSMutableDictionary dictionary];
+//    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
+//    
+//    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+//    
+//    [self setAgencyInfoHolderViewAppearance];
+//    
+//    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
+//    
+//    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
+//    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+//    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
+//    [slideImageView setImages:_route.detailImagesList];
+//    
+// 
+//    
+//    
+//    
+//    [imagesHolderView addSubview:slideImageView];
+//    
+//    [self updateFollowButton];
+//    
+//    [self initSectionStat];
+//    
+//    self.referenceHeight = 0;
+//    
+//    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
 }
 
 - (NSMutableDictionary *)sectionInfo
