@@ -292,7 +292,7 @@
 
 - (void)showInView:(UIView *)superView
 {
-    [superView removeAllSubviews];
+//    [superView removeAllSubviews];
     
 //    superView.contentSize = self.view.bounds.size;
     [superView addSubview:self.view];

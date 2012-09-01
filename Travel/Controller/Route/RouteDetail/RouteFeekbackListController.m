@@ -207,7 +207,7 @@
 
 -(void) showInView:(UIView *)superView
 {
-    [superView removeAllSubviews];
+//    [superView removeAllSubviews];
     
     self.view.frame = superView.bounds;
     [superView addSubview:self.view];

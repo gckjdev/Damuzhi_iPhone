@@ -191,30 +191,27 @@
     if (_introductionController == nil) {
         self.introductionController = [[[RouteIntroductionController alloc] initWithRoute:_route routeType:_routeType] autorelease];
         _introductionController.aDelegate = self;
-    }
+        [_introductionController showInView:self.contentView];
 
-    [_introductionController showInView:self.contentView];
+    }
     
+    [self.contentView bringSubviewToFront:_introductionController.view];
 }
 
 
 
 - (IBAction)clickCostDecriptionButton:(id)sender {
-
-
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
     
     if (_feeController == nil) {
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
+        _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
+        
+        [_feeController showInView:self.contentView];
     }
     
-    PPDebug(@"x = %f, y = %f, width = %f, height = %f", _feeController.view.frame.origin.x, _feeController.view.frame.origin.y, _feeController.view.frame.size.width, _feeController.view.frame.size.height);
-
-    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
-    
-    [_feeController showInView:self.contentView];
-    
+    [self.contentView bringSubviewToFront:_feeController.view];
 }
 
 
@@ -225,9 +222,12 @@
     
     if (_bookingPolicyController == nil) {
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
+        
+        _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
+        [_bookingPolicyController showInView:self.contentView];  
     }
-    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
-    [_bookingPolicyController showInView:self.contentView];        
+    
+    [self.contentView bringSubviewToFront:_bookingPolicyController.view];
 }
 
 
@@ -237,10 +237,10 @@
     
     if (_feekbackListController == nil) {
         self.feekbackListController = [[[RouteFeekbackListController alloc] initWithRouteId:_routeId] autorelease];
-
+        [_feekbackListController showInView:self.contentView];   
     }
-
-    [_feekbackListController showInView:self.contentView];   
+    
+    [self.contentView bringSubviewToFront:_feekbackListController.view];
 }
 
 - (void)findRequestDone:(int)result route:(TouristRoute *)route

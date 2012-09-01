@@ -164,10 +164,11 @@
 
 -(void) showInView:(UIView *)superView
 {
-    [superView removeAllSubviews];
+//    [superView removeAllSubviews];
     webView.frame = superView.bounds;
     [superView addSubview:self.view];
 }
+
 
 @end
 
