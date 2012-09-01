@@ -54,7 +54,6 @@
 @synthesize myFavPlaceListController;
 @synthesize showMyList = _showMyList;
 @synthesize topFavPlaceListView;
-@synthesize holderScrollView;
 @synthesize topFavPlaceListController;
 @synthesize showTopList = _showTopList;
 @synthesize canDelete;
@@ -87,7 +86,6 @@
     PPRelease(topRestaurantFavoritePlaceList);
     PPRelease(topShoppingFavoritePlaceList);
     PPRelease(topEntertainmentFavoritePlaceList);
-    [holderScrollView release];
     [super dealloc];
 }
 
@@ -126,16 +124,6 @@
     }else {
         [self clickTopFavorite:nil];
     }
-    
-    self.holderScrollView.contentSize = CGSizeMake(self.holderScrollView.frame.size.width, self.holderScrollView.frame.size.height + 1);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
-    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-    [holderScrollView addSubview:imageView];
-    [imageView release];
-    
-    holderScrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
-    
-    topFavPlaceListView.backgroundColor = holderScrollView.backgroundColor;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -184,7 +172,6 @@
     [self setTopRestaurantFavoritePlaceList:nil];
     [self setTopShoppingFavoritePlaceList:nil];
     [self setTopEntertainmentFavoritePlaceList:nil];
-    [self setHolderScrollView:nil];
     [super viewDidUnload];
 }
 
@@ -494,17 +481,5 @@
     return array;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{	
-    PPDebug(@"scrollView.contentSize.height is %f",scrollView.contentSize.height);
-    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
-    if (scrollPosition < 0)  
-    {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 1, 320, 250)];
-        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-        [scrollView addSubview:imageView];
-        [imageView release];
-    }
-}
 
 @end

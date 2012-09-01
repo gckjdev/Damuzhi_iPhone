@@ -19,10 +19,9 @@
 
 #define TABLE_VIEW_CELL_HEIGHT 75
 @implementation RouteController
-@synthesize scrollView;
+
 
 - (void)dealloc {
-    [scrollView release];
     [super dealloc];
 }
 
@@ -39,16 +38,15 @@
     [self.navigationItem setTitle:NSLS(@"线路推荐")];
         
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeRoute viewController:self];
-    
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
-    
-    PPDebug(@"self.scrollView.contentSize.height is %f",self.scrollView.contentSize.height);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
-    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-    [scrollView addSubview:imageView];
-    [imageView release];
-    
-    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat orginY = (tableView.contentSize.height <= tableView.frame.size.height) ? tableView.frame.size.height : tableView.contentSize.height;
+    orginY = orginY - 1;
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, orginY, 320, 250)] autorelease];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [tableView addSubview:imageView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -59,7 +57,7 @@
 
 - (void)viewDidUnload
 {
-    [self setScrollView:nil];
+//    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -137,22 +135,6 @@
     
     self.dataList = tipList;
     [self.dataTableView reloadData];
-}
-
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)localScrollView
-{	
-    PPDebug(@"local scroll contentSize height is %f", localScrollView.contentSize.height);
-    CGFloat scrollPosition = localScrollView.contentSize.height - localScrollView.frame.size.height - localScrollView.contentOffset.y;
-
-    if (scrollPosition < 0) 
-    {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, /*localScrollView.contentSize.height,*/416 - 1, 320, 250)];
-        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-        [scrollView addSubview:imageView];
-        [imageView release];
-    }
 }
 
 @end
