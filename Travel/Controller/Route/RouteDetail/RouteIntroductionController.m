@@ -136,18 +136,21 @@
     
     self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
     self.monthViewController.aDelegate = self;
+    
+//    self.monthViewController.view.userInteractionEnabled = NO;
+
+
+    // the following view is used here just to get its frame.
     TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
                                                                            date:[NSDate date]
                                                            hasMonthYearAndArrow:NO 
                                                                hasTopBackground:NO
                                                                       hasShadow:NO 
                                                         userInteractionEnable:YES] autorelease];
-    self.monthViewController.view.userInteractionEnabled = NO; // the calendar cannot be clicked
-    
     self.bookingCellFrame = view.frame;
     
-    self.sectionHeaderViews = [NSMutableDictionary dictionary];
     
+    self.sectionHeaderViews = [NSMutableDictionary dictionary];
     [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
     
     

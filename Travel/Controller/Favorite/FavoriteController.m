@@ -109,7 +109,6 @@
                            action:@selector(clickBack:)];
     [self createRightBarButton];
     
-    
     [buttonHolderView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage strectchableImageName:@"options_bg2.png"]]];
 
     self.myFavPlaceListController =[[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil] autorelease];
@@ -135,6 +134,7 @@
     [imageView release];
     
     holderScrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    
     topFavPlaceListView.backgroundColor = holderScrollView.backgroundColor;
 }
 
@@ -502,7 +502,6 @@
         static BOOL controlFlag = YES;
         if (controlFlag) 
         {
-            NSLog(@"hahhahahha is %f", scrollView.contentSize.height);
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 8, 320, 250)];
             [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
             [scrollView addSubview:imageView];

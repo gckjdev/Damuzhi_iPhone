@@ -29,6 +29,9 @@
 @property (retain, nonatomic) IBOutlet UIView *monthHolderView;
 @property (retain, nonatomic) IBOutlet UIView *buttonHolderView;
 
+@property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
+
+@property (retain, nonatomic) IBOutlet UIImageView *rightLineImageView;
 - (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;
 - (void)showInView:(UIView *)superView;
 

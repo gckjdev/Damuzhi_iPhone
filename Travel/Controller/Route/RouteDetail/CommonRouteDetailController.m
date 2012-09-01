@@ -208,8 +208,10 @@
     if (_feeController == nil) {
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
     }
+    
+    PPDebug(@"x = %f, y = %f, width = %f, height = %f", _feeController.view.frame.origin.x, _feeController.view.frame.origin.y, _feeController.view.frame.size.width, _feeController.view.frame.size.height);
 
-    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 60);
+    _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
     
     [_feeController showInView:self.contentView];
     
@@ -224,8 +226,7 @@
     if (_bookingPolicyController == nil) {
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
     }
-    
-    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 60);
+    _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
     [_bookingPolicyController showInView:self.contentView];        
 }
 

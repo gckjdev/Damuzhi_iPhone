@@ -36,6 +36,10 @@
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
 @synthesize buttonHolderView = _buttonHolderView;
+@synthesize backgroundImageView = _backgroundImageView;
+@synthesize rightLineImageView = _rightLineImageView;
+
+
 
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
@@ -52,6 +56,9 @@
     [_aBgView release];
     [_buttonHolderView release];
 //    [_date release];
+
+    [_backgroundImageView release];
+    [_rightLineImageView release];
     [super dealloc];
 }
 
@@ -74,16 +81,29 @@
                          fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
-    
-    NSDate *now = [NSDate date];
+    self.backgroundImageView.image = [[UIImage imageNamed:@"date_t_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+    self.rightLineImageView.backgroundColor = [UIColor colorWithRed:209/255.0 green:210/255.0 blue:214/255.0 alpha:1.0];
     self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
-                                                                    date:now
+                                                                    date:[NSDate date]
                                                     hasMonthYearAndArrow:NO 
                                                         hasTopBackground:NO
                                                                hasShadow:NO 
                                                    userInteractionEnable:YES] autorelease];
-    [self.currentMonthButton setTitle:dateToStringByFormat(now, @"yyyy年MM月") forState:UIControlStateNormal];
-    [self.nextMonthButton  setTitle:dateToStringByFormat([now nextMonth], @"yyyy年MM月") forState:UIControlStateNormal];
+    PPDebug(@"hhaahahhahhax width is %f", self.monthView.frame.size.width);
+    PPDebug(@"hhaahahhahhax height is %f", self.monthView.frame.size.height);
+
+    PPDebug(@"need hahahahahhax height is %f", self.rightLineImageView.frame.size.height);
+    
+    [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
+                             forState:UIControlStateNormal];
+    
+    [self.nextMonthButton  setTitle:dateToChineseStringByFormat([[[NSDate date] chineseFirstOfMonth] chineseNextMonth], @"yyyy年MM月")
+                           forState:UIControlStateNormal];
+
+//    PPDebug(@"current time is %@",dateToChineseStringByFormat(now, @"yyyy年MM月dd日 HH:mm"));
+//    PPDebug(@"next month time is %@",dateToChineseStringByFormat([now chineseNextMonth], @"yyyy年MM月dd日 HH:mm"));
+
+
     
     _monthView.delegate = self;
     _monthView.dataSource = self;
@@ -94,6 +114,10 @@
         
     [_monthView reload];
     [self.monthHolderView addSubview:_monthView];
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (void)viewDidUnload
@@ -103,6 +127,8 @@
     [self setMonthHolderView:nil];
     [self setABgView:nil];
     [self setButtonHolderView:nil];
+    [self setBackgroundImageView:nil];
+    [self setRightLineImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

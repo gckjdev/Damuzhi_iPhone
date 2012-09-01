@@ -18,8 +18,7 @@
 @synthesize htmlPath = _htmlPath;
 @synthesize webView;
 @synthesize dataSource;
-@synthesize scrollView;
-
+//@synthesize scrollView;
 
 
 - (CommonWebController*)initWithWebUrl:(NSString*)htmlPath
@@ -30,6 +29,7 @@
     }
     return self;
 }
+
 
 - (id)initWithDataSource:(NSObject<CommonWebDataSourceProtocol>*)source
 {
@@ -52,7 +52,7 @@
                            action:@selector(clickBack:)];
 
     webView.delegate = self;
-
+    
     if (dataSource) {
         [self.navigationItem setTitle:[dataSource getTitleName]];
         [dataSource requestDataWithDelegate:self];
@@ -67,18 +67,22 @@
             [self.webView loadRequest:request];        
         }
     }
+//    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 1);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-    [scrollView addSubview:imageView];
-    [imageView release];
+//    [scrollView addSubview:imageView];
+//    [imageView release];
     
-    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    [webView.scrollView addSubview:imageView];
+    
+//    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    webView.backgroundColor = [UIColor colorWithRed:211/255.0 green:215/255.0 blue:218/255.0 alpha:1];
 }
 
 - (void)viewDidUnload
 {
     [self setWebView:nil];
-    [self setScrollView:nil];
+//    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -96,7 +100,7 @@
 - (void)dealloc {
     [_htmlPath release];
     [webView release];
-    [scrollView release];
+//    [scrollView release];
     [super dealloc];
 }
 
@@ -114,24 +118,13 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView1
 {
-    NSString *heightString = [webView1 stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"];
- 
-    
-    //set webview frame
-    CGRect webViewFrame = webView1.frame;
-    webViewFrame.size = CGSizeMake(webView1.frame.size.width, [heightString floatValue]);
-    webView1.frame = webViewFrame;
-    
-    //set scrollview frame
-    CGSize sz = scrollView.bounds.size;
-    sz.height = webView1.frame.size.height;
-    scrollView.contentSize = sz;
-
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height, 320, 250)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView1.scrollView.contentSize.height, 320, 250)];
     [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-    [scrollView addSubview:imageView];
+    [webView1.scrollView addSubview:imageView];
     [imageView release];
+    
     [self hideActivity];
+ 
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -172,7 +165,6 @@
 -(void) showInView:(UIView *)superView
 {
     [superView removeAllSubviews];
-
     webView.frame = superView.bounds;
     [superView addSubview:self.view];
 }

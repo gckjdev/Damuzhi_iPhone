@@ -191,7 +191,7 @@
     [routeIdLabel release];
     
     UILabel *bookDateLabel = [[[UILabel alloc] initWithFrame:CGRectMake(200, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
-    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:[[dataList objectAtIndex:section] bookDate]];
+    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:[[dataList objectAtIndex:section] bookDate] - 8 * 3600];
     bookDateLabel.backgroundColor = [UIColor clearColor];
     bookDateLabel.font = [UIFont systemFontOfSize:15];
     bookDateLabel.text = dateToStringByFormat(bookDate, @"MM月dd日");
