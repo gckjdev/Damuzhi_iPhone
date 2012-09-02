@@ -273,7 +273,6 @@
 - (void)setAgencyInfoHolderViewAppearance
 {
     
-    
 //    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
     NSString *string = [[AppManager defaultManager]  getDepartCityName:_route.departCityId];
     
