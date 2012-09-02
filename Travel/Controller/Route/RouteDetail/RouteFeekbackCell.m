@@ -54,6 +54,7 @@
     
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:routeFeekback.date];
     dateLabel.text = dateToStringByFormat(date, DATE_FORMAT);
+    PPDebug(@"feedback date is %@",  dateToStringByFormat(date,  @"yyyy-MM-dd hh:mm"));
     contentLabel.text = routeFeekback.content;
     
     

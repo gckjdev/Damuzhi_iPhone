@@ -19,5 +19,4 @@
 @property (retain, nonatomic) IBOutlet UIView *myFavPlaceListView;
 @property (retain, nonatomic) IBOutlet UIView *topFavPlaceListView;
 
-@property (retain, nonatomic) IBOutlet UIScrollView *holderScrollView;
 @end

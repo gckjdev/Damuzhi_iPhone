@@ -20,12 +20,11 @@
 #define SECTION_HEADER_HEIGHT 18
 
 @implementation GuideController
-@synthesize scrollView;
 
 
 - (void)dealloc 
 {
-    [scrollView release];
+//    [scrollView release];
     [super dealloc];
 }
 
@@ -41,13 +40,6 @@
     
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeGuide viewController:self];
     
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 1);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
-    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-    [scrollView addSubview:imageView];
-    [imageView release];
-    
-    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -58,7 +50,6 @@
 
 - (void)viewDidUnload
 {
-    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -81,6 +72,7 @@
 #pragma mark - TravelTipsServiceDelegate
 - (void)findRequestDone:(int)resulteCode tipList:(NSArray*)tipList
 {
+    
     if (resulteCode != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
         return;
@@ -89,6 +81,15 @@
     self.dataList = tipList;
     [self.dataTableView reloadData];
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat orginY = (tableView.contentSize.height <= tableView.frame.size.height) ? tableView.frame.size.height : tableView.contentSize.height;
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, orginY, 320, 250)] autorelease];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [tableView addSubview:imageView];
+}
+
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -145,24 +146,4 @@
     [controller release];
 }
 
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)localScrollView
-{	
-    CGFloat scrollPosition = localScrollView.contentSize.height - localScrollView.frame.size.height - localScrollView.contentOffset.y;
-
-    if (scrollPosition < 0) 
-    {
-        static BOOL controlFlag = YES;
-        if (controlFlag) 
-        {
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 416, 320, 250)];
-            [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-            [scrollView addSubview:imageView];
-            [imageView release];
-            controlFlag = NO;
-        }
-        
-    }
-}
 @end

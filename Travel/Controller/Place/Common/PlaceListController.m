@@ -74,7 +74,16 @@
     
     [self addMyLocationBtnTo:_mapView];
     
+    
+    if (!self.supportRefreshFooter && !self.supportRefreshHeader) {
+        
+        UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+        [self.dataTableView addSubview:imageView];
+    }
+    
     [self switchToListMode];
+    self.dataTableView.backgroundColor = [UIColor colorWithRed:220/255.0 green:224/255.0 blue:227/255.0 alpha:1.0];
 }
 
 #pragma mark For Sub Class to override and implement
@@ -152,7 +161,7 @@
 	// return [self getRowHeight:indexPath.row totalRow:[dataList count]];
 	// return cellImageHeight;
 	
-	return 76;
+	return [PlaceCell getCellHeight];
 }
 
 - (Class)getClassByPlace:(Place*)place
@@ -280,6 +289,17 @@
     }else {
         [self reloadTableView];
     }
+    
+    if (!self.supportRefreshFooter && !self.supportRefreshHeader) {
+        CGFloat height = [placeList count] * [PlaceCell getCellHeight];
+        CGFloat originY = height < self.dataTableView.frame.size.height ? self.dataTableView.frame.size.height : height;
+        
+        UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, originY, 320, 250)] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [self.dataTableView addSubview:imageView];
+    }
+    
+    
     
 //    [self addBottomImage];
 }

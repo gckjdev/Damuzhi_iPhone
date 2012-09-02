@@ -116,10 +116,10 @@
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
 
-    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
-    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
-    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
-    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(1, 3, 5, 3)];
+    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
 
     self.introductionController = [[[RouteIntroductionController alloc] init] autorelease];
     [self.introductionController showInView:self.contentView];
@@ -143,6 +143,7 @@
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
     
     for(NSString* title in self.phoneList){
+        PPDebug(@"phone/title is %@",title);
         [actionSheet addButtonWithTitle:title];
     }
     [actionSheet addButtonWithTitle:NSLS(@"返回")];
@@ -158,6 +159,7 @@
     }
     
     NSString *phone = [self.phoneList objectAtIndex:buttonIndex];
+    PPDebug(@"phone is %@", phone);
 //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];    
     [UIUtils makeCall:phone];
 }
@@ -262,8 +264,10 @@
     self.route = route;
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
+    PPDebug(@"_route.contactPhone is %@",_route.contactPhone);
     
     [self.routeNameLabel setText:_route.name];
+    PPDebug(@"_route.name is %@",_route.name);
     self.routeNameLabel.textColor = [UIColor colorWithRed:255/255.0 green:102/255.0 blue:0.0 alpha:1.0];
     _routeIdLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
     [self.routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];

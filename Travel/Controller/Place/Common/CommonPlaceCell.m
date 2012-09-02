@@ -49,7 +49,7 @@
 
 + (CGFloat)getCellHeight
 {
-    return 44.0f;
+    return 76.0f;
 }
 
 - (void)setCellDataByPlace:(Place*)place currentLocation:(CLLocation *)currentLocation
