@@ -52,9 +52,13 @@ static RouteService *_defaultRouteService = nil;
             needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
-    [viewController showActivityWithText:NSLS(@"数据加载中......")];
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSOperationQueue* queue = [self getOperationQueue:@"SERACH_WORKING_QUEUE"];
+    [queue cancelAllOperations];
+    
+    [queue addOperationWithBlock:^{
+        [viewController showActivityWithText:NSLS(@"数据加载中......")];
+        
+        
         CommonNetworkOutput* output = [TravelNetworkRequest queryList:routeType 
                                                                 start:start 
                                                                 count:count 
@@ -75,28 +79,30 @@ static RouteService *_defaultRouteService = nil;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
-            
+                
                 totalCount = [travelResponse totalCount];
                 routeList = [[travelResponse routeList] routesList];
                 statistics = (needStatistics == NO) ? nil : [travelResponse routeStatistics];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [viewController hideActivity];   
-                    
-                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
-                        [viewController findRequestDone:output.resultCode 
-                                             totalCount:totalCount
-                                                   list:routeList
-                                             statistics:statistics];
-                    }
-                });
+                
             }
             @catch (NSException *exception){
                 PPDebug(@"<Catch Exception in findRoutesWithType>");
             }
         }
-
-    });    
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewController hideActivity];   
+            
+            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
+                [viewController findRequestDone:output.resultCode 
+                                     totalCount:totalCount
+                                           list:routeList
+                                     statistics:statistics];
+            }
+        });
+        
+    }];
 }
 
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController

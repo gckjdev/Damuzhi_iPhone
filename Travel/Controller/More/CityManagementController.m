@@ -19,6 +19,8 @@
 #define NAVIGATION_BAR_HEIGHT 44
 #define SELF_VIEW_HEIGHT (460 - NAVIGATION_BAR_HEIGHT)
 
+
+
 @interface CityManagementController ()
 
 @property (retain, nonatomic) NSDictionary *groupCitysDic;
@@ -463,7 +465,12 @@ static CityManagementController *_instance;
 #pragma mark: implementation of buttons event
 - (void)clickCityListButton:(id)sender
 {
-
+    
+    [self setNavigationRightButton:@"" 
+                          fontSize:FONT_SIZE
+                         imageName:@"search_btn.png" 
+                            action:@selector(clickSearch:)];
+    
     // Set buttons status.
     _downloadListBtn.selected = NO;
     _cityListBtn.selected = YES;
@@ -498,6 +505,8 @@ static CityManagementController *_instance;
 
 - (void)clickDownloadListButton:(id)sender
 {
+
+    self.navigationItem.rightBarButtonItem = nil;
 
     // Set buttons status.
     _downloadListBtn.selected = YES;
