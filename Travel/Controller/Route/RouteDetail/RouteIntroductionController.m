@@ -62,7 +62,6 @@
 @property (assign, nonatomic) CGFloat referenceHeight;
 
 @property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
-
 @property (assign, nonatomic) CGRect bookingCellFrame;
 @property (retain, nonatomic) MonthViewController *monthViewController;
 
@@ -78,13 +77,10 @@
 @synthesize routeType = _routeType;
 @synthesize sectionInfo = _sectionInfo;
 @synthesize referenceHeight = _referenceHeight;
-
 @synthesize sectionHeaderViews = _sectionHeaderViews;
-
 @synthesize titleHolerView;
 @synthesize imagesHolderView;
 @synthesize departCityLabel = _departCityLabel;
-//@synthesize agencyNameLabel;
 @synthesize agencyInfoHolderView;
 @synthesize followButton;
 @synthesize bookingCellFrame = _bookingCellFrame;
@@ -97,7 +93,6 @@
     [titleHolerView release];
     [imagesHolderView release];
     [agencyInfoHolderView release];
-//    [agencyNameLabel release];
     [followButton release];
     [_sectionHeaderViews release];
     [_departCityLabel release];
@@ -146,12 +141,12 @@
     
     SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    
+//    slideImageView.defaultImage = @"all_page_bg2.jpg";
+//    imagesHolderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]];
+    
     [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
     [slideImageView setImages:_route.detailImagesList];
-    
-    
-    
-    
     
     [imagesHolderView addSubview:slideImageView];
     
@@ -784,12 +779,13 @@
 
 - (UILabel *)headerTitle
 {
-    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
+//    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
+    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 250, HEIGHT_HEADER_VIEW)] autorelease];
     headerTitle.backgroundColor = [UIColor clearColor];
     headerTitle.textColor = [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1];
     headerTitle.font = FONT_SECTION_TITLE;
     headerTitle.textColor = COLOR_SECTION_TITLE;
-    
+//    headerTitle.backgroundColor = [UIColor redColor];
     return headerTitle;
 }
 
