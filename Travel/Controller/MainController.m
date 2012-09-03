@@ -111,8 +111,7 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
     
-    button.titleLabel.shadowColor = [UIColor redColor];
-    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
+//    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
     
     button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
