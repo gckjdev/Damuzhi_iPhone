@@ -172,7 +172,11 @@
     self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
     
     for (int i = 0; i < [self sectionCount]; i++) {
-        [_sectionStat addObject:[NSNumber numberWithBool:YES]];
+        if ([[self titleForSection:i] isEqualToString:SECTION_TITLE_REFERENCE]) {
+            [_sectionStat addObject:[NSNumber numberWithBool:NO]];
+        } else {
+            [_sectionStat addObject:[NSNumber numberWithBool:YES]];
+        }
     }
 }
 
