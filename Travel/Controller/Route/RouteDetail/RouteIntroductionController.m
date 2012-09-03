@@ -141,12 +141,12 @@
     
     SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    
+//    slideImageView.defaultImage = @"all_page_bg2.jpg";
+//    imagesHolderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]];
+    
     [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
     [slideImageView setImages:_route.detailImagesList];
-    
-    
-    
-    
     
     [imagesHolderView addSubview:slideImageView];
     

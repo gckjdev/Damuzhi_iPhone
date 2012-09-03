@@ -32,6 +32,7 @@
 		A34BDD3615B94A3800CD16C7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A34BDD3415B94A3800CD16C7 /* Default@2x.png */; };
 		A35AF07015DB9EC000602858 /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A35AF06F15DB9EC000602858 /* play@2x.png */; };
 		A35AF08015DBA5FE00602858 /* line_table_6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A35AF07F15DBA5FE00602858 /* line_table_6@2x.png */; };
+		A36ADA1515F4734F00FCB701 /* all_page_bg2@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A36ADA1415F4734F00FCB701 /* all_page_bg2@2x.jpg */; };
 		A387DE1D15C7D78100507F95 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A387DE1C15C7D78100507F95 /* CoreText.framework */; };
 		A387DE4015C7D7BF00507F95 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = A387DE3015C7D7BF00507F95 /* NSAttributedString+Attributes.m */; };
 		A387DE4115C7D7BF00507F95 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A387DE3215C7D7BF00507F95 /* OHAttributedLabel.m */; };
@@ -783,6 +784,7 @@
 		A34BDD3415B94A3800CD16C7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A35AF06F15DB9EC000602858 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		A35AF07F15DBA5FE00602858 /* line_table_6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_table_6@2x.png"; sourceTree = "<group>"; };
+		A36ADA1415F4734F00FCB701 /* all_page_bg2@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "all_page_bg2@2x.jpg"; sourceTree = "<group>"; };
 		A387DE1C15C7D78100507F95 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		A387DE2F15C7D7BF00507F95 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
 		A387DE3015C7D7BF00507F95 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
@@ -2501,6 +2503,7 @@
 				A455F82415835A5A00CA5743 /* route_list */,
 				A455F81F15835A0B00CA5743 /* travel_guide */,
 				A48E04811534058800B2695E /* all_page_bg@2x.jpg */,
+				A36ADA1415F4734F00FCB701 /* all_page_bg2@2x.jpg */,
 				A48E04821534058800B2695E /* category_icons */,
 				A48E04891534058800B2695E /* city_manager */,
 				A48E049E1534058800B2695E /* favorite */,
@@ -4639,6 +4642,7 @@
 				A3C9840E15F1EF1E0056E5E2 /* line_n_on1@2x.png in Resources */,
 				A3C9840F15F1EF1E0056E5E2 /* line_n_on2@2x.png in Resources */,
 				A3C9841015F1EF1E0056E5E2 /* line_n_on3@2x.png in Resources */,
+				A36ADA1515F4734F00FCB701 /* all_page_bg2@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
