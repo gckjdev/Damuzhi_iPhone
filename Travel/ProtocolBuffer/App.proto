@@ -51,6 +51,8 @@ message City {
   optional int32 priceRank = 20 [default=3];            // 城市查询价格等级，默认为3
   
   optional int32 groupId = 50;                  // 分组Id
+  
+  optional bool hotCity = 51 [default = false];         // 是否是热门城市
 }
 
 message CityList {
