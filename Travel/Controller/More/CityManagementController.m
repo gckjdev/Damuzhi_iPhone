@@ -358,8 +358,9 @@ static CityManagementController *_instance;
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
     int reSection = 0;
-    for (NSString *groupName in _groupNameList) {
-        if ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]] || [groupName isEqualToString:title]) {
+    for (NSString *groupName in _groupNameList) {        
+        if ([groupName isEqualToString:title] 
+            || ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]] && ![groupName isEqualToString:@"热门"]) ) {
             break;
         }
         reSection ++;
@@ -435,17 +436,27 @@ static CityManagementController *_instance;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    City *city;
-    if (tableView == self.dataTableView) 
-    {
-        NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
-        NSArray *citys = [_groupCitysDic valueForKey:groupName];
-        city = [citys objectAtIndex:indexPath.row];
+    
+    if (tableView == self.downloadTableView) {
+        
+    } else {
+        
+        City *city;
+        if (tableView == self.dataTableView) 
+        {
+            NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
+            NSArray *citys = [_groupCitysDic valueForKey:groupName];
+            city = [citys objectAtIndex:indexPath.row];
+        } else if (tableView == self.searchDisplayController.searchResultsTableView) {
+            city = [_filteredListContent objectAtIndex:indexPath.row];
+        }
+        
         [[AppManager defaultManager] setCurrentCityId:city.cityId];
         self.searchDisplayController.active = NO;
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self didSelectCurrendCity:city];
     }
+    
 }
 
 #pragma mark -
