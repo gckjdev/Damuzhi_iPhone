@@ -880,6 +880,7 @@ static CityArea* defaultCityAreaInstance = nil;
 @property (retain) NSString* currencyName;
 @property int32_t priceRank;
 @property int32_t groupId;
+@property BOOL hotCity;
 @end
 
 @implementation City
@@ -962,6 +963,18 @@ static CityArea* defaultCityAreaInstance = nil;
   hasGroupId_ = !!value;
 }
 @synthesize groupId;
+- (BOOL) hasHotCity {
+  return !!hasHotCity_;
+}
+- (void) setHasHotCity:(BOOL) value {
+  hasHotCity_ = !!value;
+}
+- (BOOL) hotCity {
+  return !!hotCity_;
+}
+- (void) setHotCity:(BOOL) value {
+  hotCity_ = !!value;
+}
 - (void) dealloc {
   self.cityName = nil;
   self.latestVersion = nil;
@@ -986,6 +999,7 @@ static CityArea* defaultCityAreaInstance = nil;
     self.currencyName = @"";
     self.priceRank = 3;
     self.groupId = 0;
+    self.hotCity = NO;
   }
   return self;
 }
@@ -1068,6 +1082,9 @@ static City* defaultCityInstance = nil;
   if (self.hasGroupId) {
     [output writeInt32:50 value:self.groupId];
   }
+  if (self.hasHotCity) {
+    [output writeBool:51 value:self.hotCity];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -1112,6 +1129,9 @@ static City* defaultCityInstance = nil;
   }
   if (self.hasGroupId) {
     size += computeInt32Size(50, self.groupId);
+  }
+  if (self.hasHotCity) {
+    size += computeBoolSize(51, self.hotCity);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1227,6 +1247,9 @@ static City* defaultCityInstance = nil;
   if (other.hasGroupId) {
     [self setGroupId:other.groupId];
   }
+  if (other.hasHotCity) {
+    [self setHotCity:other.hotCity];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1296,6 +1319,10 @@ static City* defaultCityInstance = nil;
       }
       case 400: {
         [self setGroupId:[input readInt32]];
+        break;
+      }
+      case 408: {
+        [self setHotCity:[input readBool]];
         break;
       }
     }
@@ -1504,6 +1531,22 @@ static City* defaultCityInstance = nil;
 - (City_Builder*) clearGroupId {
   result.hasGroupId = NO;
   result.groupId = 0;
+  return self;
+}
+- (BOOL) hasHotCity {
+  return result.hasHotCity;
+}
+- (BOOL) hotCity {
+  return result.hotCity;
+}
+- (City_Builder*) setHotCity:(BOOL) value {
+  result.hasHotCity = YES;
+  result.hotCity = value;
+  return self;
+}
+- (City_Builder*) clearHotCity {
+  result.hasHotCity = NO;
+  result.hotCity = NO;
   return self;
 }
 @end

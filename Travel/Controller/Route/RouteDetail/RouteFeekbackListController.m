@@ -180,6 +180,7 @@
     [self updateStatisticsData];
     
     [dataTableView reloadData];
+    
 }
 
 
