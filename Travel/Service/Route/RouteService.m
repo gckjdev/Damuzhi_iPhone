@@ -69,9 +69,9 @@ static RouteService *_defaultRouteService = nil;
                                                                  lang:LanguageTypeZhHans 
                                                                  test:NO];
         
-        int totalCount;
-        NSArray *routeList;
-        RouteStatistics *statistics;
+        int totalCount = 0 ;
+        NSArray *routeList = nil;
+        RouteStatistics *statistics = nil;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
@@ -79,22 +79,22 @@ static RouteService *_defaultRouteService = nil;
                 totalCount = [travelResponse totalCount];
                 routeList = [[travelResponse routeList] routesList];
                 statistics = (needStatistics == NO) ? nil : [travelResponse routeStatistics];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [viewController hideActivity];   
-                    
-                    if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
-                        [viewController findRequestDone:output.resultCode 
-                                             totalCount:totalCount
-                                                   list:routeList
-                                             statistics:statistics];
-                    }
-                });
             }
             @catch (NSException *exception){
                 PPDebug(@"<Catch Exception in findRoutesWithType>");
             }
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewController hideActivity];   
+            
+            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
+                [viewController findRequestDone:output.resultCode 
+                                     totalCount:totalCount
+                                           list:routeList
+                                     statistics:statistics];
+            }
+        });
 
     });    
 }

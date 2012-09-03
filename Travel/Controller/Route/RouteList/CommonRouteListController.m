@@ -240,13 +240,14 @@
             [self updateStatisticsData];
         }
         
-        if ([self.dataList count] == 0) {
-            [self showTipsOnTableView:NSLS(@"未找到相关信息")];
-        }else {
-            [self hideTipsOnTableView];
-        }
-        
         [dataTableView reloadData];
+    }
+    
+    if ([self.dataList count] == 0) {
+        self.noMoreData = YES;
+        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+    }else {
+        [self hideTipsOnTableView];
     }
     
     [self dataSourceDidFinishLoadingNewData];
