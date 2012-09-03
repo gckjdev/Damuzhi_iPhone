@@ -1089,22 +1089,62 @@ static AppManager* _defaultAppManager = nil;
 
 - (NSDictionary *)getGroupCitysDicList
 {
-    NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc] init] autorelease];
-    for (CityGroup *cityGroup in _app.cityGroupsList) {
-        NSArray *citys = [self getCityListInGroup:cityGroup.groupId];
-        [dictionary setValue:citys forKey:cityGroup.name];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    
+    NSMutableArray *hotCities  = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if (city.hotCity) {
+            [hotCities addObject:city];
+        }
+    }
+    [dic setObject:hotCities forKey:NSLS(@"热门")];
+
+    for (NSString *countryName in [self getCountryNameList]) {
+        NSArray *cities = [self getCitiesOfCountry:countryName];
+        [dic setObject:cities forKey:countryName];
     }
     
-    return dictionary;
+    return dic;
 }
 
 - (NSArray *)getGroupNameList
 {
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    for (CityGroup *cityGroup in _app.cityGroupsList) {
-        [mutableArray addObject:cityGroup.name];
+    NSMutableArray *groupName = [NSMutableArray array];
+    [groupName addObject:NSLS(@"热门")];
+    [groupName addObjectsFromArray:[self getCountryNameList]];
+    
+    return groupName;
+}
+
+
+- (NSArray *)getCitiesOfCountry:(NSString *)countryName
+{
+    NSMutableArray *cities = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if ([city.countryName isEqualToString:countryName]) {
+            [cities addObject:city];
+        }
     }
-    return mutableArray;
+    
+    return cities;
+}
+
+- (NSArray *)getCountryNameList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+
+    for (City *city in CITY_LIST) {
+        [dic setObject:NSLS(@"") forKey:city.countryName];
+    }
+    
+    NSArray *countryNameList =  [[dic allKeys] sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSString *countryName1 = (NSString *)obj1;
+        NSString *countryName2 = (NSString *)obj2;
+        
+        return [[countryName1 pinyinFirstLetter] compare:[countryName2 pinyinFirstLetter] options:NSCaseInsensitiveSearch];
+    }];
+    
+    return countryNameList;
 }
 
 @end
