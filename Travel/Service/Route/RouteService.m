@@ -52,13 +52,9 @@ static RouteService *_defaultRouteService = nil;
             needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
-    NSOperationQueue* queue = [self getOperationQueue:@"SERACH_WORKING_QUEUE"];
-    [queue cancelAllOperations];
-    
-    [queue addOperationWithBlock:^{
-        [viewController showActivityWithText:NSLS(@"数据加载中......")];
-        
-        
+    [viewController showActivityWithText:NSLS(@"数据加载中......")];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CommonNetworkOutput* output = [TravelNetworkRequest queryList:routeType 
                                                                 start:start 
                                                                 count:count 
@@ -73,18 +69,16 @@ static RouteService *_defaultRouteService = nil;
                                                                  lang:LanguageTypeZhHans 
                                                                  test:NO];
         
-        int totalCount;
-        NSArray *routeList;
-        RouteStatistics *statistics;
+        int totalCount = 0 ;
+        NSArray *routeList = nil;
+        RouteStatistics *statistics = nil;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
-                
+            
                 totalCount = [travelResponse totalCount];
                 routeList = [[travelResponse routeList] routesList];
                 statistics = (needStatistics == NO) ? nil : [travelResponse routeStatistics];
-                
-                
             }
             @catch (NSException *exception){
                 PPDebug(@"<Catch Exception in findRoutesWithType>");
@@ -101,8 +95,8 @@ static RouteService *_defaultRouteService = nil;
                                      statistics:statistics];
             }
         });
-        
-    }];
+
+    });    
 }
 
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController

@@ -229,9 +229,6 @@
              totalCount:(int)totalCount
               placeList:(NSArray *)placeList
 {
-    [_placeListController dataSourceDidFinishLoadingNewData];
-    [_placeListController dataSourceDidFinishLoadingMoreData];
-    
     for (Place *place in placeList) {
         PPDebug(@"place name = %@", place.name);
     }
@@ -250,7 +247,7 @@
     _start += [placeList count];
     _totalCount = totalCount;
     
-    if (_start >= totalCount) {
+    if (_start >= totalCount || [dataList count] == 0) {
         _placeListController.noMoreData = YES;
     }
     
@@ -266,6 +263,9 @@
     
     // Reload place list.
     [_placeListController setPlaceList:_placeList];
+    
+    [_placeListController dataSourceDidFinishLoadingNewData];
+    [_placeListController dataSourceDidFinishLoadingMoreData];
 }
 
 - (void)didPullDownToRefresh
