@@ -396,7 +396,6 @@ static CityManagementController *_instance;
             return cell;
         }
         DownloadListCell* downloadCell = (DownloadListCell*)cell;
-//        [downloadCell setCellData:[_downloadList objectAtIndex:row]]; //一期
         NSArray *arr = [[PackageManager defaultManager] getdownLoadCityListFromCountry:[self.countryNameList objectAtIndex:section]];
         [downloadCell setCellData:[arr objectAtIndex :row]] ;//二期
         
@@ -443,7 +442,7 @@ static CityManagementController *_instance;
         
     } else {
         
-        City *city;
+        City *city = nil;
         if (tableView == self.dataTableView) 
         {
             NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
