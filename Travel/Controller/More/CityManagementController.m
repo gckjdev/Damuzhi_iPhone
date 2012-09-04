@@ -443,7 +443,7 @@ static CityManagementController *_instance;
         
     } else {
         
-        City *city;
+        City *city = nil;
         if (tableView == self.dataTableView) 
         {
             NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
