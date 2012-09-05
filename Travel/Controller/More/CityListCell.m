@@ -9,7 +9,7 @@
 #import "CityListCell.h"
 #import "AppUtils.h"
 #import "PPDebug.h"
-#import "ImageName.h"
+//#import "ImageName.h"
 #import "LocalCityManager.h"
 #import "LocaleUtils.h"
 #import "Reachability.h"

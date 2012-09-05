@@ -52,7 +52,7 @@
         userNameLabel.text = routeFeekback.nickName;
     }
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:routeFeekback.date];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:routeFeekback.date - 8 * 3600];
     dateLabel.text = dateToStringByFormat(date, DATE_FORMAT);
     PPDebug(@"feedback date is %@",  dateToStringByFormat(date,  @"yyyy-MM-dd hh:mm"));
     contentLabel.text = routeFeekback.content;
