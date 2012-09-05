@@ -48,6 +48,7 @@
 @synthesize pullDownDelegate = _pullDownDelegate;
 @synthesize locateButton = _locateButton;
 @synthesize alertViewType = _alertViewType;
+@synthesize isNearby = _isNearby;
 
 - (void)dealloc
 {
@@ -110,7 +111,6 @@
 //        self.supportRefreshFooter = YES;
         self.pullDownDelegate = pullDownDelegate;
         _firstIn = YES;
-        _alertViewType = ALERT_TYPE_WITH_NEVER_REMIND_BUTTON;
     }
     
     return self;
@@ -360,7 +360,7 @@
         return;
     }
     
-    if (!_firstIn && distance < 100.0) {
+    if (_isNearby && !_firstIn && distance < 100.0) {
         return;
     }
     
@@ -395,7 +395,7 @@
     }
     
     if (error.code == kCLErrorDenied) {
-        if (_alertViewType == ALERT_TYPE_WITH_NEVER_REMIND_BUTTON) {
+        if (!_isNearby) {
             [AppUtils showAlertViewWhenUserDenyLocatedServiceWithTag:TAG_USER_LOCATE_DENY_ALERT_VIEW delegate:self];
 
         }else {
