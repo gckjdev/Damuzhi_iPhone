@@ -11,10 +11,6 @@
 #import "CityOverviewService.h"
 #import "PlaceService.h"
 
-
-#define ALERT_TYPE_WITH_NEVER_REMIND_BUTTON 1
-#define ALERT_TYPE_WITHOUT_NEVER_REMIND_BUTTON 2
-
 @class PlaceMapViewController;
 @class Place;
 
@@ -40,6 +36,7 @@
 @property (assign, nonatomic) id<PullToRefrshDelegate> pullDownDelegate;
 
 @property (assign, nonatomic) int alertViewType;
+@property (assign, nonatomic) int isNearby;
 
 - (id)initWithSuperNavigationController:(UINavigationController*)superNavigationController 
                   wantPullDownToRefresh:(BOOL)wantPullDownToRefresh
