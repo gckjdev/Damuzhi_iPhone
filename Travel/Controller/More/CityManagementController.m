@@ -183,17 +183,30 @@ static CityManagementController *_instance;
 {
 	[self.filteredListContent removeAllObjects];
     
-    for (NSString *group in _groupNameList) {
-        NSArray *citys = [_groupCitysDic objectForKey:group];
-        for (City *city in citys) {
+    for (NSString *group in _groupNameList) 
+    {
+        NSMutableArray *citys = [_groupCitysDic objectForKey:group];
+        citys = [[[AppManager defaultManager] getNonRepeatedGroupCitysDicList]objectForKey:group]; 
+        for (City *city in citys)
+        {
             int countryLocation = [city.countryName rangeOfString:searchText].location;
             int cityLocation = [city.cityName rangeOfString:searchText].location;
-            if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] /*|| [searchText isEqualToString:[city.countryName pinyinFirstLetter]] */|| [searchText isEqualToString:[city.cityName pinyinFirstLetter]]) {
+            if ([city.cityName isEqualToString:@"厦门"]) 
+            {
+                if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] || [searchText isEqualToString:@"x"])
+                {
+                    [self.filteredListContent addObject:city];
+                }
+                continue;
+            }
+          
+            if (countryLocation < [city.countryName length] || cityLocation < [city.cityName length] || [searchText isEqualToString:[city.cityName pinyinFirstLetter]])
+            {
                 [self.filteredListContent addObject:city];
             }
             
-        }
-    }
+        } // end for (City *city in citys)
+    }// end for (NSString *group in _groupNameList) 
 }
 
 #pragma mark -

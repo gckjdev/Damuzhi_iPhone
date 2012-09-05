@@ -87,9 +87,7 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    
-    
-    [self.navigationItem setTitle:NSLS(@"周边推荐")];
+    [self.navigationItem setTitle:self.place.name];
     
     mapView.delegate = self;
     mapView.mapType = MKMapTypeStandard; 
