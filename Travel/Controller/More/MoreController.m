@@ -72,8 +72,6 @@
 //    }
     
     int kShowPraise = [MobClickUtils getIntValueByKey:@"kShowPraise" defaultValue:0];
-    int kShowRecommendApp = [MobClickUtils getIntValueByKey:@"kShowRecommendApp" defaultValue:0];
-
     
     int i = 0;
     self.dataDictionary = [[[NSMutableDictionary alloc] init] autorelease];
@@ -86,9 +84,7 @@
         [dataDictionary setObject:PRAISE forKey:[NSNumber numberWithInt:i++]];
     }
     [dataDictionary setObject:SHOW_IMAGE forKey:[NSNumber numberWithInt:i++]];
-    if (kShowRecommendApp == 1) {
-        [dataDictionary setObject:RECOMMENDED_APP forKey:[NSNumber numberWithInt:i++]];
-    }
+    [dataDictionary setObject:RECOMMENDED_APP forKey:[NSNumber numberWithInt:i++]];
     
     [self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
     
