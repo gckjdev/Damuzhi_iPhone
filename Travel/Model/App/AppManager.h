@@ -98,5 +98,5 @@
 - (NSArray *)getCityListInGroup:(int)groupId;
 - (NSDictionary *)getGroupCitysDicList;
 - (NSArray *)getGroupNameList;
-
+- (NSDictionary *)getNonRepeatedGroupCitysDicList;
 @end

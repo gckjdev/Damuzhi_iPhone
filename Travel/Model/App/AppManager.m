@@ -1107,6 +1107,17 @@ static AppManager* _defaultAppManager = nil;
     return dic;
 }
 
+- (NSDictionary *)getNonRepeatedGroupCitysDicList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    for (NSString *countryName in [self getCountryNameList]) {
+        NSArray *cities = [self getCitiesOfCountry:countryName];
+        [dic setObject:cities forKey:countryName];
+    }
+    
+    return dic;
+}
+
 - (NSArray *)getGroupNameList
 {
     NSMutableArray *groupName = [NSMutableArray array];
