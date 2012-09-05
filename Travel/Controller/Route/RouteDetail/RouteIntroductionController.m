@@ -714,7 +714,7 @@
 
 - (UIView *)headerViewForSection:(NSInteger)section
 {
-    UIView *headerView = [self headerView];
+    UIView *headerView = [self headerView:section];
     headerView.tag = section;
     
     UILabel *label = [self headerTitle];
@@ -763,7 +763,7 @@
     return headerView;
 }
 
-- (UIView *)headerView
+- (UIView *)headerView:(NSInteger)section
 {
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_HEADER_VIEW);
     UIButton *headerView = [[[UIButton alloc] initWithFrame:rect] autorelease];
@@ -775,6 +775,9 @@
 
     arrowImageView.image = [[ImageManager defaultManager] arrowImage];
     [headerView addSubview:arrowImageView];
+    
+    int angle = [self isSectionOpen:section] ? (0) : (-90);
+    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*angle);
 
     [arrowImageView release];
     
