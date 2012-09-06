@@ -12,6 +12,7 @@
 #import "PackageManager.h"
 #import "StringUtil.h"
 #import "FontSize.h"
+#import "UIImageUtil.h"
 
 #define PROMPT_LABEL_HEIGHT 30
 #define CITY_SEARCH_BAR_HEIGHT 44
@@ -423,6 +424,8 @@ static CityManagementController *_instance;
             
             // Customize the appearance of table view cells at first time
             UIImageView *view = [[UIImageView alloc] init];
+//            UIImage *image = [UIImage strectchableImageName:IMAGE_CITY_CELL_BG leftCapWidth:10 topCapHeight:10]; 
+//            [view setImage:image];
             [view setImage:[UIImage imageNamed:IMAGE_CITY_CELL_BG]];
             [cell setBackgroundView:view];
             [view release];
