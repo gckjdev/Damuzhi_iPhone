@@ -67,6 +67,11 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = NSLS(@"更多");
     
+    [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
+                        imageName:@"back.png"
+                           action:@selector(clickBack:)];
+    
     //[self.view setBackgroundColor:[UIColor colorWithRed:218.0/255.0 green:226.0/255.0 blue:228.0/255.0 alpha:1]];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
@@ -123,23 +128,23 @@
     self.dataDictionary = [[[NSMutableDictionary alloc] init] autorelease];
     [dataDictionary setObject:CITIES forKey:[NSNumber numberWithInt:i++]];
     
-    if ([[UserManager defaultManager] isLogin]) {
-        [self setNavigationRightButton:NSLS(@"退出登录") 
-                              fontSize:FONT_SIZE
-                             imageName:@"topmenu_btn2.png"
-                                action:@selector(clickLogout:)];
-        
-        [dataDictionary setObject:USER_INFO forKey:[NSNumber numberWithInt:i++]];
-        [dataDictionary setObject:ORDER_MANAGER forKey:[NSNumber numberWithInt:i++]];
-        
-    }else {
-        [self setNavigationRightButton:NSLS(@"会员登录") 
-                              fontSize:FONT_SIZE
-                             imageName:@"topmenu_btn2.png"
-                                action:@selector(clickLogin:)];
-        
-        [dataDictionary setObject:ORDER_NON_MEMBER forKey:[NSNumber numberWithInt:i++]];
-    }
+//    if ([[UserManager defaultManager] isLogin]) {
+//        [self setNavigationRightButton:NSLS(@"退出登录") 
+//                              fontSize:FONT_SIZE
+//                             imageName:@"topmenu_btn2.png"
+//                                action:@selector(clickLogout:)];
+//        
+//        [dataDictionary setObject:USER_INFO forKey:[NSNumber numberWithInt:i++]];
+//        [dataDictionary setObject:ORDER_MANAGER forKey:[NSNumber numberWithInt:i++]];
+//        
+//    }else {
+//        [self setNavigationRightButton:NSLS(@"会员登录") 
+//                              fontSize:FONT_SIZE
+//                             imageName:@"topmenu_btn2.png"
+//                                action:@selector(clickLogin:)];
+//        
+//        [dataDictionary setObject:ORDER_NON_MEMBER forKey:[NSNumber numberWithInt:i++]];
+//    }
     
     [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
     
@@ -148,7 +153,7 @@
     [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:SHARE forKey:[NSNumber numberWithInt:i++]];
+//    [dataDictionary setObject:SHARE forKey:[NSNumber numberWithInt:i++]];
     
     if (kShowPraise == 1) {
         [dataDictionary setObject:PRAISE forKey:[NSNumber numberWithInt:i++]];

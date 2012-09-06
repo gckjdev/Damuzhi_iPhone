@@ -242,14 +242,9 @@
 
 - (IBAction)clickTravelTransportButton:(id)sender
 {
-//    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
-//    [self.navigationController pushViewController:controller animated:YES];
-//    [controller release];  
-    
-    FavoriteController *controller = [[FavoriteController alloc] init];
+    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
     [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
-    
+    [controller release];  
 }
 
 - (IBAction)clickTraveGuideButton:(id)sender
@@ -273,6 +268,34 @@
 }
 
 
+-(IBAction)clickHelpButton:(id)sender
+{
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
+    controller.navigationItem.title = NSLS(@"帮助");
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+-(IBAction)clickFavoriteButton:(id)sender
+{
+    FavoriteController *controller = [[FavoriteController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+-(IBAction)clickShareButton:(id)sender
+{
+    UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLS(@"取消") destructiveButtonTitle:NSLS(@"通过短信") otherButtonTitles:NSLS(@"分享到新浪微博"), NSLS(@"分享到腾讯微博"), nil];
+    [shareSheet showInView:self.view];
+    [shareSheet release];
+}
+
+-(IBAction)clickMoreButton:(id)sender
+{
+    MoreController *controller = [[MoreController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
 
 - (void)updateSelectedButton:(UIButton *)button
 {

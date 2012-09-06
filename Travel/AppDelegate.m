@@ -171,23 +171,23 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
     // Override point for customization after application launch.
-//    self.mainController = [[[MainController alloc] initWithNibName:@"MainController" bundle:nil] autorelease];
-//    
-//    UINavigationController* navigationController = [[[UINavigationController alloc] initWithRootViewController:self.mainController] autorelease];
-//    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
-//    
-//    self.window.rootViewController = navigationController;
-//    
-//    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
-//    splashView.frame = [self.window bounds];
-//    splashView.tag = SPLASH_VIEW_TAG;
-//    [self.window.rootViewController.view addSubview:splashView];
-//    [splashView release];
-//    
-//    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
+    self.mainController = [[[MainController alloc] initWithNibName:@"MainController" bundle:nil] autorelease];
+    
+    UINavigationController* navigationController = [[[UINavigationController alloc] initWithRootViewController:self.mainController] autorelease];
+    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
+    
+    self.window.rootViewController = navigationController;
+    
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
+    splashView.frame = [self.window bounds];
+    splashView.tag = SPLASH_VIEW_TAG;
+    [self.window.rootViewController.view addSubview:splashView];
+    [splashView release];
+    
+    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     
-    [self initTabViewControllers];
+//    [self initTabViewControllers];
     [self.window addSubview:_tabBarController.view];
     
     [self.window makeKeyAndVisible];
