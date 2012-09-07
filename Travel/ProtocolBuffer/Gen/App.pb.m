@@ -2351,6 +2351,7 @@ static RecommendedApp* defaultRecommendedAppInstance = nil;
 @property int32_t agencyId;
 @property (retain) NSString* name;
 @property (retain) NSString* shortName;
+@property (retain) NSString* url;
 @end
 
 @implementation Agency
@@ -2376,9 +2377,17 @@ static RecommendedApp* defaultRecommendedAppInstance = nil;
   hasShortName_ = !!value;
 }
 @synthesize shortName;
+- (BOOL) hasUrl {
+  return !!hasUrl_;
+}
+- (void) setHasUrl:(BOOL) value {
+  hasUrl_ = !!value;
+}
+@synthesize url;
 - (void) dealloc {
   self.name = nil;
   self.shortName = nil;
+  self.url = nil;
   [super dealloc];
 }
 - (id) init {
@@ -2386,6 +2395,7 @@ static RecommendedApp* defaultRecommendedAppInstance = nil;
     self.agencyId = 0;
     self.name = @"";
     self.shortName = @"";
+    self.url = @"";
   }
   return self;
 }
@@ -2420,6 +2430,9 @@ static Agency* defaultAgencyInstance = nil;
   if (self.hasShortName) {
     [output writeString:5 value:self.shortName];
   }
+  if (self.hasUrl) {
+    [output writeString:6 value:self.url];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -2437,6 +2450,9 @@ static Agency* defaultAgencyInstance = nil;
   }
   if (self.hasShortName) {
     size += computeStringSize(5, self.shortName);
+  }
+  if (self.hasUrl) {
+    size += computeStringSize(6, self.url);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -2522,6 +2538,9 @@ static Agency* defaultAgencyInstance = nil;
   if (other.hasShortName) {
     [self setShortName:other.shortName];
   }
+  if (other.hasUrl) {
+    [self setUrl:other.url];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -2553,6 +2572,10 @@ static Agency* defaultAgencyInstance = nil;
       }
       case 42: {
         [self setShortName:[input readString]];
+        break;
+      }
+      case 50: {
+        [self setUrl:[input readString]];
         break;
       }
     }
@@ -2604,6 +2627,22 @@ static Agency* defaultAgencyInstance = nil;
 - (Agency_Builder*) clearShortName {
   result.hasShortName = NO;
   result.shortName = @"";
+  return self;
+}
+- (BOOL) hasUrl {
+  return result.hasUrl;
+}
+- (NSString*) url {
+  return result.url;
+}
+- (Agency_Builder*) setUrl:(NSString*) value {
+  result.hasUrl = YES;
+  result.url = value;
+  return self;
+}
+- (Agency_Builder*) clearUrl {
+  result.hasUrl = NO;
+  result.url = @"";
   return self;
 }
 @end
