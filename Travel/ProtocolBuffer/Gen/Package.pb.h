@@ -38,10 +38,16 @@
 @class CommonTravelTip_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
+@class DepartPlace;
+@class DepartPlace_Builder;
 @class Flight;
 @class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;
+@class LocalRoute;
+@class LocalRouteList;
+@class LocalRouteList_Builder;
+@class LocalRoute_Builder;
 @class NameIdPair;
 @class NameIdPair_Builder;
 @class Order;

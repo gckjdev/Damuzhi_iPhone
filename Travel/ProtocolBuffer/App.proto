@@ -78,6 +78,7 @@ message Agency {
   required int32 agencyId = 1;      // 旅行社id
   required string name = 2;         // 旅行社名称
   optional string shortName = 5;    // 旅行社简称
+  optional string url = 6;          // 旅行社介绍网页
 }
 
 // 线路出发/目的城市

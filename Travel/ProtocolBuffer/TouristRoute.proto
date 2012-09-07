@@ -44,6 +44,47 @@ message TouristRoute {
   optional string contactPhone = 100;               // 线路咨询电话
 }
 
+message LocalRouteList{
+  repeated LocalRoute routes = 1;
+}
+
+//　用于本地游和本地游详情和列表
+message LocalRoute {
+  // 基础数据
+  required int32 cityId = 1;                // 所属城市
+  required int32  routeId = 2;				// 线路编号
+  required string name = 3;                 // 线路名称
+
+  optional string price = 5;				// 线路价格
+  optional int32 agencyId = 6;				// 旅行社id。基础数据
+  optional int32 averageRank = 7;			// 用户综合评级
+
+  // 简要数据
+  optional string thumbImage = 10;                  // 线路列表中显示的小图片的绝对URL地址
+  optional string tour = 11;                        // 线路列表中显示经过的地方
+  optional int32 days = 12;                         // 线路游览天数
+
+
+  // 路线详情
+  optional string customerServiceTelephone = 20;	// 客服电话
+  repeated string detailImages = 25;                // 线路详情中滑动图片的绝对URL地址
+  optional string detailUrl = 30;                   // 详情的html的url
+  repeated DepartPlace departPlaces = 31;                // 出发地点
+  
+  repeated PlaceTour relatedplaces = 48;            // 线路相关景点
+  optional string bookingNotice = 51;               // 线路预订须知，返回html的绝对url
+  optional string contactPhone = 100;               // 线路咨询电话
+}
+
+message DepartPlace {
+  required int32 departPlaceId = 1;         // 出发地点编号
+  optional string departTime = 2;           // 出发时间
+  optional string departPlace = 3;          // 出发地点
+  
+  optional double longitude = 11;           // 出发地点经纬度
+  optional double latitude = 12;
+}
+
 message DailySchedule {
   required int32 day = 1;                       // 第几天
   required string title = 2;                    // 每日行程标题
@@ -135,5 +176,8 @@ message Order {
   
   optional int32 praiseRank = 30;         // 大拇指等级
   optional string feedback = 31;         // 用户评价
+  
+  optional DepartPlace departPlace = 50;   // 出发地点
+
 }
 

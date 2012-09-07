@@ -1507,6 +1507,1377 @@ static TouristRoute* defaultTouristRouteInstance = nil;
 }
 @end
 
+@interface LocalRouteList ()
+@property (retain) NSMutableArray* mutableRoutesList;
+@end
+
+@implementation LocalRouteList
+
+@synthesize mutableRoutesList;
+- (void) dealloc {
+  self.mutableRoutesList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static LocalRouteList* defaultLocalRouteListInstance = nil;
++ (void) initialize {
+  if (self == [LocalRouteList class]) {
+    defaultLocalRouteListInstance = [[LocalRouteList alloc] init];
+  }
+}
++ (LocalRouteList*) defaultInstance {
+  return defaultLocalRouteListInstance;
+}
+- (LocalRouteList*) defaultInstance {
+  return defaultLocalRouteListInstance;
+}
+- (NSArray*) routesList {
+  return mutableRoutesList;
+}
+- (LocalRoute*) routesAtIndex:(int32_t) index {
+  id value = [mutableRoutesList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  for (LocalRoute* element in self.routesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (LocalRoute* element in self.routesList) {
+    [output writeMessage:1 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  for (LocalRoute* element in self.routesList) {
+    size += computeMessageSize(1, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (LocalRouteList*) parseFromData:(NSData*) data {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromData:data] build];
+}
++ (LocalRouteList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (LocalRouteList*) parseFromInputStream:(NSInputStream*) input {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromInputStream:input] build];
+}
++ (LocalRouteList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (LocalRouteList*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromCodedInputStream:input] build];
+}
++ (LocalRouteList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRouteList*)[[[LocalRouteList builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (LocalRouteList_Builder*) builder {
+  return [[[LocalRouteList_Builder alloc] init] autorelease];
+}
++ (LocalRouteList_Builder*) builderWithPrototype:(LocalRouteList*) prototype {
+  return [[LocalRouteList builder] mergeFrom:prototype];
+}
+- (LocalRouteList_Builder*) builder {
+  return [LocalRouteList builder];
+}
+@end
+
+@interface LocalRouteList_Builder()
+@property (retain) LocalRouteList* result;
+@end
+
+@implementation LocalRouteList_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[LocalRouteList alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (LocalRouteList_Builder*) clear {
+  self.result = [[[LocalRouteList alloc] init] autorelease];
+  return self;
+}
+- (LocalRouteList_Builder*) clone {
+  return [LocalRouteList builderWithPrototype:result];
+}
+- (LocalRouteList*) defaultInstance {
+  return [LocalRouteList defaultInstance];
+}
+- (LocalRouteList*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (LocalRouteList*) buildPartial {
+  LocalRouteList* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (LocalRouteList_Builder*) mergeFrom:(LocalRouteList*) other {
+  if (other == [LocalRouteList defaultInstance]) {
+    return self;
+  }
+  if (other.mutableRoutesList.count > 0) {
+    if (result.mutableRoutesList == nil) {
+      result.mutableRoutesList = [NSMutableArray array];
+    }
+    [result.mutableRoutesList addObjectsFromArray:other.mutableRoutesList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (LocalRouteList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (LocalRouteList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        LocalRoute_Builder* subBuilder = [LocalRoute builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addRoutes:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) routesList {
+  if (result.mutableRoutesList == nil) { return [NSArray array]; }
+  return result.mutableRoutesList;
+}
+- (LocalRoute*) routesAtIndex:(int32_t) index {
+  return [result routesAtIndex:index];
+}
+- (LocalRouteList_Builder*) replaceRoutesAtIndex:(int32_t) index with:(LocalRoute*) value {
+  [result.mutableRoutesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (LocalRouteList_Builder*) addAllRoutes:(NSArray*) values {
+  if (result.mutableRoutesList == nil) {
+    result.mutableRoutesList = [NSMutableArray array];
+  }
+  [result.mutableRoutesList addObjectsFromArray:values];
+  return self;
+}
+- (LocalRouteList_Builder*) clearRoutesList {
+  result.mutableRoutesList = nil;
+  return self;
+}
+- (LocalRouteList_Builder*) addRoutes:(LocalRoute*) value {
+  if (result.mutableRoutesList == nil) {
+    result.mutableRoutesList = [NSMutableArray array];
+  }
+  [result.mutableRoutesList addObject:value];
+  return self;
+}
+@end
+
+@interface LocalRoute ()
+@property int32_t cityId;
+@property int32_t routeId;
+@property (retain) NSString* name;
+@property (retain) NSString* price;
+@property int32_t agencyId;
+@property int32_t averageRank;
+@property (retain) NSString* thumbImage;
+@property (retain) NSString* tour;
+@property int32_t days;
+@property (retain) NSString* customerServiceTelephone;
+@property (retain) NSMutableArray* mutableDetailImagesList;
+@property (retain) NSString* detailUrl;
+@property (retain) NSMutableArray* mutableDepartPlacesList;
+@property (retain) NSMutableArray* mutableRelatedplacesList;
+@property (retain) NSString* bookingNotice;
+@property (retain) NSString* contactPhone;
+@end
+
+@implementation LocalRoute
+
+- (BOOL) hasCityId {
+  return !!hasCityId_;
+}
+- (void) setHasCityId:(BOOL) value {
+  hasCityId_ = !!value;
+}
+@synthesize cityId;
+- (BOOL) hasRouteId {
+  return !!hasRouteId_;
+}
+- (void) setHasRouteId:(BOOL) value {
+  hasRouteId_ = !!value;
+}
+@synthesize routeId;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) value {
+  hasName_ = !!value;
+}
+@synthesize name;
+- (BOOL) hasPrice {
+  return !!hasPrice_;
+}
+- (void) setHasPrice:(BOOL) value {
+  hasPrice_ = !!value;
+}
+@synthesize price;
+- (BOOL) hasAgencyId {
+  return !!hasAgencyId_;
+}
+- (void) setHasAgencyId:(BOOL) value {
+  hasAgencyId_ = !!value;
+}
+@synthesize agencyId;
+- (BOOL) hasAverageRank {
+  return !!hasAverageRank_;
+}
+- (void) setHasAverageRank:(BOOL) value {
+  hasAverageRank_ = !!value;
+}
+@synthesize averageRank;
+- (BOOL) hasThumbImage {
+  return !!hasThumbImage_;
+}
+- (void) setHasThumbImage:(BOOL) value {
+  hasThumbImage_ = !!value;
+}
+@synthesize thumbImage;
+- (BOOL) hasTour {
+  return !!hasTour_;
+}
+- (void) setHasTour:(BOOL) value {
+  hasTour_ = !!value;
+}
+@synthesize tour;
+- (BOOL) hasDays {
+  return !!hasDays_;
+}
+- (void) setHasDays:(BOOL) value {
+  hasDays_ = !!value;
+}
+@synthesize days;
+- (BOOL) hasCustomerServiceTelephone {
+  return !!hasCustomerServiceTelephone_;
+}
+- (void) setHasCustomerServiceTelephone:(BOOL) value {
+  hasCustomerServiceTelephone_ = !!value;
+}
+@synthesize customerServiceTelephone;
+@synthesize mutableDetailImagesList;
+- (BOOL) hasDetailUrl {
+  return !!hasDetailUrl_;
+}
+- (void) setHasDetailUrl:(BOOL) value {
+  hasDetailUrl_ = !!value;
+}
+@synthesize detailUrl;
+@synthesize mutableDepartPlacesList;
+@synthesize mutableRelatedplacesList;
+- (BOOL) hasBookingNotice {
+  return !!hasBookingNotice_;
+}
+- (void) setHasBookingNotice:(BOOL) value {
+  hasBookingNotice_ = !!value;
+}
+@synthesize bookingNotice;
+- (BOOL) hasContactPhone {
+  return !!hasContactPhone_;
+}
+- (void) setHasContactPhone:(BOOL) value {
+  hasContactPhone_ = !!value;
+}
+@synthesize contactPhone;
+- (void) dealloc {
+  self.name = nil;
+  self.price = nil;
+  self.thumbImage = nil;
+  self.tour = nil;
+  self.customerServiceTelephone = nil;
+  self.mutableDetailImagesList = nil;
+  self.detailUrl = nil;
+  self.mutableDepartPlacesList = nil;
+  self.mutableRelatedplacesList = nil;
+  self.bookingNotice = nil;
+  self.contactPhone = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.cityId = 0;
+    self.routeId = 0;
+    self.name = @"";
+    self.price = @"";
+    self.agencyId = 0;
+    self.averageRank = 0;
+    self.thumbImage = @"";
+    self.tour = @"";
+    self.days = 0;
+    self.customerServiceTelephone = @"";
+    self.detailUrl = @"";
+    self.bookingNotice = @"";
+    self.contactPhone = @"";
+  }
+  return self;
+}
+static LocalRoute* defaultLocalRouteInstance = nil;
++ (void) initialize {
+  if (self == [LocalRoute class]) {
+    defaultLocalRouteInstance = [[LocalRoute alloc] init];
+  }
+}
++ (LocalRoute*) defaultInstance {
+  return defaultLocalRouteInstance;
+}
+- (LocalRoute*) defaultInstance {
+  return defaultLocalRouteInstance;
+}
+- (NSArray*) detailImagesList {
+  return mutableDetailImagesList;
+}
+- (NSString*) detailImagesAtIndex:(int32_t) index {
+  id value = [mutableDetailImagesList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) departPlacesList {
+  return mutableDepartPlacesList;
+}
+- (DepartPlace*) departPlacesAtIndex:(int32_t) index {
+  id value = [mutableDepartPlacesList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) relatedplacesList {
+  return mutableRelatedplacesList;
+}
+- (PlaceTour*) relatedplacesAtIndex:(int32_t) index {
+  id value = [mutableRelatedplacesList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  if (!self.hasCityId) {
+    return NO;
+  }
+  if (!self.hasRouteId) {
+    return NO;
+  }
+  if (!self.hasName) {
+    return NO;
+  }
+  for (DepartPlace* element in self.departPlacesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (PlaceTour* element in self.relatedplacesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasCityId) {
+    [output writeInt32:1 value:self.cityId];
+  }
+  if (self.hasRouteId) {
+    [output writeInt32:2 value:self.routeId];
+  }
+  if (self.hasName) {
+    [output writeString:3 value:self.name];
+  }
+  if (self.hasPrice) {
+    [output writeString:5 value:self.price];
+  }
+  if (self.hasAgencyId) {
+    [output writeInt32:6 value:self.agencyId];
+  }
+  if (self.hasAverageRank) {
+    [output writeInt32:7 value:self.averageRank];
+  }
+  if (self.hasThumbImage) {
+    [output writeString:10 value:self.thumbImage];
+  }
+  if (self.hasTour) {
+    [output writeString:11 value:self.tour];
+  }
+  if (self.hasDays) {
+    [output writeInt32:12 value:self.days];
+  }
+  if (self.hasCustomerServiceTelephone) {
+    [output writeString:20 value:self.customerServiceTelephone];
+  }
+  for (NSString* element in self.mutableDetailImagesList) {
+    [output writeString:25 value:element];
+  }
+  if (self.hasDetailUrl) {
+    [output writeString:30 value:self.detailUrl];
+  }
+  for (DepartPlace* element in self.departPlacesList) {
+    [output writeMessage:31 value:element];
+  }
+  for (PlaceTour* element in self.relatedplacesList) {
+    [output writeMessage:48 value:element];
+  }
+  if (self.hasBookingNotice) {
+    [output writeString:51 value:self.bookingNotice];
+  }
+  if (self.hasContactPhone) {
+    [output writeString:100 value:self.contactPhone];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasCityId) {
+    size += computeInt32Size(1, self.cityId);
+  }
+  if (self.hasRouteId) {
+    size += computeInt32Size(2, self.routeId);
+  }
+  if (self.hasName) {
+    size += computeStringSize(3, self.name);
+  }
+  if (self.hasPrice) {
+    size += computeStringSize(5, self.price);
+  }
+  if (self.hasAgencyId) {
+    size += computeInt32Size(6, self.agencyId);
+  }
+  if (self.hasAverageRank) {
+    size += computeInt32Size(7, self.averageRank);
+  }
+  if (self.hasThumbImage) {
+    size += computeStringSize(10, self.thumbImage);
+  }
+  if (self.hasTour) {
+    size += computeStringSize(11, self.tour);
+  }
+  if (self.hasDays) {
+    size += computeInt32Size(12, self.days);
+  }
+  if (self.hasCustomerServiceTelephone) {
+    size += computeStringSize(20, self.customerServiceTelephone);
+  }
+  {
+    int32_t dataSize = 0;
+    for (NSString* element in self.mutableDetailImagesList) {
+      dataSize += computeStringSizeNoTag(element);
+    }
+    size += dataSize;
+    size += 2 * self.mutableDetailImagesList.count;
+  }
+  if (self.hasDetailUrl) {
+    size += computeStringSize(30, self.detailUrl);
+  }
+  for (DepartPlace* element in self.departPlacesList) {
+    size += computeMessageSize(31, element);
+  }
+  for (PlaceTour* element in self.relatedplacesList) {
+    size += computeMessageSize(48, element);
+  }
+  if (self.hasBookingNotice) {
+    size += computeStringSize(51, self.bookingNotice);
+  }
+  if (self.hasContactPhone) {
+    size += computeStringSize(100, self.contactPhone);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (LocalRoute*) parseFromData:(NSData*) data {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromData:data] build];
+}
++ (LocalRoute*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (LocalRoute*) parseFromInputStream:(NSInputStream*) input {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromInputStream:input] build];
+}
++ (LocalRoute*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (LocalRoute*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromCodedInputStream:input] build];
+}
++ (LocalRoute*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (LocalRoute*)[[[LocalRoute builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (LocalRoute_Builder*) builder {
+  return [[[LocalRoute_Builder alloc] init] autorelease];
+}
++ (LocalRoute_Builder*) builderWithPrototype:(LocalRoute*) prototype {
+  return [[LocalRoute builder] mergeFrom:prototype];
+}
+- (LocalRoute_Builder*) builder {
+  return [LocalRoute builder];
+}
+@end
+
+@interface LocalRoute_Builder()
+@property (retain) LocalRoute* result;
+@end
+
+@implementation LocalRoute_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[LocalRoute alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (LocalRoute_Builder*) clear {
+  self.result = [[[LocalRoute alloc] init] autorelease];
+  return self;
+}
+- (LocalRoute_Builder*) clone {
+  return [LocalRoute builderWithPrototype:result];
+}
+- (LocalRoute*) defaultInstance {
+  return [LocalRoute defaultInstance];
+}
+- (LocalRoute*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (LocalRoute*) buildPartial {
+  LocalRoute* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (LocalRoute_Builder*) mergeFrom:(LocalRoute*) other {
+  if (other == [LocalRoute defaultInstance]) {
+    return self;
+  }
+  if (other.hasCityId) {
+    [self setCityId:other.cityId];
+  }
+  if (other.hasRouteId) {
+    [self setRouteId:other.routeId];
+  }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
+  if (other.hasPrice) {
+    [self setPrice:other.price];
+  }
+  if (other.hasAgencyId) {
+    [self setAgencyId:other.agencyId];
+  }
+  if (other.hasAverageRank) {
+    [self setAverageRank:other.averageRank];
+  }
+  if (other.hasThumbImage) {
+    [self setThumbImage:other.thumbImage];
+  }
+  if (other.hasTour) {
+    [self setTour:other.tour];
+  }
+  if (other.hasDays) {
+    [self setDays:other.days];
+  }
+  if (other.hasCustomerServiceTelephone) {
+    [self setCustomerServiceTelephone:other.customerServiceTelephone];
+  }
+  if (other.mutableDetailImagesList.count > 0) {
+    if (result.mutableDetailImagesList == nil) {
+      result.mutableDetailImagesList = [NSMutableArray array];
+    }
+    [result.mutableDetailImagesList addObjectsFromArray:other.mutableDetailImagesList];
+  }
+  if (other.hasDetailUrl) {
+    [self setDetailUrl:other.detailUrl];
+  }
+  if (other.mutableDepartPlacesList.count > 0) {
+    if (result.mutableDepartPlacesList == nil) {
+      result.mutableDepartPlacesList = [NSMutableArray array];
+    }
+    [result.mutableDepartPlacesList addObjectsFromArray:other.mutableDepartPlacesList];
+  }
+  if (other.mutableRelatedplacesList.count > 0) {
+    if (result.mutableRelatedplacesList == nil) {
+      result.mutableRelatedplacesList = [NSMutableArray array];
+    }
+    [result.mutableRelatedplacesList addObjectsFromArray:other.mutableRelatedplacesList];
+  }
+  if (other.hasBookingNotice) {
+    [self setBookingNotice:other.bookingNotice];
+  }
+  if (other.hasContactPhone) {
+    [self setContactPhone:other.contactPhone];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (LocalRoute_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (LocalRoute_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setCityId:[input readInt32]];
+        break;
+      }
+      case 16: {
+        [self setRouteId:[input readInt32]];
+        break;
+      }
+      case 26: {
+        [self setName:[input readString]];
+        break;
+      }
+      case 42: {
+        [self setPrice:[input readString]];
+        break;
+      }
+      case 48: {
+        [self setAgencyId:[input readInt32]];
+        break;
+      }
+      case 56: {
+        [self setAverageRank:[input readInt32]];
+        break;
+      }
+      case 82: {
+        [self setThumbImage:[input readString]];
+        break;
+      }
+      case 90: {
+        [self setTour:[input readString]];
+        break;
+      }
+      case 96: {
+        [self setDays:[input readInt32]];
+        break;
+      }
+      case 162: {
+        [self setCustomerServiceTelephone:[input readString]];
+        break;
+      }
+      case 202: {
+        [self addDetailImages:[input readString]];
+        break;
+      }
+      case 242: {
+        [self setDetailUrl:[input readString]];
+        break;
+      }
+      case 250: {
+        DepartPlace_Builder* subBuilder = [DepartPlace builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addDepartPlaces:[subBuilder buildPartial]];
+        break;
+      }
+      case 386: {
+        PlaceTour_Builder* subBuilder = [PlaceTour builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addRelatedplaces:[subBuilder buildPartial]];
+        break;
+      }
+      case 410: {
+        [self setBookingNotice:[input readString]];
+        break;
+      }
+      case 802: {
+        [self setContactPhone:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasCityId {
+  return result.hasCityId;
+}
+- (int32_t) cityId {
+  return result.cityId;
+}
+- (LocalRoute_Builder*) setCityId:(int32_t) value {
+  result.hasCityId = YES;
+  result.cityId = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearCityId {
+  result.hasCityId = NO;
+  result.cityId = 0;
+  return self;
+}
+- (BOOL) hasRouteId {
+  return result.hasRouteId;
+}
+- (int32_t) routeId {
+  return result.routeId;
+}
+- (LocalRoute_Builder*) setRouteId:(int32_t) value {
+  result.hasRouteId = YES;
+  result.routeId = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearRouteId {
+  result.hasRouteId = NO;
+  result.routeId = 0;
+  return self;
+}
+- (BOOL) hasName {
+  return result.hasName;
+}
+- (NSString*) name {
+  return result.name;
+}
+- (LocalRoute_Builder*) setName:(NSString*) value {
+  result.hasName = YES;
+  result.name = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearName {
+  result.hasName = NO;
+  result.name = @"";
+  return self;
+}
+- (BOOL) hasPrice {
+  return result.hasPrice;
+}
+- (NSString*) price {
+  return result.price;
+}
+- (LocalRoute_Builder*) setPrice:(NSString*) value {
+  result.hasPrice = YES;
+  result.price = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearPrice {
+  result.hasPrice = NO;
+  result.price = @"";
+  return self;
+}
+- (BOOL) hasAgencyId {
+  return result.hasAgencyId;
+}
+- (int32_t) agencyId {
+  return result.agencyId;
+}
+- (LocalRoute_Builder*) setAgencyId:(int32_t) value {
+  result.hasAgencyId = YES;
+  result.agencyId = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearAgencyId {
+  result.hasAgencyId = NO;
+  result.agencyId = 0;
+  return self;
+}
+- (BOOL) hasAverageRank {
+  return result.hasAverageRank;
+}
+- (int32_t) averageRank {
+  return result.averageRank;
+}
+- (LocalRoute_Builder*) setAverageRank:(int32_t) value {
+  result.hasAverageRank = YES;
+  result.averageRank = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearAverageRank {
+  result.hasAverageRank = NO;
+  result.averageRank = 0;
+  return self;
+}
+- (BOOL) hasThumbImage {
+  return result.hasThumbImage;
+}
+- (NSString*) thumbImage {
+  return result.thumbImage;
+}
+- (LocalRoute_Builder*) setThumbImage:(NSString*) value {
+  result.hasThumbImage = YES;
+  result.thumbImage = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearThumbImage {
+  result.hasThumbImage = NO;
+  result.thumbImage = @"";
+  return self;
+}
+- (BOOL) hasTour {
+  return result.hasTour;
+}
+- (NSString*) tour {
+  return result.tour;
+}
+- (LocalRoute_Builder*) setTour:(NSString*) value {
+  result.hasTour = YES;
+  result.tour = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearTour {
+  result.hasTour = NO;
+  result.tour = @"";
+  return self;
+}
+- (BOOL) hasDays {
+  return result.hasDays;
+}
+- (int32_t) days {
+  return result.days;
+}
+- (LocalRoute_Builder*) setDays:(int32_t) value {
+  result.hasDays = YES;
+  result.days = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearDays {
+  result.hasDays = NO;
+  result.days = 0;
+  return self;
+}
+- (BOOL) hasCustomerServiceTelephone {
+  return result.hasCustomerServiceTelephone;
+}
+- (NSString*) customerServiceTelephone {
+  return result.customerServiceTelephone;
+}
+- (LocalRoute_Builder*) setCustomerServiceTelephone:(NSString*) value {
+  result.hasCustomerServiceTelephone = YES;
+  result.customerServiceTelephone = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearCustomerServiceTelephone {
+  result.hasCustomerServiceTelephone = NO;
+  result.customerServiceTelephone = @"";
+  return self;
+}
+- (NSArray*) detailImagesList {
+  if (result.mutableDetailImagesList == nil) {
+    return [NSArray array];
+  }
+  return result.mutableDetailImagesList;
+}
+- (NSString*) detailImagesAtIndex:(int32_t) index {
+  return [result detailImagesAtIndex:index];
+}
+- (LocalRoute_Builder*) replaceDetailImagesAtIndex:(int32_t) index with:(NSString*) value {
+  [result.mutableDetailImagesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (LocalRoute_Builder*) addDetailImages:(NSString*) value {
+  if (result.mutableDetailImagesList == nil) {
+    result.mutableDetailImagesList = [NSMutableArray array];
+  }
+  [result.mutableDetailImagesList addObject:value];
+  return self;
+}
+- (LocalRoute_Builder*) addAllDetailImages:(NSArray*) values {
+  if (result.mutableDetailImagesList == nil) {
+    result.mutableDetailImagesList = [NSMutableArray array];
+  }
+  [result.mutableDetailImagesList addObjectsFromArray:values];
+  return self;
+}
+- (LocalRoute_Builder*) clearDetailImagesList {
+  result.mutableDetailImagesList = nil;
+  return self;
+}
+- (BOOL) hasDetailUrl {
+  return result.hasDetailUrl;
+}
+- (NSString*) detailUrl {
+  return result.detailUrl;
+}
+- (LocalRoute_Builder*) setDetailUrl:(NSString*) value {
+  result.hasDetailUrl = YES;
+  result.detailUrl = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearDetailUrl {
+  result.hasDetailUrl = NO;
+  result.detailUrl = @"";
+  return self;
+}
+- (NSArray*) departPlacesList {
+  if (result.mutableDepartPlacesList == nil) { return [NSArray array]; }
+  return result.mutableDepartPlacesList;
+}
+- (DepartPlace*) departPlacesAtIndex:(int32_t) index {
+  return [result departPlacesAtIndex:index];
+}
+- (LocalRoute_Builder*) replaceDepartPlacesAtIndex:(int32_t) index with:(DepartPlace*) value {
+  [result.mutableDepartPlacesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (LocalRoute_Builder*) addAllDepartPlaces:(NSArray*) values {
+  if (result.mutableDepartPlacesList == nil) {
+    result.mutableDepartPlacesList = [NSMutableArray array];
+  }
+  [result.mutableDepartPlacesList addObjectsFromArray:values];
+  return self;
+}
+- (LocalRoute_Builder*) clearDepartPlacesList {
+  result.mutableDepartPlacesList = nil;
+  return self;
+}
+- (LocalRoute_Builder*) addDepartPlaces:(DepartPlace*) value {
+  if (result.mutableDepartPlacesList == nil) {
+    result.mutableDepartPlacesList = [NSMutableArray array];
+  }
+  [result.mutableDepartPlacesList addObject:value];
+  return self;
+}
+- (NSArray*) relatedplacesList {
+  if (result.mutableRelatedplacesList == nil) { return [NSArray array]; }
+  return result.mutableRelatedplacesList;
+}
+- (PlaceTour*) relatedplacesAtIndex:(int32_t) index {
+  return [result relatedplacesAtIndex:index];
+}
+- (LocalRoute_Builder*) replaceRelatedplacesAtIndex:(int32_t) index with:(PlaceTour*) value {
+  [result.mutableRelatedplacesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (LocalRoute_Builder*) addAllRelatedplaces:(NSArray*) values {
+  if (result.mutableRelatedplacesList == nil) {
+    result.mutableRelatedplacesList = [NSMutableArray array];
+  }
+  [result.mutableRelatedplacesList addObjectsFromArray:values];
+  return self;
+}
+- (LocalRoute_Builder*) clearRelatedplacesList {
+  result.mutableRelatedplacesList = nil;
+  return self;
+}
+- (LocalRoute_Builder*) addRelatedplaces:(PlaceTour*) value {
+  if (result.mutableRelatedplacesList == nil) {
+    result.mutableRelatedplacesList = [NSMutableArray array];
+  }
+  [result.mutableRelatedplacesList addObject:value];
+  return self;
+}
+- (BOOL) hasBookingNotice {
+  return result.hasBookingNotice;
+}
+- (NSString*) bookingNotice {
+  return result.bookingNotice;
+}
+- (LocalRoute_Builder*) setBookingNotice:(NSString*) value {
+  result.hasBookingNotice = YES;
+  result.bookingNotice = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearBookingNotice {
+  result.hasBookingNotice = NO;
+  result.bookingNotice = @"";
+  return self;
+}
+- (BOOL) hasContactPhone {
+  return result.hasContactPhone;
+}
+- (NSString*) contactPhone {
+  return result.contactPhone;
+}
+- (LocalRoute_Builder*) setContactPhone:(NSString*) value {
+  result.hasContactPhone = YES;
+  result.contactPhone = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearContactPhone {
+  result.hasContactPhone = NO;
+  result.contactPhone = @"";
+  return self;
+}
+@end
+
+@interface DepartPlace ()
+@property int32_t departPlaceId;
+@property (retain) NSString* departTime;
+@property (retain) NSString* departPlace;
+@property Float64 longitude;
+@property Float64 latitude;
+@end
+
+@implementation DepartPlace
+
+- (BOOL) hasDepartPlaceId {
+  return !!hasDepartPlaceId_;
+}
+- (void) setHasDepartPlaceId:(BOOL) value {
+  hasDepartPlaceId_ = !!value;
+}
+@synthesize departPlaceId;
+- (BOOL) hasDepartTime {
+  return !!hasDepartTime_;
+}
+- (void) setHasDepartTime:(BOOL) value {
+  hasDepartTime_ = !!value;
+}
+@synthesize departTime;
+- (BOOL) hasDepartPlace {
+  return !!hasDepartPlace_;
+}
+- (void) setHasDepartPlace:(BOOL) value {
+  hasDepartPlace_ = !!value;
+}
+@synthesize departPlace;
+- (BOOL) hasLongitude {
+  return !!hasLongitude_;
+}
+- (void) setHasLongitude:(BOOL) value {
+  hasLongitude_ = !!value;
+}
+@synthesize longitude;
+- (BOOL) hasLatitude {
+  return !!hasLatitude_;
+}
+- (void) setHasLatitude:(BOOL) value {
+  hasLatitude_ = !!value;
+}
+@synthesize latitude;
+- (void) dealloc {
+  self.departTime = nil;
+  self.departPlace = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.departPlaceId = 0;
+    self.departTime = @"";
+    self.departPlace = @"";
+    self.longitude = 0;
+    self.latitude = 0;
+  }
+  return self;
+}
+static DepartPlace* defaultDepartPlaceInstance = nil;
++ (void) initialize {
+  if (self == [DepartPlace class]) {
+    defaultDepartPlaceInstance = [[DepartPlace alloc] init];
+  }
+}
++ (DepartPlace*) defaultInstance {
+  return defaultDepartPlaceInstance;
+}
+- (DepartPlace*) defaultInstance {
+  return defaultDepartPlaceInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasDepartPlaceId) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasDepartPlaceId) {
+    [output writeInt32:1 value:self.departPlaceId];
+  }
+  if (self.hasDepartTime) {
+    [output writeString:2 value:self.departTime];
+  }
+  if (self.hasDepartPlace) {
+    [output writeString:3 value:self.departPlace];
+  }
+  if (self.hasLongitude) {
+    [output writeDouble:11 value:self.longitude];
+  }
+  if (self.hasLatitude) {
+    [output writeDouble:12 value:self.latitude];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasDepartPlaceId) {
+    size += computeInt32Size(1, self.departPlaceId);
+  }
+  if (self.hasDepartTime) {
+    size += computeStringSize(2, self.departTime);
+  }
+  if (self.hasDepartPlace) {
+    size += computeStringSize(3, self.departPlace);
+  }
+  if (self.hasLongitude) {
+    size += computeDoubleSize(11, self.longitude);
+  }
+  if (self.hasLatitude) {
+    size += computeDoubleSize(12, self.latitude);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (DepartPlace*) parseFromData:(NSData*) data {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromData:data] build];
+}
++ (DepartPlace*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (DepartPlace*) parseFromInputStream:(NSInputStream*) input {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromInputStream:input] build];
+}
++ (DepartPlace*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (DepartPlace*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromCodedInputStream:input] build];
+}
++ (DepartPlace*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (DepartPlace*)[[[DepartPlace builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (DepartPlace_Builder*) builder {
+  return [[[DepartPlace_Builder alloc] init] autorelease];
+}
++ (DepartPlace_Builder*) builderWithPrototype:(DepartPlace*) prototype {
+  return [[DepartPlace builder] mergeFrom:prototype];
+}
+- (DepartPlace_Builder*) builder {
+  return [DepartPlace builder];
+}
+@end
+
+@interface DepartPlace_Builder()
+@property (retain) DepartPlace* result;
+@end
+
+@implementation DepartPlace_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[DepartPlace alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (DepartPlace_Builder*) clear {
+  self.result = [[[DepartPlace alloc] init] autorelease];
+  return self;
+}
+- (DepartPlace_Builder*) clone {
+  return [DepartPlace builderWithPrototype:result];
+}
+- (DepartPlace*) defaultInstance {
+  return [DepartPlace defaultInstance];
+}
+- (DepartPlace*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (DepartPlace*) buildPartial {
+  DepartPlace* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (DepartPlace_Builder*) mergeFrom:(DepartPlace*) other {
+  if (other == [DepartPlace defaultInstance]) {
+    return self;
+  }
+  if (other.hasDepartPlaceId) {
+    [self setDepartPlaceId:other.departPlaceId];
+  }
+  if (other.hasDepartTime) {
+    [self setDepartTime:other.departTime];
+  }
+  if (other.hasDepartPlace) {
+    [self setDepartPlace:other.departPlace];
+  }
+  if (other.hasLongitude) {
+    [self setLongitude:other.longitude];
+  }
+  if (other.hasLatitude) {
+    [self setLatitude:other.latitude];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (DepartPlace_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (DepartPlace_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setDepartPlaceId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setDepartTime:[input readString]];
+        break;
+      }
+      case 26: {
+        [self setDepartPlace:[input readString]];
+        break;
+      }
+      case 89: {
+        [self setLongitude:[input readDouble]];
+        break;
+      }
+      case 97: {
+        [self setLatitude:[input readDouble]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasDepartPlaceId {
+  return result.hasDepartPlaceId;
+}
+- (int32_t) departPlaceId {
+  return result.departPlaceId;
+}
+- (DepartPlace_Builder*) setDepartPlaceId:(int32_t) value {
+  result.hasDepartPlaceId = YES;
+  result.departPlaceId = value;
+  return self;
+}
+- (DepartPlace_Builder*) clearDepartPlaceId {
+  result.hasDepartPlaceId = NO;
+  result.departPlaceId = 0;
+  return self;
+}
+- (BOOL) hasDepartTime {
+  return result.hasDepartTime;
+}
+- (NSString*) departTime {
+  return result.departTime;
+}
+- (DepartPlace_Builder*) setDepartTime:(NSString*) value {
+  result.hasDepartTime = YES;
+  result.departTime = value;
+  return self;
+}
+- (DepartPlace_Builder*) clearDepartTime {
+  result.hasDepartTime = NO;
+  result.departTime = @"";
+  return self;
+}
+- (BOOL) hasDepartPlace {
+  return result.hasDepartPlace;
+}
+- (NSString*) departPlace {
+  return result.departPlace;
+}
+- (DepartPlace_Builder*) setDepartPlace:(NSString*) value {
+  result.hasDepartPlace = YES;
+  result.departPlace = value;
+  return self;
+}
+- (DepartPlace_Builder*) clearDepartPlace {
+  result.hasDepartPlace = NO;
+  result.departPlace = @"";
+  return self;
+}
+- (BOOL) hasLongitude {
+  return result.hasLongitude;
+}
+- (Float64) longitude {
+  return result.longitude;
+}
+- (DepartPlace_Builder*) setLongitude:(Float64) value {
+  result.hasLongitude = YES;
+  result.longitude = value;
+  return self;
+}
+- (DepartPlace_Builder*) clearLongitude {
+  result.hasLongitude = NO;
+  result.longitude = 0;
+  return self;
+}
+- (BOOL) hasLatitude {
+  return result.hasLatitude;
+}
+- (Float64) latitude {
+  return result.latitude;
+}
+- (DepartPlace_Builder*) setLatitude:(Float64) value {
+  result.hasLatitude = YES;
+  result.latitude = value;
+  return self;
+}
+- (DepartPlace_Builder*) clearLatitude {
+  result.hasLatitude = NO;
+  result.latitude = 0;
+  return self;
+}
+@end
+
 @interface DailySchedule ()
 @property int32_t day;
 @property (retain) NSString* title;
@@ -4177,6 +5548,7 @@ static OrderList* defaultOrderListInstance = nil;
 @property (retain) NSString* packageName;
 @property int32_t praiseRank;
 @property (retain) NSString* feedback;
+@property (retain) DepartPlace* departPlace;
 @end
 
 @implementation Order
@@ -4293,6 +5665,13 @@ static OrderList* defaultOrderListInstance = nil;
   hasFeedback_ = !!value;
 }
 @synthesize feedback;
+- (BOOL) hasDepartPlace {
+  return !!hasDepartPlace_;
+}
+- (void) setHasDepartPlace:(BOOL) value {
+  hasDepartPlace_ = !!value;
+}
+@synthesize departPlace;
 - (void) dealloc {
   self.routeName = nil;
   self.departCityName = nil;
@@ -4300,6 +5679,7 @@ static OrderList* defaultOrderListInstance = nil;
   self.priceStatus = nil;
   self.packageName = nil;
   self.feedback = nil;
+  self.departPlace = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4320,6 +5700,7 @@ static OrderList* defaultOrderListInstance = nil;
     self.packageName = @"";
     self.praiseRank = 0;
     self.feedback = @"";
+    self.departPlace = [DepartPlace defaultInstance];
   }
   return self;
 }
@@ -4344,6 +5725,11 @@ static Order* defaultOrderInstance = nil;
   }
   if (!self.hasRouteId) {
     return NO;
+  }
+  if (self.hasDepartPlace) {
+    if (!self.departPlace.isInitialized) {
+      return NO;
+    }
   }
   return YES;
 }
@@ -4395,6 +5781,9 @@ static Order* defaultOrderInstance = nil;
   }
   if (self.hasFeedback) {
     [output writeString:31 value:self.feedback];
+  }
+  if (self.hasDepartPlace) {
+    [output writeMessage:50 value:self.departPlace];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4452,6 +5841,9 @@ static Order* defaultOrderInstance = nil;
   }
   if (self.hasFeedback) {
     size += computeStringSize(31, self.feedback);
+  }
+  if (self.hasDepartPlace) {
+    size += computeMessageSize(50, self.departPlace);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4576,6 +5968,9 @@ static Order* defaultOrderInstance = nil;
   if (other.hasFeedback) {
     [self setFeedback:other.feedback];
   }
+  if (other.hasDepartPlace) {
+    [self mergeDepartPlace:other.departPlace];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4659,6 +6054,15 @@ static Order* defaultOrderInstance = nil;
       }
       case 250: {
         [self setFeedback:[input readString]];
+        break;
+      }
+      case 402: {
+        DepartPlace_Builder* subBuilder = [DepartPlace builder];
+        if (self.hasDepartPlace) {
+          [subBuilder mergeFrom:self.departPlace];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDepartPlace:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4918,6 +6322,36 @@ static Order* defaultOrderInstance = nil;
 - (Order_Builder*) clearFeedback {
   result.hasFeedback = NO;
   result.feedback = @"";
+  return self;
+}
+- (BOOL) hasDepartPlace {
+  return result.hasDepartPlace;
+}
+- (DepartPlace*) departPlace {
+  return result.departPlace;
+}
+- (Order_Builder*) setDepartPlace:(DepartPlace*) value {
+  result.hasDepartPlace = YES;
+  result.departPlace = value;
+  return self;
+}
+- (Order_Builder*) setDepartPlaceBuilder:(DepartPlace_Builder*) builderForValue {
+  return [self setDepartPlace:[builderForValue build]];
+}
+- (Order_Builder*) mergeDepartPlace:(DepartPlace*) value {
+  if (result.hasDepartPlace &&
+      result.departPlace != [DepartPlace defaultInstance]) {
+    result.departPlace =
+      [[[DepartPlace builderWithPrototype:result.departPlace] mergeFrom:value] buildPartial];
+  } else {
+    result.departPlace = value;
+  }
+  result.hasDepartPlace = YES;
+  return self;
+}
+- (Order_Builder*) clearDepartPlace {
+  result.hasDepartPlace = NO;
+  result.departPlace = [DepartPlace defaultInstance];
   return self;
 }
 @end

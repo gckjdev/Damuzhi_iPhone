@@ -22,10 +22,16 @@
 @class City_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
+@class DepartPlace;
+@class DepartPlace_Builder;
 @class Flight;
 @class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;
+@class LocalRoute;
+@class LocalRouteList;
+@class LocalRouteList_Builder;
+@class LocalRoute_Builder;
 @class NameIdPair;
 @class NameIdPair_Builder;
 @class Order;
@@ -627,16 +633,20 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   BOOL hasAgencyId_:1;
   BOOL hasName_:1;
   BOOL hasShortName_:1;
+  BOOL hasUrl_:1;
   int32_t agencyId;
   NSString* name;
   NSString* shortName;
+  NSString* url;
 }
 - (BOOL) hasAgencyId;
 - (BOOL) hasName;
 - (BOOL) hasShortName;
+- (BOOL) hasUrl;
 @property (readonly) int32_t agencyId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* shortName;
+@property (readonly, retain) NSString* url;
 
 + (Agency*) defaultInstance;
 - (Agency*) defaultInstance;
@@ -686,6 +696,11 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (NSString*) shortName;
 - (Agency_Builder*) setShortName:(NSString*) value;
 - (Agency_Builder*) clearShortName;
+
+- (BOOL) hasUrl;
+- (NSString*) url;
+- (Agency_Builder*) setUrl:(NSString*) value;
+- (Agency_Builder*) clearUrl;
 @end
 
 @interface RouteCity : PBGeneratedMessage {
