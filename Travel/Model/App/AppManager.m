@@ -82,10 +82,7 @@ static AppManager* _defaultAppManager = nil;
 
 - (NSArray *)allCities
 {
-//    if (_allCities == nil) {
-        self.allCities = [self mergeAllCities];
-//    }
-    
+    self.allCities = [self mergeAllCities];
     return _allCities;
 }
 
@@ -95,17 +92,6 @@ static AppManager* _defaultAppManager = nil;
     
     [allCity addObjectsFromArray: _app.citiesList];
     [allCity addObjectsFromArray:_app.testCitiesList];
-    
-//    for (City *city in _app.citiesList) {
-//        [allCity addObject:city];
-////        PPDebug(@"city_ = %@", city.cityName);
-//    }
-//    
-//    for (City *city in _app.testCitiesList) {
-//        [allCity addObject:city];
-////        PPDebug(@"testCity_ = %@", city.cityName);
-//
-//    }
     
     return allCity;
 }
