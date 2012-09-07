@@ -31,6 +31,7 @@
 {
     BOOL _showMap;
     BOOL _firstIn;
+    MKCoordinateSpan _span;
 }
 
 @property (assign, nonatomic) BOOL canDelete;
@@ -69,8 +70,8 @@
     _mapView.delegate = self;
     _mapView.mapType = MKMapTypeStandard;   
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
-    [MapUtils setMapSpan:_mapView span:span];
+    _span = MKCoordinateSpanMake(0.028, 0.028);
+    [MapUtils setMapSpan:_mapView span:_span];
     
     [self addMyLocationBtnTo:_mapView];
     
@@ -323,11 +324,11 @@
 {
     if (_locateButton.selected) {
         CLLocation *location = [[AppService defaultService] currentLocation];
-        [MapUtils gotoLocation:_mapView latitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+        [MapUtils gotoLocation:_mapView latitude:location.coordinate.latitude longitude:location.coordinate.longitude span:_span];
     }else {
         if ([dataList count] > 0) {
             Place *place = [dataList objectAtIndex:0];
-            [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+            [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude span:_span];
         }
     }
 }
@@ -364,7 +365,7 @@
     }else {
         _mapView.showsUserLocation = NO;
         Place *place = [dataList objectAtIndex:0];
-        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude span:_span];
     }
     
     MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
@@ -396,7 +397,7 @@
     [[AppService defaultService] setCurrentLocation:userLocation.location];
     
     if (_showMap) {
-        [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+        [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude span:_span];
     }else {
         [self reloadTableView];
     }
