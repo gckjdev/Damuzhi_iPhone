@@ -20,6 +20,9 @@
 #define TAG_USER_LOCATE_DENY_ALERT_VIEW 111
 
 @interface NearByRecommendController ()
+{
+    MKCoordinateSpan _span;
+}
 
 @property (retain, nonatomic) UIButton *locateButton;
 
@@ -92,11 +95,12 @@
     mapView.delegate = self;
     mapView.mapType = MKMapTypeStandard; 
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.0, 0.0);
-    [MapUtils setMapSpan:mapView span:span];    
-    
-    
-    [MapUtils gotoLocation:mapView latitude:_place.latitude longitude:_place.longitude];
+    _span = MKCoordinateSpanMake(0.005, 0.005);
+        
+    [MapUtils gotoLocation:mapView
+                  latitude:_place.latitude 
+                 longitude:_place.longitude
+                      span:_span];
     
     self.placeList = [[[NSMutableArray alloc] init] autorelease];
     
@@ -256,7 +260,7 @@
         mapView.showsUserLocation = YES;    
     }else {
         mapView.showsUserLocation = NO;
-        [MapUtils gotoLocation:mapView latitude:_place.latitude longitude:_place.longitude];
+        [MapUtils gotoLocation:mapView latitude:_place.latitude longitude:_place.longitude span:_span];
     }
 }
 
@@ -267,7 +271,7 @@
     PPDebug(@"current location: %f, %f", userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
     
     
-    [MapUtils gotoLocation:mapView1 latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+    [MapUtils gotoLocation:mapView1 latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude span:_span];
 }
 
 
