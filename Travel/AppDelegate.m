@@ -178,7 +178,7 @@
     
     self.window.rootViewController = navigationController;
     
-    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
     splashView.frame = [self.window bounds];
     splashView.tag = SPLASH_VIEW_TAG;
     [self.window.rootViewController.view addSubview:splashView];
@@ -188,7 +188,7 @@
     
     
 //    [self initTabViewControllers];
-    [self.window addSubview:_tabBarController.view];
+//    [self.window addSubview:_tabBarController.view];
     
     [self.window makeKeyAndVisible];
     
