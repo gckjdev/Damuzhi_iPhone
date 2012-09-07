@@ -79,6 +79,8 @@
 - (NSArray *)getAgencyItemList:(NSArray *)staticticsList;
 
 - (NSString*)getDepartCityName:(int)routeCityId;
+- (Agency*)getAgency:(int)agencyId;
+
 - (NSString*)getAgencyName:(int)agencyId;
 - (NSString*)getAgencyShortName:(int)agencyId;
 
@@ -99,4 +101,9 @@
 - (NSDictionary *)getGroupCitysDicList;
 - (NSArray *)getGroupNameList;
 - (NSDictionary *)getNonRepeatedGroupCitysDicList;
+
+- (NSArray *)getAgencyListFromLocalRouteList:(NSArray *)list;
+- (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
+                              localRouteList:(NSArray *)routeList;
+
 @end

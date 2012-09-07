@@ -827,6 +827,18 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+- (Agency*)getAgency:(int)agencyId
+{
+    for (Agency *agency in _app.agenciesList) {
+        if (agency.agencyId == agencyId) {
+            return agency;
+        }
+    }
+    
+    return nil; 
+}
+
+
 - (NSString*)getAgencyName:(int)agencyId
 {
     for (Agency *agency in _app.agenciesList) {
@@ -1156,6 +1168,45 @@ static AppManager* _defaultAppManager = nil;
     }];
     
     return countryNameList;
+}
+
+- (NSArray *)getAgencyListFromLocalRouteList:(NSArray *)list
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LocalRoute *route in list) {
+        [array addObject:[self getAgency:route.agencyId]];
+    }
+    
+    return array;
+}
+
+
+- (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
+                              localRouteList:(NSArray *)routeList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    
+    for (Agency *agency in agencyList) {
+        NSArray *array =  [self filterLocalRoutes:routeList agencyId:agency.agencyId];
+        [dic setObject:array forKey:agency.name];
+    }
+    
+    return dic;
+}
+
+
+- (NSArray *)filterLocalRoutes:(NSArray *)list agencyId:(int)agencyId 
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LocalRoute *route in list) {
+        if (route.agencyId == agencyId) {
+            [array addObject:route];
+        }
+    }
+    
+    return array;
 }
 
 @end

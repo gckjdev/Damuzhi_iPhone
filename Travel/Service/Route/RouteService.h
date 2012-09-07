@@ -51,6 +51,12 @@
 
 + (RouteService*)defaultService;
 
+- (void)findLocalRoutes:(int)cityId
+                  start:(int)start
+                  count:(int)count 
+         needStatistics:(BOOL)needStatistics 
+         viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
 - (void)findRoutesWithType:(int)routeType
                      start:(int)start
                      count:(int)count 

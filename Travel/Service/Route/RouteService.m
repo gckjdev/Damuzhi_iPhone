@@ -45,6 +45,16 @@ static RouteService *_defaultRouteService = nil;
     return _defaultRouteService;
 }
 
+- (void)findLocalRoutes:(int)cityId
+                  start:(int)start
+                  count:(int)count 
+         needStatistics:(BOOL)needStatistics 
+         viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    // TODO: realize.
+    
+}
+
 - (void)findRoutesWithType:(int)routeType
                      start:(int)start
                      count:(int)count 
