@@ -213,6 +213,7 @@
 {
     if (resultCode == ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"提交成功") title:nil];
+        self.feekbackTextView.text = @"";
     }
     else {
         [self popupMessage:NSLS(@"网络不稳定，提交失败") title:nil];

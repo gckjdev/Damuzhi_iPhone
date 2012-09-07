@@ -247,7 +247,7 @@
     _start += [placeList count];
     _totalCount = totalCount;
     
-    if (_start >= totalCount || [dataList count] == 0) {
+    if (_start >= totalCount || [placeList count] == 0) {
         _placeListController.noMoreData = YES;
     }
     
