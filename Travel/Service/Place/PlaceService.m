@@ -254,6 +254,7 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
                  selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
                   needStatistics:(BOOL)needStatistics 
                   viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+                          filter:(id<PlaceListFilterProtocol>)filter
 {
     int currentCityId = [[AppManager defaultManager] getCurrentCityId];
     
@@ -275,6 +276,7 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
             PPDebug(@"Has Local Data For City %@, Read Data Locally", [[AppManager defaultManager] getCurrentCityName]);
             [_localPlaceManager switchCity:currentCityId];
             list = [_localPlaceManager findPlacesByCategory:categoryId];   
+            list = [filter filterAndSotrPlaceList:list selectedItems:selectedItemIds];
             totalCount = [list count];
             [[AppManager defaultManager] updateSubCategoryItemList:categoryId 
                                                          placeList:list];

@@ -35,15 +35,16 @@
                          count:(int)count
                selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
                 needStatistics:(BOOL)needStatistics 
-                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
-
+                viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+                        filter:(id<PlaceListFilterProtocol>)filter
 {
     [[PlaceService defaultService] findPlacesWithCategoryId:[self getCategoryId]
                                                              start:start 
                                                              count:count
                                                    selectedItemIds:selectedItemIds 
                                                     needStatistics:needStatistics
-                                                    viewController:viewController];
+                                                    viewController:viewController
+                                                            filter:filter];
 }
 
 @end
@@ -161,7 +162,8 @@
                                      count:EACH_FETCH
                            selectedItemIds:_selectedItemIds
                             needStatistics:YES
-                            viewController:self];
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -273,7 +275,12 @@
 //    [_filterHandler findAllPlaces:self];
     _start = 0;
     
-    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
+    [_filterHandler findAllPlacesWithStart:_start 
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:NO 
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)didPullUpToLoadMore
@@ -282,7 +289,8 @@
                                      count:EACH_FETCH
                            selectedItemIds:_selectedItemIds
                             needStatistics:NO
-                            viewController:self];
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (NSArray*)filterAndSort:(NSArray*)placeList
@@ -438,7 +446,12 @@
 {     
     _start = 0;
     
-    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
+    [_filterHandler findAllPlacesWithStart:_start
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:NO 
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)viewWillAppear:(BOOL)animated

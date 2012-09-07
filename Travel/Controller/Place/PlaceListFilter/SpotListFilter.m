@@ -36,7 +36,7 @@
     return NSLS(@"景点");
 }
 
-- (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController *)commonPlaceController
+- (void)createFilterButtons:(UIView*)superView controller:(PPViewController *)commonPlaceController
 {    
     CGRect frame = CGRectMake(0, superView.frame.size.height/2-HEIGHT_OF_FILTER_BUTTON/2, WIDTH_OF_FILTER_BUTTON, HEIGHT_OF_FILTER_BUTTON);
     

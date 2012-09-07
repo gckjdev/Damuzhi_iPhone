@@ -22,32 +22,32 @@
 
 @class PlaceListController;
 
-@class PlaceListFilter;
-
-@protocol PlaceListFilterProtocol <NSObject>
-
-@optional
-- (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController*)controller;
-//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
-+ (PlaceListFilter<PlaceListFilterProtocol>*)createFilter;
-
-- (int)getCategoryId;
-- (NSString*)getCategoryName;
-
-- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds*)selectedItemIds;
-
-@end
-
-@interface PlaceListFilter : NSObject <PlaceListFilterProtocol>
-
-//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
-- (void)findAllPlacesWithStart:(int)start
-                         count:(int)count
-               selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
-                needStatistics:(BOOL)needStatistics 
-                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
-
-@end
+//@class PlaceListFilter;
+//
+//@protocol PlaceListFilterProtocol <NSObject>
+//
+//@optional
+//- (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController*)controller;
+////- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
+//+ (PlaceListFilter<PlaceListFilterProtocol>*)createFilter;
+//
+//- (int)getCategoryId;
+//- (NSString*)getCategoryName;
+//
+//- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds*)selectedItemIds;
+//
+//@end
+//
+//@interface PlaceListFilter : NSObject <PlaceListFilterProtocol>
+//
+////- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
+//- (void)findAllPlacesWithStart:(int)start
+//                         count:(int)count
+//               selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+//                needStatistics:(BOOL)needStatistics 
+//                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+//
+//@end
 
 @interface CommonPlaceListController : PPTableViewController <PlaceServiceDelegate, CityOverviewServiceDelegate, SelectControllerDelegate, PullDelegate>
 
