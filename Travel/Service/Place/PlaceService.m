@@ -276,9 +276,7 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
             PPDebug(@"Has Local Data For City %@, Read Data Locally", [[AppManager defaultManager] getCurrentCityName]);
             [_localPlaceManager switchCity:currentCityId];
             list = [_localPlaceManager findPlacesByCategory:categoryId]; 
-            totalCount = [list count];
 
-            list = [filter filterAndSotrPlaceList:list selectedItems:selectedItemIds];
             [[AppManager defaultManager] updateSubCategoryItemList:categoryId 
                                                          placeList:list];
             
@@ -288,6 +286,9 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
             [[AppManager defaultManager] updateAreaItemList:categoryId 
                                                      cityId:currentCityId
                                                   placeList:list];
+            
+            list = [filter filterAndSotrPlaceList:list selectedItems:selectedItemIds];
+            totalCount = [list count];
         }
         else{
             // if local data no exist, try to read data from remote            
