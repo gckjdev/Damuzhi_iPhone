@@ -27,6 +27,7 @@
 #import "MoreController.h"
 #import "CustomTourController.h"
 
+#import "LocalRouteListController.h"
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
 
@@ -64,16 +65,27 @@
 					 viewImage:@"menu_btn1_off.png"
 			  hasNavController:YES			
 			   viewControllers:controllers];	
+//    
+//    NSObject<RouteListFilterProtocol>* unPackageFilter = [UnPackageTourListFilter createFilter];
+//    CommonRouteListController *unPackageController = [[[CommonRouteListController alloc] initWithFilterHandler:unPackageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+//    
+//    [UIUtils addInitViewController:unPackageController 
+//                         viewTitle:nil
+//                         viewImage:@"menu_btn2_off.png" 
+//                  hasNavController:YES 
+//                 hideNavigationBar:NO 
+//                   viewControllers:controllers];
+//    
+//    
     
-    NSObject<RouteListFilterProtocol>* unPackageFilter = [UnPackageTourListFilter createFilter];
-    CommonRouteListController *unPackageController = [[[CommonRouteListController alloc] initWithFilterHandler:unPackageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+    [UIUtils addViewController:[[LocalRouteListController alloc]initWithCityId:7]//???
+                     viewTitle:nil
+                     viewImage:@"all_page_bg2.jpg" 
+              hasNavController:YES 
+             hideNavigationBar:NO 
+               viewControllers:controllers];
     
-    [UIUtils addInitViewController:unPackageController 
-                         viewTitle:nil
-                         viewImage:@"menu_btn2_off.png" 
-                  hasNavController:YES 
-                 hideNavigationBar:NO 
-                   viewControllers:controllers];
+    
     
     NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
     CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
@@ -100,9 +112,16 @@
                    viewControllers:controllers];
     
 	_tabBarController.viewControllers = controllers;
+//    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
+//                                                  @"menu_btn1_on.png", 
+//                                                  @"menu_btn2_on.png", 
+//                                                  @"menu_btn3_on.png", 
+//                                                  @"menu_btn4_on.png", 
+//                                                  @"menu_btn5_on.png", nil]];
+    
     [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
                                                   @"menu_btn1_on.png", 
-                                                  @"menu_btn2_on.png", 
+                                                  @"all_page_bg2.jpg", 
                                                   @"menu_btn3_on.png", 
                                                   @"menu_btn4_on.png", 
                                                   @"menu_btn5_on.png", nil]];

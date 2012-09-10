@@ -283,7 +283,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">我的收藏</string>
+						<string key="IBUINormalTitle">城市交通</string>
 						<reference key="IBUIHighlightedTitleColor" ref="422564520"/>
 						<reference key="IBUINormalTitleColor" ref="422564520"/>
 						<reference key="IBUINormalTitleShadowColor" ref="1055086790"/>
@@ -333,7 +333,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">线路推荐</string>
+						<string key="IBUINormalTitle">我的收藏</string>
 						<reference key="IBUIHighlightedTitleColor" ref="422564520"/>
 						<reference key="IBUINormalTitleColor" ref="422564520"/>
 						<reference key="IBUINormalTitleShadowColor" ref="1055086790"/>
@@ -651,8 +651,8 @@
 							<reference ref="886015999"/>
 							<reference ref="27541124"/>
 							<reference ref="868232006"/>
-							<reference ref="645734202"/>
 							<reference ref="439840901"/>
+							<reference ref="645734202"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

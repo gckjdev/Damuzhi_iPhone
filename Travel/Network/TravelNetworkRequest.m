@@ -579,6 +579,7 @@
     return str;
 }
 
+
 + (CommonNetworkOutput*)queryList:(int)type 
                             start:(int)start
                             count:(int)count
