@@ -45,15 +45,47 @@ static RouteService *_defaultRouteService = nil;
     return _defaultRouteService;
 }
 
+
 - (void)findLocalRoutes:(int)cityId
                   start:(int)start
                   count:(int)count 
          needStatistics:(BOOL)needStatistics 
          viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
-    // TODO: realize.
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput* output = nil;
+        
+        int totalCount = 0 ;
+        NSArray *cityList = nil;
+        RouteStatistics *statistics = nil;
+        if (output.resultCode == ERROR_SUCCESS){
+            @try{
+                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                totalCount = [travelResponse totalCount];
+                cityList = nil;
+                statistics = nil;
+            }
+            @catch (NSException *exception){
+                PPDebug(@"<Catch Exception in findRoutesWithType>");
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [viewController hideActivity];   
+            
+            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
+                [viewController findRequestDone:output.resultCode
+                                     totalCount:totalCount 
+                                           list:cityList 
+                                     statistics:statistics];
+            }
+        });
+        
+    }); 
     
 }
+
 
 - (void)findRoutesWithType:(int)routeType
                      start:(int)start

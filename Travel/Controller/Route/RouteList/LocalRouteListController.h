@@ -8,7 +8,6 @@
 
 #import "PPTableViewController.h"
 #import "RouteService.h"
-
 @interface LocalRouteListController : PPTableViewController <RouteServiceDelegate>
 
 - (id)initWithCityId:(int)cityId;

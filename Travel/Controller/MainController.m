@@ -99,7 +99,7 @@
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
     
-    NSString *title = [NSString stringWithFormat:@"大拇指旅行 — %@", [[AppManager defaultManager] getCurrentCityName]];    
+    NSString *title = [NSString stringWithFormat:@"城市指南 — %@", [[AppManager defaultManager] getCurrentCityName]];    
     CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
@@ -242,13 +242,13 @@
 
 - (IBAction)clickTravelTransportButton:(id)sender
 {
-//    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
-//    [self.navigationController pushViewController:controller animated:YES];
-//    [controller release];  
-    
-    FavoriteController *controller = [[FavoriteController alloc] init];
+    CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
     [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    [controller release];  
+    
+//    FavoriteController *controller = [[FavoriteController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
     
 }
 
@@ -260,7 +260,10 @@
 }
 
 - (IBAction)clickTravelRouteBtn:(id)sender {
-    RouteController *controller = [[RouteController alloc] init];
+//    RouteController *controller = [[RouteController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
+    FavoriteController *controller = [[FavoriteController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
