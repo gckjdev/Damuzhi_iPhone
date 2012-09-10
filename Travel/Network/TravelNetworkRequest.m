@@ -235,6 +235,9 @@
         
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
         
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]];
+
+        
         return str;
     };
     
@@ -355,6 +358,8 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_NUM intValue:num];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
         
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]];
+        
         return str;
     };
     
@@ -385,6 +390,8 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_PLACE_ID intValue:placeId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_DISTANCE doubleValue:distance];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]];
         
         return str;
     };
@@ -630,6 +637,8 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_NEED_STATISTICS boolValue:needStatistics];
         
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TEST boolValue:test];
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]];
         
         return str;
     };
