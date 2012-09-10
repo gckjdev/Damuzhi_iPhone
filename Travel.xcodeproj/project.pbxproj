@@ -667,6 +667,10 @@
 		CA585FBD14F73C4900471880 /* NearbyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA585FBB14F73C4900471880 /* NearbyController.m */; };
 		CA585FBE14F73C4900471880 /* NearbyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA585FBC14F73C4900471880 /* NearbyController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
+		EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */; };
+		EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */; };
+		EA194DF915FDF53500FA437F /* LocalRouteIntroductionController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF515FDF53500FA437F /* LocalRouteIntroductionController.m */; };
+		EA194DFA15FDF53500FA437F /* LocalRouteIntroductionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF615FDF53500FA437F /* LocalRouteIntroductionController.xib */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
 		EA328A0E1542A234001ACFF4 /* pin_cg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A061542A234001ACFF4 /* pin_cg@2x.png */; };
 		EA328A101542A234001ACFF4 /* pin_gw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A081542A234001ACFF4 /* pin_gw@2x.png */; };
@@ -1732,6 +1736,12 @@
 		CA585FBB14F73C4900471880 /* NearbyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyController.m; sourceTree = "<group>"; };
 		CA585FBC14F73C4900471880 /* NearbyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearbyController.xib; sourceTree = "<group>"; };
 		EA1007B915550E1600E299D1 /* pin_yl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_yl@2x.png"; sourceTree = "<group>"; };
+		EA194DF115FDF53500FA437F /* LocalRouteDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteDetailController.h; sourceTree = "<group>"; };
+		EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteDetailController.m; sourceTree = "<group>"; };
+		EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalRouteDetailController.xib; sourceTree = "<group>"; };
+		EA194DF415FDF53500FA437F /* LocalRouteIntroductionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteIntroductionController.h; sourceTree = "<group>"; };
+		EA194DF515FDF53500FA437F /* LocalRouteIntroductionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteIntroductionController.m; sourceTree = "<group>"; };
+		EA194DF615FDF53500FA437F /* LocalRouteIntroductionController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalRouteIntroductionController.xib; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
 		EA328A061542A234001ACFF4 /* pin_cg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cg@2x.png"; sourceTree = "<group>"; };
@@ -2308,6 +2318,12 @@
 			isa = PBXGroup;
 			children = (
 				A4BC1ED41585D7FA009FDE5F /* RouteDetailCell */,
+				EA194DF115FDF53500FA437F /* LocalRouteDetailController.h */,
+				EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */,
+				EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */,
+				EA194DF415FDF53500FA437F /* LocalRouteIntroductionController.h */,
+				EA194DF515FDF53500FA437F /* LocalRouteIntroductionController.m */,
+				EA194DF615FDF53500FA437F /* LocalRouteIntroductionController.xib */,
 				A455F8D01585D43900CA5743 /* CommonRouteDetailController.h */,
 				A455F8D11585D43900CA5743 /* CommonRouteDetailController.m */,
 				A455F8D21585D43900CA5743 /* CommonRouteDetailController.xib */,
@@ -4652,6 +4668,8 @@
 				A3793C0F15F4B431006814C5 /* del@2x.png in Resources */,
 				A3204D0A15F73EEC007D72B7 /* line_n_on2@2x.png in Resources */,
 				A49B0C7215F9D84C00F8EC5A /* LocalRouteListController.xib in Resources */,
+				EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */,
+				EA194DFA15FDF53500FA437F /* LocalRouteIntroductionController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4972,6 +4990,8 @@
 				A387DE4015C7D7BF00507F95 /* NSAttributedString+Attributes.m in Sources */,
 				A387DE4115C7D7BF00507F95 /* OHAttributedLabel.m in Sources */,
 				A49B0C7115F9D84C00F8EC5A /* LocalRouteListController.m in Sources */,
+				EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */,
+				EA194DF915FDF53500FA437F /* LocalRouteIntroductionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
