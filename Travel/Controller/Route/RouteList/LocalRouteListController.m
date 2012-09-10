@@ -8,11 +8,17 @@
 
 #import "LocalRouteListController.h"
 #import "AppManager.h"
+<<<<<<< HEAD
 #import "FontSize.h"
 #import "AppDelegate.h"
 #import "RouteListCell.h"
 #define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 30
+=======
+
+#define EACH_COUNT 20
+
+>>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
 @interface LocalRouteListController ()
 {
     int _cityId;
@@ -52,8 +58,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     self.navigationItem.title = [NSString stringWithFormat:@"本地游 - ..."];
     dataTableView.backgroundColor = [UIColor orangeColor];
+
     _appManager = [AppManager defaultManager];
     _routeService = [RouteService defaultService];
     self.dataList = [NSArray array];
@@ -65,6 +73,7 @@
                     viewController:self];
 }
 
+<<<<<<< HEAD
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 2;
@@ -130,12 +139,25 @@
              totalCount:(int)totalCount 
                    list:(NSArray *)list 
              statistics:(RouteStatistics *)statistics
+=======
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (void)findRequestDone:(int)result 
+             totalCount:(int)totalCount 
+                   list:(NSArray *)list 
+>>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
 {
     
     self.dataList = [dataList arrayByAddingObjectsFromArray:list];     
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
+<<<<<<< HEAD
 
     
     
@@ -176,6 +198,11 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+=======
+    
+    
+    
+>>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
 }
 
 @end
