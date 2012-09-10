@@ -71,10 +71,13 @@
              totalCount:(int)totalCount 
                    list:(NSArray *)list 
 {
+    
     self.dataList = [dataList arrayByAddingObjectsFromArray:list];     
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
+    
+    
     
 }
 
