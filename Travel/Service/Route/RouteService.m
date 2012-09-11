@@ -58,13 +58,11 @@ static RouteService *_defaultRouteService = nil;
         
         int totalCount = 0 ;
         NSArray *cityList = nil;
-        RouteStatistics *statistics = nil;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
                 totalCount = [travelResponse totalCount];
                 cityList = nil;
-                statistics = nil;
             }
             @catch (NSException *exception){
                 PPDebug(@"<Catch Exception in findRoutesWithType>");
@@ -77,8 +75,7 @@ static RouteService *_defaultRouteService = nil;
             if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
                 [viewController findRequestDone:output.resultCode
                                      totalCount:totalCount 
-                                           list:cityList 
-                                     statistics:statistics];
+                                           list:cityList];
             }
         });
         

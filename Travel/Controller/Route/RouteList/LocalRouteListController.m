@@ -8,17 +8,14 @@
 
 #import "LocalRouteListController.h"
 #import "AppManager.h"
-<<<<<<< HEAD
 #import "FontSize.h"
 #import "AppDelegate.h"
 #import "RouteListCell.h"
 #define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 30
-=======
 
 #define EACH_COUNT 20
 
->>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
 @interface LocalRouteListController ()
 {
     int _cityId;
@@ -73,7 +70,39 @@
                     viewController:self];
 }
 
-<<<<<<< HEAD
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self hideTabBar:NO];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self hideTabBar:NO];
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = NO;
+    [self hideTabBar:YES];
+    [super viewDidDisappear:animated];
+}
+
+
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 2;
@@ -138,32 +167,14 @@
 - (void)findRequestDone:(int)result 
              totalCount:(int)totalCount 
                    list:(NSArray *)list 
-             statistics:(RouteStatistics *)statistics
-=======
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)findRequestDone:(int)result 
-             totalCount:(int)totalCount 
-                   list:(NSArray *)list 
->>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
 {
     
     self.dataList = [dataList arrayByAddingObjectsFromArray:list];     
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
-<<<<<<< HEAD
 
-    
-    
 }
-
-
 
 
 - (void)hideTabBar:(BOOL)isHide
@@ -173,36 +184,5 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self hideTabBar:NO];
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    self.hidesBottomBarWhenPushed = YES;
-    [self hideTabBar:NO];
-    [super viewDidAppear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    self.hidesBottomBarWhenPushed = NO;
-    [self hideTabBar:YES];
-    [super viewDidDisappear:animated];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-=======
-    
-    
-    
->>>>>>> c8a7910... Merge remote-tracking branch 'origin/version1.x' into version1.x
-}
 
 @end
