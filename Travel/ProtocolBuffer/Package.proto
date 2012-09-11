@@ -97,9 +97,10 @@ message TravelResponse{
   
   optional UserInfo userInfo = 15;                      // 用户资料
   
-  optional TouristRoute route = 20;                     // 线路详情
-  optional TouristRouteList routeList = 21;             // 线路列表(自由行和跟团游)
-  optional LocalRouteList localRoutes = 22;             // 本地游线路列表
+  optional TouristRoute route = 20;                     // 跟团游/自由行线路详情
+  optional TouristRouteList routeList = 21;             // 跟团游/自由行线路列表
+  optional LocalRoute localRoute = 22;                   // 本地游线路详情
+  optional LocalRouteList localRoutes = 23;             // 本地游线路列表
   
   optional RouteStatistics routeStatistics = 25;        // 线路统计信息
   
