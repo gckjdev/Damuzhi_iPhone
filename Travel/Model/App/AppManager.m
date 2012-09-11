@@ -22,7 +22,7 @@
 
 #import "TouristRoute.pb.h"
 
-#define TEST_CITY
+//#define TEST_CITY
 
 #ifdef TEST_CITY
 #define CITY_LIST [self allCities]
