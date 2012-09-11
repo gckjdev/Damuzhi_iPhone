@@ -8,8 +8,15 @@
 
 #import "PPViewController.h"
 
-@interface LocalRouteIntroductionController : PPViewController
+@class LocalRoute;
+
+@interface LocalRouteIntroductionController : PPViewController <UIWebViewDelegate>
+@property (retain, nonatomic) IBOutlet UIScrollView *overallScrollView;
 @property (retain, nonatomic) IBOutlet UIView *imagesHolderView;
 @property (retain, nonatomic) IBOutlet UIWebView *contentWebView;
+@property (retain, nonatomic) IBOutlet UILabel *priceLable;
+
+- (void)showInView:(UIView *)superView;
+- (void)updateWithRoute:(LocalRoute *)route;
 
 @end

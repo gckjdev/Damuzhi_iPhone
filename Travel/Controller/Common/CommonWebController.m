@@ -59,7 +59,10 @@
     }
     else {
         //handle urlString, if there has local data, urlString is a relative path, otherwise, it is a absolute URL.
-        NSURL *url = [AppUtils getNSURLFromHtmlFileOrURL:_htmlPath];
+        NSURL *url = nil;
+        if (_htmlPath) {
+            url = [AppUtils getNSURLFromHtmlFileOrURL:_htmlPath];
+        }
         
         //request from a url, load request to web view.
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
