@@ -1673,6 +1673,7 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
 @property (retain) UserInfo* userInfo;
 @property (retain) TouristRoute* route;
 @property (retain) TouristRouteList* routeList;
+@property (retain) LocalRoute* localRoute;
 @property (retain) LocalRouteList* localRoutes;
 @property (retain) RouteStatistics* routeStatistics;
 @property (retain) RouteFeekbackList* routeFeekbackList;
@@ -1787,6 +1788,13 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
   hasRouteList_ = !!value;
 }
 @synthesize routeList;
+- (BOOL) hasLocalRoute {
+  return !!hasLocalRoute_;
+}
+- (void) setHasLocalRoute:(BOOL) value {
+  hasLocalRoute_ = !!value;
+}
+@synthesize localRoute;
 - (BOOL) hasLocalRoutes {
   return !!hasLocalRoutes_;
 }
@@ -1836,6 +1844,7 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
   self.userInfo = nil;
   self.route = nil;
   self.routeList = nil;
+  self.localRoute = nil;
   self.localRoutes = nil;
   self.routeStatistics = nil;
   self.routeFeekbackList = nil;
@@ -1860,6 +1869,7 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
     self.userInfo = [UserInfo defaultInstance];
     self.route = [TouristRoute defaultInstance];
     self.routeList = [TouristRouteList defaultInstance];
+    self.localRoute = [LocalRoute defaultInstance];
     self.localRoutes = [LocalRouteList defaultInstance];
     self.routeStatistics = [RouteStatistics defaultInstance];
     self.routeFeekbackList = [RouteFeekbackList defaultInstance];
@@ -1939,6 +1949,11 @@ static TravelResponse* defaultTravelResponseInstance = nil;
       return NO;
     }
   }
+  if (self.hasLocalRoute) {
+    if (!self.localRoute.isInitialized) {
+      return NO;
+    }
+  }
   if (self.hasLocalRoutes) {
     if (!self.localRoutes.isInitialized) {
       return NO;
@@ -2012,8 +2027,11 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   if (self.hasRouteList) {
     [output writeMessage:21 value:self.routeList];
   }
+  if (self.hasLocalRoute) {
+    [output writeMessage:22 value:self.localRoute];
+  }
   if (self.hasLocalRoutes) {
-    [output writeMessage:22 value:self.localRoutes];
+    [output writeMessage:23 value:self.localRoutes];
   }
   if (self.hasRouteStatistics) {
     [output writeMessage:25 value:self.routeStatistics];
@@ -2081,8 +2099,11 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   if (self.hasRouteList) {
     size += computeMessageSize(21, self.routeList);
   }
+  if (self.hasLocalRoute) {
+    size += computeMessageSize(22, self.localRoute);
+  }
   if (self.hasLocalRoutes) {
-    size += computeMessageSize(22, self.localRoutes);
+    size += computeMessageSize(23, self.localRoutes);
   }
   if (self.hasRouteStatistics) {
     size += computeMessageSize(25, self.routeStatistics);
@@ -2215,6 +2236,9 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (other.hasRouteList) {
     [self mergeRouteList:other.routeList];
+  }
+  if (other.hasLocalRoute) {
+    [self mergeLocalRoute:other.localRoute];
   }
   if (other.hasLocalRoutes) {
     [self mergeLocalRoutes:other.localRoutes];
@@ -2373,6 +2397,15 @@ static TravelResponse* defaultTravelResponseInstance = nil;
         break;
       }
       case 178: {
+        LocalRoute_Builder* subBuilder = [LocalRoute builder];
+        if (self.hasLocalRoute) {
+          [subBuilder mergeFrom:self.localRoute];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setLocalRoute:[subBuilder buildPartial]];
+        break;
+      }
+      case 186: {
         LocalRouteList_Builder* subBuilder = [LocalRouteList builder];
         if (self.hasLocalRoutes) {
           [subBuilder mergeFrom:self.localRoutes];
@@ -2826,6 +2859,36 @@ static TravelResponse* defaultTravelResponseInstance = nil;
 - (TravelResponse_Builder*) clearRouteList {
   result.hasRouteList = NO;
   result.routeList = [TouristRouteList defaultInstance];
+  return self;
+}
+- (BOOL) hasLocalRoute {
+  return result.hasLocalRoute;
+}
+- (LocalRoute*) localRoute {
+  return result.localRoute;
+}
+- (TravelResponse_Builder*) setLocalRoute:(LocalRoute*) value {
+  result.hasLocalRoute = YES;
+  result.localRoute = value;
+  return self;
+}
+- (TravelResponse_Builder*) setLocalRouteBuilder:(LocalRoute_Builder*) builderForValue {
+  return [self setLocalRoute:[builderForValue build]];
+}
+- (TravelResponse_Builder*) mergeLocalRoute:(LocalRoute*) value {
+  if (result.hasLocalRoute &&
+      result.localRoute != [LocalRoute defaultInstance]) {
+    result.localRoute =
+      [[[LocalRoute builderWithPrototype:result.localRoute] mergeFrom:value] buildPartial];
+  } else {
+    result.localRoute = value;
+  }
+  result.hasLocalRoute = YES;
+  return self;
+}
+- (TravelResponse_Builder*) clearLocalRoute {
+  result.hasLocalRoute = NO;
+  result.localRoute = [LocalRoute defaultInstance];
   return self;
 }
 - (BOOL) hasLocalRoutes {
