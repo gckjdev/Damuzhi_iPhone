@@ -16,7 +16,7 @@
 #import "TravelNetworkConstants.h"
 #import "AppManager.h"
 #import "AppUtils.h"
-
+#import "PPNetworkConstants.h"
 
 #define SERACH_WORKING_QUEUE1    @"SERACH_WORKING_QUEUE1"
 
@@ -123,45 +123,6 @@ typedef CommonOverview* (^RemoteRequestHandler)(int* resultCode);
     [self processLocalRemoteQuery:viewController
                      localHandler:localHandler
                     remoteHandler:remoteHandler];
-}
-
-- (void)findCityImages:(int)cityId 
-                 start:(int)start
-                 count:(int)count
-              delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
-
-{
-    [viewController showActivityWithText:NSLS(@"数据加载中......")];
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    
-        CommonNetworkOutput *output = [TravelNetworkRequest queryList:OBJECT_LIST_CITY_IMAGE 
-                                                               cityId:cityId
-                                                                start:start
-                                                                count:count
-                                                                 lang:LanguageTypeZhHans];
-        
-        int totalCount;
-        NSArray *cityImageList;
-        if (output.resultCode == ERROR_SUCCESS){
-            @try{
-                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
-                
-                totalCount = [travelResponse totalCount];
-                cityImageList = [[travelResponse cityImageList] cityImagesList];
-            }
-            @catch (NSException *exception){
-            }
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [viewController hideActivity];   
-            
-            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:cityImages:)]) {
-                [viewController findRequestDone:output.resultCode totalCount:totalCount cityImages:cityImageList];
-            }
-        });                        
-    });
 }
 
 

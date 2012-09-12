@@ -53,16 +53,21 @@ static RouteService *_defaultRouteService = nil;
          viewController:(PPViewController<RouteServiceDelegate>*)viewController
 {
 
+    [viewController showActivityWithText:NSLS(@"数据加载中......")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        CommonNetworkOutput* output = nil;
+        CommonNetworkOutput* output = [TravelNetworkRequest queryList:OBJECT_LIST_LOCAL_ROUTE 
+                                                               cityId:cityId 
+                                                                start:start 
+                                                                count:count 
+                                                                 lang:LanguageTypeZhHans];
         
         int totalCount = 0 ;
-        NSArray *cityList = nil;
+        NSArray *routeList = nil;
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
                 totalCount = [travelResponse totalCount];
-                cityList = nil;
+                routeList = [[travelResponse localRoutes] routesList];
             }
             @catch (NSException *exception){
                 PPDebug(@"<Catch Exception in findRoutesWithType>");
@@ -71,11 +76,10 @@ static RouteService *_defaultRouteService = nil;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [viewController hideActivity];   
-            
-            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:statistics:)]) {
+            if ([viewController respondsToSelector:@selector(findRequestDone:totalCount:list:)]) {
                 [viewController findRequestDone:output.resultCode
-                                     totalCount:totalCount 
-                                           list:cityList];
+                                     totalCount:totalCount
+                                           list:routeList];
             }
         });
         

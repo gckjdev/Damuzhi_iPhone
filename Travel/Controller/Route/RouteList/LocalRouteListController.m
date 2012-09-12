@@ -11,6 +11,11 @@
 #import "FontSize.h"
 #import "AppDelegate.h"
 #import "RouteListCell.h"
+#import "TouristRoute.pb.h"
+#import "CommonWebController.h"
+#import "AppUtils.h"
+#import "UIViewUtils.h"
+#import "LocalRouteDetailController.h"
 #define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 30
 
@@ -55,12 +60,15 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    self.navigationItem.title = [NSString stringWithFormat:@"本地游 - ..."];
-    dataTableView.backgroundColor = [UIColor orangeColor];
-
     _appManager = [AppManager defaultManager];
     _routeService = [RouteService defaultService];
+    
+    
+    NSString *currentCityName = [_appManager getCurrentCityName];
+    self.navigationItem.title = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
+    dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
+
+    
     self.dataList = [NSArray array];
     
     [_routeService findLocalRoutes:_cityId 
@@ -105,12 +113,12 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return [[self.agencyDic objectForKey:[[self.agencyList objectAtIndex:section] name]] count];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return [self.agencyList count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -129,14 +137,15 @@
     CGRect rect1 = CGRectMake(0, 0, 320, CELL_HERDER_HEIGHT);
     UIView *view = [[UIView alloc]initWithFrame:rect1];
     UIButton *button = [[UIButton alloc]initWithFrame:rect1];
+    button.tag = section;
     button.backgroundColor = [UIColor blueColor];
-    [button setTitle:@"哈哈，美国" forState:UIControlStateNormal];
+    [button setTitle:[self getSectionHeaderViewName:section] forState:UIControlStateNormal];
     
     [button addTarget:self action:@selector(clickCellHeader:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
     
     
-    CGRect rect2 = CGRectMake(280, 0, 30, CELL_HERDER_HEIGHT);
+    CGRect rect2 = CGRectMake(300, 0, 20, CELL_HERDER_HEIGHT);
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:rect2];
     imageView.image = [UIImage imageNamed:@"heart@2x.png"];
     [view addSubview:imageView];
@@ -150,17 +159,43 @@
     if (nil == cell) {
         cell = [RouteListCell createCell:self];
     }
-//    int row = [indexPath row];
-//    [cell setCellData:[dataList objectAtIndex:row]];
-    [cell setCellData:nil];
+    int row = [indexPath row];
+    int section = [indexPath section];
+    [cell setCellData:[self getRoute:row section:section]];
     return cell;
 
-    
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = [indexPath row];
+    int section = [indexPath section];
+    int routeId = [[self getRoute:row section:section] routeId];
+    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRoute:routeId];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+
+-(TouristRoute *)getRoute:(int) row section:(int)section
+{
+    return  [[self.agencyDic objectForKey:[self getSectionHeaderViewName:section]] objectAtIndex:row];
+}
+
+-(NSString *) getSectionHeaderViewName:(int)section
+{
+    return [[self.agencyList objectAtIndex:section] name];
+} 
 
 -(void)clickCellHeader:(id)sender
 {
-    [self popupMessage:@"已经点击" title:nil];
+    UIButton *button = (UIButton*)sender;
+    int section = button.tag;
+    NSString *agencyName = [self getSectionHeaderViewName:section];
+     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
+    controller.navigationItem.title = agencyName;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 
@@ -169,10 +204,12 @@
                    list:(NSArray *)list 
 {
     
-    self.dataList = [dataList arrayByAddingObjectsFromArray:list];     
+    self.dataList = [dataList arrayByAddingObjectsFromArray:list];  
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
+    
+    [dataTableView reloadData];
 
 }
 
@@ -182,7 +219,5 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideTabBar:isHide];
 }
-
-
 
 @end
