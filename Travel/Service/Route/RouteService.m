@@ -159,7 +159,7 @@ static RouteService *_defaultRouteService = nil;
                         }
                     }
                             
-                    if ([viewController respondsToSelector:@selector(findRequestDone:route:)]) {
+                    if ([viewController respondsToSelector:@selector(findRequestDone:localRoute:)]) {
                         [viewController findRequestDone:travelResponse.resultCode 
                                              localRoute:route];
                     }

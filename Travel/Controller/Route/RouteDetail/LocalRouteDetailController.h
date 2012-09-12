@@ -8,10 +8,11 @@
 
 #import "PPViewController.h"
 #import "RouteService.h"
+#import "LocalRouteIntroductionController.h"
 
 @class LocalRoute;
 
-@interface LocalRouteDetailController : PPViewController <RouteServiceDelegate>
+@interface LocalRouteDetailController : PPViewController <RouteServiceDelegate, UIActionSheetDelegate, LocalRouteIntroductionControllerDelegage>
 
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;

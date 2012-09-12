@@ -9,9 +9,9 @@
 #import "LocalRouteDetailController.h"
 #import "TouristRoute.pb.h"
 #import "FontSize.h"
-#import "LocalRouteIntroductionController.h"
 #import "CommonWebController.h"
 #import "RouteFeekbackListController.h"
+#import "LocalRouteOrderController.h"
 
 @interface LocalRouteDetailController ()
 
@@ -83,8 +83,15 @@
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
     self.introductionController = [[[LocalRouteIntroductionController alloc] init] autorelease];
+    self.introductionController.delegate = self;
     [_introductionController showInView:self.contentHolderView];
     [[RouteService defaultService] findLocalRouteWithRouteId:_routeId viewController:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
 }
 
 - (void)viewDidUnload
@@ -101,16 +108,9 @@
 
 - (void)clickConsult:(id)sender
 {
-//    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
-//    
-//    for(NSString* title in self.phoneList){
-//        PPDebug(@"phone/title is %@",title);
-//        [actionSheet addButtonWithTitle:title];
-//    }
-//    [actionSheet addButtonWithTitle:NSLS(@"返回")];
-//    [actionSheet setCancelButtonIndex:[self.phoneList count]];
-//    [actionSheet showInView:self.view];
-//    [actionSheet release];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:NSLS(@"返回") destructiveButtonTitle:_route.contactPhone otherButtonTitles:nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
 }
 
 - (void)updateSelectedButton:(UIButton *)button
@@ -167,5 +167,19 @@
     [_introductionController updateWithRoute:route];
 }
 
+#pragma mark - 
+#pragma UIActionSheetDelegate method
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{  
+    [UIUtils makeCall:_route.contactPhone];
+}
+
+#pragma mark - 
+#pragma LocalRouteIntroductionControllerDelegage method
+- (void)didClickBookingButton
+{
+    LocalRouteOrderController *controller = [[[LocalRouteOrderController alloc] initWithRoute:_route] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 @end

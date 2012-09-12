@@ -23,12 +23,15 @@
 @synthesize imagesHolderView;
 @synthesize contentWebView;
 @synthesize priceLable;
+@synthesize followButton;
+@synthesize delegate;
 
 - (void)dealloc {
     [imagesHolderView release];
     [contentWebView release];
     [overallScrollView release];
     [priceLable release];
+    [followButton release];
     [super dealloc];
 }
 
@@ -39,6 +42,9 @@
     self.overallScrollView.contentSize = CGSizeMake(self.overallScrollView.frame.size.width , self.overallScrollView.frame.size.height + 1);
     
     self.overallScrollView.backgroundColor = [UIColor whiteColor];
+    
+    
+    self.contentWebView.userInteractionEnabled = NO;
 }
 
 - (void)viewDidUnload
@@ -47,6 +53,7 @@
     [self setContentWebView:nil];
     [self setOverallScrollView:nil];
     [self setPriceLable:nil];
+    [self setFollowButton:nil];
     [super viewDidUnload];
 }
 
@@ -67,7 +74,8 @@
     
     
     //load html
-    NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
+    //NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
+    NSURL *requestUrl = [NSURL URLWithString:@"http://api.trip8888.com/Service/ShowArticle.aspx?ArticleId=6"];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
     self.contentWebView.alpha = 0.0;
     self.contentWebView.delegate = self;
@@ -80,17 +88,27 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     CGSize actualSize = [webView sizeThatFits:CGSizeZero];
-    CGRect newFrame = webView.frame;
-    newFrame.size.height = actualSize.height;
-    webView.frame = newFrame;
+    
+    webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
     webView.alpha = 1.0;
+    
+    CGFloat followButtonY = webView.frame.origin.y + webView.frame.size.height +  5;
+    followButton.frame = CGRectMake(followButton.frame.origin.x, followButtonY, followButton.frame.size.width, followButton.frame.size.height);
+    
+    CGFloat overallScrollViewHeight = followButton.frame.origin.y + followButton.frame.size.height + 8;
+    overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
+}
+
+- (IBAction)clickBookingButton:(id)sender {
+    if ([delegate respondsToSelector:@selector(didClickBookingButton)]) {
+        [delegate didClickBookingButton];
+    }
 }
 
 - (void)showInView:(UIView *)superView
 {
     [superView addSubview:self.view];
 }
-
 
 
 
