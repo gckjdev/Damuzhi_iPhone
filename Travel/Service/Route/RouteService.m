@@ -142,6 +142,35 @@ static RouteService *_defaultRouteService = nil;
     });    
 }
 
+- (void)findLocalRouteWithRouteId:(int)routeId 
+                   viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput* output = [TravelNetworkRequest queryObject:OBJECT_TYPE_LOCAL_ROUTE_DETAIL
+                                                                  objId:routeId  
+                                                                   lang:LanguageTypeZhHans];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    TravelResponse *travelResponse = nil;
+                    LocalRoute *route = nil;
+                    if (output.resultCode == ERROR_SUCCESS){
+                        @try{
+                            //travelResponse = [TravelResponse parseFromData:output.responseData];
+                            //route = [travelResponse route];
+                        }
+                        @catch (NSException *exception){
+                            PPDebug(@"findLocalRouteWithRouteId NSException");
+                        }
+                    }
+                            
+                    if ([viewController respondsToSelector:@selector(findRequestDone:route:)]) {
+                        [viewController findRequestDone:travelResponse.resultCode 
+                                             localRoute:route];
+                    }
+                });
+    }); 
+}
+
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController
 
 {

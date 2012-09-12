@@ -181,6 +181,7 @@
 #define OBJECT_TYPE_HELP_INOF                   8
 #define OBJECT_TYPE_APP_DATA                    10
 #define OBJECT_TYPE_ROUTE_DETAIL                50
+#define OBJECT_TYPE_LOCAL_ROUTE_DETAIL          51
 
 
 #define STRING_SEPARATOR    @","
