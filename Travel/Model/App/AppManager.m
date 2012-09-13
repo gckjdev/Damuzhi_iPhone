@@ -1209,4 +1209,18 @@ static AppManager* _defaultAppManager = nil;
     return array;
 }
 
+- (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList
+{
+    NSMutableArray *items = [[[NSMutableArray alloc] init] autorelease];    
+    
+    
+    for (DepartPlace *departPlace in departPlaceList) {
+        [items addObject:[Item itemWithId:departPlace.departPlaceId
+                                 itemName:departPlace.departPlace
+                                    count:0]];
+    }
+    
+    return items;
+}
+
 @end

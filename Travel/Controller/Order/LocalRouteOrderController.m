@@ -22,8 +22,9 @@
 
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
-
+@property (retain, nonatomic) NSString *departPlace;
 @property (retain, nonatomic) LocalRoute *route;
+@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceList;
 @property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
 @property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
 @property (retain, nonatomic) NSDate *departDate;
@@ -50,7 +51,9 @@
 @implementation LocalRouteOrderController
 @synthesize adult = _adult;
 @synthesize children = _children;
+@synthesize departPlace = _departPlace;
 @synthesize route = _route;
+@synthesize selectedDepartPlaceList = _selectedDepartPlaceList;
 @synthesize selectedAdultIdList = _selectedAdultIdList;
 @synthesize selectedChildrenIdList = _selectedChildrenIdList;
 @synthesize departDate = _departDate;
@@ -59,7 +62,9 @@
 
 - (void)dealloc
 {
+    PPRelease(_departPlace);
     PPRelease(_route);
+    PPRelease(_selectedDepartPlaceList);
     PPRelease(_selectedAdultIdList);
     PPRelease(_selectedChildrenIdList);
     PPRelease(_departDate);
@@ -73,6 +78,7 @@
 {
     if (self = [super init]) {
         self.route = route;
+        self.selectedDepartPlaceList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedAdultIdList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedChildrenIdList = [[[NSMutableArray alloc] init] autorelease];
         self.adult = 1;
@@ -150,11 +156,11 @@
     return [dataList count] ;
 }
 
-
-#define BUTTON_WIDTH_DEPART_DATE    130
+#define BUTTON_WIDTH_DEPART_PLACE   170
+#define BUTTON_WIDTH_DEPART_DATE    170
 #define BUTTON_HEIGHT_DEPART_DATE   28
 #define BUTTON_WIDTH_PEOPLE         74
-#define BUTTON_HEIGHT_PEOPLE        28
+
 #define BUTTON_WIDTH_BOOK           130
 #define BUTTON_HEIGHT_BOOK          27
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -185,7 +191,12 @@
     }
     else if ([cellTitle isEqualToString:TITLE_DEPART_PLACE])
     {
-        
+        cell.leftButton.hidden = NO;
+        [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
+        CGRect departFrame = cell.leftButton.frame;
+        cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_PLACE, departFrame.size.height);
+        [cell.leftButton setTitle:NSLS(@"请选择出发地点") forState:UIControlStateNormal];
+        //[cell.leftButton setTitle:((_departDate == nil) ? NSLS(@"请选择出发日期") : dateToChineseString(_departDate)) forState:UIControlStateNormal];
     }
     else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         cell.leftButton.hidden = NO;
@@ -263,7 +274,10 @@
 - (void)didClickLeftButton:(NSIndexPath *)aIndexPath
 {
     NSString *cellTitle = [dataList objectAtIndex:aIndexPath.row];
-    if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
+    if ([cellTitle isEqualToString:TITLE_DEPART_PLACE]) {
+        [self clickDepartPlaceButton];
+    }
+    else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         [self clickDepartDateButton];
     }
     else if([cellTitle isEqualToString:TITLE_PEOPLE_NUMBER]){
@@ -290,14 +304,27 @@
 
 
 #pragma button actions
+- (void)clickDepartPlaceButton
+{
+    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出发地点")
+                                                                  itemList:[[AppManager defaultManager] buildDepartPlaceItemList:_route.departPlacesList ] 
+                                                           selectedItemIds:_selectedDepartPlaceList
+                                                              multiOptions:NO 
+                                                               needConfirm:NO 
+                                                             needShowCount:NO];
+    controller.delegate = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
 - (void)clickDepartDateButton
 {
-//    MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];   
-//    [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
-//    controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
-//    controller.aDelegate = self;
-//    
-//    [self.navigationController pushViewController:controller animated:YES];
+    MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList] autorelease];   
+    [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
+    controller.aDelegate = self;
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
@@ -413,6 +440,7 @@
 #pragma mark - SelectControllerDelegate
 - (void)didSelectFinish:(NSArray*)selectedItems
 {
+    self.departPlace = [_selectedDepartPlaceList objectAtIndex:0];
     self.adult = [[_selectedAdultIdList objectAtIndex:0] intValue];
     self.children = [[_selectedChildrenIdList objectAtIndex:0] intValue];
     [dataTableView reloadData];
