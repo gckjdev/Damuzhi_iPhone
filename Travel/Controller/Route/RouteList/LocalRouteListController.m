@@ -34,17 +34,19 @@
 
 @property (retain, nonatomic) NSArray *agencyList;
 @property (retain, nonatomic) NSDictionary *agencyDic;
+@property (retain, nonatomic) UIButton *button;
 
 @end
 
 @implementation LocalRouteListController
 @synthesize agencyList = _agencyList;
 @synthesize agencyDic = _agencyDic;
-
+@synthesize button = _button;
 - (void)dealloc
 {
     [_agencyList release];
     [_agencyDic release];
+    [_button release];
     [super dealloc];
 }
 
@@ -59,24 +61,30 @@
 
 
 
+#define WIDTH_TOP_ARRAW 14
+#define HEIGHT_TOP_ARRAW 7
+#define WIDTH_BLANK_OF_TITLE 14
+
+
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     _appManager = [AppManager defaultManager];
     _routeService = [RouteService defaultService];
+  
+    _button = [[UIButton alloc]init];
+    [_button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = _button;
     
     
-    self.navigationItem.titleView = [self createButtonView];
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
 
     self.dataList = [NSArray array];
     
-    [_routeService findLocalRoutes:_cityId 
-                             start:_start
-                             count:EACH_COUNT 
-                    needStatistics:NO
-                    viewController:self];
 }
 
 
@@ -91,6 +99,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+
+    [self updateDataSource];
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
 }
@@ -109,24 +119,35 @@
     [super viewDidDisappear:animated];
 }
 
-- (UIButton *)createButtonView
+- (void )updateDataSource
 {
     NSString *currentCityName = [_appManager getCurrentCityName];
     NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
-    UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0,200,44)] autorelease];
-    [button setTitle:buttonTitle forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
+    UIFont *font = [UIFont systemFontOfSize:17];
+    CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
+    CGSize titleSize = [buttonTitle sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
+    _button.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
+    [_button setTitle:buttonTitle forState:UIControlStateNormal];
+    
+    [_button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
+    _button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
+    _button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
+    _button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    _button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+
+    _cityId = [_appManager getCurrentCityId];
+    NSLog(@"hahahahaha cityId is %d", _cityId);
+    [_routeService findLocalRoutes:_cityId 
+                             start:_start
+                             count:EACH_COUNT 
+                    needStatistics:NO
+                    viewController:self];
 }
 
 -(void)clickTitle:(id)sender
 {
-    //    CityManagementController *controller = [CityManagementController getInstance];
-    //    [self.navigationController pushViewController:controller animated:YES];
     CityManagementController *controller = [[CityManagementController alloc]init];
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 
@@ -210,9 +231,13 @@
 {
     UIButton *button = (UIButton*)sender;
     int section = button.tag;
-    NSString *agencyName = [self getSectionHeaderViewName:section];
+    Agency * agency = [self.agencyList objectAtIndex:section];
+
+   
      CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
-    controller.navigationItem.title = agencyName;
+//    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:agency.url];
+
+    controller.navigationItem.title = agency.name;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
     
@@ -224,7 +249,8 @@
                    list:(NSArray *)list 
 {
     
-    self.dataList = [dataList arrayByAddingObjectsFromArray:list];  
+//    self.dataList = [dataList arrayByAddingObjectsFromArray:list];
+    self.dataList = list;
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
