@@ -25,4 +25,6 @@
 
 - (void)hideTabBar:(BOOL)isHide;
 
+- (void) setSeletedTabbarIndex:(NSInteger)index;
+
 @end

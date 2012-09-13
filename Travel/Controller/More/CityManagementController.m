@@ -411,7 +411,7 @@ static CityManagementController *_instance;
         }
         DownloadListCell* downloadCell = (DownloadListCell*)cell;
         NSArray *arr = [[PackageManager defaultManager] getdownLoadCityListFromCountry:[self.countryNameList objectAtIndex:section]];
-        [downloadCell setCellData:[arr objectAtIndex :row]] ;//二期
+        [downloadCell setCellData:[arr objectAtIndex :row]] ;
         
         downloadCell.downloadListCellDelegate = self;
     }

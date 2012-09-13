@@ -16,6 +16,9 @@
 #import "AppUtils.h"
 #import "UIViewUtils.h"
 #import "LocalRouteDetailController.h"
+#import "AppDelegate.h"
+#import "CityManagementController.h"
+
 #define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 30
 
@@ -64,11 +67,9 @@
     _routeService = [RouteService defaultService];
     
     
-    NSString *currentCityName = [_appManager getCurrentCityName];
-    self.navigationItem.title = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
+    self.navigationItem.titleView = [self createButtonView];
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
 
-    
     self.dataList = [NSArray array];
     
     [_routeService findLocalRoutes:_cityId 
@@ -108,7 +109,25 @@
     [super viewDidDisappear:animated];
 }
 
+- (UIButton *)createButtonView
+{
+    NSString *currentCityName = [_appManager getCurrentCityName];
+    NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
+    UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0,200,44)] autorelease];
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
 
+-(void)clickTitle:(id)sender
+{
+    //    CityManagementController *controller = [CityManagementController getInstance];
+    //    [self.navigationController pushViewController:controller animated:YES];
+    CityManagementController *controller = [[CityManagementController alloc]init];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+}
 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -171,7 +190,7 @@
     int row = [indexPath row];
     int section = [indexPath section];
     int routeId = [[self getRoute:row section:section] routeId];
-    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRoute:routeId];
+    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRouteId:routeId];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -196,6 +215,7 @@
     controller.navigationItem.title = agencyName;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
+    
 }
 
 

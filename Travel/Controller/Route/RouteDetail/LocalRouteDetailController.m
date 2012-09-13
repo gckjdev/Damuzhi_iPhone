@@ -12,6 +12,7 @@
 #import "CommonWebController.h"
 #import "RouteFeekbackListController.h"
 #import "LocalRouteOrderController.h"
+#import "AppManager.h"
 
 @interface LocalRouteDetailController ()
 
@@ -164,6 +165,9 @@
 - (void)findRequestDone:(int)result localRoute:(LocalRoute *)route
 {
     self.route = route;
+    self.routeNameLabel.text = route.name;
+    self.routeIdLabel.text = [NSString stringWithFormat:@"编号:%d",route.routeId];
+    self.agencyNameLabel.text = [[AppManager defaultManager] getAgencyShortName:route.agencyId];
     [_introductionController updateWithRoute:route];
 }
 

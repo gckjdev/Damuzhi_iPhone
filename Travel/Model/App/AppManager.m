@@ -1178,8 +1178,22 @@ static AppManager* _defaultAppManager = nil;
         [array addObject:[self getAgency:route.agencyId]];
     }
     
-    return array;
+    return [self deleteRepeatedObjectsFromArray:array];
 }
+
+
+-(NSMutableArray *)deleteRepeatedObjectsFromArray:(NSArray *) originalArray
+{
+    NSMutableArray *deletedArray = [[[NSMutableArray alloc] init] autorelease];
+    for (unsigned i = 0; i < [originalArray count]; i++){  
+        if ([deletedArray containsObject:[originalArray objectAtIndex:i]] == NO){  
+            [deletedArray addObject:[originalArray objectAtIndex:i]];  
+        }  
+    }  
+    return deletedArray;
+}
+
+
 
 
 - (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
