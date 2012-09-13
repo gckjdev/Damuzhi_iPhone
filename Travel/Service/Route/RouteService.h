@@ -31,6 +31,9 @@
 - (void)findRequestDone:(int)result
                   route:(TouristRoute *)route;
 
+- (void)findRequestDone:(int)result
+             localRoute:(LocalRoute *)route;
+
 - (void)followRouteDone:(int)resultCode 
                  result:(int)result 
              resultInfo:(NSString *)resultInfo;
@@ -64,6 +67,9 @@
             needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
+- (void)findLocalRouteWithRouteId:(int)routeId 
+                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 - (void)queryRouteFeekbacks:(int)routeId 
@@ -84,4 +90,5 @@
                             rank:(int)rank
                          content:(NSString *)content   
                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
 @end

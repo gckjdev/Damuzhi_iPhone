@@ -672,6 +672,8 @@
 		EA194DF915FDF53500FA437F /* LocalRouteIntroductionController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF515FDF53500FA437F /* LocalRouteIntroductionController.m */; };
 		EA194DFA15FDF53500FA437F /* LocalRouteIntroductionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF615FDF53500FA437F /* LocalRouteIntroductionController.xib */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
+		EA2CFE6216009BC800E06FA5 /* LocalRouteOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2CFE6016009BC800E06FA5 /* LocalRouteOrderController.m */; };
+		EA2CFE6316009BC800E06FA5 /* LocalRouteOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA2CFE6116009BC800E06FA5 /* LocalRouteOrderController.xib */; };
 		EA328A0E1542A234001ACFF4 /* pin_cg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A061542A234001ACFF4 /* pin_cg@2x.png */; };
 		EA328A101542A234001ACFF4 /* pin_gw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A081542A234001ACFF4 /* pin_gw@2x.png */; };
 		EA328A121542A234001ACFF4 /* pin_ht@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A0A1542A234001ACFF4 /* pin_ht@2x.png */; };
@@ -787,7 +789,7 @@
 		A327DEEB15231A31003DEE8C /* FavoriteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteController.h; sourceTree = "<group>"; };
 		A327DEEC15231A31003DEE8C /* FavoriteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteController.m; sourceTree = "<group>"; };
 		A327DEED15231A31003DEE8C /* FavoriteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteController.xib; sourceTree = "<group>"; };
-		A34BDD3315B94A3800CD16C7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		A34BDD3315B94A3800CD16C7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		A34BDD3415B94A3800CD16C7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		A35AF06F15DB9EC000602858 /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
 		A35AF07F15DBA5FE00602858 /* line_table_6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_table_6@2x.png"; sourceTree = "<group>"; };
@@ -1744,6 +1746,9 @@
 		EA194DF615FDF53500FA437F /* LocalRouteIntroductionController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalRouteIntroductionController.xib; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
+		EA2CFE5F16009BC700E06FA5 /* LocalRouteOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteOrderController.h; sourceTree = "<group>"; };
+		EA2CFE6016009BC800E06FA5 /* LocalRouteOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteOrderController.m; sourceTree = "<group>"; };
+		EA2CFE6116009BC800E06FA5 /* LocalRouteOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalRouteOrderController.xib; sourceTree = "<group>"; };
 		EA328A061542A234001ACFF4 /* pin_cg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_cg@2x.png"; sourceTree = "<group>"; };
 		EA328A081542A234001ACFF4 /* pin_gw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_gw@2x.png"; sourceTree = "<group>"; };
 		EA328A0A1542A234001ACFF4 /* pin_ht@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_ht@2x.png"; sourceTree = "<group>"; };
@@ -2081,6 +2086,9 @@
 				A406A2AD1597FD7E00CE938A /* PlaceOrderController.h */,
 				A406A2AE1597FD7E00CE938A /* PlaceOrderController.m */,
 				A406A2AF1597FD7E00CE938A /* PlaceOrderController.xib */,
+				EA2CFE5F16009BC700E06FA5 /* LocalRouteOrderController.h */,
+				EA2CFE6016009BC800E06FA5 /* LocalRouteOrderController.m */,
+				EA2CFE6116009BC800E06FA5 /* LocalRouteOrderController.xib */,
 				A3F195D315AED96000756702 /* PlaceOrderCell.h */,
 				A3F195D415AED96000756702 /* PlaceOrderCell.m */,
 				A3F195D515AED96000756702 /* PlaceOrderCell.xib */,
@@ -2214,6 +2222,7 @@
 		A455F85A1585A0F800CA5743 /* route_detail */ = {
 			isa = PBXGroup;
 			children = (
+				A34BDD3315B94A3800CD16C7 /* Default.png */,
 				A3C9840515F1EF1E0056E5E2 /* line_n_off1@2x.png */,
 				A3C9840615F1EF1E0056E5E2 /* line_n_off2@2x.png */,
 				A3C9840715F1EF1E0056E5E2 /* line_n_off3@2x.png */,
@@ -2516,7 +2525,6 @@
 			isa = PBXGroup;
 			children = (
 				A3E2D4E715C24DD5006F99CA /* city_filter */,
-				A34BDD3315B94A3800CD16C7 /* Default.png */,
 				A34BDD3415B94A3800CD16C7 /* Default@2x.png */,
 				A3C090D715B813070040053C /* djy_page_bg@2x.jpg */,
 				A4D9F3111592FB3A00566B32 /* login */,
@@ -4670,6 +4678,7 @@
 				A49B0C7215F9D84C00F8EC5A /* LocalRouteListController.xib in Resources */,
 				EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */,
 				EA194DFA15FDF53500FA437F /* LocalRouteIntroductionController.xib in Resources */,
+				EA2CFE6316009BC800E06FA5 /* LocalRouteOrderController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4992,6 +5001,7 @@
 				A49B0C7115F9D84C00F8EC5A /* LocalRouteListController.m in Sources */,
 				EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */,
 				EA194DF915FDF53500FA437F /* LocalRouteIntroductionController.m in Sources */,
+				EA2CFE6216009BC800E06FA5 /* LocalRouteOrderController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

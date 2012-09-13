@@ -78,7 +78,7 @@
 //    
 //    
     
-    [UIUtils addViewController:[[LocalRouteListController alloc]initWithCityId:7]//???
+    [UIUtils addViewController:[[LocalRouteListController alloc]initWithCityId:[[AppManager defaultManager]getCurrentCityId]]
                      viewTitle:nil
                      viewImage:@"all_page_bg2.jpg" 
               hasNavController:YES 

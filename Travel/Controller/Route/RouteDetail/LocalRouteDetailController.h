@@ -7,17 +7,20 @@
 //
 
 #import "PPViewController.h"
+#import "RouteService.h"
+#import "LocalRouteIntroductionController.h"
 
 @class LocalRoute;
 
-@interface LocalRouteDetailController : PPViewController
+@interface LocalRouteDetailController : PPViewController <RouteServiceDelegate, UIActionSheetDelegate, LocalRouteIntroductionControllerDelegage>
 
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
 @property (retain, nonatomic) IBOutlet UILabel *agencyNameLabel;
 @property (retain, nonatomic) IBOutlet UIView *contentHolderView;
+@property (retain, nonatomic) IBOutlet UIButton *introductionButton;
 
-- (id)initWithLocalRoute:(int)routeId;
+- (id)initWithLocalRouteId:(int)routeId;
 
 
 @end
