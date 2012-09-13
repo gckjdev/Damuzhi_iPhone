@@ -414,26 +414,26 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 
 @interface LocalRoute : PBGeneratedMessage {
 @private
-  BOOL hasCityId_:1;
-  BOOL hasRouteId_:1;
-  BOOL hasAgencyId_:1;
-  BOOL hasAverageRank_:1;
   BOOL hasDays_:1;
-  BOOL hasName_:1;
+  BOOL hasAverageRank_:1;
+  BOOL hasAgencyId_:1;
+  BOOL hasRouteId_:1;
+  BOOL hasCityId_:1;
   BOOL hasPrice_:1;
+  BOOL hasName_:1;
   BOOL hasThumbImage_:1;
   BOOL hasTour_:1;
   BOOL hasCustomerServiceTelephone_:1;
   BOOL hasDetailUrl_:1;
   BOOL hasBookingNotice_:1;
   BOOL hasContactPhone_:1;
-  int32_t cityId;
-  int32_t routeId;
-  int32_t agencyId;
-  int32_t averageRank;
   int32_t days;
-  NSString* name;
+  int32_t averageRank;
+  int32_t agencyId;
+  int32_t routeId;
+  int32_t cityId;
   NSString* price;
+  NSString* name;
   NSString* thumbImage;
   NSString* tour;
   NSString* customerServiceTelephone;
@@ -442,6 +442,7 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   NSString* contactPhone;
   NSMutableArray* mutableDetailImagesList;
   NSMutableArray* mutableDepartPlacesList;
+  NSMutableArray* mutableBookingsList;
   NSMutableArray* mutableRelatedplacesList;
 }
 - (BOOL) hasCityId;
@@ -474,6 +475,8 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (NSString*) detailImagesAtIndex:(int32_t) index;
 - (NSArray*) departPlacesList;
 - (DepartPlace*) departPlacesAtIndex:(int32_t) index;
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
 - (NSArray*) relatedplacesList;
 - (PlaceTour*) relatedplacesAtIndex:(int32_t) index;
 
@@ -579,6 +582,13 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (LocalRoute_Builder*) addDepartPlaces:(DepartPlace*) value;
 - (LocalRoute_Builder*) addAllDepartPlaces:(NSArray*) values;
 - (LocalRoute_Builder*) clearDepartPlacesList;
+
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
+- (LocalRoute_Builder*) replaceBookingsAtIndex:(int32_t) index with:(Booking*) value;
+- (LocalRoute_Builder*) addBookings:(Booking*) value;
+- (LocalRoute_Builder*) addAllBookings:(NSArray*) values;
+- (LocalRoute_Builder*) clearBookingsList;
 
 - (NSArray*) relatedplacesList;
 - (PlaceTour*) relatedplacesAtIndex:(int32_t) index;

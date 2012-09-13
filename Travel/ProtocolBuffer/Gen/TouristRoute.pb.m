@@ -1722,6 +1722,7 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
 @property (retain) NSMutableArray* mutableDetailImagesList;
 @property (retain) NSString* detailUrl;
 @property (retain) NSMutableArray* mutableDepartPlacesList;
+@property (retain) NSMutableArray* mutableBookingsList;
 @property (retain) NSMutableArray* mutableRelatedplacesList;
 @property (retain) NSString* bookingNotice;
 @property (retain) NSString* contactPhone;
@@ -1808,6 +1809,7 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
 }
 @synthesize detailUrl;
 @synthesize mutableDepartPlacesList;
+@synthesize mutableBookingsList;
 @synthesize mutableRelatedplacesList;
 - (BOOL) hasBookingNotice {
   return !!hasBookingNotice_;
@@ -1832,6 +1834,7 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
   self.mutableDetailImagesList = nil;
   self.detailUrl = nil;
   self.mutableDepartPlacesList = nil;
+  self.mutableBookingsList = nil;
   self.mutableRelatedplacesList = nil;
   self.bookingNotice = nil;
   self.contactPhone = nil;
@@ -1881,6 +1884,13 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   id value = [mutableDepartPlacesList objectAtIndex:index];
   return value;
 }
+- (NSArray*) bookingsList {
+  return mutableBookingsList;
+}
+- (Booking*) bookingsAtIndex:(int32_t) index {
+  id value = [mutableBookingsList objectAtIndex:index];
+  return value;
+}
 - (NSArray*) relatedplacesList {
   return mutableRelatedplacesList;
 }
@@ -1899,6 +1909,11 @@ static LocalRoute* defaultLocalRouteInstance = nil;
     return NO;
   }
   for (DepartPlace* element in self.departPlacesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (Booking* element in self.bookingsList) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -1949,6 +1964,9 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   }
   for (DepartPlace* element in self.departPlacesList) {
     [output writeMessage:31 value:element];
+  }
+  for (Booking* element in self.bookingsList) {
+    [output writeMessage:41 value:element];
   }
   for (PlaceTour* element in self.relatedplacesList) {
     [output writeMessage:48 value:element];
@@ -2011,6 +2029,9 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   }
   for (DepartPlace* element in self.departPlacesList) {
     size += computeMessageSize(31, element);
+  }
+  for (Booking* element in self.bookingsList) {
+    size += computeMessageSize(41, element);
   }
   for (PlaceTour* element in self.relatedplacesList) {
     size += computeMessageSize(48, element);
@@ -2141,6 +2162,12 @@ static LocalRoute* defaultLocalRouteInstance = nil;
     }
     [result.mutableDepartPlacesList addObjectsFromArray:other.mutableDepartPlacesList];
   }
+  if (other.mutableBookingsList.count > 0) {
+    if (result.mutableBookingsList == nil) {
+      result.mutableBookingsList = [NSMutableArray array];
+    }
+    [result.mutableBookingsList addObjectsFromArray:other.mutableBookingsList];
+  }
   if (other.mutableRelatedplacesList.count > 0) {
     if (result.mutableRelatedplacesList == nil) {
       result.mutableRelatedplacesList = [NSMutableArray array];
@@ -2226,6 +2253,12 @@ static LocalRoute* defaultLocalRouteInstance = nil;
         DepartPlace_Builder* subBuilder = [DepartPlace builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addDepartPlaces:[subBuilder buildPartial]];
+        break;
+      }
+      case 330: {
+        Booking_Builder* subBuilder = [Booking builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addBookings:[subBuilder buildPartial]];
         break;
       }
       case 386: {
@@ -2479,6 +2512,35 @@ static LocalRoute* defaultLocalRouteInstance = nil;
     result.mutableDepartPlacesList = [NSMutableArray array];
   }
   [result.mutableDepartPlacesList addObject:value];
+  return self;
+}
+- (NSArray*) bookingsList {
+  if (result.mutableBookingsList == nil) { return [NSArray array]; }
+  return result.mutableBookingsList;
+}
+- (Booking*) bookingsAtIndex:(int32_t) index {
+  return [result bookingsAtIndex:index];
+}
+- (LocalRoute_Builder*) replaceBookingsAtIndex:(int32_t) index with:(Booking*) value {
+  [result.mutableBookingsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (LocalRoute_Builder*) addAllBookings:(NSArray*) values {
+  if (result.mutableBookingsList == nil) {
+    result.mutableBookingsList = [NSMutableArray array];
+  }
+  [result.mutableBookingsList addObjectsFromArray:values];
+  return self;
+}
+- (LocalRoute_Builder*) clearBookingsList {
+  result.mutableBookingsList = nil;
+  return self;
+}
+- (LocalRoute_Builder*) addBookings:(Booking*) value {
+  if (result.mutableBookingsList == nil) {
+    result.mutableBookingsList = [NSMutableArray array];
+  }
+  [result.mutableBookingsList addObject:value];
   return self;
 }
 - (NSArray*) relatedplacesList {

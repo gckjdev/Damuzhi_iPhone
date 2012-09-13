@@ -71,6 +71,8 @@ message LocalRoute {
   optional string detailUrl = 30;                   // 详情的html的url
   repeated DepartPlace departPlaces = 31;                // 出发地点
   
+  repeated Booking bookings = 41;                   // 线路预订情况
+  
   repeated PlaceTour relatedplaces = 48;            // 线路相关景点
   optional string bookingNotice = 51;               // 线路预订须知，返回html的绝对url
   optional string contactPhone = 100;               // 线路咨询电话
