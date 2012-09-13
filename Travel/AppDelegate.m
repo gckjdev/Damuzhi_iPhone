@@ -136,7 +136,11 @@
 	[controllers release];
 }
 
-
+- (void) setSeletedTabbarIndex:(NSInteger)index
+{
+    UIButton *button = [_tabBarController.buttons objectAtIndex:index];
+    [_tabBarController selectedTab:button];
+}
 
 #define EVER_LAUNCHED @"everLaunched"
 #define FIRST_LAUNCH @"firstLaunch"

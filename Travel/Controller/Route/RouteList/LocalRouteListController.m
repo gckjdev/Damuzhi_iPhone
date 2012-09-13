@@ -16,6 +16,8 @@
 #import "AppUtils.h"
 #import "UIViewUtils.h"
 #import "LocalRouteDetailController.h"
+#import "AppDelegate.h"
+
 #define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 30
 
@@ -171,7 +173,7 @@
     int row = [indexPath row];
     int section = [indexPath section];
     int routeId = [[self getRoute:row section:section] routeId];
-    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRoute:routeId];
+    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRouteId:routeId];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -196,6 +198,7 @@
     controller.navigationItem.title = agencyName;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
+    
 }
 
 
