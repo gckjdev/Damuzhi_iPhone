@@ -8,8 +8,9 @@
 
 #import "PPTableViewController.h"
 #import "RouteService.h"
+#import "AppManager.h"
 
-@interface LocalRouteListController : PPTableViewController <RouteServiceDelegate>
+@interface LocalRouteListController : PPTableViewController <RouteServiceDelegate, AppManagerProtocol>
 
 - (id)initWithCityId:(int)cityId;
 

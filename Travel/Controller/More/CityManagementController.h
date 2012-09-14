@@ -20,6 +20,8 @@
     NSArray *_downloadList;
 }
 
+@property (assign ,nonatomic) id<AppManagerProtocol> delegate;
+
 @property (nonatomic, retain) NSArray *downloadList;
 @property (nonatomic, retain) IBOutlet UITableView *downloadTableView;
 

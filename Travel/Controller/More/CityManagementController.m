@@ -36,7 +36,7 @@
 @implementation CityManagementController 
 
 static CityManagementController *_instance;
-
+@synthesize delegate = _delegate;
 @synthesize downloadList = _downloadList;
 @synthesize downloadTableView = _downloadTableView;
 @synthesize promptLabel = _promptLabel;
@@ -468,7 +468,7 @@ static CityManagementController *_instance;
             city = [_filteredListContent objectAtIndex:indexPath.row];
         }
         
-        [[AppManager defaultManager] setCurrentCityId:city.cityId];
+        [[AppManager defaultManager] setCurrentCityId:city.cityId delegate:_delegate];
         self.searchDisplayController.active = NO;
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self didSelectCurrendCity:city];
