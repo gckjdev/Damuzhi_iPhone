@@ -171,5 +171,22 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                                  rank:(int)rank 
                               content:(NSString *)content;
 
++ (CommonNetworkOutput*)localRouteOrderWithUserId:(NSString *)userId 
+                                          routeId:(int)routeId
+                                    departPlaceId:(int)departPlaceId
+                                       departDate:(NSString *)departDate
+                                            adult:(int)adult
+                                         children:(int)children
+                                    contactPerson:(NSString *)contactPersion
+                                        telephone:(NSString *)telephone;
 
++ (CommonNetworkOutput*)localRouteOrderWithLoginId:(NSString *)loginId 
+                                             token:(NSString *)token
+                                           routeId:(int)routeId
+                                     departPlaceId:(int)departPlaceId
+                                        departDate:(NSString *)departDate
+                                             adult:(int)adult
+                                          children:(int)children
+                                     contactPerson:(NSString *)contactPersion
+                                         telephone:(NSString *)telephone;
 @end

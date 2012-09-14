@@ -59,4 +59,26 @@
                      delegate:(id<OrderServiceDelegate>)delegate;
 
 
+
+- (void)localRouteOrderUsingUserId:(NSString *)userId 
+                           routeId:(int)routeId 
+                     departPlaceId:(int)departPlaceId
+                        departDate:(NSDate *)departDate
+                             adult:(int)adult
+                          children:(int)children
+                     contactPerson:(NSString *)contactPersion
+                         telephone:(NSString *)telephone
+                          delegate:(id<OrderServiceDelegate>)delegate;
+
+- (void)localRouteOrderUsingLoginId:(NSString *)loginId 
+                              token:(NSString *)token
+                            routeId:(int)routeId
+                      departPlaceId:(int)departPlaceId
+                         departDate:(NSDate *)departDate
+                              adult:(int)adult
+                           children:(int)children
+                      contactPerson:(NSString *)contactPersion
+                          telephone:(NSString *)telephone
+                           delegate:(id<OrderServiceDelegate>)delegate;
+
 @end

@@ -1161,4 +1161,84 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)localRouteOrderWithUserId:(NSString *)userId 
+                                          routeId:(int)routeId
+                                    departPlaceId:(int)departPlaceId
+                                       departDate:(NSString *)departDate
+                                            adult:(int)adult
+                                         children:(int)children
+                                    contactPerson:(NSString *)contactPersion
+                                        telephone:(NSString *)telephone
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_USER_ID value:userId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_PLACE_ID intValue:departPlaceId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT value:telephone];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_PLACE_ORDER
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)localRouteOrderWithLoginId:(NSString *)loginId 
+                                             token:(NSString *)token
+                                           routeId:(int)routeId
+                                     departPlaceId:(int)departPlaceId
+                                        departDate:(NSString *)departDate
+                                             adult:(int)adult
+                                          children:(int)children
+                                     contactPerson:(NSString *)contactPersion
+                                         telephone:(NSString *)telephone
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];        
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LOGIN_ID value:loginId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TOKEN value:token];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ROUTE_ID intValue:routeId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_PLACE_ID intValue:departPlaceId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ADULT intValue:adult];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CHILDREN intValue:children];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT_PERSION value:contactPersion];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CONTACT value:telephone];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_PLACE_ORDER
+                         constructURLHandler:constructURLHandler                         
+                             responseHandler:responseHandler         
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
 @end

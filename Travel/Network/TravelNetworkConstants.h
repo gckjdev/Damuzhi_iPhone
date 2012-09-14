@@ -126,6 +126,7 @@
 #define PARA_TRAVEL_CONTACT_PERSION         @"contactPersion"
 #define PARA_TRAVEL_CONTACT                 @"contact"
 #define PARA_TRAVEL_ORDER_ID                @"orderId"
+#define PARA_TRAVEL_DEPART_PLACE_ID         @"departPlaceId"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
