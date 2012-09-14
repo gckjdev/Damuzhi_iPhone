@@ -111,4 +111,6 @@
 - (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
                               localRouteList:(NSArray *)routeList;
 
+- (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList;
+
 @end

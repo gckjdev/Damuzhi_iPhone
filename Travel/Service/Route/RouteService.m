@@ -155,8 +155,8 @@ static RouteService *_defaultRouteService = nil;
                     LocalRoute *route = nil;
                     if (output.resultCode == ERROR_SUCCESS){
                         @try{
-                            //travelResponse = [TravelResponse parseFromData:output.responseData];
-                            //route = [travelResponse route];
+                            travelResponse = [TravelResponse parseFromData:output.responseData];
+                            route = [travelResponse localRoute];
                         }
                         @catch (NSException *exception){
                             PPDebug(@"findLocalRouteWithRouteId NSException");

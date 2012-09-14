@@ -74,8 +74,8 @@
     
     
     //load html
-    //NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
-    NSURL *requestUrl = [NSURL URLWithString:@"http://api.trip8888.com/Service/ShowArticle.aspx?ArticleId=6"];
+    PPDebug(@"detailUrl:%@",route.detailUrl);
+    NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
     self.contentWebView.alpha = 0.0;
     self.contentWebView.delegate = self;
@@ -89,14 +89,16 @@
 {
     CGSize actualSize = [webView sizeThatFits:CGSizeZero];
     
-    webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
-    webView.alpha = 1.0;
-    
-    CGFloat followButtonY = webView.frame.origin.y + webView.frame.size.height +  5;
-    followButton.frame = CGRectMake(followButton.frame.origin.x, followButtonY, followButton.frame.size.width, followButton.frame.size.height);
-    
-    CGFloat overallScrollViewHeight = followButton.frame.origin.y + followButton.frame.size.height + 8;
-    overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
+    if (actualSize.height > webView.frame.size.height){
+        webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
+        webView.alpha = 1.0;
+        
+        CGFloat followButtonY = webView.frame.origin.y + webView.frame.size.height +  5;
+        followButton.frame = CGRectMake(followButton.frame.origin.x, followButtonY, followButton.frame.size.width, followButton.frame.size.height);
+        
+        CGFloat overallScrollViewHeight = followButton.frame.origin.y + followButton.frame.size.height + 10;
+        overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
+    }
 }
 
 - (IBAction)clickBookingButton:(id)sender {

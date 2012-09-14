@@ -62,6 +62,15 @@
     [super dealloc];
 }
 
+- (id)initWithBookings:(NSArray *)bookings
+{
+    if (self= [super init]) {
+        self.bookings = bookings;
+    }
+    
+    return self;
+}
+
 - (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
 {
     if (self= [super init]) {
