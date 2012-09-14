@@ -20,7 +20,7 @@
 #import "CityManagementController.h"
 
 #define EACH_COUNT 20
-#define CELL_HERDER_HEIGHT 30
+#define CELL_HERDER_HEIGHT 33
 
 #define EACH_COUNT 20
 
@@ -195,18 +195,21 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     CGRect rect1 = CGRectMake(0, 0, 320, CELL_HERDER_HEIGHT);
-    UIView *view = [[UIView alloc]initWithFrame:rect1];
+    UIView *view = [[[UIView alloc]initWithFrame:rect1]autorelease];
     UIButton *button = [[UIButton alloc]initWithFrame:rect1];
     button.tag = section;
     button.backgroundColor = [UIColor blueColor];
+
+//    button.titleLabel.textAlignment = UITextAlignmentLeft;
+    
     [button setTitle:[self getSectionHeaderViewName:section] forState:UIControlStateNormal];
     
     [button addTarget:self action:@selector(clickCellHeader:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
     
     
-    CGRect rect2 = CGRectMake(300, 0, 20, CELL_HERDER_HEIGHT);
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:rect2];
+    CGRect rect2 = CGRectMake(280, 0, 30, CELL_HERDER_HEIGHT);
+    UIImageView *imageView = [[[UIImageView alloc]initWithFrame:rect2]autorelease];
     imageView.image = [UIImage imageNamed:@"heart@2x.png"];
     [view addSubview:imageView];
     
