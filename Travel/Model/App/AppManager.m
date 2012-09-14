@@ -441,11 +441,27 @@ static AppManager* _defaultAppManager = nil;
     return [self getCityName:cityId];
 }
 
-- (void)setCurrentCityId:(int)newCityId
+//- (void)setCurrentCityId:(int)newCityId 
+//{
+//    int currentCityId = [self getCurrentCityId];
+//    if (newCityId == currentCityId) {
+//        return;
+//    }
+//    
+//    NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
+//    [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
+//    [userDefault synchronize];
+//}
+
+- (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate
 {
     int currentCityId = [self getCurrentCityId];
     if (newCityId == currentCityId) {
         return;
+    }
+    
+    if ([delegate respondsToSelector:@selector(currentCityDidChange:)]) {
+        [delegate currentCityDidChange:newCityId];
     }
     
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 

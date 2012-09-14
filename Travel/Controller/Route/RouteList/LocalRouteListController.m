@@ -28,6 +28,7 @@
 {
     int _cityId;
     int _start;
+    BOOL _cityChange;
     AppManager *_appManager;
     RouteService *_routeService;
 }
@@ -80,7 +81,8 @@
     [_button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = _button;
     
-    
+    _cityChange = YES;
+
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
 
     self.dataList = [NSArray array];
@@ -121,12 +123,21 @@
 
 - (void )updateDataSource
 {
+    if (!_cityChange) {
+        return;
+    }
+    
     NSString *currentCityName = [_appManager getCurrentCityName];
     NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
     CGSize titleSize = [buttonTitle sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     _button.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
+    NSLog(@"ahhahahah width is %f",titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE);
+    NSLog(@"ahhahahah height is %f",titleSize.height);
+
+    
+    
     [_button setTitle:buttonTitle forState:UIControlStateNormal];
     
     [_button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
@@ -136,6 +147,9 @@
     _button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
 
     _cityId = [_appManager getCurrentCityId];
+    self.dataList = nil;
+    self.dataList = [NSArray array];
+
     NSLog(@"hahahahaha cityId is %d", _cityId);
     [_routeService findLocalRoutes:_cityId 
                              start:_start
@@ -146,8 +160,14 @@
 
 -(void)clickTitle:(id)sender
 {
-    CityManagementController *controller = [[CityManagementController alloc]init];
+    CityManagementController *controller = [CityManagementController getInstance];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)currentCityDidChange:(int)newCityId
+{
+    _cityChange = YES;
 }
 
 
@@ -249,8 +269,7 @@
                    list:(NSArray *)list 
 {
     
-//    self.dataList = [dataList arrayByAddingObjectsFromArray:list];
-    self.dataList = list;
+    self.dataList = [dataList arrayByAddingObjectsFromArray:list];
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];

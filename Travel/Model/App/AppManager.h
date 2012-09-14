@@ -12,7 +12,12 @@
 #import "LocalCity.h"
 #import "Package.pb.h"
 
+@protocol AppManagerProtocol <NSObject>
 
+@optional 
+- (void)currentCityDidChange:(int)newCityId;
+
+@end
 
 @interface AppManager : NSObject<CommonManagerProtocol>
 
@@ -48,7 +53,7 @@
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
-- (void)setCurrentCityId:(int)newCity;
+- (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate;
 
 // Get item list for select controller.
 //- (NSArray *)getSubCategoryItemList:(int)categoryId placeList:(NSArray *)placeList;

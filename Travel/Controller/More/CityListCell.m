@@ -9,7 +9,6 @@
 #import "CityListCell.h"
 #import "AppUtils.h"
 #import "PPDebug.h"
-//#import "ImageName.h"
 #import "LocalCityManager.h"
 #import "LocaleUtils.h"
 #import "Reachability.h"
@@ -20,6 +19,7 @@
 @implementation CityListCell
 
 @synthesize city = _city;
+@synthesize appManagerDelegate = _appManagerDelegate;
 @synthesize cityListCellDelegate = _cityListCellDelegate;
 @synthesize selectCurrentCityBtn;
 @synthesize dataSizeLabel;
@@ -328,7 +328,7 @@
     }
     
     // Set current cityId.
-    [[AppManager defaultManager] setCurrentCityId:_city.cityId];
+    [[AppManager defaultManager] setCurrentCityId:_city.cityId delegate:_appManagerDelegate];
     
     // Call delegate metchod to do some addition work.
     if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didSelectCurrendCity:)]) {
