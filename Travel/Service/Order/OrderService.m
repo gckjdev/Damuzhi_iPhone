@@ -164,4 +164,80 @@ static OrderService *_instance = nil;
     });
 }
 
+- (void)localRouteOrderUsingUserId:(NSString *)userId 
+                           routeId:(int)routeId 
+                     departPlaceId:(int)departPlaceId
+                        departDate:(NSDate *)departDate
+                             adult:(int)adult
+                          children:(int)children
+                     contactPerson:(NSString *)contactPersion
+                         telephone:(NSString *)telephone
+                          delegate:(id<OrderServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *departDateStr = dateToStringByFormat(departDate, @"yyyyMMdd");
+        CommonNetworkOutput *output = [TravelNetworkRequest localRouteOrderWithUserId:userId 
+                                                                              routeId:routeId 
+                                                                        departPlaceId:departPlaceId 
+                                                                           departDate:departDateStr 
+                                                                                adult:adult 
+                                                                             children:children 
+                                                                        contactPerson:contactPersion 
+                                                                            telephone:telephone]; 
+        
+        int result = -1;
+        NSString *resultInfo = nil;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(placeOrderDone:result:reusultInfo:)]) {
+                [delegate placeOrderDone:output.resultCode result:result reusultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
+- (void)localRouteOrderUsingLoginId:(NSString *)loginId 
+                              token:(NSString *)token
+                            routeId:(int)routeId
+                      departPlaceId:(int)departPlaceId
+                         departDate:(NSDate *)departDate
+                              adult:(int)adult
+                           children:(int)children
+                      contactPerson:(NSString *)contactPersion
+                          telephone:(NSString *)telephone
+                           delegate:(id<OrderServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *departDateStr = dateToStringByFormat(departDate, @"yyyyMMdd");
+        
+        CommonNetworkOutput *output = [TravelNetworkRequest localRouteOrderWithLoginId:loginId 
+                                                                                 token:token 
+                                                                               routeId:routeId 
+                                                                         departPlaceId:departPlaceId 
+                                                                            departDate:departDateStr 
+                                                                                 adult:adult 
+                                                                              children:children 
+                                                                         contactPerson:contactPersion 
+                                                                             telephone:telephone];  
+        int result = -1;
+        NSString *resultInfo = nil;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(placeOrderDone:result:reusultInfo:)]) {
+                [delegate placeOrderDone:output.resultCode result:result reusultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
 @end

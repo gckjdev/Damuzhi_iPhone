@@ -22,9 +22,9 @@
 
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
-@property (retain, nonatomic) NSString *departPlace;
+@property (retain, nonatomic) DepartPlace *departPlace;
 @property (retain, nonatomic) LocalRoute *route;
-@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceList;
+@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceIdList;
 @property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
 @property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
 @property (retain, nonatomic) NSDate *departDate;
@@ -53,7 +53,7 @@
 @synthesize children = _children;
 @synthesize departPlace = _departPlace;
 @synthesize route = _route;
-@synthesize selectedDepartPlaceList = _selectedDepartPlaceList;
+@synthesize selectedDepartPlaceIdList = _selectedDepartPlaceIdList;
 @synthesize selectedAdultIdList = _selectedAdultIdList;
 @synthesize selectedChildrenIdList = _selectedChildrenIdList;
 @synthesize departDate = _departDate;
@@ -64,7 +64,7 @@
 {
     PPRelease(_departPlace);
     PPRelease(_route);
-    PPRelease(_selectedDepartPlaceList);
+    PPRelease(_selectedDepartPlaceIdList);
     PPRelease(_selectedAdultIdList);
     PPRelease(_selectedChildrenIdList);
     PPRelease(_departDate);
@@ -78,7 +78,7 @@
 {
     if (self = [super init]) {
         self.route = route;
-        self.selectedDepartPlaceList = [[[NSMutableArray alloc] init] autorelease];
+        self.selectedDepartPlaceIdList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedAdultIdList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedChildrenIdList = [[[NSMutableArray alloc] init] autorelease];
         self.adult = 1;
@@ -195,8 +195,9 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         CGRect departFrame = cell.leftButton.frame;
         cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_PLACE, departFrame.size.height);
-        [cell.leftButton setTitle:NSLS(@"请选择出发地点") forState:UIControlStateNormal];
-        //[cell.leftButton setTitle:((_departDate == nil) ? NSLS(@"请选择出发日期") : dateToChineseString(_departDate)) forState:UIControlStateNormal];
+        //[cell.leftButton setTitle:NSLS(@"请选择出发地点") forState:UIControlStateNormal];
+        [cell.leftButton setTitle:((_departPlace == nil) ? NSLS(@"请选择出发地点") : _departPlace.departPlace ) forState:UIControlStateNormal];
+        
     }
     else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         cell.leftButton.hidden = NO;
@@ -308,7 +309,7 @@
 {
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出发地点")
                                                                   itemList:[[AppManager defaultManager] buildDepartPlaceItemList:_route.departPlacesList ] 
-                                                           selectedItemIds:_selectedDepartPlaceList
+                                                           selectedItemIds:_selectedDepartPlaceIdList
                                                               multiOptions:NO 
                                                                needConfirm:NO 
                                                              needShowCount:NO];
@@ -359,11 +360,10 @@
 
 - (void)clickMemberBookButton
 {
-    
-    if (_departDate == nil) {
-        [self popupMessage:NSLS(@"请选择出发日期") title:nil];
-        return;
-    }
+//    if (_departDate == nil) {
+//        [self popupMessage:NSLS(@"请选择出发日期") title:nil];
+//        return;
+//    }
     if (![[UserManager defaultManager] isLogin]) {
         LoginController *controller = [[LoginController alloc] init];
         [self.navigationController pushViewController:controller animated:YES];
@@ -386,23 +386,30 @@
 //- (void) alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex    //wrong
 - (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex  // after animation
 {
-//    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
-//    NSString * str2 = [NSString stringWithFormat:@"确定"];
-//    if ([str1 isEqualToString: str2]) 
-//    {  
-//        UserManager *manager = [UserManager defaultManager];
-//        OrderService *service = [OrderService defaultService];
-//        [service placeOrderUsingLoginId:[manager loginId] 
-//                                  token:[manager token]
-//                                routeId:_route.routeId 
-//                              packageId:_packageId
-//                             departDate:_departDate
-//                                  adult:_adult 
-//                               children:_children 
-//                          contactPerson:nil
-//                              telephone:nil
-//                               delegate:self];
-//    }
+    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
+    NSString * str2 = [NSString stringWithFormat:@"确定"];
+    if ([str1 isEqualToString: str2]) 
+    {  
+        UserManager *manager = [UserManager defaultManager];
+        OrderService *service = [OrderService defaultService];
+        
+        _departDate = [NSDate date];
+        
+        if (self.departPlace == nil) {
+            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
+        }
+        
+        [service localRouteOrderUsingLoginId:[manager loginId]  
+                                       token:[manager token] 
+                                     routeId:_route.routeId  
+                               departPlaceId:self.departPlace.departPlaceId
+                                  departDate:_departDate 
+                                       adult:_adult 
+                                    children:_children 
+                               contactPerson:nil 
+                                   telephone:nil 
+                                    delegate:self];
+    }
 }
 
 
@@ -415,7 +422,7 @@
         return;
     }
     
-//    if (_nonMemberOrderController == nil) {
+    if (_nonMemberOrderController == nil) {
 //        NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithRoute:_route 
 //                                                                                     routeType:_routeType
 //                                                                                    departDate:_departDate 
@@ -424,11 +431,21 @@
 //                                                                                     packageId:_packageId];
 //        self.nonMemberOrderController = controller;
 //        [controller release];
-//    }
-//    [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
+    }
+    [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
 }
 
 
+- (DepartPlace *)findDepartPlace:(int)departPlaceId
+{
+    for (DepartPlace *departPlace in _route.departPlacesList) {
+        if (departPlace.departPlaceId == departPlaceId) {
+            return departPlace;
+        }
+    }
+    
+    return nil;
+}
 
 #pragma mark - MonthViewControllerDelegate methods
 - (void)didSelecteDate:(NSDate *)date
@@ -440,7 +457,10 @@
 #pragma mark - SelectControllerDelegate
 - (void)didSelectFinish:(NSArray*)selectedItems
 {
-    self.departPlace = [_selectedDepartPlaceList objectAtIndex:0];
+    int departPlaceId = [[_selectedDepartPlaceIdList objectAtIndex:0] intValue];
+    self.departPlace = [self findDepartPlace:departPlaceId];
+    
+    
     self.adult = [[_selectedAdultIdList objectAtIndex:0] intValue];
     self.children = [[_selectedChildrenIdList objectAtIndex:0] intValue];
     [dataTableView reloadData];
@@ -452,7 +472,7 @@
 {
     if (resultCode == 0) {
         if ( result == 0) {;
-//            [self popupMessage:NSLS(@"预订成功") title:nil];
+            [self popupMessage:NSLS(@"预订成功") title:nil];
 //            int orderType;
 //            switch (_routeType) {
 //                case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
@@ -470,7 +490,7 @@
 //            
 //            OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
 //            [self.navigationController pushViewController:controller animated:YES];
-//            
+            
             
         } else {
             [self popupMessage:resultInfo title:nil];
