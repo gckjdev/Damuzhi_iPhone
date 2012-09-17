@@ -254,7 +254,7 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
                  selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
                   needStatistics:(BOOL)needStatistics 
                   viewController:(PPViewController<PlaceServiceDelegate>*)viewController
-                          filter:(id<PlaceListFilterProtocol>)filter
+                          filter:(id<PlaceListFilterProtocol>)filter     
 {
     int currentCityId = [[AppManager defaultManager] getCurrentCityId];
     
