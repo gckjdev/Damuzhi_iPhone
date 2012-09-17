@@ -20,6 +20,7 @@
 @interface NonMemberOrderController ()
 
 @property (retain, nonatomic) TouristRoute *route;
+@property (retain, nonatomic) LocalRoute *localRoute;
 @property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSDate *departDate;
 @property (assign, nonatomic) int adult;
@@ -27,12 +28,14 @@
 @property (retain, nonatomic) NSString * contactPersonName;
 @property (retain, nonatomic) NSString * contactPhone;
 @property (assign, nonatomic) int packageId;
+@property (assign, nonatomic) int departPlaceId;
 
 @end
 
 @implementation NonMemberOrderController
 
 @synthesize route = _route;
+@synthesize localRoute = _localRoute;
 @synthesize routeType = _routeType;
 @synthesize departDate = _departDate;
 @synthesize adult = _adult;
@@ -44,9 +47,11 @@
 @synthesize telephoneTextField;
 @synthesize backGroundScrollView;
 @synthesize packageId = _packageId;
+@synthesize departPlaceId = _departPlaceId;
 
 - (void)dealloc {
     [_route release];
+    [_localRoute release];
     [_departDate release];
     [routeNameLabel release];
     [contactPersonTextField release];
@@ -55,6 +60,25 @@
     [_contactPersonName release];
     [_contactPhone release];
     [super dealloc];
+}
+
+- (id)initWithLocalRoute:(LocalRoute *)localRoute
+               routeType:(int)routeType 
+           departPlaceId:(int)departPlaceId
+              departDate:(NSDate *)departDate
+                   adult:(int)adult
+                children:(int)children
+{
+    if (self = [super init]) {
+        self.localRoute = localRoute;
+        self.routeType = routeType;
+        self.departDate = departDate;
+        self.adult = adult;
+        self.children = children;
+        self.departPlaceId = departPlaceId;
+    }
+    
+    return self;
 }
 
 - (id)initWithRoute:(TouristRoute *)route
@@ -97,7 +121,12 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     self.backGroundScrollView.contentSize = CGSizeMake(self.backGroundScrollView.frame.size.width, self.backGroundScrollView.frame.size.height + 1);
-    routeNameLabel.text = _route.name;
+    
+    if (_routeType == OBJECT_LIST_LOCAL_ROUTE) {
+        routeNameLabel.text = _localRoute.name;
+    }else {
+        routeNameLabel.text = _route.name;
+    }
     
     contactPersonTextField.tag = TAG_TEXT_FIELD_CONTACT_PERSON;
     telephoneTextField.tag = TAG_TEXT_FIELD_TELEPHONE;
@@ -192,17 +221,29 @@
     if ([str1 isEqualToString:@"确定"])
     {        
         UserManager *manager = [UserManager defaultManager];
-        
         OrderService *service = [OrderService defaultService];
-        [service placeOrderUsingUserId:[manager getUserId]  
-                               routeId:_route.routeId  
-                             packageId:_packageId 
-                            departDate:_departDate 
-                                 adult:_adult 
-                              children:_children 
-                         contactPerson:_contactPersonName 
-                             telephone:_contactPhone
-                              delegate:self];
+        
+        if (_routeType == OBJECT_LIST_LOCAL_ROUTE) {
+            [service localRouteOrderUsingUserId:[manager getUserId]  
+                                        routeId:_localRoute.routeId 
+                                  departPlaceId:_departPlaceId 
+                                     departDate:_departDate 
+                                          adult:_adult 
+                                       children:_children 
+                                  contactPerson:_contactPersonName 
+                                      telephone:_contactPhone 
+                                       delegate:self];
+        } else {
+            [service placeOrderUsingUserId:[manager getUserId]  
+                                   routeId:_route.routeId  
+                                 packageId:_packageId 
+                                departDate:_departDate 
+                                     adult:_adult 
+                                  children:_children 
+                             contactPerson:_contactPersonName 
+                                 telephone:_contactPhone
+                                  delegate:self];
+        }
     }
 }
 
@@ -238,11 +279,13 @@
         case OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR:
             orderType = OBJECT_LIST_SELF_GUIDE_TOUR_ORDER;
             break;
+        case OBJECT_LIST_LOCAL_ROUTE:
+            orderType = OBJECT_LIST_LOCAL_ROUTE_ORDER;
         default:
             break;
     }
     
-    OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
+    OrderListController *controller = [[OrderListController alloc] initWithOrderType:orderType];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

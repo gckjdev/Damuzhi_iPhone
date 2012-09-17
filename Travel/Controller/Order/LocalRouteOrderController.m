@@ -60,6 +60,18 @@
 @synthesize nonMemberOrderController = _nonMemberOrderController;
 @synthesize phoneList = _phoneList;
 
+
+//@property (assign, nonatomic) int adult;
+//@property (assign, nonatomic) int children;
+//@property (retain, nonatomic) DepartPlace *departPlace;
+//@property (retain, nonatomic) LocalRoute *route;
+//@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceIdList;
+//@property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
+//@property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
+//@property (retain, nonatomic) NSDate *departDate;
+//@property (retain, nonatomic) NonMemberOrderController *nonMemberOrderController;
+//@property (retain, nonatomic) NSArray *phoneList;
+
 - (void)dealloc
 {
     PPRelease(_departPlace);
@@ -360,10 +372,15 @@
 
 - (void)clickMemberBookButton
 {
-//    if (_departDate == nil) {
-//        [self popupMessage:NSLS(@"请选择出发日期") title:nil];
-//        return;
-//    }
+//        self.departDate = [NSDate date];
+//        if (self.departPlace == nil) {
+//            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
+//        }
+    
+    if (_departDate == nil) {
+        [self popupMessage:NSLS(@"请选择出发日期") title:nil];
+        return;
+    }
     if (![[UserManager defaultManager] isLogin]) {
         LoginController *controller = [[LoginController alloc] init];
         [self.navigationController pushViewController:controller animated:YES];
@@ -372,9 +389,9 @@
     }
     
     NSString *message = NSLS(@"是否预订？");
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil] autorelease];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil];
     [alert show];
-    
+    [alert release];
     
 }
 
@@ -393,12 +410,6 @@
         UserManager *manager = [UserManager defaultManager];
         OrderService *service = [OrderService defaultService];
         
-        _departDate = [NSDate date];
-        
-        if (self.departPlace == nil) {
-            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
-        }
-        
         [service localRouteOrderUsingLoginId:[manager loginId]  
                                        token:[manager token] 
                                      routeId:_route.routeId  
@@ -416,6 +427,10 @@
 
 - (void)clickNonMemberBookButton
 {
+        self.departDate = [NSDate date];
+        if (self.departPlace == nil) {
+            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
+        }
     
     if (_departDate == nil) {
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];
@@ -423,14 +438,15 @@
     }
     
     if (_nonMemberOrderController == nil) {
-//        NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithRoute:_route 
-//                                                                                     routeType:_routeType
-//                                                                                    departDate:_departDate 
-//                                                                                         adult:_adult 
-//                                                                                      children:_children 
-//                                                                                     packageId:_packageId];
-//        self.nonMemberOrderController = controller;
-//        [controller release];
+        NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithLocalRoute:_route 
+                                                                                          routeType:OBJECT_LIST_LOCAL_ROUTE 
+                                                                                      departPlaceId:_departPlace.departPlaceId 
+                                                                                         departDate:_departDate 
+                                                                                              adult:_adult 
+                                                                                           children:_children];
+        self.nonMemberOrderController = controller;
+        [controller release];
+
     }
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
 }
@@ -473,24 +489,10 @@
     if (resultCode == 0) {
         if ( result == 0) {;
             [self popupMessage:NSLS(@"预订成功") title:nil];
-//            int orderType;
-//            switch (_routeType) {
-//                case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
-//                    orderType = OBJECT_LIST_PACKAGE_TOUR_ORDER;
-//                    break;
-//                case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
-//                    orderType = OBJECT_LIST_UNPACKAGE_TOUR_ORDER;
-//                    break;
-//                case OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR:
-//                    orderType = OBJECT_LIST_SELF_GUIDE_TOUR_ORDER;
-//                    break;
-//                default:
-//                    break;
-//            }
-//            
-//            OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
-//            [self.navigationController pushViewController:controller animated:YES];
             
+            OrderListController *controller = [[OrderListController alloc] initWithOrderType:OBJECT_LIST_LOCAL_ROUTE_ORDER];
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
             
         } else {
             [self popupMessage:resultInfo title:nil];

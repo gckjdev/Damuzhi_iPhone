@@ -19,6 +19,13 @@
 
 @property (retain, nonatomic) IBOutlet UIScrollView *backGroundScrollView;
 
+- (id)initWithLocalRoute:(LocalRoute *)localRoute
+               routeType:(int)routeType 
+           departPlaceId:(int)departPlaceId
+              departDate:(NSDate *)departDate
+                   adult:(int)adult
+                children:(int)children;
+
 - (id)initWithRoute:(TouristRoute *)route
           routeType:(int)routeType
          departDate:(NSDate *)departDate
