@@ -196,22 +196,34 @@
 {
     CGRect rect1 = CGRectMake(0, 0, 320, CELL_HERDER_HEIGHT);
     UIView *view = [[[UIView alloc]initWithFrame:rect1]autorelease];
-    UIButton *button = [[UIButton alloc]initWithFrame:rect1];
+    UIButton *button = [[[UIButton alloc]initWithFrame:rect1]autorelease];
+    
     button.tag = section;
-    button.backgroundColor = [UIColor blueColor];
+    [button setTitleColor:[UIColor colorWithRed:255/255.0 green:99/255.0 blue:5/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    button.titleLabel.shadowOffset = CGSizeMake(1, 0);
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:17];
 
-//    button.titleLabel.textAlignment = UITextAlignmentLeft;
+    [button setBackgroundImage:[UIImage imageNamed:@"line_top_bg@2x.png"] forState:UIControlStateNormal];
+
+    button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    
     
     [button setTitle:[self getSectionHeaderViewName:section] forState:UIControlStateNormal];
     
     [button addTarget:self action:@selector(clickCellHeader:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:button];
     
+    CGRect rect2 = CGRectMake(300, 8, 8, 16);
+    UIImageView *imageViewArrow = [[[UIImageView alloc]initWithFrame:rect2]autorelease];
+    imageViewArrow.image = [UIImage imageNamed:@"go_btn_local@2x.png"];
+    [view addSubview:imageViewArrow];
     
-    CGRect rect2 = CGRectMake(280, 0, 30, CELL_HERDER_HEIGHT);
-    UIImageView *imageView = [[[UIImageView alloc]initWithFrame:rect2]autorelease];
-    imageView.image = [UIImage imageNamed:@"heart@2x.png"];
-    [view addSubview:imageView];
+    CGRect rect3 = CGRectMake(0, CELL_HERDER_HEIGHT, 320, 4);
+    UIImageView *imageViewShadow = [[[UIImageView alloc]initWithFrame:rect3]autorelease];
+    imageViewShadow.image = [UIImage imageNamed:@"line_top_shadow@2x.png"];
+    [view addSubview:imageViewShadow];
     
     return view;
 }
@@ -259,6 +271,7 @@
    
      CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
 //    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:agency.url];
+    PPDebug(@"hahahahx is %@", agency.url);
 
     controller.navigationItem.title = agency.name;
     [self.navigationController pushViewController:controller animated:YES];
