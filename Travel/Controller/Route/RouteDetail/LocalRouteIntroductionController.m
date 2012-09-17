@@ -11,6 +11,7 @@
 #import "SlideImageView.h"
 #import "ImageName.h"
 #import "UIImageUtil.h"
+#import "ImageManager.h"
 
 @interface LocalRouteIntroductionController ()
 
@@ -21,8 +22,11 @@
 @implementation LocalRouteIntroductionController
 @synthesize overallScrollView;
 @synthesize imagesHolderView;
+@synthesize bookingHolderView;
 @synthesize contentWebView;
 @synthesize priceLable;
+@synthesize priceLastLabel;
+@synthesize bookingButton;
 @synthesize followButton;
 @synthesize delegate;
 
@@ -32,12 +36,19 @@
     [overallScrollView release];
     [priceLable release];
     [followButton release];
+    [bookingHolderView release];
+    [bookingButton release];
+    [priceLastLabel release];
     [super dealloc];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.bookingHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+    [bookingButton setImage:[[ImageManager defaultManager] bookButtonImage] forState:UIControlStateNormal];
+    
     
     self.overallScrollView.contentSize = CGSizeMake(self.overallScrollView.frame.size.width , self.overallScrollView.frame.size.height + 1);
     
@@ -54,6 +65,9 @@
     [self setOverallScrollView:nil];
     [self setPriceLable:nil];
     [self setFollowButton:nil];
+    [self setBookingHolderView:nil];
+    [self setBookingButton:nil];
+    [self setPriceLastLabel:nil];
     [super viewDidUnload];
 }
 
@@ -70,7 +84,10 @@
     
     
     //set price
-    self.priceLable.text = [NSString stringWithFormat:@"%@  立即预订", route.price];
+    self.priceLable.text = route.price;
+    
+    CGSize priceSize = [route.price sizeWithFont:self.priceLable.font];
+    self.priceLastLabel.frame = CGRectMake(self.priceLable.frame.origin.x + priceSize.width, self.priceLastLabel.frame.origin.y , self.priceLastLabel.frame.size.width, self.priceLastLabel.frame.size.height);
     
     
     //load html
