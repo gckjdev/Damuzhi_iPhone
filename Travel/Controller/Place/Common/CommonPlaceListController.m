@@ -390,7 +390,7 @@
 
 - (void)clickArea:(id)sender
 {
-    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:_currentCityId];
+    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:[_filterHandler getCategoryId]];
     
     [self pushSelectedControllerWithTitle:((UIButton*)sender).titleLabel.text
                                  itemList:areaItemList
