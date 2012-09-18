@@ -460,13 +460,13 @@ static AppManager* _defaultAppManager = nil;
         return;
     }
     
-    if ([delegate respondsToSelector:@selector(currentCityDidChange:)]) {
-        [delegate currentCityDidChange:newCityId];
-    }
-    
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
     [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
     [userDefault synchronize];
+    
+    if ([delegate respondsToSelector:@selector(currentCityDidChange:)]) {
+        [delegate currentCityDidChange:newCityId];
+    }
 }
 
 - (NSArray*)getSubCategoryItemList:(int)categoryId

@@ -62,7 +62,7 @@
     
 	self.mainController = (MainController *)[UIUtils addViewController:[MainController alloc]
 					 viewTitle:nil
-					 viewImage:@"3qi_menu_btn1_off.png"
+					 viewImage:@"menu_btn1_off.png"
 			  hasNavController:YES			
 			   viewControllers:controllers];	
 //    
@@ -80,7 +80,7 @@
     
     [UIUtils addViewController:[[LocalRouteListController alloc]initWithCityId:[[AppManager defaultManager]getCurrentCityId]]
                      viewTitle:nil
-                     viewImage:@"local_menu_btn2_off@2x.png" 
+                     viewImage:@"menu_btn2_off.png" 
               hasNavController:YES 
              hideNavigationBar:NO 
                viewControllers:controllers];
@@ -92,44 +92,44 @@
     
     [UIUtils addInitViewController:packageController 
                          viewTitle:nil
-                         viewImage:@"flight_menu_btn3_off@2x.png" 
+                         viewImage:@"menu_btn3_off.png" 
                   hasNavController:YES 
                  hideNavigationBar:NO 
                    viewControllers:controllers];
     
     [UIUtils addViewController:[CustomTourController alloc] 
                          viewTitle:nil
-                         viewImage:@"leyou_menu_btn4_off@2x.png" 
+                         viewImage:@"menu_btn4_off.png" 
                   hasNavController:YES 
                  hideNavigationBar:NO 
                    viewControllers:controllers];
     
     [UIUtils addViewController:[MoreController alloc] 
                          viewTitle:nil
-                         viewImage:@"3qi_menu_btn5_off@2x.png" 
+                         viewImage:@"menu_btn5_off.png" 
                   hasNavController:YES 
                  hideNavigationBar:NO 
                    viewControllers:controllers];
     
 	_tabBarController.viewControllers = controllers;
-//    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
-//                                                  @"menu_btn1_on.png", 
-//                                                  @"menu_btn2_on.png", 
-//                                                  @"menu_btn3_on.png", 
-//                                                  @"menu_btn4_on.png", 
-//                                                  @"menu_btn5_on.png", nil]];
-    
     [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
-                                                  @"3qi_menu_btn1_on.png", 
-                                                  @"local_menu_btn2_on@2x.png", 
-                                                  @"flight_menu_btn3_on@2x.png", 
-                                                  @"leyou_menu_btn4_on@2x.png", 
-                                                  @"3qi_menu_btn5_on@2x.png", nil]];
+                                                  @"menu_btn1_on.png", 
+                                                  @"menu_btn2_on.png", 
+                                                  @"menu_btn3_on.png", 
+                                                  @"menu_btn4_on.png", 
+                                                  @"menu_btn5_on.png", nil]];
+    
+//    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
+//                                                  @"3qi_menu_btn1_on.png", 
+//                                                  @"local_menu_btn2_on@2x.png", 
+//                                                  @"flight_menu_btn3_on@2x.png", 
+//                                                  @"leyou_menu_btn4_on@2x.png", 
+//                                                  @"3qi_menu_btn5_on@2x.png", nil]];
     _tabBarController.selectedIndex = 0;
     
-//    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
-//    [_tabBarController setTopImageView:imageView down:1.0 animated:YES];
-//    [imageView release];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
+    [_tabBarController setTopImageView:imageView down:1.0 animated:YES];
+    [imageView release];
     
     PPDebug(@"tabBarController y:%f h:%f",self.tabBarController.tabBar.frame.origin.y ,self.tabBarController.tabBar.frame.size.height);
 	

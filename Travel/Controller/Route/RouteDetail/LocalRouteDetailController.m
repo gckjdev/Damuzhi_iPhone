@@ -13,6 +13,8 @@
 #import "RouteFeekbackListController.h"
 #import "LocalRouteOrderController.h"
 #import "AppManager.h"
+#import "DepartPlaceMapController.h"
+#import "CommonPlaceDetailController.h"
 
 @interface LocalRouteDetailController ()
 
@@ -159,6 +161,16 @@
     [self.contentHolderView bringSubviewToFront:_feekbackListController.view];
 }
 
+- (DepartPlace *)findDepartPlace:(int)departPlaceId
+{
+    for (DepartPlace *departPlace in _route.departPlacesList) {
+        if (departPlace.departPlaceId == departPlaceId) {
+            return departPlace;
+        }
+    }
+    
+    return nil;
+}
 
 #pragma mark -
 #pragma RouteServiceDelegate method
@@ -183,6 +195,45 @@
 - (void)didClickBookingButton
 {
     LocalRouteOrderController *controller = [[[LocalRouteOrderController alloc] initWithRoute:_route] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickDepartPlace:(int)departPlaceId
+{
+    DepartPlace *departPlace = [self findDepartPlace:departPlaceId];
+    DepartPlaceMapController *controller = [[[DepartPlaceMapController alloc] initWithLatitude:departPlace.latitude 
+                                                                                    longitude:departPlace.longitude 
+                                                                                    placeName:departPlace.departPlace] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickRelatePlace:(int)RelatePlaceId
+{
+    [[PlaceService defaultService] findPlace:RelatePlaceId viewController:self];
+}
+
+
+- (void)didClickFollow
+{
+    
+}
+
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result 
+             resultInfo:(NSString *)resultInfo
+                  place:(Place *)place
+{
+    if (resultCode != 0) {
+        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

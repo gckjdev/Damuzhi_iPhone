@@ -573,6 +573,8 @@ static CityManagementController *_instance;
 #pragma mark: implementation of CityListCellDelegate
 - (void)didSelectCurrendCity:(City*)city
 {
+    [[AppManager defaultManager] setCurrentCityId:city.cityId delegate:_delegate];
+    
     NSString *message = [NSString stringWithFormat:NSLS(@"已设置查看%@.%@!"), city.countryName, city.cityName];
     [self popupMessage:message title:NSLS(@"提示")];
     [self.dataTableView reloadData];

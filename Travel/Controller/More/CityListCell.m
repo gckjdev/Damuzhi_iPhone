@@ -328,7 +328,7 @@
     }
     
     // Set current cityId.
-    [[AppManager defaultManager] setCurrentCityId:_city.cityId delegate:_appManagerDelegate];
+//    [[AppManager defaultManager] setCurrentCityId:_city.cityId delegate:_appManagerDelegate];
     
     // Call delegate metchod to do some addition work.
     if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didSelectCurrendCity:)]) {

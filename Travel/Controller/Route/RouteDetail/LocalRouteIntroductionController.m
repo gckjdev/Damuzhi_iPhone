@@ -12,6 +12,8 @@
 #import "ImageName.h"
 #import "UIImageUtil.h"
 #import "ImageManager.h"
+#import "XQueryComponents.h"
+#import "WebViewConstants.h"
 
 @interface LocalRouteIntroductionController ()
 
@@ -27,7 +29,6 @@
 @synthesize priceLable;
 @synthesize priceLastLabel;
 @synthesize bookingButton;
-@synthesize followButton;
 @synthesize delegate;
 
 - (void)dealloc {
@@ -35,7 +36,6 @@
     [contentWebView release];
     [overallScrollView release];
     [priceLable release];
-    [followButton release];
     [bookingHolderView release];
     [bookingButton release];
     [priceLastLabel release];
@@ -52,10 +52,17 @@
     
     self.overallScrollView.contentSize = CGSizeMake(self.overallScrollView.frame.size.width , self.overallScrollView.frame.size.height + 1);
     
-    self.overallScrollView.backgroundColor = [UIColor whiteColor];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+    [self.overallScrollView addSubview:imageView];
+    [imageView release];
     
+    //self.overallScrollView.backgroundColor = [UIColor whiteColor];
+    self.overallScrollView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:241.0/255.0 blue:241.0/255.0 alpha:1];
     
-    self.contentWebView.userInteractionEnabled = NO;
+    self.contentWebView.alpha = 0.0;
+    self.contentWebView.userInteractionEnabled = YES;
+    self.contentWebView.scrollView.scrollEnabled = NO;
 }
 
 - (void)viewDidUnload
@@ -64,7 +71,6 @@
     [self setContentWebView:nil];
     [self setOverallScrollView:nil];
     [self setPriceLable:nil];
-    [self setFollowButton:nil];
     [self setBookingHolderView:nil];
     [self setBookingButton:nil];
     [self setPriceLastLabel:nil];
@@ -94,7 +100,6 @@
     PPDebug(@"detailUrl:%@",route.detailUrl);
     NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
-    self.contentWebView.alpha = 0.0;
     self.contentWebView.delegate = self;
     [self.contentWebView loadRequest:request];
     
@@ -102,6 +107,9 @@
 
 #pragma mark - 
 #pragma UIWebViewDelegate method
+
+#define TAG_DOWN_BG  12091801
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     CGSize actualSize = [webView sizeThatFits:CGSizeZero];
@@ -110,13 +118,70 @@
         webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
         webView.alpha = 1.0;
         
-        CGFloat followButtonY = webView.frame.origin.y + webView.frame.size.height +  5;
-        followButton.frame = CGRectMake(followButton.frame.origin.x, followButtonY, followButton.frame.size.width, followButton.frame.size.height);
-        
-        CGFloat overallScrollViewHeight = followButton.frame.origin.y + followButton.frame.size.height + 10;
+        CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
         overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
     }
+    
+    UIImageView *imageView = (UIImageView *)[self.overallScrollView viewWithTag:TAG_DOWN_BG];
+    [imageView removeFromSuperview];
+    
+    UIImageView *imageViewNew = [[UIImageView alloc] initWithFrame:CGRectMake(0, overallScrollView.contentSize.height, 320, 250)];
+    imageViewNew.tag = TAG_DOWN_BG;
+    [imageViewNew setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [self.overallScrollView addSubview:imageViewNew];
+    [imageViewNew release];
 }
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    PPDebug(@"<LocalRouteIntroductionController> url:%@", request.URL);
+//    PPDebug(@"scheme:%@", request.URL.scheme);
+//    PPDebug(@"host:%@", request.URL.host);
+//    PPDebug(@"query:%@", request.URL.query);
+
+    NSURL *URL = request.URL;
+    NSString *scheme = URL.scheme;
+    NSString *host = URL.host;
+    
+    if ([scheme isEqualToString:WEB_SCHEME_DMZ] && 
+        [host isEqualToString:WEB_HOST_LOCAL_ROUTE])
+    {
+        NSString *type = [URL.queryComponents objectForKey:WEB_PARA_LOCAL_ROUTE_TYPE];
+        
+        //click depart palce
+        if ([type isEqualToString:WEB_VALUE_LOCAL_ROUTE_DEPART_PLACE]) {
+            
+            if ([delegate respondsToSelector:@selector(didClickDepartPlace:)]) {
+                NSString *deplaceIdStr = [URL.queryComponents objectForKey:WEB_PARA_LOCAL_ROUTE_PLACE_ID];
+                int deplaceId = [deplaceIdStr intValue];
+                
+                [delegate didClickDepartPlace:deplaceId];
+            }
+        }
+        
+        //click relate place
+        else if ([type isEqualToString:WEB_VALUE_LOCAL_ROUTE_RELATED_PLACE]) {
+            if ([delegate respondsToSelector:@selector(didClickRelatePlace:)]) {
+                NSString *deplaceIdStr = [URL.queryComponents objectForKey:WEB_PARA_LOCAL_ROUTE_PLACE_ID];
+                int deplaceId = [deplaceIdStr intValue];
+                
+                [delegate didClickRelatePlace:deplaceId];
+            }
+        } 
+        
+        //click follow button
+        else if ([type isEqualToString:WEB_VALUE_LOCAL_ROUTE_FOLLOW]) {
+            if ([delegate respondsToSelector:@selector(didClickFollow)]) {                
+                [delegate didClickFollow];
+            }
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
 
 - (IBAction)clickBookingButton:(id)sender {
     if ([delegate respondsToSelector:@selector(didClickBookingButton)]) {

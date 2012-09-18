@@ -12,7 +12,9 @@
 
 @optional
 - (void)didClickBookingButton;
-
+- (void)didClickDepartPlace:(int)departPlaceId;
+- (void)didClickRelatePlace:(int)RelatePlaceId;
+- (void)didClickFollow;
 @end
 
 
@@ -27,7 +29,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *priceLable;
 @property (retain, nonatomic) IBOutlet UILabel *priceLastLabel;
 @property (retain, nonatomic) IBOutlet UIButton *bookingButton;
-@property (retain, nonatomic) IBOutlet UIButton *followButton;
 @property (retain, nonatomic) id<LocalRouteIntroductionControllerDelegage> delegate;
 
 - (void)showInView:(UIView *)superView;

@@ -28,7 +28,6 @@
 {
     int _cityId;
     int _start;
-    BOOL _cityChange;
     AppManager *_appManager;
     RouteService *_routeService;
 }
@@ -81,12 +80,12 @@
     [_button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = _button;
     
-    _cityChange = YES;
 
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
 
     self.dataList = [NSArray array];
     
+    [self updateDataSource];
 }
 
 
@@ -101,8 +100,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-
-    [self updateDataSource];
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
 }
@@ -122,11 +119,7 @@
 }
 
 - (void )updateDataSource
-{
-    if (!_cityChange) {
-        return;
-    }
-    
+{    
     NSString *currentCityName = [_appManager getCurrentCityName];
     NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
     UIFont *font = [UIFont systemFontOfSize:17];
@@ -135,7 +128,7 @@
     _button.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
     NSLog(@"ahhahahah width is %f",titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE);
     NSLog(@"ahhahahah height is %f",titleSize.height);
-
+    
     
     
     [_button setTitle:buttonTitle forState:UIControlStateNormal];
@@ -150,7 +143,7 @@
     self.dataList = nil;
     self.dataList = [NSArray array];
 
-    NSLog(@"hahahahaha cityId is %d", _cityId);
+    NSLog(@"updateDataSource cityId is %d", _cityId);
     [_routeService findLocalRoutes:_cityId 
                              start:_start
                              count:EACH_COUNT 
@@ -167,7 +160,7 @@
 
 - (void)currentCityDidChange:(int)newCityId
 {
-    _cityChange = YES;
+    [self updateDataSource];
 }
 
 
@@ -269,11 +262,13 @@
     Agency * agency = [self.agencyList objectAtIndex:section];
 
    
-     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
-//    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:agency.url];
+//     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
+    
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:agency.url];
     PPDebug(@"hahahahx is %@", agency.url);
 
-    controller.navigationItem.title = agency.name;
+    //controller.navigationItem.title = agency.name;
+    controller.navigationItem.title = NSLS(@"旅行社介绍");
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
     
