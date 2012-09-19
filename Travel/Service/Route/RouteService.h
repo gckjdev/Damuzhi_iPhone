@@ -54,11 +54,7 @@
 
 + (RouteService*)defaultService;
 
-- (void)findLocalRoutes:(int)cityId
-                  start:(int)start
-                  count:(int)count 
-         needStatistics:(BOOL)needStatistics 
-         viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
 
 - (void)findRoutesWithType:(int)routeType
                      start:(int)start
@@ -66,9 +62,6 @@
            selectedItemIds:(RouteSelectedItemIds *)selectedItemIds
             needStatistics:(BOOL)needStatistics 
             viewController:(PPViewController<RouteServiceDelegate>*)viewController;
-
-- (void)findLocalRouteWithRouteId:(int)routeId 
-                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 - (void)findRouteWithRouteId:(int)routeId viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
@@ -90,5 +83,23 @@
                             rank:(int)rank
                          content:(NSString *)content   
                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+
+
+
+//for local route
+- (void)findLocalRoutes:(int)cityId
+                  start:(int)start
+                  count:(int)count 
+         needStatistics:(BOOL)needStatistics 
+         viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+
+- (void)findLocalRouteWithRouteId:(int)routeId 
+                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)followLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)unFollowLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 @end

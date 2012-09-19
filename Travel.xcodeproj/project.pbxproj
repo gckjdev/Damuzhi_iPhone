@@ -684,6 +684,9 @@
 		EA1A349416085D4A000E325B /* DepartPlaceMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1A349216085D49000E325B /* DepartPlaceMapController.m */; };
 		EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
+		EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EA25495016096CC10062E075 /* LocalRouteStorage.m */; };
+		EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA254953160976690062E075 /* FollowLocalRouteController.m */; };
+		EA254956160976690062E075 /* FollowLocalRouteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA254954160976690062E075 /* FollowLocalRouteController.xib */; };
 		EA2CFE6216009BC800E06FA5 /* LocalRouteOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2CFE6016009BC800E06FA5 /* LocalRouteOrderController.m */; };
 		EA2CFE6316009BC800E06FA5 /* LocalRouteOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA2CFE6116009BC800E06FA5 /* LocalRouteOrderController.xib */; };
 		EA328A0E1542A234001ACFF4 /* pin_cg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A061542A234001ACFF4 /* pin_cg@2x.png */; };
@@ -1773,6 +1776,11 @@
 		EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepartPlaceMapController.xib; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
+		EA25494F16096CC10062E075 /* LocalRouteStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteStorage.h; sourceTree = "<group>"; };
+		EA25495016096CC10062E075 /* LocalRouteStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteStorage.m; sourceTree = "<group>"; };
+		EA254952160976690062E075 /* FollowLocalRouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowLocalRouteController.h; sourceTree = "<group>"; };
+		EA254953160976690062E075 /* FollowLocalRouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowLocalRouteController.m; sourceTree = "<group>"; };
+		EA254954160976690062E075 /* FollowLocalRouteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowLocalRouteController.xib; sourceTree = "<group>"; };
 		EA2CFE5F16009BC700E06FA5 /* LocalRouteOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteOrderController.h; sourceTree = "<group>"; };
 		EA2CFE6016009BC800E06FA5 /* LocalRouteOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteOrderController.m; sourceTree = "<group>"; };
 		EA2CFE6116009BC800E06FA5 /* LocalRouteOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LocalRouteOrderController.xib; sourceTree = "<group>"; };
@@ -1989,6 +1997,9 @@
 				A3E456AF15B136A200430D2A /* FollowRouteController.h */,
 				A3E456B015B136A200430D2A /* FollowRouteController.m */,
 				A3E456B115B136A200430D2A /* FollowRouteController.xib */,
+				EA254952160976690062E075 /* FollowLocalRouteController.h */,
+				EA254953160976690062E075 /* FollowLocalRouteController.m */,
+				EA254954160976690062E075 /* FollowLocalRouteController.xib */,
 			);
 			path = FollowRoute;
 			sourceTree = "<group>";
@@ -2136,6 +2147,8 @@
 				A455F8191582F58100CA5743 /* RouteExtend.m */,
 				A3E456AB15B1192B00430D2A /* RouteStorage.h */,
 				A3E456AC15B1192B00430D2A /* RouteStorage.m */,
+				EA25494F16096CC10062E075 /* LocalRouteStorage.h */,
+				EA25495016096CC10062E075 /* LocalRouteStorage.m */,
 			);
 			path = Route;
 			sourceTree = "<group>";
@@ -4747,6 +4760,7 @@
 				EA19E1271606C1BC006A04A3 /* line_3_on2@2x.png in Resources */,
 				EA19E1281606C1BC006A04A3 /* line_3_on3@2x.png in Resources */,
 				EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */,
+				EA254956160976690062E075 /* FollowLocalRouteController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5072,6 +5086,8 @@
 				EA2CFE6216009BC800E06FA5 /* LocalRouteOrderController.m in Sources */,
 				EA1A348B16081DBE000E325B /* XQueryComponents.m in Sources */,
 				EA1A349416085D4A000E325B /* DepartPlaceMapController.m in Sources */,
+				EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */,
+				EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

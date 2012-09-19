@@ -14,6 +14,7 @@
 #import "RouteStorage.h"
 #import "UserManager.h"
 #import "JSON.h"
+#import "LocalRouteStorage.h"
 
 @interface RouteService ()
 
@@ -320,5 +321,63 @@ static RouteService *_defaultRouteService = nil;
     });
 }
 
+
+- (void)followLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    [[LocalRouteStorage followManager] addRoute:route];
+    
+    NSString *userId = nil; 
+    NSString *loginId = nil;
+    NSString *token = nil;
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        loginId = [[UserManager defaultManager] loginId];
+        token = [[UserManager defaultManager] token];
+    }else {
+        userId = [[UserManager defaultManager] getUserId];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        CommonNetworkOutput *output = [TravelNetworkRequest followRoute:userId
+                                                                loginId:loginId 
+                                                                  token:token 
+                                                                routeId:route.routeId ];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            int result = -1;
+            NSString *resultInfo = nil;
+            
+            if (output.resultCode == ERROR_SUCCESS) {
+                NSDictionary* jsonDict = [output.textData JSONValue];
+                result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+                resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            }
+            
+            if ([viewController respondsToSelector:@selector(followRouteDone:result:resultInfo:)]) {
+                [viewController followRouteDone:output.resultCode result:result resultInfo:resultInfo];
+            }
+        });                        
+    });
+}
+
+- (void)unFollowLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController
+{
+    [[LocalRouteStorage followManager] deleteRoute:route];
+    
+    //to do
+    //CommonNetworkOutput *output = 
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        //to do
+        //if (output.resultCode == ERROR_SUCCESS) 
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([viewController respondsToSelector:@selector(unfollowRouteDone:result:resultInfo:)]) {
+                [viewController unfollowRouteDone:-1 result:-1 resultInfo:@"网络接口待实现"];
+            }
+        });                        
+    });
+}
 
 @end

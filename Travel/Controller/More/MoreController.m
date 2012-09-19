@@ -24,6 +24,8 @@
 #import "ShareToQQController.h"
 #import "UserInfoController.h"
 #import "FontSize.h"
+#import "FollowLocalRouteController.h"
+
 @interface MoreController ()
 
 @property (retain, nonatomic) UIButton *loginoutButton;
@@ -48,6 +50,7 @@
 #define ORDER_NON_MEMBER    NSLS(@"非会员订单查询")
 #define USER_INFO           NSLS(@"个人资料")
 #define ORDER_MANAGER       NSLS(@"订单管理")
+#define MY_FOLLOW           NSLS(@"我的关注")
 //#define MY_FAVORITE         NSLS(@"我的收藏")
 #define SHARE               NSLS(@"推荐给好友")
 
@@ -142,6 +145,7 @@
     }
     
     [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:MY_FOLLOW forKey:[NSNumber numberWithInt:i++]];
     
 //    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
     
@@ -366,6 +370,9 @@
     else if ([title isEqualToString:SHARE]) {
         [self showShare];
     }
+    else if ([title isEqualToString:MY_FOLLOW]) {
+        [self showMyFollow];
+    }
     else
     {
     }
@@ -456,6 +463,14 @@
         default:
             break;
     }
+}
+
+- (void)showMyFollow
+{
+    FollowLocalRouteController *controller  = [[FollowLocalRouteController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+    //[self popupMessage:NSLS(@"待实现我的关注") title:nil];
 }
 
 

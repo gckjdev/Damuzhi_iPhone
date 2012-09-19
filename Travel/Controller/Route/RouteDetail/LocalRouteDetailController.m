@@ -15,6 +15,7 @@
 #import "AppManager.h"
 #import "DepartPlaceMapController.h"
 #import "CommonPlaceDetailController.h"
+#import "AnimationManager.h"
 
 @interface LocalRouteDetailController ()
 
@@ -213,9 +214,31 @@
 }
 
 
+#define TAG_FOLLOW_OK_VIEW  12091901
 - (void)didClickFollow
 {
+    CGRect rect = CGRectMake(0, 0, 109, 52);
+    UIButton *button = [[UIButton alloc] initWithFrame:rect];
+    button.tag = TAG_FOLLOW_OK_VIEW;
+    button.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"favorites_ok.png"]];
+    [button setTitle:NSLS(@"关注成功") forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(-8, 20, 0, 0)];
+    CGPoint fromPosition = CGPointMake(320/2, 354);
+    CGPoint toPosition = CGPointMake(320/2, 354);
+    [self.view addSubview:button];
+    [button release];
     
+    [AnimationManager alertView:button fromPosition:fromPosition toPosition:toPosition interval:2 delegate:self];
+    
+    [[RouteService defaultService] followLocalRoute:_route viewController:self];
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    UIView *view = [self.view viewWithTag:TAG_FOLLOW_OK_VIEW];
+    [view removeFromSuperview];
 }
 
 - (void)findRequestDone:(int)resultCode
@@ -235,6 +258,11 @@
     
     CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)followRouteDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo
+{
+    
 }
 
 @end

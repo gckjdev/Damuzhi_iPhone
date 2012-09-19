@@ -63,7 +63,8 @@ static BOOL _showUserLocateDenyAlert = YES;
     && [FileUtil createDir:[self getCategoryIconsDir]]
     && [FileUtil createDir:[self getFavoriteDir]]
     && [FileUtil createDir:[self getHistoryDir]] 
-    && [FileUtil createDir:[self getFollowRoutesDir]];
+    && [FileUtil createDir:[self getFollowRoutesDir]]
+    && [FileUtil createDir:[self getFollowLocalRoutesDir]];
     
     return success;
 }
@@ -126,6 +127,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString*)getFollowRoutesDir
 {
     return [FileUtil getFileFullPath:DIR_OF_FOLLOW_ROUTES];
+}
+
++ (NSString*)getFollowLocalRoutesDir
+{
+    return [FileUtil getFileFullPath:DIR_OF_FOLLOW_LOCAL_ROUTES];
 }
 
 + (NSString*)getDownloadPath:(int)cityId
@@ -305,6 +311,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString *)getFollowRoutesFilePath:(int)type
 {
     return [[AppUtils getFollowRoutesDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",type]];
+}
+
++ (NSString *)getFollowLocalRoutesFilePath
+{
+    return [[AppUtils getFollowLocalRoutesDir] stringByAppendingPathComponent:@"localRoute.dat"];
 }
 
 + (BOOL)isShowImage
