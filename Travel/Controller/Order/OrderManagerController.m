@@ -52,8 +52,8 @@
                            action:@selector(clickBack:)];
 
     [self updateNavButtons];
-    self.dataList = [NSArray arrayWithObjects:NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"), NSLS(@"定制游订单管理"),nil];
-    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
+    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"),nil];
+    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], nil];
     
 }
 

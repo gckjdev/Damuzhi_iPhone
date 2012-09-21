@@ -16,6 +16,8 @@
 #import "AppManager.h"
 #import "RouteFeekbackController.h"
 #import "FontSize.h"
+#import "LocalRouteDetailController.h"
+
 #define HEIGHT_HEADER_VIEW 44
 //#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
 
@@ -209,7 +211,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    
 }
 
 - (void)findRequestDone:(int)resultCode
@@ -272,9 +273,17 @@
 
 - (void)didClickRouteDetail:(Order *)order
 {
-    CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:order.routeId routeType:[self routeType]];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    int routeType = [self routeType];
+    
+    if (routeType == OBJECT_LIST_LOCAL_ROUTE) {
+        LocalRouteDetailController *controller = [[LocalRouteDetailController alloc] initWithLocalRouteId:order.routeId];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    } else {
+        CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:order.routeId routeType:[self routeType]];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    }
 }
 
 - (int)routeType
@@ -291,6 +300,10 @@
             
         case OBJECT_LIST_SELF_GUIDE_TOUR_ORDER:
             routeType = OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR;
+            break;
+            
+        case OBJECT_LIST_LOCAL_ROUTE_ORDER:
+            routeType = OBJECT_LIST_LOCAL_ROUTE;
             break;
             
         default:

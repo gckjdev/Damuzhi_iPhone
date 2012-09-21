@@ -50,7 +50,7 @@
 #define ORDER_NON_MEMBER    NSLS(@"非会员订单查询")
 #define USER_INFO           NSLS(@"个人资料")
 #define ORDER_MANAGER       NSLS(@"订单管理")
-#define MY_FOLLOW           NSLS(@"我的关注")
+#define MY_FOLLOW           NSLS(@"关注线路")
 //#define MY_FAVORITE         NSLS(@"我的收藏")
 #define SHARE               NSLS(@"推荐给好友")
 
@@ -470,7 +470,6 @@
     FollowLocalRouteController *controller  = [[FollowLocalRouteController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
-    //[self popupMessage:NSLS(@"待实现我的关注") title:nil];
 }
 
 

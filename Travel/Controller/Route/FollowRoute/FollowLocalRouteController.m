@@ -32,7 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"我的关注";
+    self.title = @"关注线路";
     [self setNavigationLeftButton:NSLS(@" 返回") 
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
@@ -140,11 +140,12 @@
 
 - (void)clickClear:(id)sender
 {
-    [deleteButton removeFromSuperview];
+    [dataTableView setEditing:!dataTableView.editing animated:YES];
+    [dataTableView reloadData];
     
-    static int controlFlag = 0;
-    controlFlag++;
-    if (controlFlag % 2) 
+    
+    [deleteButton removeFromSuperview];
+    if (dataTableView.editing) 
     {
         [deleteButton setImage:nil forState:UIControlStateNormal]; //necessary
         [deleteButton setTitle:@"完成" forState:UIControlStateNormal];
@@ -153,18 +154,12 @@
     {
         [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
     }
-    
     UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50 , 44)];
     [rightButtonView addSubview:deleteButton];
-    
     UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButtonView];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
-    
     [rightButtonItem release];
     [rightButtonView release];
-    
-    [dataTableView setEditing:!dataTableView.editing animated:YES];
-    [dataTableView reloadData];
 }
 
 
