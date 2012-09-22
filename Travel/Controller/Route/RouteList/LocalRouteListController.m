@@ -19,34 +19,36 @@
 #import "AppDelegate.h"
 #import "CityManagementController.h"
 
-#define EACH_COUNT 20
+#define EACH_COUNT 6
 #define CELL_HERDER_HEIGHT 33
-
-#define EACH_COUNT 20
 
 @interface LocalRouteListController ()
 {
     int _cityId;
-    int _start;
     AppManager *_appManager;
     RouteService *_routeService;
 }
 
+@property (assign, nonatomic) int start;
+@property (assign, nonatomic) int totalCount;
 @property (retain, nonatomic) NSArray *agencyList;
 @property (retain, nonatomic) NSDictionary *agencyDic;
-@property (retain, nonatomic) UIButton *button;
+@property (retain, nonatomic) UIButton *changeCitybutton;
 
 @end
 
 @implementation LocalRouteListController
+@synthesize start = _start;
+@synthesize totalCount = _totalCount;
 @synthesize agencyList = _agencyList;
 @synthesize agencyDic = _agencyDic;
-@synthesize button = _button;
+@synthesize changeCitybutton = _changeCitybutton;
+
 - (void)dealloc
 {
     [_agencyList release];
     [_agencyDic release];
-    [_button release];
+    [_changeCitybutton release];
     [super dealloc];
 }
 
@@ -54,49 +56,40 @@
 {
     if (self = [super init]) {
         _cityId = cityId;
+        
+        self.supportRefreshHeader = YES;
+        self.supportRefreshFooter = YES;
+        self.footerRefreshType = AutoAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"正在加载...");
     }
     
     return self;
 }
 
-
-
 #define WIDTH_TOP_ARRAW 14
 #define HEIGHT_TOP_ARRAW 7
 #define WIDTH_BLANK_OF_TITLE 14
-
-
-
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     _appManager = [AppManager defaultManager];
     _routeService = [RouteService defaultService];
   
-    _button = [[UIButton alloc]init];
-    [_button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.titleView = _button;
+    _changeCitybutton = [[UIButton alloc] init];
+    [_changeCitybutton addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = _changeCitybutton;
     
-
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
-
-    self.dataList = [NSArray array];
     
-    [self updateDataSource];
+    [self updateCityName];
+    [self findLocalRoutes];
 }
-
-
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -118,49 +111,35 @@
     [super viewDidDisappear:animated];
 }
 
-- (void )updateDataSource
-{    
+- (void)hideTabBar:(BOOL)isHide
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideTabBar:isHide];
+}
+
+- (void)updateCityName
+{
     NSString *currentCityName = [_appManager getCurrentCityName];
     NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
     CGSize titleSize = [buttonTitle sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
-    _button.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
-    NSLog(@"ahhahahah width is %f",titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE);
-    NSLog(@"ahhahahah height is %f",titleSize.height);
+    _changeCitybutton.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
     
+    [_changeCitybutton setTitle:buttonTitle forState:UIControlStateNormal];
     
-    
-    [_button setTitle:buttonTitle forState:UIControlStateNormal];
-    
-    [_button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
-    _button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
-    _button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
-    _button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    _button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-
-    _cityId = [_appManager getCurrentCityId];
-    self.dataList = nil;
-    self.dataList = [NSArray array];
-
-    NSLog(@"updateDataSource cityId is %d", _cityId);
-    [_routeService findLocalRoutes:_cityId 
-                             start:_start
-                             count:EACH_COUNT 
-                    needStatistics:NO
-                    viewController:self];
+    [_changeCitybutton setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
+    _changeCitybutton.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
+    _changeCitybutton.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
+    _changeCitybutton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    _changeCitybutton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
 }
 
--(void)clickTitle:(id)sender
+- (void)clickTitle:(id)sender
 {
     CityManagementController *controller = [CityManagementController getInstance];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)currentCityDidChange:(int)newCityId
-{
-    [self updateDataSource];
 }
 
 
@@ -183,7 +162,6 @@
 {
     return [RouteListCell getCellHeight];
 }
-
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -221,7 +199,7 @@
     return view;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RouteListCell *cell = (RouteListCell *)[tableView dequeueReusableCellWithIdentifier:[RouteListCell getCellIdentifier]];
     if (nil == cell) {
@@ -234,7 +212,7 @@
 
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = [indexPath row];
     int section = [indexPath section];
@@ -245,55 +223,108 @@
 }
 
 
--(TouristRoute *)getRoute:(int) row section:(int)section
+- (TouristRoute *)getRoute:(int) row section:(int)section
 {
     return  [[self.agencyDic objectForKey:[self getSectionHeaderViewName:section]] objectAtIndex:row];
 }
 
--(NSString *) getSectionHeaderViewName:(int)section
+- (NSString *)getSectionHeaderViewName:(int)section
 {
     return [[self.agencyList objectAtIndex:section] name];
 } 
 
--(void)clickCellHeader:(id)sender
+- (void)clickCellHeader:(id)sender
 {
     UIButton *button = (UIButton*)sender;
     int section = button.tag;
     Agency * agency = [self.agencyList objectAtIndex:section];
-
-   
-//     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:@"http://www.baidu.com"];
     
     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:agency.url];
     PPDebug(@"hahahahx is %@", agency.url);
-
-    //controller.navigationItem.title = agency.name;
+    
     controller.navigationItem.title = NSLS(@"旅行社介绍");
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
     
 }
 
+- (void)currentCityDidChange:(int)newCityId
+{
+    _cityId = [_appManager getCurrentCityId];
+    [self updateCityName];
+    
+    self.start = 0;
+    [self findLocalRoutes];
+}
+
+
+- (void )findLocalRoutes
+{ 
+    [_routeService findLocalRoutes:_cityId 
+                             start:_start
+                             count:EACH_COUNT 
+                    needStatistics:NO
+                    viewController:self];
+}
 
 - (void)findRequestDone:(int)result 
              totalCount:(int)totalCount 
                    list:(NSArray *)list 
 {
+    if (_start == 0) {
+        self.dataList = [NSArray array];
+    }
     
     self.dataList = [dataList arrayByAddingObjectsFromArray:list];
     self.agencyList = [_appManager getAgencyListFromLocalRouteList:self.dataList];
     self.agencyDic = [_appManager getAgencyDicFromAgencyList:self.agencyList
                                               localRouteList:self.dataList];
     
+    self.start += [list count];
+    self.totalCount = totalCount;
+    
+    if (_start >= totalCount) {
+        self.noMoreData = YES;
+    }else {
+        self.noMoreData = NO;
+    }
+    
     [dataTableView reloadData];
-
+    
+    
+    
+    if ([self.dataList count] == 0) {
+        self.noMoreData = YES;
+        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+    }else {
+        [self hideTipsOnTableView];
+    }
+    
+    [self dataSourceDidFinishLoadingNewData];
+    [self dataSourceDidFinishLoadingMoreData];
 }
 
 
-- (void)hideTabBar:(BOOL)isHide
+- (void)loadMoreTableViewDataSource
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideTabBar:isHide];
+    if (_start >= _totalCount) {
+        self.noMoreData = YES;
+        [self dataSourceDidFinishLoadingMoreData];
+        return;
+    }
+    
+    else {
+        [self findLocalRoutes];
+    }
 }
+
+- (void)reloadTableViewDataSource
+{
+    self.start = 0;
+    
+    [self findLocalRoutes];
+}
+
+
 
 @end

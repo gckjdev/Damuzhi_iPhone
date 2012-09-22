@@ -217,11 +217,14 @@
 
 - (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    //PPDebug(@"%@", _DEV_T)
+    
     NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
     if ([str1 isEqualToString:@"确定"])
     {        
         UserManager *manager = [UserManager defaultManager];
         OrderService *service = [OrderService defaultService];
+        
         
         if (_routeType == OBJECT_LIST_LOCAL_ROUTE) {
             [service localRouteOrderUsingUserId:[manager getUserId]  

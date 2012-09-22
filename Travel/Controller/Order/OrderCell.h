@@ -29,6 +29,6 @@
 @property (retain, nonatomic) IBOutlet UIImageView *cellBgImageView;
 
 
-- (void)setCellData:(Order *)order;
+- (void)setCellData:(Order *)order orderType:(int )orderType;
 
 @end

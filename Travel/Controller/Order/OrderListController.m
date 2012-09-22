@@ -137,7 +137,7 @@
     OrderCell *orderCell = (OrderCell *)cell;
     orderCell.delegate = self;
 
-	[orderCell setCellData:[dataList objectAtIndex:indexPath.section]];
+	[orderCell setCellData:[dataList objectAtIndex:indexPath.section]  orderType:_orderType];
     orderCell.cellBgImageView.image = [[ImageManager defaultManager] orderListCellBgImage:indexPath.section rowCount:[dataList count]];
     
     return cell;

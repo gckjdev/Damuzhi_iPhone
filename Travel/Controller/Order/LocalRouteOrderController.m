@@ -378,6 +378,10 @@
 //        if (self.departPlace == nil) {
 //            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
 //        }
+    if (_departPlace == nil) {
+        [self popupMessage:NSLS(@"请选择出发地点") title:nil];
+        return;
+    }
     
     if (_departDate == nil) {
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];
@@ -407,6 +411,8 @@
 {
     NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
     NSString * str2 = [NSString stringWithFormat:@"确定"];
+    
+    
     if ([str1 isEqualToString: str2]) 
     {  
         UserManager *manager = [UserManager defaultManager];
@@ -429,11 +435,14 @@
 
 - (void)clickNonMemberBookButton
 {
-    self.departDate = [NSDate date];
-    if (self.departPlace == nil) {
-        PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
+//    self.departDate = [NSDate date];
+//    if (self.departPlace == nil) {
+//        PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
+//    }
+    if (_departPlace == nil) {
+        [self popupMessage:NSLS(@"请选择出发地点") title:nil];
+        return;
     }
-    
     
     if (_departDate == nil) {
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];

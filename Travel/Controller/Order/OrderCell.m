@@ -13,7 +13,7 @@
 #import "LocaleUtils.h"
 #import "UserManager.h"
 #import "PPDebug.h"
-
+#import "TravelNetworkConstants.h"
 
 #define ORDER_ITEM_LABEL_ORIGIN_X 28
 #define GAP_BETWEEN_ORDER_ITEMS 24
@@ -66,7 +66,7 @@
 }
 
 
-- (void)setCellData:(Order *)order
+- (void)setCellData:(Order *)order orderType:(int )orderType
 {
     self.order  = order;
     
@@ -85,7 +85,13 @@
         [self addSubview:routePackageNameLabel];
     } 
     
-    NSString *departCityLabelText = [NSString stringWithFormat:@"出发城市: %@",order.departCityName];
+    NSString *departCityLabelText;
+    if (orderType == OBJECT_LIST_LOCAL_ROUTE_ORDER) {
+        departCityLabelText = [NSString stringWithFormat:@"出发地点: %@",order.departPlace.departPlace];
+    } else {
+        departCityLabelText = [NSString stringWithFormat:@"出发城市: %@",order.departCityName];
+    }
+    
     UILabel *departCityLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departCityLabelText];
     [self addSubview:departCityLabel];
     
