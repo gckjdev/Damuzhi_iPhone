@@ -1,26 +1,25 @@
 //
-//  CustomTourController.m
+//  HappyTourController.m
 //  Travel
 //
-//  Created by haodong qiu on 12年7月19日.
-//  Copyright (c) 2012年 orange. All rights reserved.
+//  Created by kaibin on 12-9-21.
+//
 //
 
-#import "CustomTourController.h"
+#import "HappyTourController.h"
 #import "AppDelegate.h"
 
-@interface CustomTourController ()
+@interface HappyTourController ()
 
 @end
 
-@implementation CustomTourController
-
+@implementation HappyTourController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = NSLS(@"定制游");
+    self.navigationItem.title = NSLS(@"乐游");
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
 }

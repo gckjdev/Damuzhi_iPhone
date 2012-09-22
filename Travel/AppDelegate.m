@@ -25,7 +25,8 @@
 #import "UnPackageTourListFilter.h"
 #import "PackageTourListFilter.h"
 #import "MoreController.h"
-#import "CustomTourController.h"
+#import "HappyTourController.h"
+#import "TicketHotelController.h"
 
 #import "LocalRouteListController.h"
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
@@ -85,19 +86,26 @@
              hideNavigationBar:NO 
                viewControllers:controllers];
     
+//    NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
+//    CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+//    
+//    [UIUtils addInitViewController:packageController 
+//                         viewTitle:nil
+//                         viewImage:@"menu_btn3_off.png" 
+//                  hasNavController:YES 
+//                 hideNavigationBar:NO 
+//                   viewControllers:controllers];
     
     
-    NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
-    CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+    [UIUtils addViewController:[TicketHotelController alloc]
+                     viewTitle:nil
+                     viewImage:@"menu_btn3_off.png"
+              hasNavController:YES
+             hideNavigationBar:NO
+               viewControllers:controllers];
     
-    [UIUtils addInitViewController:packageController 
-                         viewTitle:nil
-                         viewImage:@"menu_btn3_off.png" 
-                  hasNavController:YES 
-                 hideNavigationBar:NO 
-                   viewControllers:controllers];
     
-    [UIUtils addViewController:[CustomTourController alloc] 
+    [UIUtils addViewController:[HappyTourController alloc] 
                          viewTitle:nil
                          viewImage:@"menu_btn4_off.png" 
                   hasNavController:YES 

@@ -54,8 +54,6 @@
 		A3ACE1121524459F00C9B3DD /* HistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3ACE1101524459F00C9B3DD /* HistoryController.m */; };
 		A3ACE1131524459F00C9B3DD /* HistoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3ACE1111524459F00C9B3DD /* HistoryController.xib */; };
 		A3C090D815B813070040053C /* djy_page_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A3C090D715B813070040053C /* djy_page_bg@2x.jpg */; };
-		A3C090E615B815090040053C /* CustomTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3C090E415B815090040053C /* CustomTourController.m */; };
-		A3C090E715B815090040053C /* CustomTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3C090E515B815090040053C /* CustomTourController.xib */; };
 		A3C9840B15F1EF1E0056E5E2 /* line_n_off1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3C9840515F1EF1E0056E5E2 /* line_n_off1@2x.png */; };
 		A3C9840C15F1EF1E0056E5E2 /* line_n_off2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3C9840615F1EF1E0056E5E2 /* line_n_off2@2x.png */; };
 		A3C9840D15F1EF1E0056E5E2 /* line_n_off3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A3C9840715F1EF1E0056E5E2 /* line_n_off3@2x.png */; };
@@ -669,6 +667,10 @@
 		CA585FB814F73C1100471880 /* CityBasicController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA585FB614F73C1100471880 /* CityBasicController.xib */; };
 		CA585FBD14F73C4900471880 /* NearbyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA585FBB14F73C4900471880 /* NearbyController.m */; };
 		CA585FBE14F73C4900471880 /* NearbyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA585FBC14F73C4900471880 /* NearbyController.xib */; };
+		EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC5E160C10A40057E36C /* HappyTourController.m */; };
+		EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC5F160C10A40057E36C /* HappyTourController.xib */; };
+		EA0EFC66160C12F90057E36C /* TicketHotelController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC64160C12F90057E36C /* TicketHotelController.m */; };
+		EA0EFC67160C12F90057E36C /* TicketHotelController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC65160C12F90057E36C /* TicketHotelController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
 		EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */; };
 		EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */; };
@@ -833,9 +835,6 @@
 		A3ACE1101524459F00C9B3DD /* HistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryController.m; sourceTree = "<group>"; };
 		A3ACE1111524459F00C9B3DD /* HistoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryController.xib; sourceTree = "<group>"; };
 		A3C090D715B813070040053C /* djy_page_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "djy_page_bg@2x.jpg"; sourceTree = "<group>"; };
-		A3C090E315B815090040053C /* CustomTourController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTourController.h; sourceTree = "<group>"; };
-		A3C090E415B815090040053C /* CustomTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTourController.m; sourceTree = "<group>"; };
-		A3C090E515B815090040053C /* CustomTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomTourController.xib; sourceTree = "<group>"; };
 		A3C9840515F1EF1E0056E5E2 /* line_n_off1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_off1@2x.png"; sourceTree = "<group>"; };
 		A3C9840615F1EF1E0056E5E2 /* line_n_off2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_off2@2x.png"; sourceTree = "<group>"; };
 		A3C9840715F1EF1E0056E5E2 /* line_n_off3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_off3@2x.png"; sourceTree = "<group>"; };
@@ -1754,6 +1753,12 @@
 		CA585FBA14F73C4900471880 /* NearbyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyController.h; sourceTree = "<group>"; };
 		CA585FBB14F73C4900471880 /* NearbyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyController.m; sourceTree = "<group>"; };
 		CA585FBC14F73C4900471880 /* NearbyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearbyController.xib; sourceTree = "<group>"; };
+		EA0EFC5D160C10A40057E36C /* HappyTourController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HappyTourController.h; sourceTree = "<group>"; };
+		EA0EFC5E160C10A40057E36C /* HappyTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HappyTourController.m; sourceTree = "<group>"; };
+		EA0EFC5F160C10A40057E36C /* HappyTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HappyTourController.xib; sourceTree = "<group>"; };
+		EA0EFC63160C12F90057E36C /* TicketHotelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TicketHotelController.h; sourceTree = "<group>"; };
+		EA0EFC64160C12F90057E36C /* TicketHotelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TicketHotelController.m; sourceTree = "<group>"; };
+		EA0EFC65160C12F90057E36C /* TicketHotelController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketHotelController.xib; sourceTree = "<group>"; };
 		EA1007B915550E1600E299D1 /* pin_yl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_yl@2x.png"; sourceTree = "<group>"; };
 		EA194DF115FDF53500FA437F /* LocalRouteDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteDetailController.h; sourceTree = "<group>"; };
 		EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteDetailController.m; sourceTree = "<group>"; };
@@ -2994,9 +2999,6 @@
 		C28AFA5F15AC3EB20025A9B3 /* RouteList */ = {
 			isa = PBXGroup;
 			children = (
-				A3C090E315B815090040053C /* CustomTourController.h */,
-				A3C090E415B815090040053C /* CustomTourController.m */,
-				A3C090E515B815090040053C /* CustomTourController.xib */,
 				C28AFA6015AC3EB20025A9B3 /* CommonRouteListController.h */,
 				C28AFA6115AC3EB20025A9B3 /* CommonRouteListController.m */,
 				C28AFA6215AC3EB20025A9B3 /* CommonRouteListController.xib */,
@@ -4122,6 +4124,8 @@
 		CA585F8C14F7376300471880 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				EA0EFC62160C12DD0057E36C /* TicketHotel */,
+				EA0EFC5C160C10890057E36C /* HappyTour */,
 				A406A2AC1597FD0800CE938A /* Order */,
 				A455F8CE1585D43900CA5743 /* Route */,
 				A313DE56152F02EB004E0964 /* Share */,
@@ -4245,6 +4249,26 @@
 				CA585FBC14F73C4900471880 /* NearbyController.xib */,
 			);
 			path = Nearby;
+			sourceTree = "<group>";
+		};
+		EA0EFC5C160C10890057E36C /* HappyTour */ = {
+			isa = PBXGroup;
+			children = (
+				EA0EFC5D160C10A40057E36C /* HappyTourController.h */,
+				EA0EFC5E160C10A40057E36C /* HappyTourController.m */,
+				EA0EFC5F160C10A40057E36C /* HappyTourController.xib */,
+			);
+			path = HappyTour;
+			sourceTree = "<group>";
+		};
+		EA0EFC62160C12DD0057E36C /* TicketHotel */ = {
+			isa = PBXGroup;
+			children = (
+				EA0EFC63160C12F90057E36C /* TicketHotelController.h */,
+				EA0EFC64160C12F90057E36C /* TicketHotelController.m */,
+				EA0EFC65160C12F90057E36C /* TicketHotelController.xib */,
+			);
+			path = TicketHotel;
 			sourceTree = "<group>";
 		};
 		EA19E11C1606C1BC006A04A3 /* local_route */ = {
@@ -4704,7 +4728,6 @@
 				A44469F515B7E9C100633E80 /* menu_arrow@2x.png in Resources */,
 				A44469F715B80EB800633E80 /* order_list_5@2x.png in Resources */,
 				A3C090D815B813070040053C /* djy_page_bg@2x.jpg in Resources */,
-				A3C090E715B815090040053C /* CustomTourController.xib in Resources */,
 				A4446A0F15B9099000633E80 /* date_tile_bg@2x.png in Resources */,
 				A34BDD3515B94A3800CD16C7 /* Default.png in Resources */,
 				A34BDD3615B94A3800CD16C7 /* Default@2x.png in Resources */,
@@ -4761,6 +4784,8 @@
 				EA19E1281606C1BC006A04A3 /* line_3_on3@2x.png in Resources */,
 				EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */,
 				EA254956160976690062E075 /* FollowLocalRouteController.xib in Resources */,
+				EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */,
+				EA0EFC67160C12F90057E36C /* TicketHotelController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5076,7 +5101,6 @@
 				A3E456AD15B1192B00430D2A /* RouteStorage.m in Sources */,
 				A3E456B215B136A200430D2A /* FollowRouteController.m in Sources */,
 				A4BAD18415B4066000596460 /* PlaceItemList.m in Sources */,
-				A3C090E615B815090040053C /* CustomTourController.m in Sources */,
 				A31C974A15BE8EFA005752D8 /* ReferenceCell.m in Sources */,
 				A387DE4015C7D7BF00507F95 /* NSAttributedString+Attributes.m in Sources */,
 				A387DE4115C7D7BF00507F95 /* OHAttributedLabel.m in Sources */,
@@ -5088,6 +5112,8 @@
 				EA1A349416085D4A000E325B /* DepartPlaceMapController.m in Sources */,
 				EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */,
 				EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */,
+				EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */,
+				EA0EFC66160C12F90057E36C /* TicketHotelController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

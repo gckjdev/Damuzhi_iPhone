@@ -225,8 +225,8 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         [cell.rightButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         
-        [cell.leftButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult]] forState:UIControlStateNormal];
-        [cell.rightButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children]] forState:UIControlStateNormal]; 
+        [cell.leftButton setTitle:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult] forState:UIControlStateNormal];
+        [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
         cell.contentLabel.text = _route.price;
@@ -332,6 +332,8 @@
 
 - (void)clickDepartDateButton
 {
+    PPDebug(@"clickDepartDateButton count:%d", [_route.bookingsList count]);
+    
     MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList] autorelease];   
     [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];

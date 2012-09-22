@@ -118,7 +118,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [dataList count];
-
 }
 
 
@@ -138,7 +137,7 @@
     OrderCell *orderCell = (OrderCell *)cell;
     orderCell.delegate = self;
 
-	[orderCell setCellData:[dataList objectAtIndex:indexPath.row]];
+	[orderCell setCellData:[dataList objectAtIndex:indexPath.section]];
     orderCell.cellBgImageView.image = [[ImageManager defaultManager] orderListCellBgImage:indexPath.section rowCount:[dataList count]];
     
     return cell;
@@ -230,6 +229,7 @@
     
     [self updateSectionStatWithSectionCount:[list count]];
     self.dataList = list;
+    
 
     [dataTableView reloadData];
 }
