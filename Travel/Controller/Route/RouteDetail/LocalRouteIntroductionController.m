@@ -14,10 +14,11 @@
 #import "ImageManager.h"
 #import "XQueryComponents.h"
 #import "WebViewConstants.h"
+#import "LocalRouteStorage.h"
 
 @interface LocalRouteIntroductionController ()
 
-
+@property (retain, nonatomic) LocalRoute *route;
 
 @end
 
@@ -30,6 +31,7 @@
 @synthesize priceLastLabel;
 @synthesize bookingButton;
 @synthesize delegate;
+@synthesize route = _route;
 
 - (void)dealloc {
     [imagesHolderView release];
@@ -39,6 +41,7 @@
     [bookingHolderView release];
     [bookingButton release];
     [priceLastLabel release];
+    [_route release];
     [super dealloc];
 }
 
@@ -79,6 +82,8 @@
 
 - (void)updateWithRoute:(LocalRoute *)route
 {
+    self.route = route;
+    
     //load images
     SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
@@ -121,6 +126,7 @@
         CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
         overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
     }
+    [self updateFollowButton];
     
     UIImageView *imageView = (UIImageView *)[self.overallScrollView viewWithTag:TAG_DOWN_BG];
     [imageView removeFromSuperview];
@@ -174,12 +180,26 @@
             if ([delegate respondsToSelector:@selector(didClickFollow)]) {                
                 [delegate didClickFollow];
             }
+            
+            [self updateFollowButton];
         }
         
         return NO;
     }
     
     return YES;
+}
+
+
+- (void)updateFollowButton
+{
+    BOOL isFollow = [[LocalRouteStorage followManager] isExistRoute:_route.routeId];
+    
+    if (isFollow) {
+        NSString *jsCode = [NSString stringWithFormat:@"toggleFavor(true);"];      
+        PPDebug(@"<updateFollowButton> execute javascript = %@",jsCode);        
+        [self.contentWebView stringByEvaluatingJavaScriptFromString:jsCode];
+    }
 }
 
 

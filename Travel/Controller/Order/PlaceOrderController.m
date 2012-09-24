@@ -523,7 +523,7 @@
             
             OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
             [self.navigationController pushViewController:controller animated:YES];
-
+            [controller release];
             
         } else {
             [self popupMessage:resultInfo title:nil];

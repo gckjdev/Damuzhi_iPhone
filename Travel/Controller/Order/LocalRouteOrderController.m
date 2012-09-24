@@ -22,9 +22,7 @@
 
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
-@property (retain, nonatomic) DepartPlace *departPlace;
 @property (retain, nonatomic) LocalRoute *route;
-@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceIdList;
 @property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
 @property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
 @property (retain, nonatomic) NSDate *departDate;
@@ -42,7 +40,7 @@
 @end
 
 #define TITLE_ROUTE_NAME    NSLS(@"线路名称 :")
-#define TITLE_DEPART_PLACE  NSLS(@"出发地点 :")
+//#define TITLE_DEPART_PLACE  NSLS(@"出发地点 :")
 #define TITLE_DEPART_DATE   NSLS(@"出发日期 :")
 #define TITLE_PEOPLE_NUMBER NSLS(@"出游人数 :")
 #define TITLE_PRICE         NSLS(@"参考价格 :")
@@ -51,32 +49,16 @@
 @implementation LocalRouteOrderController
 @synthesize adult = _adult;
 @synthesize children = _children;
-@synthesize departPlace = _departPlace;
 @synthesize route = _route;
-@synthesize selectedDepartPlaceIdList = _selectedDepartPlaceIdList;
 @synthesize selectedAdultIdList = _selectedAdultIdList;
 @synthesize selectedChildrenIdList = _selectedChildrenIdList;
 @synthesize departDate = _departDate;
 @synthesize nonMemberOrderController = _nonMemberOrderController;
 @synthesize phoneList = _phoneList;
 
-
-//@property (assign, nonatomic) int adult;
-//@property (assign, nonatomic) int children;
-//@property (retain, nonatomic) DepartPlace *departPlace;
-//@property (retain, nonatomic) LocalRoute *route;
-//@property (retain, nonatomic) NSMutableArray *selectedDepartPlaceIdList;
-//@property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
-//@property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
-//@property (retain, nonatomic) NSDate *departDate;
-//@property (retain, nonatomic) NonMemberOrderController *nonMemberOrderController;
-//@property (retain, nonatomic) NSArray *phoneList;
-
 - (void)dealloc
 {
-    PPRelease(_departPlace);
     PPRelease(_route);
-    PPRelease(_selectedDepartPlaceIdList);
     PPRelease(_selectedAdultIdList);
     PPRelease(_selectedChildrenIdList);
     PPRelease(_departDate);
@@ -90,7 +72,6 @@
 {
     if (self = [super init]) {
         self.route = route;
-        self.selectedDepartPlaceIdList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedAdultIdList = [[[NSMutableArray alloc] init] autorelease];
         self.selectedChildrenIdList = [[[NSMutableArray alloc] init] autorelease];
         self.adult = 1;
@@ -121,7 +102,7 @@
     [self.selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
     [self.selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
     
-    NSArray *mutableArray = [NSArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_DEPART_PLACE, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
+    NSArray *mutableArray = [NSArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
 
     self.dataList = mutableArray;
 }
@@ -201,16 +182,6 @@
         cell.contentLabel.text = _route.name;
         cell.contentLabel.textColor = [UIColor colorWithRed:20.0/255.0 green:47.0/255.0 blue:67.0/255.0 alpha:1];
     }
-    else if ([cellTitle isEqualToString:TITLE_DEPART_PLACE])
-    {
-        cell.leftButton.hidden = NO;
-        [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
-        CGRect departFrame = cell.leftButton.frame;
-        cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_PLACE, departFrame.size.height);
-        //[cell.leftButton setTitle:NSLS(@"请选择出发地点") forState:UIControlStateNormal];
-        [cell.leftButton setTitle:((_departPlace == nil) ? NSLS(@"请选择出发地点") : _departPlace.departPlace ) forState:UIControlStateNormal];
-        
-    }
     else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         cell.leftButton.hidden = NO;
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
@@ -287,10 +258,7 @@
 - (void)didClickLeftButton:(NSIndexPath *)aIndexPath
 {
     NSString *cellTitle = [dataList objectAtIndex:aIndexPath.row];
-    if ([cellTitle isEqualToString:TITLE_DEPART_PLACE]) {
-        [self clickDepartPlaceButton];
-    }
-    else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
+    if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
         [self clickDepartDateButton];
     }
     else if([cellTitle isEqualToString:TITLE_PEOPLE_NUMBER]){
@@ -317,18 +285,18 @@
 
 
 #pragma button actions
-- (void)clickDepartPlaceButton
-{
-    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出发地点")
-                                                                  itemList:[[AppManager defaultManager] buildDepartPlaceItemList:_route.departPlacesList ] 
-                                                           selectedItemIds:_selectedDepartPlaceIdList
-                                                              multiOptions:NO 
-                                                               needConfirm:NO 
-                                                             needShowCount:NO];
-    controller.delegate = self;
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
-}
+//- (void)clickDepartPlaceButton
+//{
+//    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出发地点")
+//                                                                  itemList:[[AppManager defaultManager] buildDepartPlaceItemList:_route.departPlacesList ] 
+//                                                           selectedItemIds:_selectedDepartPlaceIdList
+//                                                              multiOptions:NO 
+//                                                               needConfirm:NO 
+//                                                             needShowCount:NO];
+//    controller.delegate = self;
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
+//}
 
 - (void)clickDepartDateButton
 {
@@ -374,15 +342,6 @@
 
 - (void)clickMemberBookButton
 {
-//        self.departDate = [NSDate date];
-//        if (self.departPlace == nil) {
-//            PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
-//        }
-    if (_departPlace == nil) {
-        [self popupMessage:NSLS(@"请选择出发地点") title:nil];
-        return;
-    }
-    
     if (_departDate == nil) {
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];
         return;
@@ -421,7 +380,7 @@
         [service localRouteOrderUsingLoginId:[manager loginId]  
                                        token:[manager token] 
                                      routeId:_route.routeId  
-                               departPlaceId:self.departPlace.departPlaceId
+                               departPlaceId:0
                                   departDate:_departDate 
                                        adult:_adult 
                                     children:_children 
@@ -435,14 +394,6 @@
 
 - (void)clickNonMemberBookButton
 {
-//    self.departDate = [NSDate date];
-//    if (self.departPlace == nil) {
-//        PPDebug(@"localRouteOrderUsingLoginId departPlace is null");
-//    }
-    if (_departPlace == nil) {
-        [self popupMessage:NSLS(@"请选择出发地点") title:nil];
-        return;
-    }
     
     if (_departDate == nil) {
         [self popupMessage:NSLS(@"请选择出发日期") title:nil];
@@ -452,7 +403,7 @@
     if (_nonMemberOrderController == nil) {
         NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithLocalRoute:_route 
                                                                                           routeType:OBJECT_LIST_LOCAL_ROUTE 
-                                                                                      departPlaceId:_departPlace.departPlaceId 
+                                                                                      departPlaceId:0 
                                                                                          departDate:_departDate 
                                                                                               adult:_adult 
                                                                                            children:_children];
@@ -485,10 +436,6 @@
 #pragma mark - SelectControllerDelegate
 - (void)didSelectFinish:(NSArray*)selectedItems
 {
-    int departPlaceId = [[_selectedDepartPlaceIdList objectAtIndex:0] intValue];
-    self.departPlace = [self findDepartPlace:departPlaceId];
-    
-    
     self.adult = [[_selectedAdultIdList objectAtIndex:0] intValue];
     self.children = [[_selectedChildrenIdList objectAtIndex:0] intValue];
     [dataTableView reloadData];

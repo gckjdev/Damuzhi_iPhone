@@ -19,7 +19,7 @@
 #import "AppDelegate.h"
 #import "CityManagementController.h"
 
-#define EACH_COUNT 6
+#define EACH_COUNT 20
 #define CELL_HERDER_HEIGHT 33
 
 @interface LocalRouteListController ()

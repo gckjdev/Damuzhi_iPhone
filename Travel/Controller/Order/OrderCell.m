@@ -85,15 +85,12 @@
         [self addSubview:routePackageNameLabel];
     } 
     
-    NSString *departCityLabelText;
-    if (orderType == OBJECT_LIST_LOCAL_ROUTE_ORDER) {
-        departCityLabelText = [NSString stringWithFormat:@"出发地点: %@",order.departPlace.departPlace];
-    } else {
-        departCityLabelText = [NSString stringWithFormat:@"出发城市: %@",order.departCityName];
+    if (orderType != OBJECT_LIST_LOCAL_ROUTE_ORDER) {
+        NSString *departCityLabelText = [NSString stringWithFormat:@"出发城市: %@",order.departCityName];
+        UILabel *departCityLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departCityLabelText];
+        [self addSubview:departCityLabel];
     }
-    
-    UILabel *departCityLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:departCityLabelText];
-    [self addSubview:departCityLabel];
+
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:order.departDate - 8 * 3600];
     NSString *departDateLabelText = [NSString stringWithFormat:NSLS(@"%@ %@"), dateToStringByFormat(departDate, @"yyyy年MM月dd日"), chineseWeekDayFromDate(departDate)]; 
@@ -107,7 +104,7 @@
     UILabel *bookingDateLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:bookingDateLabelText];
     [self addSubview:bookingDateLabel];
 
-    NSString *personCountLabelText = [NSString stringWithFormat:@"出发城市: 成人%d位 儿童%d位",order.adult, order.children];
+    NSString *personCountLabelText = [NSString stringWithFormat:@"出游人数: 成人%d位 儿童%d位",order.adult, order.children];
     UILabel *personCountLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:personCountLabelText];
     [self addSubview:personCountLabel];
     
@@ -138,7 +135,6 @@
             routeFeedback.hidden = YES;
             routeDetail.center = CGPointMake(160 - 3, orderPayButton.center.y);
     }
-    
 }
 
 - (IBAction)clickRouteFeekbackButton:(id)sender {
