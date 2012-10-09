@@ -50,10 +50,6 @@ enum{
 
 @property (retain, nonatomic) UITextField *currentInputTextField;
 
-
-//- (void)removeHideKeyboardButton;
-//- (void)addHideKeyboardButton;
-//- (void)clickHideKeyboardButton:(id)sender;
 @end
 
 @implementation UserInfoController
