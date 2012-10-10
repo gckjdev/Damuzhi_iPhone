@@ -208,20 +208,19 @@
 //    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
 //    
 //    self.window.rootViewController = navigationController;
-//    
-//    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
-//    splashView.frame = [self.window bounds];
-//    splashView.tag = SPLASH_VIEW_TAG;
-//    [self.window.rootViewController.view addSubview:splashView];
-//    [splashView release];
-//    
-//    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
-    
+//
     
     [self initTabViewControllers];
     [self.window addSubview:_tabBarController.view];
+
     
     [self.window makeKeyAndVisible];
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    splashView.frame = [self.window bounds];
+    splashView.tag = SPLASH_VIEW_TAG;
+    [self.window addSubview:splashView];
+    [splashView release];
+    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     [[UserService defaultService] queryVersion:self];
 
@@ -234,10 +233,10 @@
 	[UIView setAnimationDuration:2.0f];
 	
 	[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-						   forView:self.window.rootViewController.view 
+						   forView:self.window
                              cache:YES];
     [UIView commitAnimations];
-    [[self.window.rootViewController.view viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+    [[self.window viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -164,6 +164,7 @@
     return [self headerViewWithFrame:CGRectMake(0, 0, 302, HEIGHT_HEADER_VIEW) forSection:section];
 }
 
+#define TAG_ARROW_IMAGE_VIEW 1210101
 #define HEIGHT_IMAGE_VIEW 8
 #define WIDTH_IMAGE_VIEW 8
 - (UIView *)headerViewWithFrame:(CGRect)frame forSection:(NSInteger)section
@@ -204,7 +205,13 @@
     [view addSubview:bookDateLabel];
     
     UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(270, HEIGHT_HEADER_VIEW/2-22/2, 22, 22)];
-    arrowImageView.image = [[ImageManager defaultManager] arrowImage];
+    arrowImageView.tag = TAG_ARROW_IMAGE_VIEW;
+    BOOL open = [self isSectionOpen:section];
+    if (open) {
+        [arrowImageView setImage:[[ImageManager defaultManager] arrowImage]];
+    } else {
+        [arrowImageView setImage:[[ImageManager defaultManager] arrowRightImage]];
+    }
     [view addSubview:arrowImageView];
     [arrowImageView release];
     
@@ -250,6 +257,14 @@
 {
     UIButton *button = (UIButton *)sender;
     BOOL open = [self isSectionOpen:button.tag];
+    
+    UIImageView *arrowImageView = (UIImageView *)[button viewWithTag:TAG_ARROW_IMAGE_VIEW];
+    if (open) {
+         [arrowImageView setImage:[[ImageManager defaultManager] arrowImage]];
+    } else {
+         [arrowImageView setImage:[[ImageManager defaultManager] arrowRightImage]];
+    }
+   
     
     [self setSection:button.tag Open:!open];
 }

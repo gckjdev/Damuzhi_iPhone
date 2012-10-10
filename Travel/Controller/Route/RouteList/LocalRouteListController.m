@@ -255,6 +255,8 @@
     
     self.start = 0;
     [self findLocalRoutes];
+    
+    [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
 
 
@@ -295,7 +297,7 @@
     
     if ([self.dataList count] == 0) {
         self.noMoreData = YES;
-        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+        [self showTipsOnTableView:NSLS(@"该城市暂未开通本地游线路")];
     }else {
         [self hideTipsOnTableView];
     }

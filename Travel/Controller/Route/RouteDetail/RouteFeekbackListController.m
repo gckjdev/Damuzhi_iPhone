@@ -78,9 +78,8 @@
     
     
     dataTableView.backgroundColor = [UIColor clearColor];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
-    
-
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1]];
 
     [RouteService defaultService] ;
     
