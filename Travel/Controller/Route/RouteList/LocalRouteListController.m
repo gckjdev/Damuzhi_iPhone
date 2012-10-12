@@ -34,6 +34,7 @@
 @property (retain, nonatomic) NSArray *agencyList;
 @property (retain, nonatomic) NSDictionary *agencyDic;
 @property (retain, nonatomic) UIButton *changeCitybutton;
+@property (retain, nonatomic) UIImageView *bottomImageview;
 
 @end
 
@@ -43,12 +44,14 @@
 @synthesize agencyList = _agencyList;
 @synthesize agencyDic = _agencyDic;
 @synthesize changeCitybutton = _changeCitybutton;
+@synthesize bottomImageview = _bottomImageview;
 
 - (void)dealloc
 {
     [_agencyList release];
     [_agencyDic release];
     [_changeCitybutton release];
+    [_bottomImageview release];
     [super dealloc];
 }
 
@@ -142,6 +145,29 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#define TAG_BOTTOM 12101101
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+    [super scrollViewDidScroll:scrollView];
+    
+    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
+    if (self.noMoreData && scrollPosition <= 0) {
+        if ([self.dataTableView viewWithTag:TAG_BOTTOM] == nil) {
+            
+            if (self.bottomImageview == nil) {
+                self.bottomImageview = [[[UIImageView alloc] init] autorelease];
+                _bottomImageview.tag = TAG_BOTTOM;
+                [_bottomImageview setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+            }
+            CGFloat cHeight = dataTableView.contentSize.height;
+            CGFloat fHeight = dataTableView.frame.size.height;
+            CGFloat y = (cHeight > fHeight ? cHeight : fHeight);
+            _bottomImageview.frame = CGRectMake(0, y, 320, 250);
+            [dataTableView addSubview:_bottomImageview];
+        }
+    } else {
+        [_bottomImageview removeFromSuperview];
+    }
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -255,6 +281,8 @@
     
     self.start = 0;
     [self findLocalRoutes];
+    
+    [_bottomImageview removeFromSuperview];
     
     [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
