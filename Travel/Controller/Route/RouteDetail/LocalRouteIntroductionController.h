@@ -33,5 +33,6 @@
 
 - (void)showInView:(UIView *)superView;
 - (void)updateWithRoute:(LocalRoute *)route;
+- (void)loadDetailHtml:(NSString *)detailUrl;
 
 @end

@@ -85,7 +85,6 @@
     
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
     
-    [self updateCityName];
     [self findLocalRoutes];
 }
 
@@ -98,6 +97,9 @@
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
+    
+    _cityId = [_appManager getCurrentCityId];
+    [self createButtonView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -120,23 +122,33 @@
     [appDelegate hideTabBar:isHide];
 }
 
-- (void)updateCityName
+- (void)createButtonView
 {
-    NSString *currentCityName = [_appManager getCurrentCityName];
-    NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
-    CGSize titleSize = [buttonTitle sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
-    _changeCitybutton.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
     
-    [_changeCitybutton setTitle:buttonTitle forState:UIControlStateNormal];
+    NSString *title = [NSString stringWithFormat:@"本地游 — %@", [[AppManager defaultManager] getCurrentCityName]];
+    CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
-    [_changeCitybutton setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
-    _changeCitybutton.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
-    _changeCitybutton.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
-    _changeCitybutton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    _changeCitybutton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    
+    [button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
+    
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
+    
+    //    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
+    
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.titleView = button;
+    
+    [button release];
 }
+
 
 - (void)clickTitle:(id)sender
 {
@@ -242,8 +254,10 @@
 {
     int row = [indexPath row];
     int section = [indexPath section];
-    int routeId = [[self getRoute:row section:section] routeId];
-    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRouteId:routeId];
+    LocalRoute *localRoute = (LocalRoute *)[self getRoute:row section:section];
+    
+    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc] initWithLocalRouteId:localRoute.routeId detailUrl:localRoute.detailUrl];
+    
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -277,7 +291,7 @@
 - (void)currentCityDidChange:(int)newCityId
 {
     _cityId = [_appManager getCurrentCityId];
-    [self updateCityName];
+    [self createButtonView];
     
     self.start = 0;
     [self findLocalRoutes];

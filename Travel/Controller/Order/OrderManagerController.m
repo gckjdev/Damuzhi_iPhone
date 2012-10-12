@@ -40,7 +40,6 @@
 - (void)viewDidLoad
 {
     self.title = @"订单管理";
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
 
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -50,6 +49,8 @@
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
 
     [self updateNavButtons];
     self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"),nil];

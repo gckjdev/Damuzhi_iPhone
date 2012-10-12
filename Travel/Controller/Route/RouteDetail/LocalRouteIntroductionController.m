@@ -100,14 +100,15 @@
     CGSize priceSize = [route.price sizeWithFont:self.priceLable.font];
     self.priceLastLabel.frame = CGRectMake(self.priceLable.frame.origin.x + priceSize.width, self.priceLastLabel.frame.origin.y , self.priceLastLabel.frame.size.width, self.priceLastLabel.frame.size.height);
     self.priceLastLabel.text = NSLS(@"起");
-    
-    //load html
-    PPDebug(@"detailUrl:%@",route.detailUrl);
-    NSURL *requestUrl = [NSURL URLWithString:route.detailUrl];
+}
+
+- (void)loadDetailHtml:(NSString *)detailUrl
+{
+    PPDebug(@"detailUrl:%@",detailUrl);
+    NSURL *requestUrl = [NSURL URLWithString:detailUrl];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
     self.contentWebView.delegate = self;
     [self.contentWebView loadRequest:request];
-    
 }
 
 #pragma mark - 

@@ -23,5 +23,6 @@
 
 - (id)initWithLocalRouteId:(int)routeId;
 
+- (id)initWithLocalRouteId:(int)routeId detailUrl:(NSString *)detailUrl;
 
 @end
