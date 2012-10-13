@@ -85,6 +85,7 @@
     
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
     
+    [self createButtonView];
     [self findLocalRoutes];
 }
 
@@ -98,8 +99,15 @@
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
     
-    _cityId = [_appManager getCurrentCityId];
-    [self createButtonView];
+    if (_cityId != [_appManager getCurrentCityId]) {
+        _cityId = [_appManager getCurrentCityId];
+        [self createButtonView];
+        
+        self.start = 0;
+        [self findLocalRoutes];
+        
+        [_bottomImageview removeFromSuperview];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -289,15 +297,7 @@
 }
 
 - (void)currentCityDidChange:(int)newCityId
-{
-    _cityId = [_appManager getCurrentCityId];
-    [self createButtonView];
-    
-    self.start = 0;
-    [self findLocalRoutes];
-    
-    [_bottomImageview removeFromSuperview];
-    
+{    
     [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
 

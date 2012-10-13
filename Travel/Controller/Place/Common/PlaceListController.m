@@ -37,6 +37,7 @@
 @property (assign, nonatomic) BOOL canDelete;
 @property (retain, nonatomic) UINavigationController *superNavigationController;
 @property (retain, nonatomic) UIButton *locateButton;
+@property (retain, nonatomic) UIImageView *bottomImageview;
 
 @end
 
@@ -50,6 +51,7 @@
 @synthesize locateButton = _locateButton;
 @synthesize alertViewType = _alertViewType;
 @synthesize isNearby = _isNearby;
+@synthesize bottomImageview = _bottomImageview;
 
 - (void)dealloc
 {
@@ -57,6 +59,7 @@
     [_superNavigationController release];
     [_mapView release];
     [_locateButton release];
+    [_bottomImageview release];
     [super dealloc];
 }
 
@@ -153,6 +156,30 @@
     [super viewDidDisappear:animated];
 }
 
+
+#define TAG_BOTTOM 12101301
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [super scrollViewDidScroll:scrollView];
+    
+    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
+    if (self.noMoreData && scrollPosition < 0) {
+        if ([self.dataTableView viewWithTag:TAG_BOTTOM] == nil) {
+            
+            if (self.bottomImageview == nil) {
+                self.bottomImageview = [[[UIImageView alloc] init] autorelease];
+                _bottomImageview.tag = TAG_BOTTOM;
+                [_bottomImageview setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+            }
+            CGFloat cHeight = dataTableView.contentSize.height;
+            CGFloat fHeight = dataTableView.frame.size.height;
+            CGFloat y = (cHeight > fHeight ? cHeight : fHeight);
+            _bottomImageview.frame = CGRectMake(0, y, 320, 250);
+            [dataTableView addSubview:_bottomImageview];
+        }
+    } else {
+        [_bottomImageview removeFromSuperview];
+    }
+}
 
 #pragma mark -
 #pragma mark TableView Delegate

@@ -207,7 +207,11 @@
 #pragma mark - 
 #pragma UIActionSheetDelegate method
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{  
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
     [UIUtils makeCall:_route.contactPhone];
 }
 
