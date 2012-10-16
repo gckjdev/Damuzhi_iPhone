@@ -696,6 +696,13 @@
 		EA328A101542A234001ACFF4 /* pin_gw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A081542A234001ACFF4 /* pin_gw@2x.png */; };
 		EA328A121542A234001ACFF4 /* pin_ht@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A0A1542A234001ACFF4 /* pin_ht@2x.png */; };
 		EA328A141542A234001ACFF4 /* pin_jd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA328A0C1542A234001ACFF4 /* pin_jd@2x.png */; };
+		EA35B85D162D2FA000216678 /* CommonDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = EA35B85B162D2FA000216678 /* CommonDialog.m */; };
+		EA35B85E162D2FA000216678 /* CommonDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA35B85C162D2FA000216678 /* CommonDialog.xib */; };
+		EA35B865162D36E600216678 /* update_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B860162D36E600216678 /* update_1@2x.png */; };
+		EA35B866162D36E600216678 /* update_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B861162D36E600216678 /* update_2@2x.png */; };
+		EA35B867162D36E600216678 /* update_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B862162D36E600216678 /* update_3@2x.png */; };
+		EA35B868162D36E600216678 /* update_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B863162D36E600216678 /* update_4@2x.png */; };
+		EA35B869162D36E600216678 /* update_5_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B864162D36E600216678 /* update_5_btn@2x.png */; };
 		EA5C766A1534575B0025AFB2 /* TravelPreparationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */; };
 		EA5C766D1534579A0025AFB2 /* TravelTransportDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C766C1534579A0025AFB2 /* TravelTransportDataSource.m */; };
 		EAA6A16715CA73ED0094B122 /* line_n_t4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */; };
@@ -1795,6 +1802,14 @@
 		EA328A081542A234001ACFF4 /* pin_gw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_gw@2x.png"; sourceTree = "<group>"; };
 		EA328A0A1542A234001ACFF4 /* pin_ht@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_ht@2x.png"; sourceTree = "<group>"; };
 		EA328A0C1542A234001ACFF4 /* pin_jd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_jd@2x.png"; sourceTree = "<group>"; };
+		EA35B85A162D2FA000216678 /* CommonDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonDialog.h; sourceTree = "<group>"; };
+		EA35B85B162D2FA000216678 /* CommonDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonDialog.m; sourceTree = "<group>"; };
+		EA35B85C162D2FA000216678 /* CommonDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommonDialog.xib; sourceTree = "<group>"; };
+		EA35B860162D36E600216678 /* update_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_1@2x.png"; sourceTree = "<group>"; };
+		EA35B861162D36E600216678 /* update_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_2@2x.png"; sourceTree = "<group>"; };
+		EA35B862162D36E600216678 /* update_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_3@2x.png"; sourceTree = "<group>"; };
+		EA35B863162D36E600216678 /* update_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_4@2x.png"; sourceTree = "<group>"; };
+		EA35B864162D36E600216678 /* update_5_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_5_btn@2x.png"; sourceTree = "<group>"; };
 		EA5C76681534575B0025AFB2 /* TravelPreparationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelPreparationDataSource.h; path = Common/TravelPreparationDataSource.h; sourceTree = "<group>"; };
 		EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelPreparationDataSource.m; path = Common/TravelPreparationDataSource.m; sourceTree = "<group>"; };
 		EA5C766B1534579A0025AFB2 /* TravelTransportDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTransportDataSource.h; sourceTree = "<group>"; };
@@ -2567,6 +2582,7 @@
 		A48E047F1534058800B2695E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				EA35B85F162D36E600216678 /* tips */,
 				EA19E11C1606C1BC006A04A3 /* local_route */,
 				A3E2D4E715C24DD5006F99CA /* city_filter */,
 				A34BDD3415B94A3800CD16C7 /* Default@2x.png */,
@@ -3172,6 +3188,9 @@
 		CA238FCB14FE5ECE00114175 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EA35B85A162D2FA000216678 /* CommonDialog.h */,
+				EA35B85B162D2FA000216678 /* CommonDialog.m */,
+				EA35B85C162D2FA000216678 /* CommonDialog.xib */,
 				A3E1956215A2F0B600972886 /* RankView.h */,
 				A3E1956315A2F0B600972886 /* RankView.m */,
 				A48E062815358FD600B2695E /* CommonWebController.h */,
@@ -4314,6 +4333,18 @@
 			path = "Core-Utils-Animation";
 			sourceTree = "<group>";
 		};
+		EA35B85F162D36E600216678 /* tips */ = {
+			isa = PBXGroup;
+			children = (
+				EA35B860162D36E600216678 /* update_1@2x.png */,
+				EA35B861162D36E600216678 /* update_2@2x.png */,
+				EA35B862162D36E600216678 /* update_3@2x.png */,
+				EA35B863162D36E600216678 /* update_4@2x.png */,
+				EA35B864162D36E600216678 /* update_5_btn@2x.png */,
+			);
+			path = tips;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4790,6 +4821,12 @@
 				EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */,
 				EA0EFC67160C12F90057E36C /* TicketHotelController.xib in Resources */,
 				EA16E1B316252B63002F388B /* line_zk2@2x.png in Resources */,
+				EA35B85E162D2FA000216678 /* CommonDialog.xib in Resources */,
+				EA35B865162D36E600216678 /* update_1@2x.png in Resources */,
+				EA35B866162D36E600216678 /* update_2@2x.png in Resources */,
+				EA35B867162D36E600216678 /* update_3@2x.png in Resources */,
+				EA35B868162D36E600216678 /* update_4@2x.png in Resources */,
+				EA35B869162D36E600216678 /* update_5_btn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5118,6 +5155,7 @@
 				EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */,
 				EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */,
 				EA0EFC66160C12F90057E36C /* TicketHotelController.m in Sources */,
+				EA35B85D162D2FA000216678 /* CommonDialog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5202,8 +5240,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PROVISIONING_PROFILE = "86D64645-11BA-4D1B-B06D-7942776063E4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86D64645-11BA-4D1B-B06D-7942776063E4";
+				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 			};
@@ -5227,8 +5265,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "86D64645-11BA-4D1B-B06D-7942776063E4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86D64645-11BA-4D1B-B06D-7942776063E4";
+				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 				VALIDATE_PRODUCT = YES;
@@ -5250,8 +5288,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "86D64645-11BA-4D1B-B06D-7942776063E4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86D64645-11BA-4D1B-B06D-7942776063E4";
+				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
@@ -5273,8 +5311,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "86D64645-11BA-4D1B-B06D-7942776063E4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "86D64645-11BA-4D1B-B06D-7942776063E4";
+				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;

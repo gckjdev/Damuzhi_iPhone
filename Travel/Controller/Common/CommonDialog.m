@@ -8,17 +8,62 @@
 
 #import "CommonDialog.h"
 
-@implementation CommonDialog
+@interface CommonDialog()
+@property (assign, nonatomic) id<CommonDialogDelegate> delegate;
+@end
 
-- (id)initWithFrame:(CGRect)frame
+@implementation CommonDialog
+@synthesize titleLabel = _titleLabel;
+@synthesize subTitleLabel = _subTitleLabel;
+@synthesize contentTextView = _contentTextView;
+@synthesize OKButton = _OKButton;
+@synthesize cancelButton = _cancelButton;
+@synthesize delegate = _delegate;
+
++ (CommonDialog *)createDialogWithTitle:(NSString *)title
+                                message:(NSString *)message
+                               delegate:(id<CommonDialogDelegate>)delegate
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"CommonDialog" owner:self options:nil];
+    if (topLevelObjects == nil || [topLevelObjects count] <= 0){
+        NSLog(@"create CommonDialog but cannot find object from Nib");
+        return nil;
     }
-    return self;
+    
+    CommonDialog *commonDialog = (CommonDialog*)[topLevelObjects objectAtIndex:0];
+    commonDialog.delegate = delegate;
+    
+    return commonDialog;
 }
 
+- (void)showInView:(UIView*)view
+{
+    self.frame = view.frame;
+    [view addSubview:self];
+}
 
+- (IBAction)clickOKButton:(id)sender
+{
+    [self removeFromSuperview];
+    if ([_delegate respondsToSelector:@selector(didClickOkButton)]) {
+        [_delegate didClickOkButton];
+    }
+}
 
+- (IBAction)clickCancelButton:(id)sender
+{
+    [self removeFromSuperview];
+    if ([_delegate respondsToSelector:@selector(didClickCancelButton)]) {
+        [_delegate didClickCancelButton];
+    }
+}
+
+- (void)dealloc {
+    [_titleLabel release];
+    [_subTitleLabel release];
+    [_contentTextView release];
+    [_OKButton release];
+    [_cancelButton release];
+    [super dealloc];
+}
 @end

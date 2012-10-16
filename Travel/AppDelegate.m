@@ -27,8 +27,9 @@
 #import "MoreController.h"
 #import "HappyTourController.h"
 #import "TicketHotelController.h"
-
 #import "LocalRouteListController.h"
+#import "UserManager.h"
+
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
 
@@ -192,8 +193,9 @@
     [[AppService defaultService] updateHelpHtmlFile];
     
     //register user
-    //[[UserService defaultService] autoRegisterUser:@"123"];
-    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
+    if ([[UserManager defaultManager] getUserId] == nil) {
+        [self registerUser];
+    }
     
     //resend favorete place
     [[ResendService defaultService] resendFavorite];
@@ -236,6 +238,11 @@
                              cache:YES];
     [UIView commitAnimations];
     [[self.window viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+}
+
+- (void)registerUser
+{
+    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -319,9 +326,11 @@
 
 #pragma mark - Device Notification Delegate
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    PPDebug(@"My token is: %@", deviceToken);
-    // Get a hex string from the device token with no spaces or < >	
-	[self saveDeviceToken:deviceToken];    
+    PPDebug(@"Get token successfully: %@", deviceToken);
+    
+	[self saveDeviceToken:deviceToken];
+    
+    [self registerUser];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
