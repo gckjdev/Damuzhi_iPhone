@@ -127,12 +127,6 @@
                                                   @"menu_btn4_on.png", 
                                                   @"menu_btn5_on.png", nil]];
     
-//    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
-//                                                  @"3qi_menu_btn1_on.png", 
-//                                                  @"local_menu_btn2_on@2x.png", 
-//                                                  @"flight_menu_btn3_on@2x.png", 
-//                                                  @"leyou_menu_btn4_on@2x.png", 
-//                                                  @"3qi_menu_btn5_on@2x.png", nil]];
     _tabBarController.selectedIndex = 0;
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
@@ -169,6 +163,11 @@
     }        
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
+    // Push Setup
+    if (![self isPushNotificationEnable]){
+        [self bindDevice];
+    }
     
 //    //juage if app is firstLaunch
 //    if (![[NSUserDefaults standardUserDefaults] boolForKey:EVER_LAUNCHED]) {
@@ -317,5 +316,17 @@
     }
 }
 
+
+#pragma mark - Device Notification Delegate
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    PPDebug(@"My token is: %@", deviceToken);
+    // Get a hex string from the device token with no spaces or < >	
+	[self saveDeviceToken:deviceToken];    
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    PPDebug(@"Failed to get token, error: %@", error);
+}
 
 @end
