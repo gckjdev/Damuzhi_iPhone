@@ -30,8 +30,16 @@
 #import "LocalRouteListController.h"
 #import "UserManager.h"
 
+typedef enum{
+    NotificationTypeNone = 0,
+    NotificationTypeNewCity,
+    NotificationTypeNewVersion,
+    NotificationTypeUpdateOfflineCity
+}NotificationType;
+
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
+
 
 @implementation AppDelegate
 
@@ -305,6 +313,9 @@
             UIAlertView *alertView = [[UIAlertView  alloc] initWithTitle:nil message:NSLS(@"有新版本，是否更新？") delegate:self cancelButtonTitle:NSLS(@"稍后更新") otherButtonTitles:@"立即更新", nil];
             [alertView show];
             [alertView release];
+            
+//            CommonDialog *dialog = [CommonDialog createDialogWithTitle:@"新版本升级提示" subTitle:@"大拇指旅游2.1发布了" content:@"1.地点列表采用多次加载\n2.优化已知Bug" OKButtonTitle:@"立刻升级" cancelButtonTitle:@"稍后提醒" delegate:self];
+//            [self.window insertSubview:dialog belowSubview:[self.window viewWithTag:SPLASH_VIEW_TAG]];
         }
     }
     else {
@@ -336,6 +347,33 @@
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     PPDebug(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+//    NSNumber *type = [userInfo objectForKey:@"type"];
+//    switch (type.intValue) {
+//        case NotificationTypeNewCity:
+//            break;
+//        case NotificationTypeNewVersion:
+//            break;
+//        case NotificationTypeUpdateOfflineCity:
+//            break;
+//        default:
+//            break;
+//    }
+}
+
+#pragma mark - 
+#pragma CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    [UIUtils openApp:kAppId];
+}
+
+- (void)didClickCancelButton
+{
+    return;
 }
 
 @end

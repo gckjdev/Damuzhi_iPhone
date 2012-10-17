@@ -21,7 +21,10 @@
 @synthesize delegate = _delegate;
 
 + (CommonDialog *)createDialogWithTitle:(NSString *)title
-                                message:(NSString *)message
+                               subTitle:(NSString *)subTitle
+                                content:(NSString *)content
+                          OKButtonTitle:(NSString *)OKButtonTitle
+                      cancelButtonTitle:(NSString *)cancelButtonTitle
                                delegate:(id<CommonDialogDelegate>)delegate
 {
     NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"CommonDialog" owner:self options:nil];
@@ -31,6 +34,13 @@
     }
     
     CommonDialog *commonDialog = (CommonDialog*)[topLevelObjects objectAtIndex:0];
+    
+    commonDialog.titleLabel.text = title;
+    commonDialog.subTitleLabel.text = subTitle;
+    commonDialog.contentTextView.text = content;
+    [commonDialog.OKButton setTitle:OKButtonTitle forState:UIControlStateNormal];
+    [commonDialog.cancelButton setTitle:cancelButtonTitle forState:UIControlStateNormal];
+    
     commonDialog.delegate = delegate;
     
     return commonDialog;

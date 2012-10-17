@@ -86,6 +86,9 @@
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
     
     [self createButtonView];
+    
+    _start = 0;
+    
     [self findLocalRoutes];
 }
 
@@ -348,7 +351,7 @@
     [self dataSourceDidFinishLoadingMoreData];
 }
 
-
+ 
 - (void)loadMoreTableViewDataSource
 {
     if (_start >= _totalCount) {

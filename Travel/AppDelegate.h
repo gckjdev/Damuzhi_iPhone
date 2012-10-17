@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "PPApplication.h"
 #import "UserService.h"
+#import "CommonDialog.h"
 
 #define kAppId			@"531266294"
 
 @class MainController;
 @class PPTabBarController;
 
-@interface AppDelegate : PPApplication <UIApplicationDelegate, UserServiceDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : PPApplication <UIApplicationDelegate, UserServiceDelegate, UITabBarControllerDelegate, CommonDialogDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

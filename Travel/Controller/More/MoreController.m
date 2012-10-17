@@ -313,14 +313,13 @@
 
 - (void)showAbout
 {
-//    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
-//    controller.navigationItem.title = ABOUT;
-//    [self.navigationController pushViewController:controller animated:YES];
-//    [controller release];
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
+    controller.navigationItem.title = ABOUT;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
     
-    CommonDialog *dialog = [CommonDialog createDialogWithTitle:nil message:nil delegate:self];
-    
-    [dialog showInView:self.view];
+//    CommonDialog *dialog = [CommonDialog createDialogWithTitle:@"新版本升级提示" subTitle:@"大拇指旅游2.1发布了" content:@"1.地点列表采用多次加载\n2.优化已知Bug" OKButtonTitle:@"立刻升级" cancelButtonTitle:@"稍后提醒" delegate:self];
+//    [dialog showInView:self.view];
 }
 
 - (void)showRecommendedApps
