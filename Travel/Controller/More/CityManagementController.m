@@ -24,6 +24,7 @@
 
 @interface CityManagementController ()
 
+@property (retain, nonatomic) NSMutableArray *downloadingCities;
 @property (retain, nonatomic) NSDictionary *groupCitysDic;
 @property (retain, nonatomic) NSArray *groupNameList;
 @property (retain, nonatomic) NSArray *countryNameList;
@@ -37,6 +38,7 @@
 
 static CityManagementController *_instance;
 @synthesize delegate = _delegate;
+@synthesize downloadingCities = _downloadingCities;
 @synthesize downloadList = _downloadList;
 @synthesize downloadTableView = _downloadTableView;
 @synthesize promptLabel = _promptLabel;
@@ -67,6 +69,7 @@ static CityManagementController *_instance;
     [_downloadListBtn release];
     [_promptLabel release];
     [_citySearchBar release];
+    [_downloadingCities release];
     
     [_groupCitysDic release];
     [_groupNameList release];
@@ -106,7 +109,7 @@ static CityManagementController *_instance;
 {
     [self setBackgroundImageName:IMAGE_CITY_MAIN_BOTTOM];
     [super viewDidLoad];
-    
+    self.downloadingCities = [NSMutableArray array];
     
     self.label = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
     [self getCityData];
@@ -559,8 +562,10 @@ static CityManagementController *_instance;
 
 - (void)killTimer
 {
-    [timer invalidate];
-    timer = nil; 
+    if ([self.downloadingCities count] == 0) {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 - (void)handleTimer
@@ -584,20 +589,25 @@ static CityManagementController *_instance;
 - (void)didStartDownload:(City*)city
 {
     [self createTimer];
+    [self.downloadingCities addObject:[NSNumber numberWithInt:city.cityId]];
     [dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didCancelDownload:(City*)city
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
+
     [dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)didPauseDownload:(City*)city
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
+
     [dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
@@ -609,7 +619,9 @@ static CityManagementController *_instance;
 
 - (void)didFinishDownload:(City*)city
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
+
     [dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];
     
@@ -618,8 +630,9 @@ static CityManagementController *_instance;
 
 - (void)didFailDownload:(City *)city error:(NSError *)error
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
-    
+
     PPDebug(@"download failed, error = %@", error.description);
     NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@下载暂停"), city.countryName, city.cityName];
     
@@ -641,31 +654,36 @@ static CityManagementController *_instance;
 - (void)didStartUpdate:(City *)city
 {
     [self createTimer];
+    [self.downloadingCities addObject:[NSNumber numberWithInt:city.cityId]];
     [_downloadTableView reloadData];
 }
 
 - (void)didCancelUpdate:(City *)city
 {
-    
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
+    [self killTimer];
+    [_downloadTableView reloadData];
 }
 
 - (void)didPauseUpdate:(City *)city
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
     [_downloadTableView reloadData];
 }
 
 - (void)didFinishUpdate:(City *)city
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
-    
     [[CityDownloadService defaultService] UnzipCityDataAsynchronous:city.cityId unzipDelegate:self];
 }
 
 - (void)didFailUpdate:(City *)city error:(NSError *)error
 {
+    [self.downloadingCities removeObject:[NSNumber numberWithInt:city.cityId]];
     [self killTimer];
-    
+
     PPDebug(@"update failed, error = %@", error.description);
     NSString *message = [NSString stringWithFormat:NSLS(@"%@.%@更新暂停"), city.countryName, city.cityName];
     
