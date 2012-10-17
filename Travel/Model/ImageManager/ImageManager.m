@@ -195,6 +195,11 @@ static ImageManager *_defaultManager = nil;
     return [UIImage imageNamed:@"line_zk.png"];
 }
 
+- (UIImage *)arrowRightImage
+{
+    return [UIImage imageNamed:@"line_zk2.png"];
+}
+
 //- (UIImage *)bookingBgImage
 //{
 //    return [UIImage strectchableImageName:@"date_t_bg.png"];

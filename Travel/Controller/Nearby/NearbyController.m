@@ -25,15 +25,16 @@
 
 //#define TEST_FOR_SIMULATE__LOCATION
 
-#define POINT_OF_DISTANCE_500M  CGPointMake(28, 18)
-#define POINT_OF_DISTANCE_1KM   CGPointMake(83, 18)
-#define POINT_OF_DISTANCE_5KM   CGPointMake(164, 18)
-#define POINT_OF_DISTANCE_10KM   CGPointMake(287, 18)
+#define POINT_OF_DISTANCE_250M  CGPointMake(28, 18)
+#define POINT_OF_DISTANCE_500M   CGPointMake(66, 18)
+#define POINT_OF_DISTANCE_1KM   CGPointMake(125, 18)
+#define POINT_OF_DISTANCE_5KM   CGPointMake(287, 18)
 
+#define DISTANCE_250M 250
 #define DISTANCE_500M 500
 #define DISTANCE_1KM  1000
 #define DISTANCE_5KM 5000
-#define DISTANCE_10KM 10000
+//#define DISTANCE_10KM 10000
 
 #define TAG_RED_START_IMAGE_VIEW 789
 
@@ -307,13 +308,28 @@ UITextField * alertTextField;
 {
     if (need) {
         [UIImageView beginAnimations:nil context:nil];
-        [UIImageView setAnimationDuration:1];
+        [UIImageView setAnimationDuration:0.6];
         [imageView setCenter:center];
         [UIImageView commitAnimations];        
     }else{
         [imageView setCenter:center];        
     }
 }
+
+
+- (IBAction)click250M:(id)sender{
+    if (_distance != DISTANCE_250M) {
+        self.distance = DISTANCE_250M;
+        
+        [self moveImageView:[distanceView viewWithTag:TAG_RED_START_IMAGE_VIEW]
+                   toCenter:POINT_OF_DISTANCE_250M
+              needAnimation:YES];
+        
+        //        [[PlaceService defaultService] findPlaces:_categoryId viewController:self];
+        [self updateDataSorce];
+    }
+}
+
 
 - (IBAction)click500M:(id)sender {
     if (_distance != DISTANCE_500M) {
@@ -337,7 +353,6 @@ UITextField * alertTextField;
               needAnimation:YES];
         
         [self updateDataSorce];
-
     }   
 }
 
@@ -354,18 +369,18 @@ UITextField * alertTextField;
     }    
 }
 
-- (IBAction)click10K:(id)sender {
-    if (_distance != DISTANCE_10KM) {
-        self.distance = DISTANCE_10KM;
-        
-        [self moveImageView:[distanceView viewWithTag:TAG_RED_START_IMAGE_VIEW]
-                   toCenter:POINT_OF_DISTANCE_10KM 
-              needAnimation:YES];
-        
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
-    }
-}
+//- (IBAction)click10K:(id)sender {
+//    if (_distance != DISTANCE_10KM) {
+//        self.distance = DISTANCE_10KM;
+//        
+//        [self moveImageView:[distanceView viewWithTag:TAG_RED_START_IMAGE_VIEW]
+//                   toCenter:POINT_OF_DISTANCE_10KM 
+//              needAnimation:YES];
+//        
+////        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+//        [self updateDataSorce];
+//    }
+//}
 
 - (IBAction)clickSpotBtn:(id)sender {
     if (_categoryId != PlaceCategoryTypePlaceSpot) {

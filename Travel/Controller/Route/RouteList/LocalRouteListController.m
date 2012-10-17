@@ -34,6 +34,7 @@
 @property (retain, nonatomic) NSArray *agencyList;
 @property (retain, nonatomic) NSDictionary *agencyDic;
 @property (retain, nonatomic) UIButton *changeCitybutton;
+@property (retain, nonatomic) UIImageView *bottomImageview;
 
 @end
 
@@ -43,12 +44,14 @@
 @synthesize agencyList = _agencyList;
 @synthesize agencyDic = _agencyDic;
 @synthesize changeCitybutton = _changeCitybutton;
+@synthesize bottomImageview = _bottomImageview;
 
 - (void)dealloc
 {
     [_agencyList release];
     [_agencyDic release];
     [_changeCitybutton release];
+    [_bottomImageview release];
     [super dealloc];
 }
 
@@ -82,7 +85,7 @@
     
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
     
-    [self updateCityName];
+    [self createButtonView];
     [self findLocalRoutes];
 }
 
@@ -95,6 +98,16 @@
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
+    
+    if (_cityId != [_appManager getCurrentCityId]) {
+        _cityId = [_appManager getCurrentCityId];
+        [self createButtonView];
+        
+        self.start = 0;
+        [self findLocalRoutes];
+        
+        [_bottomImageview removeFromSuperview];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,23 +130,33 @@
     [appDelegate hideTabBar:isHide];
 }
 
-- (void)updateCityName
+- (void)createButtonView
 {
-    NSString *currentCityName = [_appManager getCurrentCityName];
-    NSString *buttonTitle = [NSString stringWithFormat:@"本地游 — %@",currentCityName];
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
-    CGSize titleSize = [buttonTitle sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
-    _changeCitybutton.frame = CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height);
     
-    [_changeCitybutton setTitle:buttonTitle forState:UIControlStateNormal];
+    NSString *title = [NSString stringWithFormat:@"本地游 — %@", [[AppManager defaultManager] getCurrentCityName]];
+    CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
-    [_changeCitybutton setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
-    _changeCitybutton.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
-    _changeCitybutton.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
-    _changeCitybutton.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    _changeCitybutton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
+    [button setTitle:title forState:UIControlStateNormal];
+    button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    
+    [button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
+    
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
+    
+    //    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
+    
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navigationItem.titleView = button;
+    
+    [button release];
 }
+
 
 - (void)clickTitle:(id)sender
 {
@@ -142,6 +165,29 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#define TAG_BOTTOM 12101101
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+    [super scrollViewDidScroll:scrollView];
+    
+    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
+    if (self.noMoreData && scrollPosition <= 0) {
+        if ([self.dataTableView viewWithTag:TAG_BOTTOM] == nil) {
+            
+            if (self.bottomImageview == nil) {
+                self.bottomImageview = [[[UIImageView alloc] init] autorelease];
+                _bottomImageview.tag = TAG_BOTTOM;
+                [_bottomImageview setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+            }
+            CGFloat cHeight = dataTableView.contentSize.height;
+            CGFloat fHeight = dataTableView.frame.size.height;
+            CGFloat y = (cHeight > fHeight ? cHeight : fHeight);
+            _bottomImageview.frame = CGRectMake(0, y, 320, 250);
+            [dataTableView addSubview:_bottomImageview];
+        }
+    } else {
+        [_bottomImageview removeFromSuperview];
+    }
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -216,8 +262,10 @@
 {
     int row = [indexPath row];
     int section = [indexPath section];
-    int routeId = [[self getRoute:row section:section] routeId];
-    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc]initWithLocalRouteId:routeId];
+    LocalRoute *localRoute = (LocalRoute *)[self getRoute:row section:section];
+    
+    LocalRouteDetailController *controller = [[LocalRouteDetailController alloc] initWithLocalRouteId:localRoute.routeId detailUrl:localRoute.detailUrl];
+    
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -249,12 +297,8 @@
 }
 
 - (void)currentCityDidChange:(int)newCityId
-{
-    _cityId = [_appManager getCurrentCityId];
-    [self updateCityName];
-    
-    self.start = 0;
-    [self findLocalRoutes];
+{    
+    [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
 
 
@@ -295,7 +339,7 @@
     
     if ([self.dataList count] == 0) {
         self.noMoreData = YES;
-        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+        [self showTipsOnTableView:NSLS(@"该城市暂未开通本地游线路")];
     }else {
         [self hideTipsOnTableView];
     }

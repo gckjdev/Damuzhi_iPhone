@@ -198,10 +198,10 @@
         return;     
     }
     
-    if (!NSStringIsValidChinese(contactPerson) ) {
-        [self popupMessage:@"联系人姓名只能用中文，请重新输入" title:nil];
-        return;
-    }
+//    if (!NSStringIsValidChinese(contactPerson) ) {
+//        [self popupMessage:@"联系人姓名只能用中文，请重新输入" title:nil];
+//        return;
+//    }
     
     if (!NSStringIsValidPhone(telephone)) {
         [self popupMessage:NSLS(@"您输入的手机号码有误，请重新输入") title:nil];

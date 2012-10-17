@@ -313,10 +313,14 @@
 
 - (void)showAbout
 {
-    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
-    controller.navigationItem.title = ABOUT;
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+//    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[AppUtils getHelpHtmlFilePath]];
+//    controller.navigationItem.title = ABOUT;
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
+    
+    CommonDialog *dialog = [CommonDialog createDialogWithTitle:nil message:nil delegate:self];
+    
+    [dialog showInView:self.view];
 }
 
 - (void)showRecommendedApps
@@ -472,5 +476,16 @@
     [controller release];
 }
 
+#pragma mark -
+#pragma CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    
+}
+
+- (void)didClickCancelButton
+{
+    
+}
 
 @end

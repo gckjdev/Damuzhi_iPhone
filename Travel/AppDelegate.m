@@ -27,8 +27,9 @@
 #import "MoreController.h"
 #import "HappyTourController.h"
 #import "TicketHotelController.h"
-
 #import "LocalRouteListController.h"
+#import "UserManager.h"
+
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
 
@@ -127,12 +128,6 @@
                                                   @"menu_btn4_on.png", 
                                                   @"menu_btn5_on.png", nil]];
     
-//    [self.tabBarController setSelectedImageArray:[NSArray arrayWithObjects:
-//                                                  @"3qi_menu_btn1_on.png", 
-//                                                  @"local_menu_btn2_on@2x.png", 
-//                                                  @"flight_menu_btn3_on@2x.png", 
-//                                                  @"leyou_menu_btn4_on@2x.png", 
-//                                                  @"3qi_menu_btn5_on@2x.png", nil]];
     _tabBarController.selectedIndex = 0;
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
@@ -170,6 +165,11 @@
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
     
+    // Push Setup
+    if (![self isPushNotificationEnable]){
+        [self bindDevice];
+    }
+    
 //    //juage if app is firstLaunch
 //    if (![[NSUserDefaults standardUserDefaults] boolForKey:EVER_LAUNCHED]) {
 //        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:EVER_LAUNCHED];
@@ -193,8 +193,9 @@
     [[AppService defaultService] updateHelpHtmlFile];
     
     //register user
-    //[[UserService defaultService] autoRegisterUser:@"123"];
-    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
+    if ([[UserManager defaultManager] getUserId] == nil) {
+        [self registerUser];
+    }
     
     //resend favorete place
     [[ResendService defaultService] resendFavorite];
@@ -208,20 +209,19 @@
 //    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
 //    
 //    self.window.rootViewController = navigationController;
-//    
-//    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
-//    splashView.frame = [self.window bounds];
-//    splashView.tag = SPLASH_VIEW_TAG;
-//    [self.window.rootViewController.view addSubview:splashView];
-//    [splashView release];
-//    
-//    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
-    
+//
     
     [self initTabViewControllers];
     [self.window addSubview:_tabBarController.view];
+
     
     [self.window makeKeyAndVisible];
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    splashView.frame = [self.window bounds];
+    splashView.tag = SPLASH_VIEW_TAG;
+    [self.window addSubview:splashView];
+    [splashView release];
+    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     [[UserService defaultService] queryVersion:self];
 
@@ -234,10 +234,15 @@
 	[UIView setAnimationDuration:2.0f];
 	
 	[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-						   forView:self.window.rootViewController.view 
+						   forView:self.window
                              cache:YES];
     [UIView commitAnimations];
-    [[self.window.rootViewController.view viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+    [[self.window viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+}
+
+- (void)registerUser
+{
+    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -318,5 +323,19 @@
     }
 }
 
+
+#pragma mark - Device Notification Delegate
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    PPDebug(@"Get token successfully: %@", deviceToken);
+    
+	[self saveDeviceToken:deviceToken];
+    
+    [self registerUser];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    PPDebug(@"Failed to get token, error: %@", error);
+}
 
 @end

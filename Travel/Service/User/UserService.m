@@ -29,11 +29,11 @@ static UserService* _defaultUserService = nil;
 
 - (void)autoRegisterUser:(NSString*)deviceToken
 {
-    // if user exists locally then return, else send a registration to server
-    if ([[UserManager defaultManager] getUserId]) {
-        return;
-    }
-    else {
+//    // if user exists locally then return, else send a registration to server
+//    if ([[UserManager defaultManager] getUserId]) {
+//        return;
+//    }
+//    else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             CommonNetworkOutput *output = [TravelNetworkRequest registerUser:1 token:deviceToken];
@@ -55,7 +55,7 @@ static UserService* _defaultUserService = nil;
                 }
             });                        
         });
-    }
+//    }
 }
 
 

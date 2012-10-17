@@ -126,7 +126,7 @@
         return;
     }
     
-    [self popupMessage:NSLS(@"发送成功") title:nil];
+    [self popupMessage:NSLS(@"提交成功，感谢您的评价") title:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

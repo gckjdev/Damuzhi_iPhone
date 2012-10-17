@@ -43,6 +43,7 @@
 - (UIImage *)tableLeftBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)tableRightBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)arrowImage;
+- (UIImage *)arrowRightImage;
 
 //- (UIImage *)bookingBgImage;
 

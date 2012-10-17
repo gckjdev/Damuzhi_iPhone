@@ -25,7 +25,7 @@
 @property (retain, nonatomic) CommonWebController *bookingPolicyController;
 @property (retain, nonatomic) RouteFeekbackListController *feekbackListController;
 @property (retain, nonatomic) UIButton *currentSelectedButton;
-
+@property (retain, nonatomic) NSString *detailUrl;
 
 @end
 
@@ -42,6 +42,7 @@
 @synthesize feekbackListController = _feekbackListController;
 @synthesize introductionButton = _introductionButton;
 @synthesize currentSelectedButton = _currentSelectedButton;
+@synthesize detailUrl = _detailUrl;
 
 - (void)dealloc
 {
@@ -55,6 +56,7 @@
     [_feekbackListController release];
     [_currentSelectedButton release];
     [_introductionButton release];
+    [_detailUrl release];
     [super dealloc];
 }
 
@@ -63,6 +65,15 @@
     self = [super init];
     if (self) {
         self.routeId = routeId;
+    }
+    return self;
+}
+
+- (id)initWithLocalRouteId:(int)routeId detailUrl:(NSString *)detailUrl
+{
+    self = [self initWithLocalRouteId:routeId];
+    if (self) {
+        self.detailUrl = detailUrl;
     }
     return self;
 }
@@ -89,7 +100,12 @@
     self.introductionController = [[[LocalRouteIntroductionController alloc] init] autorelease];
     self.introductionController.delegate = self;
     [_introductionController showInView:self.contentHolderView];
+    
     [[RouteService defaultService] findLocalRouteWithRouteId:_routeId viewController:self];
+    
+    if (_detailUrl) {
+        [_introductionController loadDetailHtml:_detailUrl];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -182,12 +198,20 @@
     self.routeIdLabel.text = [NSString stringWithFormat:@"编号:%d",route.routeId];
     self.agencyNameLabel.text = [[AppManager defaultManager] getAgencyShortName:route.agencyId];
     [_introductionController updateWithRoute:route];
+    
+    if (_detailUrl == nil) {
+        [_introductionController loadDetailHtml:route.detailUrl];
+    }
 }
 
 #pragma mark - 
 #pragma UIActionSheetDelegate method
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{  
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
     [UIUtils makeCall:_route.contactPhone];
 }
 
