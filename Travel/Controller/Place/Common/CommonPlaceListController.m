@@ -158,6 +158,9 @@
     [_placeListController showInView:_placeListHolderView];
 
 //    [_filterHandler findAllPlaces:self];
+    
+    _start = 0;
+    
     [_filterHandler findAllPlacesWithStart:_start 
                                      count:EACH_FETCH
                            selectedItemIds:_selectedItemIds

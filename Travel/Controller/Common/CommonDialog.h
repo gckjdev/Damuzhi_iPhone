@@ -27,8 +27,11 @@
 
 
 + (CommonDialog *)createDialogWithTitle:(NSString *)title
-                                message:(NSString *)message
-                               delegate:(id<CommonDialogDelegate>)aDelegate;
+                               subTitle:(NSString *)subTitle
+                                content:(NSString *)content
+                          OKButtonTitle:(NSString *)OKButtonTitle
+                      cancelButtonTitle:(NSString *)cancelButtonTitle
+                               delegate:(id<CommonDialogDelegate>)delegate;
 
 - (void)showInView:(UIView*)view;
 
