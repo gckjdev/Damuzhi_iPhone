@@ -294,7 +294,7 @@
 }
 
 #pragma -mark UserServiceDelegate
-- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
+- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion title:(NSString *)title content:(NSString *)content
 {
     if (version && dataVersion) {
         NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];

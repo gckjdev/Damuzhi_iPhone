@@ -14,7 +14,11 @@
 
 @optional
 
-- (void)queryVersionFinish:(NSString*)version dataVersion:(NSString*)dataVersion;
+- (void)queryVersionFinish:(NSString*)version
+               dataVersion:(NSString*)dataVersion
+                     title:(NSString *)title
+                   content:(NSString *)content;
+
 - (void)submitFeekbackDidFinish:(int)resultCode;
 
 - (void)signUpDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo;

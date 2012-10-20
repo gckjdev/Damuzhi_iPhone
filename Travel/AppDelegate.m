@@ -32,7 +32,7 @@
 
 typedef enum{
     NotificationTypeNone = 0,
-    NotificationTypeNewCity,
+    NotificationTypeNormal,
     NotificationTypeNewVersion,
     NotificationTypeUpdateOfflineCity
 }NotificationType;
@@ -157,6 +157,9 @@ typedef enum{
 #define FIRST_LAUNCH @"firstLaunch"
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    PPDebug(@"didFinishLaunchingWithOptions :%@",launchOptions);
+    
+    
     application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
 //    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
@@ -303,34 +306,23 @@ typedef enum{
 
 
 #pragma mark - UserServiceDelegate
-- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
+- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion title:(NSString *)title content:(NSString *)content
 {
     if (version && dataVersion) {
         NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
         float versionFloat = [version floatValue];
         float localVersionFloat = [localVersion floatValue];
-        if (localVersionFloat < versionFloat) {
-            UIAlertView *alertView = [[UIAlertView  alloc] initWithTitle:nil message:NSLS(@"有新版本，是否更新？") delegate:self cancelButtonTitle:NSLS(@"稍后更新") otherButtonTitles:@"立即更新", nil];
-            [alertView show];
-            [alertView release];
+        if (localVersionFloat < versionFloat) {            
+            if (title == nil || [title length] == 0) {
+                title = [NSString stringWithFormat:NSLS(@"大拇指旅行%@发布了"),version];
+            }
             
-//            CommonDialog *dialog = [CommonDialog createDialogWithTitle:@"新版本升级提示" subTitle:@"大拇指旅游2.1发布了" content:@"1.地点列表采用多次加载\n2.优化已知Bug" OKButtonTitle:@"立刻升级" cancelButtonTitle:@"稍后提醒" delegate:self];
-//            [self.window insertSubview:dialog belowSubview:[self.window viewWithTag:SPLASH_VIEW_TAG]];
+            CommonDialog *dialog = [CommonDialog createDialogWithTitle:NSLS(@"新版本升级提示") subTitle:title content:content OKButtonTitle:NSLS(@"立刻升级") cancelButtonTitle:NSLS(@"稍后提醒") delegate:self];
+            [self.window insertSubview:dialog belowSubview:[self.window viewWithTag:SPLASH_VIEW_TAG]];
         }
     }
     else {
         PPDebug(@"query version faild");
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        return ;
-    }else if(buttonIndex == 1)
-    {
-        [UIUtils openApp:kAppId];
     }
 }
 
@@ -351,17 +343,21 @@ typedef enum{
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-//    NSNumber *type = [userInfo objectForKey:@"type"];
-//    switch (type.intValue) {
-//        case NotificationTypeNewCity:
-//            break;
-//        case NotificationTypeNewVersion:
-//            break;
-//        case NotificationTypeUpdateOfflineCity:
-//            break;
-//        default:
-//            break;
-//    }
+    PPDebug(@"didReceiveRemoteNotification :%@", userInfo);
+    
+    NSNumber *type = [userInfo objectForKey:@"type"];
+    switch (type.intValue) {
+        case NotificationTypeNormal:
+            break;
+        case NotificationTypeNewVersion:{
+            [[UserService defaultService] queryVersion:self];
+            break;
+        }
+        case NotificationTypeUpdateOfflineCity:
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - 
