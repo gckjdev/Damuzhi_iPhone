@@ -55,8 +55,6 @@
     [nameLabel setText:route.name];
     [tourLabel setText:route.tour];
     
-    PPDebug(@"<RouteListCell> :%@", route.tour);
-    
     [self setRank:route.averageRank];
     
     [daysLabel setText:[NSString stringWithFormat:NSLS(@"行程 : %d天"), route.days]];
