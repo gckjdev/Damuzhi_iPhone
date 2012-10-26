@@ -70,7 +70,8 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
-    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过跟团游订单"), [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], NSLS(@"您还没有下过自由行订单"), [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], NSLS(@"您还没有下过定制游订单"), [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
+    
+    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过本地游订单"), [NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], NSLS(@"即将推出"), [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
     
     
     if ([[UserManager defaultManager] isLogin]) {

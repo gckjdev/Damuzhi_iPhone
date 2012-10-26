@@ -43,7 +43,7 @@
 
 #define CITIES              NSLS(@"已开通城市")
 #define VERSION             NSLS(@"版本更新")
-#define ABOUT               NSLS(@"关于大拇指旅行")
+#define ABOUT               NSLS(@"应用帮助")
 #define PRAISE              NSLS(@"给我一个好评吧")
 #define SHOW_IMAGE          NSLS(@"列表中显示图片")
 
@@ -144,14 +144,15 @@
         [dataDictionary setObject:ORDER_NON_MEMBER forKey:[NSNumber numberWithInt:i++]];
     }
     
-    [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    //[dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    
+    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:MY_FOLLOW forKey:[NSNumber numberWithInt:i++]];
     
 //    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
     
     [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:SHARE forKey:[NSNumber numberWithInt:i++]];
     
     if (kShowPraise == 1) {
