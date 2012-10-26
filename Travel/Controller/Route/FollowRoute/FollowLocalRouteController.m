@@ -134,6 +134,10 @@
         self.dataList = mutableDataList;
         
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        if ([self.dataList count] == 0) {
+            [self clickClear:nil];
+        }
     }
 }
 

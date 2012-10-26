@@ -919,7 +919,7 @@
     
     [self addBottomImage];
     
-    [[PlaceStorage historyManager] addPlace:self.place];
+    //[[PlaceStorage historyManager] addPlace:self.place];
 }
 
 - (void)viewDidUnload

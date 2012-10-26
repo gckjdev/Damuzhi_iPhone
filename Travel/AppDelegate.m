@@ -203,11 +203,6 @@ typedef enum{
     // update help html 
     [[AppService defaultService] updateHelpHtmlFile];
     
-    //register user
-    if ([[UserManager defaultManager] getUserId] == nil) {
-        [self registerUser];
-    }
-    
     //resend favorete place
     [[ResendService defaultService] resendFavorite];
     
@@ -235,6 +230,12 @@ typedef enum{
     [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     [[UserService defaultService] queryVersion:self];
+    
+    
+    //register user
+    if ([[UserManager defaultManager] getUserId] == nil) {
+        [self registerUser];
+    }
 
     return YES;
 }
