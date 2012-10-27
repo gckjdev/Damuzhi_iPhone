@@ -1712,7 +1712,8 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
 @property int32_t cityId;
 @property int32_t routeId;
 @property (retain) NSString* name;
-@property (retain) NSString* price;
+@property (retain) NSString* currency;
+@property int32_t price;
 @property int32_t agencyId;
 @property int32_t averageRank;
 @property (retain) NSString* thumbImage;
@@ -1751,6 +1752,13 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
   hasName_ = !!value;
 }
 @synthesize name;
+- (BOOL) hasCurrency {
+  return !!hasCurrency_;
+}
+- (void) setHasCurrency:(BOOL) value {
+  hasCurrency_ = !!value;
+}
+@synthesize currency;
 - (BOOL) hasPrice {
   return !!hasPrice_;
 }
@@ -1827,7 +1835,7 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
 @synthesize contactPhone;
 - (void) dealloc {
   self.name = nil;
-  self.price = nil;
+  self.currency = nil;
   self.thumbImage = nil;
   self.tour = nil;
   self.customerServiceTelephone = nil;
@@ -1845,7 +1853,8 @@ static LocalRouteList* defaultLocalRouteListInstance = nil;
     self.cityId = 0;
     self.routeId = 0;
     self.name = @"";
-    self.price = @"";
+    self.currency = @"";
+    self.price = 0;
     self.agencyId = 0;
     self.averageRank = 0;
     self.thumbImage = @"";
@@ -1935,8 +1944,11 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   if (self.hasName) {
     [output writeString:3 value:self.name];
   }
+  if (self.hasCurrency) {
+    [output writeString:4 value:self.currency];
+  }
   if (self.hasPrice) {
-    [output writeString:5 value:self.price];
+    [output writeInt32:5 value:self.price];
   }
   if (self.hasAgencyId) {
     [output writeInt32:6 value:self.agencyId];
@@ -1995,8 +2007,11 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   if (self.hasName) {
     size += computeStringSize(3, self.name);
   }
+  if (self.hasCurrency) {
+    size += computeStringSize(4, self.currency);
+  }
   if (self.hasPrice) {
-    size += computeStringSize(5, self.price);
+    size += computeInt32Size(5, self.price);
   }
   if (self.hasAgencyId) {
     size += computeInt32Size(6, self.agencyId);
@@ -2126,6 +2141,9 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
+  if (other.hasCurrency) {
+    [self setCurrency:other.currency];
+  }
   if (other.hasPrice) {
     [self setPrice:other.price];
   }
@@ -2213,8 +2231,12 @@ static LocalRoute* defaultLocalRouteInstance = nil;
         [self setName:[input readString]];
         break;
       }
-      case 42: {
-        [self setPrice:[input readString]];
+      case 34: {
+        [self setCurrency:[input readString]];
+        break;
+      }
+      case 40: {
+        [self setPrice:[input readInt32]];
         break;
       }
       case 48: {
@@ -2326,20 +2348,36 @@ static LocalRoute* defaultLocalRouteInstance = nil;
   result.name = @"";
   return self;
 }
+- (BOOL) hasCurrency {
+  return result.hasCurrency;
+}
+- (NSString*) currency {
+  return result.currency;
+}
+- (LocalRoute_Builder*) setCurrency:(NSString*) value {
+  result.hasCurrency = YES;
+  result.currency = value;
+  return self;
+}
+- (LocalRoute_Builder*) clearCurrency {
+  result.hasCurrency = NO;
+  result.currency = @"";
+  return self;
+}
 - (BOOL) hasPrice {
   return result.hasPrice;
 }
-- (NSString*) price {
+- (int32_t) price {
   return result.price;
 }
-- (LocalRoute_Builder*) setPrice:(NSString*) value {
+- (LocalRoute_Builder*) setPrice:(int32_t) value {
   result.hasPrice = YES;
   result.price = value;
   return self;
 }
 - (LocalRoute_Builder*) clearPrice {
   result.hasPrice = NO;
-  result.price = @"";
+  result.price = 0;
   return self;
 }
 - (BOOL) hasAgencyId {
@@ -3974,8 +4012,8 @@ static TravelPackage* defaultTravelPackageInstance = nil;
 @property int32_t date;
 @property int32_t status;
 @property (retain) NSString* remainder;
-@property (retain) NSString* adultPrice;
-@property (retain) NSString* childrenPrice;
+@property int32_t adultPrice;
+@property int32_t childrenPrice;
 @end
 
 @implementation Booking
@@ -4017,8 +4055,6 @@ static TravelPackage* defaultTravelPackageInstance = nil;
 @synthesize childrenPrice;
 - (void) dealloc {
   self.remainder = nil;
-  self.adultPrice = nil;
-  self.childrenPrice = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4026,8 +4062,8 @@ static TravelPackage* defaultTravelPackageInstance = nil;
     self.date = 0;
     self.status = 0;
     self.remainder = @"";
-    self.adultPrice = @"";
-    self.childrenPrice = @"";
+    self.adultPrice = 0;
+    self.childrenPrice = 0;
   }
   return self;
 }
@@ -4060,10 +4096,10 @@ static Booking* defaultBookingInstance = nil;
     [output writeString:3 value:self.remainder];
   }
   if (self.hasAdultPrice) {
-    [output writeString:4 value:self.adultPrice];
+    [output writeInt32:4 value:self.adultPrice];
   }
   if (self.hasChildrenPrice) {
-    [output writeString:5 value:self.childrenPrice];
+    [output writeInt32:5 value:self.childrenPrice];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4084,10 +4120,10 @@ static Booking* defaultBookingInstance = nil;
     size += computeStringSize(3, self.remainder);
   }
   if (self.hasAdultPrice) {
-    size += computeStringSize(4, self.adultPrice);
+    size += computeInt32Size(4, self.adultPrice);
   }
   if (self.hasChildrenPrice) {
-    size += computeStringSize(5, self.childrenPrice);
+    size += computeInt32Size(5, self.childrenPrice);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4212,12 +4248,12 @@ static Booking* defaultBookingInstance = nil;
         [self setRemainder:[input readString]];
         break;
       }
-      case 34: {
-        [self setAdultPrice:[input readString]];
+      case 32: {
+        [self setAdultPrice:[input readInt32]];
         break;
       }
-      case 42: {
-        [self setChildrenPrice:[input readString]];
+      case 40: {
+        [self setChildrenPrice:[input readInt32]];
         break;
       }
     }
@@ -4274,33 +4310,33 @@ static Booking* defaultBookingInstance = nil;
 - (BOOL) hasAdultPrice {
   return result.hasAdultPrice;
 }
-- (NSString*) adultPrice {
+- (int32_t) adultPrice {
   return result.adultPrice;
 }
-- (Booking_Builder*) setAdultPrice:(NSString*) value {
+- (Booking_Builder*) setAdultPrice:(int32_t) value {
   result.hasAdultPrice = YES;
   result.adultPrice = value;
   return self;
 }
 - (Booking_Builder*) clearAdultPrice {
   result.hasAdultPrice = NO;
-  result.adultPrice = @"";
+  result.adultPrice = 0;
   return self;
 }
 - (BOOL) hasChildrenPrice {
   return result.hasChildrenPrice;
 }
-- (NSString*) childrenPrice {
+- (int32_t) childrenPrice {
   return result.childrenPrice;
 }
-- (Booking_Builder*) setChildrenPrice:(NSString*) value {
+- (Booking_Builder*) setChildrenPrice:(int32_t) value {
   result.hasChildrenPrice = YES;
   result.childrenPrice = value;
   return self;
 }
 - (Booking_Builder*) clearChildrenPrice {
   result.hasChildrenPrice = NO;
-  result.childrenPrice = @"";
+  result.childrenPrice = 0;
   return self;
 }
 @end
@@ -5603,9 +5639,10 @@ static OrderList* defaultOrderListInstance = nil;
 @property int32_t departDate;
 @property int32_t adult;
 @property int32_t children;
-@property (retain) NSString* price;
+@property int32_t price;
 @property (retain) NSString* priceStatus;
 @property int32_t status;
+@property (retain) NSString* currency;
 @property int32_t packageId;
 @property (retain) NSString* packageName;
 @property int32_t praiseRank;
@@ -5699,6 +5736,13 @@ static OrderList* defaultOrderListInstance = nil;
   hasStatus_ = !!value;
 }
 @synthesize status;
+- (BOOL) hasCurrency {
+  return !!hasCurrency_;
+}
+- (void) setHasCurrency:(BOOL) value {
+  hasCurrency_ = !!value;
+}
+@synthesize currency;
 - (BOOL) hasPackageId {
   return !!hasPackageId_;
 }
@@ -5737,8 +5781,8 @@ static OrderList* defaultOrderListInstance = nil;
 - (void) dealloc {
   self.routeName = nil;
   self.departCityName = nil;
-  self.price = nil;
   self.priceStatus = nil;
+  self.currency = nil;
   self.packageName = nil;
   self.feedback = nil;
   self.departPlace = nil;
@@ -5755,9 +5799,10 @@ static OrderList* defaultOrderListInstance = nil;
     self.departDate = 0;
     self.adult = 0;
     self.children = 0;
-    self.price = @"";
+    self.price = 0;
     self.priceStatus = @"";
     self.status = 0;
+    self.currency = @"";
     self.packageId = 0;
     self.packageName = @"";
     self.praiseRank = 0;
@@ -5824,13 +5869,16 @@ static Order* defaultOrderInstance = nil;
     [output writeInt32:9 value:self.children];
   }
   if (self.hasPrice) {
-    [output writeString:10 value:self.price];
+    [output writeInt32:10 value:self.price];
   }
   if (self.hasPriceStatus) {
     [output writeString:11 value:self.priceStatus];
   }
   if (self.hasStatus) {
     [output writeInt32:12 value:self.status];
+  }
+  if (self.hasCurrency) {
+    [output writeString:13 value:self.currency];
   }
   if (self.hasPackageId) {
     [output writeInt32:20 value:self.packageId];
@@ -5884,13 +5932,16 @@ static Order* defaultOrderInstance = nil;
     size += computeInt32Size(9, self.children);
   }
   if (self.hasPrice) {
-    size += computeStringSize(10, self.price);
+    size += computeInt32Size(10, self.price);
   }
   if (self.hasPriceStatus) {
     size += computeStringSize(11, self.priceStatus);
   }
   if (self.hasStatus) {
     size += computeInt32Size(12, self.status);
+  }
+  if (self.hasCurrency) {
+    size += computeStringSize(13, self.currency);
   }
   if (self.hasPackageId) {
     size += computeInt32Size(20, self.packageId);
@@ -6018,6 +6069,9 @@ static Order* defaultOrderInstance = nil;
   if (other.hasStatus) {
     [self setStatus:other.status];
   }
+  if (other.hasCurrency) {
+    [self setCurrency:other.currency];
+  }
   if (other.hasPackageId) {
     [self setPackageId:other.packageId];
   }
@@ -6090,8 +6144,8 @@ static Order* defaultOrderInstance = nil;
         [self setChildren:[input readInt32]];
         break;
       }
-      case 82: {
-        [self setPrice:[input readString]];
+      case 80: {
+        [self setPrice:[input readInt32]];
         break;
       }
       case 90: {
@@ -6100,6 +6154,10 @@ static Order* defaultOrderInstance = nil;
       }
       case 96: {
         [self setStatus:[input readInt32]];
+        break;
+      }
+      case 106: {
+        [self setCurrency:[input readString]];
         break;
       }
       case 160: {
@@ -6277,17 +6335,17 @@ static Order* defaultOrderInstance = nil;
 - (BOOL) hasPrice {
   return result.hasPrice;
 }
-- (NSString*) price {
+- (int32_t) price {
   return result.price;
 }
-- (Order_Builder*) setPrice:(NSString*) value {
+- (Order_Builder*) setPrice:(int32_t) value {
   result.hasPrice = YES;
   result.price = value;
   return self;
 }
 - (Order_Builder*) clearPrice {
   result.hasPrice = NO;
-  result.price = @"";
+  result.price = 0;
   return self;
 }
 - (BOOL) hasPriceStatus {
@@ -6320,6 +6378,22 @@ static Order* defaultOrderInstance = nil;
 - (Order_Builder*) clearStatus {
   result.hasStatus = NO;
   result.status = 0;
+  return self;
+}
+- (BOOL) hasCurrency {
+  return result.hasCurrency;
+}
+- (NSString*) currency {
+  return result.currency;
+}
+- (Order_Builder*) setCurrency:(NSString*) value {
+  result.hasCurrency = YES;
+  result.currency = value;
+  return self;
+}
+- (Order_Builder*) clearCurrency {
+  result.hasCurrency = NO;
+  result.currency = @"";
   return self;
 }
 - (BOOL) hasPackageId {
