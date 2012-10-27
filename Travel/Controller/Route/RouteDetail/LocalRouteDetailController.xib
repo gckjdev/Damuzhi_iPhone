@@ -42,6 +42,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 94}, {320, 322}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -109,7 +110,7 @@
 							<object class="IBUILabel" id="307855661">
 								<reference key="NSNextResponder" ref="980843799"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{11, 30}, {93, 20}}</string>
+								<string key="NSFrame">{{10, 30}, {93, 20}}</string>
 								<reference key="NSSuperview" ref="980843799"/>
 								<reference key="NSNextKeyView" ref="621116162"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -145,7 +146,7 @@
 							<object class="IBUILabel" id="621116162">
 								<reference key="NSNextResponder" ref="980843799"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{146, 30}, {165, 20}}</string>
+								<string key="NSFrame">{{145, 30}, {165, 20}}</string>
 								<reference key="NSSuperview" ref="980843799"/>
 								<reference key="NSNextKeyView" ref="928454288"/>
 								<string key="NSReuseIdentifierKey">_NS:328</string>
@@ -161,6 +162,7 @@
 								<string key="IBUIShadowOffset">{0, 0}</string>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUITextAlignment">2</int>
 								<reference key="IBUIFontDescription" ref="73142375"/>
 								<reference key="IBUIFont" ref="989328150"/>
 							</object>
@@ -411,11 +413,11 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="488306730"/>
 							<reference ref="673244173"/>
-							<reference ref="307855661"/>
 							<reference ref="642660590"/>
 							<reference ref="928454288"/>
 							<reference ref="822581012"/>
 							<reference ref="621116162"/>
+							<reference ref="307855661"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -489,10 +491,6 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
-		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">

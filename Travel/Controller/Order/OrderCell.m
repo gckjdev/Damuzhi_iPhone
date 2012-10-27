@@ -108,7 +108,7 @@
     UILabel *personCountLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:personCountLabelText];
     [self addSubview:personCountLabel];
     
-    NSString *priceLabelText = [NSString stringWithFormat:@"大拇指价: %@%@", order.price, order.priceStatus];
+    NSString *priceLabelText = [NSString stringWithFormat:@"参考指价: %@%@", order.price, order.priceStatus];
     UILabel *priceLabel = [self labelWithFrame:CGRectMake(ORDER_ITEM_LABEL_ORIGIN_X, originY += GAP_BETWEEN_ORDER_ITEMS, ORDER_ITEM_LABEL_WIDTH, ORDER_ITEM_LABEL_HEIGHT) text:priceLabelText];
     priceLabel.textColor = [UIColor colorWithRed:255/255.0 green:48/255.0 blue:0.0 alpha:1.0];
     [self addSubview:priceLabel];

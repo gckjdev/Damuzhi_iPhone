@@ -118,15 +118,21 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    CGSize actualSize = [webView sizeThatFits:CGSizeZero];
+//    CGSize actualSize = [webView sizeThatFits:CGSizeZero];
+//    
+//    if (actualSize.height > webView.frame.size.height){
+//        webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
+//        webView.alpha = 1.0;
+//        
+//        CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
+//        overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
+//    }
     
-    if (actualSize.height > webView.frame.size.height){
-        webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, actualSize.height);
-        webView.alpha = 1.0;
-        
-        CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
-        overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
-    }
+    webView.alpha = 1.0;
+    webView.frame =  CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.scrollView.contentSize.height);
+    CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
+    overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
+    
     [self updateFollowButton];
     
     UIImageView *imageView = (UIImageView *)[self.overallScrollView viewWithTag:TAG_DOWN_BG];
@@ -137,6 +143,8 @@
     [imageViewNew setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
     [self.overallScrollView addSubview:imageViewNew];
     [imageViewNew release];
+    
+    //PPDebug(@"<webViewDidFinishLoad>: %f %f", actualSize.height, webView.frame.size.height);
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType

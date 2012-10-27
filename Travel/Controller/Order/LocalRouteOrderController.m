@@ -105,6 +105,8 @@
     NSArray *mutableArray = [NSArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
 
     self.dataList = mutableArray;
+    
+    PPDebug(@"<LocalRouteOrderController> contactPhone: %@", _route.contactPhone);
 }
 
 
@@ -130,8 +132,19 @@
     [UIUtils makeCall:[self.phoneList objectAtIndex:buttonIndex]];
 }
 
-
-
+- (void)splitPrice:(NSString *)price currency:(NSString **)currency money:(int *)money
+{
+    int index = 0;
+    for ( ; index < [price length]; index ++) {
+        if ([price characterAtIndex:index] >= '0' && [price characterAtIndex:index] <= '9' ) {
+            break;
+        }
+    }
+    *currency = [price substringToIndex:index];
+    
+    NSString *moneyStr = [price substringFromIndex:index];
+    (*money) = [moneyStr intValue];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -187,7 +200,14 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         CGRect departFrame = cell.leftButton.frame;
         cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_DATE, departFrame.size.height);
-        [cell.leftButton setTitle:((_departDate == nil) ? NSLS(@"请选择出发日期") : dateToChineseString(_departDate)) forState:UIControlStateNormal];
+        
+        if (_departDate) {
+            [cell.leftButton setTitle:dateToChineseString(_departDate) forState:UIControlStateNormal];
+            [cell.leftButton setTitleColor:[UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        } else {
+            [cell.leftButton setTitle:NSLS(@"请选择出发日期") forState:UIControlStateNormal];
+        }
+        
     }
     else if ([cellTitle isEqualToString:TITLE_PEOPLE_NUMBER]) {
         cell.contentLabel.hidden = YES;
@@ -200,7 +220,13 @@
         [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
-        cell.contentLabel.text = _route.price;
+        NSString *currency = nil;
+        int money = 0;
+        [self splitPrice:_route.price currency:&currency money:&money];
+        money = money * (_adult + _children);
+        cell.contentLabel.text = [NSString stringWithFormat:@"%@%d",currency,money];
+        
+        //cell.contentLabel.text = _route.price;
         cell.contentLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:48.0/255.0 blue:25.0/255.0 alpha:1];
     }
     else if ([cellTitle isEqualToString:TITLE_DIRECTIONS]){

@@ -112,6 +112,9 @@
 #define PARA_TRAVEL_APP_VERSION             @"app_version"
 #define PARA_TRAVEL_APP_DATA_VERSION        @"app_data_version"
 
+#define PARA_TRAVEL_APP_UPDATE_TITLE        @"app_update_title"
+#define PARA_TRAVEL_APP_UPDATE_CONTENT      @"app_update_content"
+
 #define PARA_TRAVEL_TELEPHONE               @"telephone"
 #define PARA_TRAVEL_CODE                    @"code"
 
@@ -171,6 +174,7 @@
 #define OBJECT_LIST_UNPACKAGE_TOUR_ORDER            81
 #define OBJECT_LIST_SELF_GUIDE_TOUR_ORDER           82
 #define OBJECT_LIST_LOCAL_ROUTE_ORDER               83
+#define OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER         84
 
 #define OBJECT_LIST_LOCAL_ROUTE                     90
 

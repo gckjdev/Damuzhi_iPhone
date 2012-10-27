@@ -53,8 +53,10 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
 
     [self updateNavButtons];
-    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"),nil];
-    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], nil];
+    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机+酒订单管理"),nil];
+    
+    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
+    
     
 }
 

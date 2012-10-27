@@ -137,7 +137,7 @@
 	}
     
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellForCategory"] autorelease];
-
+    
     Item *item = [_itemList objectAtIndex:row];
 
     if (_needShowCount) {
@@ -147,10 +147,11 @@
         NSString *text = [NSString stringWithFormat:@"%@", item.itemName];
         [[cell textLabel] setText:text];
     }
-
+    
     
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
+    cell.textLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0];
     
     if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];

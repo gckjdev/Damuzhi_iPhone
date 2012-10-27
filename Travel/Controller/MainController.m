@@ -33,14 +33,12 @@
 #import "PackageManager.h"
 #import "MobClick.h"
 #import "PPDebug.h"
-
 #include "UserService.h"
-
 #import "CommonRouteListController.h"
 #import "PackageTourListFilter.h"
 #import "UnPackageTourListFilter.h"
-
 #import "FavoriteController.h"
+
 @interface MainController()
 
 @property (retain, nonatomic) UIButton *currentSelectedButton;
@@ -129,10 +127,10 @@
     [self setBackgroundImageName:@"index_bg.png"];
     [super viewDidLoad];
     
+    [self checkCurrentCityVersion];
+    
     self.currentSelectedButton = self.homeButton;
     self.currentSelectedButton.selected = YES;
-        
-    [self checkCurrentCityVersion];
     
     [[UserService defaultService] autoLogin:self];
 }
@@ -291,36 +289,14 @@
 - (void)checkCurrentCityVersion
 {
     City *currentCity = [[AppManager defaultManager] getCity:[[AppManager defaultManager] getCurrentCityId]];
+    
     if (![AppUtils hasLocalCityData:currentCity.cityId]) {
         return;
     }
         
     if (![currentCity.latestVersion isEqualToString:[[PackageManager defaultManager] getCityVersion:currentCity.cityId]]){
-        NSString *message = NSLS(@"离线数据有更新，是否现在更新？");
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLS(@"提示") message:message delegate:self cancelButtonTitle:NSLS(@"以后再说") otherButtonTitles:NSLS(@"现在更新"),nil] autorelease];
-        alert.tag = TAG_CITY_UPDATE_ALERT;
-        [alert show];
-    }
-}
-
-#pragma mark -
-#pragma mark: implementation of alert view delegate.
-
-- (void)alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (alertView1.tag) {
-        case TAG_CITY_UPDATE_ALERT:
-            if (buttonIndex == 1) {
-                CityManagementController *controller = [CityManagementController getInstance];
-
-                [self.navigationController pushViewController:controller animated:YES];
-                
-                [controller clickDownloadListButton:controller.downloadListBtn];
-            }
-            break;
-            
-        default:
-            break;
+        CommonDialog *dialog = [CommonDialog createDialogWithTitle:NSLS(@"离线数据包更新提示") subTitle:[[AppManager defaultManager] getCurrentCityName] content:NSLS(@"有新的城市指南信息升级，是否现在更新") OKButtonTitle:NSLS(@"立刻升级") cancelButtonTitle:NSLS(@"下次提醒") delegate:self];
+        [dialog showInView:self.view];
     }
 }
 
@@ -340,6 +316,14 @@
     }
     
     [self popupMessage:NSLS(@"登录成功") title:nil];    
+}
+
+#pragma mark - CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    CityManagementController *controller = [CityManagementController getInstance];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller clickDownloadListButton:controller.downloadListBtn];
 }
 
 @end

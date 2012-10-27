@@ -71,8 +71,11 @@ static UserService* _defaultUserService = nil;
                 NSString *app_version = (NSString*)[jsonDict objectForKey:PARA_TRAVEL_APP_VERSION];
                 NSString *app_data_version = (NSString*)[jsonDict objectForKey:PARA_TRAVEL_APP_DATA_VERSION];
                 
-                if (delegate && [delegate respondsToSelector:@selector(queryVersionFinish:dataVersion:)]) {
-                    [delegate queryVersionFinish:app_version dataVersion:app_data_version];
+                NSString *app_update_title = (NSString *)[jsonDict objectForKey:PARA_TRAVEL_APP_UPDATE_TITLE];
+                NSString *app_update_content = (NSString *)[jsonDict objectForKey:PARA_TRAVEL_APP_UPDATE_CONTENT];
+                
+                if (delegate && [delegate respondsToSelector:@selector(queryVersionFinish:dataVersion:title:content:)]) {
+                    [delegate queryVersionFinish:app_version dataVersion:app_data_version title:app_update_title content:app_update_content];
                 }
             }
         });                        
