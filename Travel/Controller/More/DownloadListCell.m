@@ -83,6 +83,7 @@
             [self setDefaultAppearance];          
             break;
     }
+    
 }
 
 - (void)setDefaultAppearance
