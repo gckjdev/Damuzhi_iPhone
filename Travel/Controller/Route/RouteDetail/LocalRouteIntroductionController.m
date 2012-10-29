@@ -95,9 +95,9 @@
     
     
     //set price
-    self.priceLable.text = route.price;
+    self.priceLable.text = [NSString stringWithFormat:@"%@%d", route.currency, route.price];
     
-    CGSize priceSize = [route.price sizeWithFont:self.priceLable.font];
+    CGSize priceSize = [self.priceLable.text sizeWithFont:self.priceLable.font];
     self.priceLastLabel.frame = CGRectMake(self.priceLable.frame.origin.x + priceSize.width, self.priceLastLabel.frame.origin.y , self.priceLastLabel.frame.size.width, self.priceLastLabel.frame.size.height);
     self.priceLastLabel.text = NSLS(@"起");
 }

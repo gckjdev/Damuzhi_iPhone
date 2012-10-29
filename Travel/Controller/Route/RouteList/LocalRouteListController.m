@@ -274,7 +274,7 @@
 }
 
 
-- (TouristRoute *)getRoute:(int) row section:(int)section
+- (LocalRoute *)getRoute:(int) row section:(int)section
 {
     return  [[self.agencyDic objectForKey:[self getSectionHeaderViewName:section]] objectAtIndex:row];
 }

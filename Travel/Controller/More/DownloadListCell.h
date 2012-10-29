@@ -35,6 +35,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *updatePercentLabel;
 @property (retain, nonatomic) IBOutlet UIButton *pauseBtn;
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (retain, nonatomic) IBOutlet UIButton *cancelButton;
 
 - (void)setCellData:(City*)city;
 

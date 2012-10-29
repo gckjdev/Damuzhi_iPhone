@@ -53,6 +53,7 @@
     [pauseBtn release];
     [activityIndicator release];
     [updatePercentLabel release];
+    [_cancelButton release];
     [super dealloc];
 }
 
@@ -93,9 +94,11 @@
     
     if ([_city.latestVersion isEqualToString:[[PackageManager defaultManager] getCityVersion:_city.cityId]]) {
         updateButton.hidden = YES;
+        _cancelButton.hidden = NO;
     }
     else {
         updateButton.hidden = NO;
+        _cancelButton.hidden = YES;
     }
     
     updateProgressView.hidden = YES;
@@ -109,6 +112,7 @@
 {
     dataSizeLabel.hidden = YES;
     updateButton.hidden = YES;
+     _cancelButton.hidden = NO;
     
     updateProgressView.hidden = NO;
     updatePercentLabel.hidden = NO;
@@ -124,6 +128,7 @@
 {
     dataSizeLabel.hidden = YES;
     updateButton.hidden = YES;
+     _cancelButton.hidden = NO;
     
     updateProgressView.hidden = NO;
     updatePercentLabel.hidden = NO;
@@ -180,6 +185,13 @@
     }
 }
 
+- (IBAction)clickCancelButton:(id)sender {
+    UIAlertView *alert = [[[UIAlertView alloc]initWithTitle:nil message:@"是否取消更新" delegate:self cancelButtonTitle:@"是" otherButtonTitles:@"否", nil] autorelease];
+    alert.tag = ALERT_CANCEL_UPDATE_CITT;
+    [alert show];
+}
+
+
 #pragma mark -
 #pragma mark: implementation of alert view delegate.
 
@@ -195,6 +207,17 @@
         case ALERT_USING_CELL_NEWORK:
             if (buttonIndex == 1) {
                 [self updateCity];
+            }
+            break;
+        case ALERT_CANCEL_UPDATE_CITT:
+            if (buttonIndex == 0) {
+                [[CityDownloadService defaultService] cancel:_city];
+                self.cancelButton.hidden = YES;
+                self.updateButton.hidden = NO;
+                
+                if (_downloadListCellDelegate && [_downloadListCellDelegate respondsToSelector:@selector(didCancelUpdate:)]) {
+                    [_downloadListCellDelegate didCancelUpdate:_city];
+                }
             }
             break;
             
