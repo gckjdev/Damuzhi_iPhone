@@ -55,7 +55,8 @@ message LocalRoute {
   required int32  routeId = 2;				// 线路编号
   required string name = 3;                 // 线路名称
 
-  optional string price = 5;				// 线路价格
+  optional string currency = 4;             // 货币符号
+  optional int32 price = 5;                 // 线路价格
   optional int32 agencyId = 6;				// 旅行社id。基础数据
   optional int32 averageRank = 7;			// 用户综合评级
 
@@ -69,7 +70,7 @@ message LocalRoute {
   optional string customerServiceTelephone = 20;	// 客服电话
   repeated string detailImages = 25;                // 线路详情中滑动图片的绝对URL地址
   optional string detailUrl = 30;                   // 详情的html的url
-  repeated DepartPlace departPlaces = 31;                // 出发地点
+  repeated DepartPlace departPlaces = 31;           // 出发地点
   
   repeated Booking bookings = 41;                   // 线路预订情况
   
@@ -120,8 +121,8 @@ message Booking {
   required int32 date = 1;              // 日期，从1970年1月1日0时0分0秒算起，经过的秒数。
   optional int32 status = 2;            // 状态
   optional string remainder = 3;        // 剩余票数
-  optional string adultPrice = 4;       // 成人价格
-  optional string childrenPrice = 5;	// 儿童价格
+  optional int32 adultPrice = 4;        // 成人价格
+  optional int32 childrenPrice = 5;     // 儿童价格
 }
 
 message Flight {
@@ -169,14 +170,15 @@ message Order {
   optional int32 adult = 8;             // 成人个数
   optional int32 children = 9 ;         // 儿童个数
 
-  optional string price = 10;           // 大拇指价
+  optional int32 price = 10;            // 大拇指价
   optional string priceStatus = 11;     // 价格状态
   optional int32 status = 12;           // 订单状态
+  optional string currency = 13;        // 货币符号
   
   optional int32 packageId = 20;        // 套餐Id
   optional string packageName = 21;     // 套餐名字
   
-  optional int32 praiseRank = 30;         // 大拇指等级
+  optional int32 praiseRank = 30;        // 大拇指等级
   optional string feedback = 31;         // 用户评价
   
   optional DepartPlace departPlace = 50;   // 出发地点
