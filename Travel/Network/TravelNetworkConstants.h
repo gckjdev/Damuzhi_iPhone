@@ -49,6 +49,8 @@
 
 #define URL_TRAVE_FOLLOW_ROUTE          (URL_SERVICE@"followRoute.aspx?")
 
+#define URL_TRAVEL_NEARBY               (URL_SERVICE@"nearby.aspx?")
+
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
 #define FORMAT_TRAVEL_PB            2   // protocol buffer

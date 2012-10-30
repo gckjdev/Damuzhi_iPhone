@@ -99,4 +99,12 @@
 
 - (void)findPlace:(int)placeId viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
 
+- (void)findNearbyPlaces:(int)type
+                Latitude:(double)latitude
+               longitude:(double)longitude
+                distance:(double)distance
+                   start:(int)start
+                   count:(int)count
+                delegate:(id<PlaceServiceDelegate>)delegate;
+
 @end

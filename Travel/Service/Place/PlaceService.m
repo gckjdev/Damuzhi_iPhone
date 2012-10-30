@@ -556,4 +556,67 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
     });
 }
 
+- (void)findNearbyPlaces:(int)type
+                Latitude:(double)latitude
+               longitude:(double)longitude
+                distance:(double)distance
+                   start:(int)start
+                   count:(int)count
+                delegate:(id<PlaceServiceDelegate>)delegate
+{
+    int currentCityId = [[AppManager defaultManager] getCurrentCityId];
+    
+    NSOperationQueue* queue = [self getOperationQueue:@"SERACH_WORKING_QUEUE"];
+    [queue cancelAllOperations];
+    
+    [queue addOperationWithBlock:^{
+        NSArray* list = nil;
+        int resultCode = 0;
+        int result = 0;
+        NSString *resultInfo = @"";
+        int totalCount = 0;
+        
+        if ([AppUtils hasLocalCityData:[[AppManager defaultManager] getCurrentCityId]] == YES){
+            
+        }
+        else{
+            CommonNetworkOutput* output = [TravelNetworkRequest queryNearbyList:type
+                                                                         cityId:currentCityId
+                                                                       latitude:latitude
+                                                                      longitude:longitude
+                                                                       distance:distance
+                                                                          start:start
+                                                                          count:count
+                                                                           lang:LanguageTypeZhHans];
+            resultCode = output.resultCode;
+            
+            if (output.resultCode == ERROR_SUCCESS) {
+                @try {
+                    TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                    list = [[travelResponse placeList] listList];
+                    result = [travelResponse resultCode];
+                    resultInfo = [travelResponse resultInfo];
+                    totalCount = [travelResponse totalCount];
+                }
+                @catch (NSException *exception) {
+                    PPDebug(@"<findNearbyPlaces:%d> Caught %@%@", type, [exception name], [exception reason]);
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([delegate respondsToSelector:@selector(findRequestDone:result:resultInfo:totalCount:placeList:)]){
+                [delegate findRequestDone:resultCode
+                                         result:result
+                                     resultInfo:resultInfo
+                                     totalCount:totalCount
+                                      placeList:list];
+            }
+        });
+    }];
+
+}
+
+
 @end

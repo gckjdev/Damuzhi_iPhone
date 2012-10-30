@@ -189,4 +189,14 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                                           children:(int)children
                                      contactPerson:(NSString *)contactPersion
                                          telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)queryNearbyList:(int)type
+                                 cityId:(int)cityId
+                               latitude:(double)latitude
+                              longitude:(double)longitude
+                               distance:(double)distance
+                                  start:(int)start
+                                  count:(int)count
+                                   lang:(int)lang;
+
 @end

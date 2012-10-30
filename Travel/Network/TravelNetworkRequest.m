@@ -1241,4 +1241,45 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)queryNearbyList:(int)type
+                                 cityId:(int)cityId
+                               latitude:(double)latitude
+                              longitude:(double)longitude
+                               distance:(double)distance
+                                  start:(int)start
+                                  count:(int)count
+                                   lang:(int)lang
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_CITY_ID intValue:cityId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LATITUDE doubleValue:latitude];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LONGITUDE doubleValue:longitude];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DISTANCE doubleValue:distance];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_START intValue:start];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_COUNT intValue:count];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEVICE_ID value:[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_NEARBY
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_PB
+                                      output:output];
+}
+
+
 @end
