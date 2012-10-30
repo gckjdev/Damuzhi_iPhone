@@ -98,9 +98,7 @@
 //    return [RouteFeekbackCell getCellHeight];
     NSInteger row = [indexPath row];
     RouteFeekback *feekback = [self.dataList objectAtIndex:row];
-    NSString *feekbackContent = [NSString stringWithFormat:feekback.content];
-    
-    CGSize size = [feekbackContent sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(278, 1000) lineBreakMode:UILineBreakModeCharacterWrap];
+    CGSize size = [feekback.content sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(278, 1000) lineBreakMode:UILineBreakModeCharacterWrap];
 
     return size.height + 55;
 }

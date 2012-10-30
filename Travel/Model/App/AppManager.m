@@ -824,7 +824,7 @@ static AppManager* _defaultAppManager = nil;
     
     for (Statistics *statistics in staticticsList) {
         [retArray addObject:[Item itemWithStatistics:statistics]];
-        PPDebug(@"name = %@ count = %d",statistics.name, statistics.count);
+        //PPDebug(@"name = %@ count = %d",statistics.name, statistics.count);
     }
     
     return retArray;

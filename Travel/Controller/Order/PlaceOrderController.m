@@ -254,8 +254,8 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         [cell.rightButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         
-        [cell.leftButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult]] forState:UIControlStateNormal];
-        [cell.rightButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children]] forState:UIControlStateNormal]; 
+        [cell.leftButton setTitle:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult] forState:UIControlStateNormal];
+        [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
         cell.contentLabel.text = _route.price;

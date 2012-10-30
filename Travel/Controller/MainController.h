@@ -15,7 +15,7 @@
 #import "UserService.h"
 #import "CommonDialog.h"
 
-@interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate, CommonDialogDelegate>
+@interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate, CommonDialogDelegate, AppManagerProtocol>
 @property (retain, nonatomic) IBOutlet UIButton *homeButton;
 @property (retain, nonatomic) IBOutlet UIButton *UnpackageButton;
 @property (retain, nonatomic) IBOutlet UIButton *PackageButton;

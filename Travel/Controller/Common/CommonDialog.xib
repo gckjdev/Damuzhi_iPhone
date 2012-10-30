@@ -44,6 +44,7 @@
 						<string key="NSFrameSize">{320, 480}</string>
 						<reference key="NSSuperview" ref="1014878128"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="306411819"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="1046019155">
 							<int key="NSColorSpace">3</int>
@@ -162,6 +163,7 @@
 						<string key="IBUIText">大拇指旅行2.1发布了</string>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<int key="IBUITextAlignment">1</int>
 						<reference key="IBUIFontDescription" ref="418890867"/>
 						<reference key="IBUIFont" ref="849630035"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -169,7 +171,7 @@
 					<object class="IBUITextView" id="112831819">
 						<reference key="NSNextResponder" ref="1014878128"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{48, 197}, {224, 70}}</string>
+						<string key="NSFrame">{{46, 197}, {228, 70}}</string>
 						<reference key="NSSuperview" ref="1014878128"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="404868431"/>
@@ -254,6 +256,7 @@
 				<string key="NSFrameSize">{320, 480}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView" ref="973164615"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>

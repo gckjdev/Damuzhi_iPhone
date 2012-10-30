@@ -85,6 +85,7 @@
 -(void) clickTitle:(id)sender
 {
     CityManagementController *controller = [CityManagementController getInstance];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -282,9 +283,27 @@
     self.currentSelectedButton.selected = YES;
 }
 
-
-#pragma -mark share UIActionSheet delegate
-
+- (void)showUpdateCityAlert
+{
+    int currentCityId= [[AppManager defaultManager] getCurrentCityId];
+    NSString *currentCityName = [[AppManager defaultManager] getCurrentCityName];
+    NSString *currentCityCountry = [[AppManager defaultManager] getCountryName:currentCityId];
+    int citySize = [[AppManager defaultManager] getCityDataSize:currentCityId];
+    NSString *citySizeString = [NSString stringWithFormat:@"%0.2fM", citySize/1024.0/1024.0];
+    
+    NSString *alertTitle = NSLS(@"离线数据包更新提示");
+    NSString *alertSubtitle = [NSString stringWithFormat:@"%@.%@", currentCityCountry, currentCityName];
+    NSString *alertContent = [NSString stringWithFormat:@"有新的城市指南信息升级，是否更新？\n大小:%@", citySizeString];
+    
+    CommonDialog *dialog = [CommonDialog createDialogWithTitle:alertTitle
+                                                      subTitle:alertSubtitle
+                                                       content:alertContent
+                                                 OKButtonTitle:NSLS(@"立刻升级")
+                                             cancelButtonTitle:NSLS(@"下次提醒")
+                                                      delegate:self];
+    dialog.contentTextView.textAlignment = NSTextAlignmentCenter;
+    [dialog showInView:self.view];
+}
 
 - (void)checkCurrentCityVersion
 {
@@ -295,8 +314,7 @@
     }
         
     if (![currentCity.latestVersion isEqualToString:[[PackageManager defaultManager] getCityVersion:currentCity.cityId]]){
-        CommonDialog *dialog = [CommonDialog createDialogWithTitle:NSLS(@"离线数据包更新提示") subTitle:[[AppManager defaultManager] getCurrentCityName] content:NSLS(@"有新的城市指南信息升级，是否现在更新") OKButtonTitle:NSLS(@"立刻升级") cancelButtonTitle:NSLS(@"下次提醒") delegate:self];
-        [dialog showInView:self.view];
+        [self showUpdateCityAlert];
     }
 }
 
@@ -325,5 +343,13 @@
     [self.navigationController pushViewController:controller animated:YES];
     [controller clickDownloadListButton:controller.downloadListBtn];
 }
+
+
+#pragma mark - AppManagerProtocol methods
+- (void)currentCityDidChange:(int)newCityId
+{
+    [self checkCurrentCityVersion];
+}
+
 
 @end

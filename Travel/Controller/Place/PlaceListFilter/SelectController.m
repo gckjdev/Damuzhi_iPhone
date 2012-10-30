@@ -41,6 +41,7 @@
 
 @synthesize tableView;
 @synthesize delegate;
+@synthesize cellTextColor = _cellTextColor;
 
 - (void)dealloc {
     [_navigationTitle release];
@@ -49,7 +50,7 @@
     [_selectedItemIdsBeforConfirm release];
     
     [tableView release];
-
+    [_cellTextColor release];
     [super dealloc];
 }
 
@@ -151,7 +152,9 @@
     
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
-    cell.textLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0];
+    if (_cellTextColor) {
+        cell.textLabel.textColor = _cellTextColor;
+    }
     
     if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];

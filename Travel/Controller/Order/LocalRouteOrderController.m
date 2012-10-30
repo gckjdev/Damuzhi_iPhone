@@ -17,6 +17,7 @@
 #import "TravelNetworkConstants.h"
 #import "OrderListController.h"
 #import "FontSize.h"
+#import "RouteUtils.h"
 
 @interface LocalRouteOrderController ()
 
@@ -28,7 +29,7 @@
 @property (retain, nonatomic) NSDate *departDate;
 @property (retain, nonatomic) NonMemberOrderController *nonMemberOrderController;
 @property (retain, nonatomic) NSArray *phoneList;
-
+@property (retain, nonatomic) Booking *selectedBooking;
 
 - (void)setDirectionsCell:(PlaceOrderCell *)cell;
 - (void)clickDepartDateButton;
@@ -46,6 +47,8 @@
 #define TITLE_PRICE         NSLS(@"参考价格 :")
 #define TITLE_DIRECTIONS    NSLS(@"说明:")
 
+#define DEPARTDATA_TEXT_COLOR [UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0]
+
 @implementation LocalRouteOrderController
 @synthesize adult = _adult;
 @synthesize children = _children;
@@ -55,6 +58,7 @@
 @synthesize departDate = _departDate;
 @synthesize nonMemberOrderController = _nonMemberOrderController;
 @synthesize phoneList = _phoneList;
+@synthesize selectedBooking = _selectedBooking;
 
 - (void)dealloc
 {
@@ -64,6 +68,7 @@
     PPRelease(_departDate);
     PPRelease(_phoneList);
     PPRelease(_nonMemberOrderController);
+    PPRelease(_selectedBooking);
     [super dealloc];
 }
 
@@ -105,8 +110,6 @@
     NSArray *mutableArray = [NSArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
 
     self.dataList = mutableArray;
-    
-    PPDebug(@"<LocalRouteOrderController> contactPhone: %@", _route.contactPhone);
 }
 
 
@@ -130,20 +133,6 @@
     }
     
     [UIUtils makeCall:[self.phoneList objectAtIndex:buttonIndex]];
-}
-
-- (void)splitPrice:(NSString *)price currency:(NSString **)currency money:(int *)money
-{
-    int index = 0;
-    for ( ; index < [price length]; index ++) {
-        if ([price characterAtIndex:index] >= '0' && [price characterAtIndex:index] <= '9' ) {
-            break;
-        }
-    }
-    *currency = [price substringToIndex:index];
-    
-    NSString *moneyStr = [price substringFromIndex:index];
-    (*money) = [moneyStr intValue];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -203,7 +192,7 @@
         
         if (_departDate) {
             [cell.leftButton setTitle:dateToChineseString(_departDate) forState:UIControlStateNormal];
-            [cell.leftButton setTitleColor:[UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [cell.leftButton setTitleColor:DEPARTDATA_TEXT_COLOR forState:UIControlStateNormal];
         } else {
             [cell.leftButton setTitle:NSLS(@"请选择出发日期") forState:UIControlStateNormal];
         }
@@ -220,13 +209,13 @@
         [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
-        NSString *currency = nil;
-        int money = 0;
-        [self splitPrice:_route.price currency:&currency money:&money];
-        money = money * (_adult + _children);
-        cell.contentLabel.text = [NSString stringWithFormat:@"%@%d",currency,money];
+        if (_selectedBooking == nil && [_route.bookingsList count] > 0 ) {
+            self.selectedBooking = [_route.bookingsList objectAtIndex:0];
+        }
+        int money = _selectedBooking.childrenPrice * _children + _selectedBooking.adultPrice * _adult;
         
-        //cell.contentLabel.text = _route.price;
+        cell.contentLabel.text = [NSString stringWithFormat:@"%@%d",_route.currency, money];
+        
         cell.contentLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:48.0/255.0 blue:25.0/255.0 alpha:1];
     }
     else if ([cellTitle isEqualToString:TITLE_DIRECTIONS]){
@@ -311,19 +300,6 @@
 
 
 #pragma button actions
-//- (void)clickDepartPlaceButton
-//{
-//    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出发地点")
-//                                                                  itemList:[[AppManager defaultManager] buildDepartPlaceItemList:_route.departPlacesList ] 
-//                                                           selectedItemIds:_selectedDepartPlaceIdList
-//                                                              multiOptions:NO 
-//                                                               needConfirm:NO 
-//                                                             needShowCount:NO];
-//    controller.delegate = self;
-//    [self.navigationController pushViewController:controller animated:YES];
-//    [controller release];
-//}
-
 - (void)clickDepartDateButton
 {
     PPDebug(@"clickDepartDateButton count:%d", [_route.bookingsList count]);
@@ -346,6 +322,9 @@
                                                                needConfirm:NO 
                                                              needShowCount:NO];
     controller.delegate = self;
+    controller.cellTextColor = DEPARTDATA_TEXT_COLOR;
+    
+     [UIColor colorWithRed:0.0/255.0 green:102.0/255.0 blue:153.0/255.0 alpha:1.0];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -360,6 +339,7 @@
                                                                needConfirm:NO 
                                                              needShowCount:NO];
     controller.delegate = self;
+    controller.cellTextColor = DEPARTDATA_TEXT_COLOR;
     
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
@@ -456,6 +436,7 @@
 - (void)didSelecteDate:(NSDate *)date
 {
     self.departDate = date;
+    self.selectedBooking = [RouteUtils bookingOfDate:date bookings:_route.bookingsList];
     [dataTableView reloadData];
 }
 

@@ -234,12 +234,6 @@
              totalCount:(int)totalCount
               placeList:(NSArray *)placeList
 {
-    for (Place *place in placeList) {
-        PPDebug(@"place name = %@", place.name);
-    }
-    
-    PPDebug(@"place count = %d", [placeList count]);
-    
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }

@@ -94,7 +94,6 @@
     
     if ([_city.latestVersion isEqualToString:[[PackageManager defaultManager] getCityVersion:_city.cityId]]) {
         updateButton.hidden = YES;
-        _cancelButton.hidden = NO;
     }
     else {
         updateButton.hidden = NO;

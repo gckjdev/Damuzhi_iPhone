@@ -111,8 +111,6 @@
 
 //    PPDebug(@"current time is %@",dateToChineseStringByFormat(now, @"yyyy年MM月dd日 HH:mm"));
 //    PPDebug(@"next month time is %@",dateToChineseStringByFormat([now chineseNextMonth], @"yyyy年MM月dd日 HH:mm"));
-
-
     
     _monthView.delegate = self;
     _monthView.dataSource = self;
@@ -234,12 +232,12 @@
                 bookingInfo = NSLS(@"未开售") ;
             }else if (booking.status == 2) {            
                 NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
-                bookingInfo = [NSString stringWithFormat:@"%@\n可报%@", booking.adultPrice, remainder];
+                bookingInfo = [NSString stringWithFormat:@"%d\n可报%@", booking.adultPrice, remainder];
             }else if (booking.status == 3) {
                 bookingInfo = NSLS(@"满");
             }
         }else {
-            bookingInfo = [NSString stringWithFormat:@"%@", booking.adultPrice];
+            bookingInfo = [NSString stringWithFormat:@"%d", booking.adultPrice];
         }
     }
     
