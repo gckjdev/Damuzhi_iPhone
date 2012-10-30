@@ -43,8 +43,7 @@ static PackageManager *_instance = nil;
         }
     }
     
-    //return cityVersion;
-    return @"99";
+    return cityVersion;
 }
 
 - (LanguageType)getLanguageType:(int)cityId
