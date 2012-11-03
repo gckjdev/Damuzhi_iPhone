@@ -33,8 +33,10 @@
 
 @property (retain, nonatomic) IBOutlet UIImageView *rightLineImageView;
 
-- (id)initWithBookings:(NSArray *)bookings;
-- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;
+//- (id)initWithBookings:(NSArray *)bookings;
+//- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;
+- (id)initWithBookings:(NSArray *)bookings currency:(NSString *)currency;
+
 - (void)showInView:(UIView *)superView;
 
 @end

@@ -221,7 +221,6 @@
 	UITableViewCell *cell = [theTableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];				
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;		
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell.imageView setImage:[UIImage imageNamed:@"more_icon.png"]];
         
@@ -318,9 +317,6 @@
     controller.navigationItem.title = ABOUT;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
-    
-//    CommonDialog *dialog = [CommonDialog createDialogWithTitle:@"新版本升级提示" subTitle:@"大拇指旅游2.1发布了" content:@"1.地点列表采用多次加载\n2.优化已知Bug" OKButtonTitle:@"立刻升级" cancelButtonTitle:@"稍后提醒" delegate:self];
-//    [dialog showInView:self.view];
 }
 
 - (void)showRecommendedApps
@@ -339,6 +335,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    
     NSString *title = [dataDictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
     
     if ([title isEqualToString:CITIES]) {

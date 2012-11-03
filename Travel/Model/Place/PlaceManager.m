@@ -123,31 +123,18 @@ static PlaceManager *_placeDefaultManager;
     return [sortedPlaceList subarrayWithRange:range];
 }
 
-- (NSArray*)sortPlacesFromNearToFar:(Place*)place placeList:(NSArray*)placeList
+- (NSArray*)sort:(CLLocation*)location placeList:(NSArray*)placeList
 {
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:place.latitude longitude:place.longitude];
-
-    NSMutableArray *list = [[[NSMutableArray alloc] init] autorelease];
-
-    for (Place *pl in placeList) {
-        if (pl.placeId == place.placeId) {
-            continue;
-        }
-        [list addObject:pl];
-    }
-
-    NSArray *sortedList = [list sortedArrayUsingComparator:^(id obj1, id obj2){
+    NSArray *sortedList = [placeList sortedArrayUsingComparator:^(id obj1, id obj2){
         Place *place1 = (Place*)obj1;
         Place *place2 = (Place*)obj2;
         
         CLLocationDistance dis1 = [self distanceBetween:place1 location:location];
         CLLocationDistance dis2 = [self distanceBetween:place2 location:location];
         
-//        PPDebug(@"place1: %@, dis1 = %f, place2: %@ dis2 = %f", place1.name, dis1, place2.name, dis2);
-        
         if (dis1 < dis2) {
             return NSOrderedAscending;
-        } 
+        }
         else if (dis1 > dis2) {
             return NSOrderedDescending;
         }
@@ -156,8 +143,25 @@ static PlaceManager *_placeDefaultManager;
         }
     }];
     
-    [location release];
+    return sortedList;
+}
+
+- (NSArray*)sortPlacesFromNearToFar:(Place*)place placeList:(NSArray*)placeList
+{
+    NSMutableArray *list = [[[NSMutableArray alloc] init] autorelease];
+
+    for (Place *pl in placeList) {
+        if (pl.placeId == place.placeId) {
+            continue;
+        }
+        [list addObject:pl];
+    }
     
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:place.latitude longitude:place.longitude];
+    
+    NSArray *sortedList = [self sort:location placeList:list];
+    
+    [location release];
     return sortedList;
 }
 
@@ -186,7 +190,42 @@ static PlaceManager *_placeDefaultManager;
     return retArray;
 }
 
+- (NSArray *)filterByDistance:(double)distance location:(CLLocation*)location placeList:(NSArray *)placeList
+{
+    NSMutableArray *resultList = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (Place *place in placeList) {
+        CLLocationDistance dis = [self distanceBetween:place location:location];
+        if (dis <= distance*1000.0) {
+            [resultList addObject:place];
+        }
+    }
+    
+    return resultList;
+}
 
+- (NSArray *)findNearbyPlaces:(int)type
+                     latitude:(double)latitude
+                    longitude:(double)longitude
+                     distance:(double)distance
+                   totalCount:(int*)totalCount
+{
+    //filter with type
+    NSArray *listAfterTypeFilter = [self findPlacesByCategory:type];
+    
+    PPDebug(@"listAfterTypeFilter count:%d", [listAfterTypeFilter count]);
+    
+    //filter with distance
+    CLLocation *location = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
+    NSArray *listAfterDistaceFilter = [self filterByDistance:distance location:location placeList:listAfterTypeFilter];
+    
+    *totalCount = [listAfterDistaceFilter count];
+    
+    //sort by distance
+    NSArray *listSorted = [self sort:location placeList:listAfterDistaceFilter];
+    
+    return listSorted;
+}
 
 
 @end

@@ -55,11 +55,9 @@
     [super dealloc];
 }
 
-- (id)initWithCityId:(int)cityId
+- (id)init
 {
     if (self = [super init]) {
-        _cityId = cityId;
-        
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
         self.footerRefreshType = AutoAndAddMore;
@@ -88,7 +86,7 @@
     [self createButtonView];
     
     _start = 0;
-    
+    _cityId = [_appManager getCurrentCityId];
     [self findLocalRoutes];
 }
 
@@ -101,6 +99,9 @@
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
+    
+    PPDebug(@"cityid : %d", _cityId);
+    PPDebug(@"getCurrentCityId : %d", [_appManager getCurrentCityId]);
     
     if (_cityId != [_appManager getCurrentCityId]) {
         _cityId = [_appManager getCurrentCityId];

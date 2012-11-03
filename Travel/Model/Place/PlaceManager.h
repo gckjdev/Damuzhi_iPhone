@@ -22,4 +22,10 @@
 - (NSArray*)findPlacesNearby:(int)categoryId place:(Place*)place num:(int)num;
 - (NSArray*)findPlacesNearby:(int)categoryId place:(Place *)place distance:(double)distance;
 
+- (NSArray *)findNearbyPlaces:(int)type
+                     latitude:(double)latitude
+                    longitude:(double)longitude
+                     distance:(double)distance
+                   totalCount:(int*)totalCount;
+
 @end

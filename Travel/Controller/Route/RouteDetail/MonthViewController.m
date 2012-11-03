@@ -26,6 +26,7 @@
 @property (retain, nonatomic) NSArray *bookings;
 @property (retain, nonatomic) NSMutableArray *dataArray;
 //@property (retain, nonatomic) NSDate *date;
+@property (retain, nonatomic) NSString *currency;
 
 @end
 
@@ -39,12 +40,13 @@
 @synthesize backgroundImageView = _backgroundImageView;
 @synthesize rightLineImageView = _rightLineImageView;
 
-
-
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
 @synthesize dataArray = _dataArray;
 //@synthesize date = _date;
+@synthesize currency = _currency;
+
+
 - (void)dealloc {
     [_monthView release];
     [_bookings release];
@@ -59,6 +61,8 @@
 
     [_backgroundImageView release];
     [_rightLineImageView release];
+    
+    [_currency release];
     [super dealloc];
 }
 
@@ -71,11 +75,21 @@
     return self;
 }
 
-- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
+//- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
+//{
+//    if (self= [super init]) {
+//        self.bookings = bookings;
+//        _routeType = routeType;
+//    }
+//    
+//    return self;
+//}
+
+- (id)initWithBookings:(NSArray *)bookings currency:(NSString *)currency
 {
     if (self= [super init]) {
         self.bookings = bookings;
-        _routeType = routeType;
+        self.currency = currency;
     }
     
     return self;
@@ -98,11 +112,7 @@
                                                         hasTopBackground:NO
                                                                hasShadow:NO 
                                                    userInteractionEnable:YES] autorelease];
-    PPDebug(@"hhaahahhahhax width is %f", self.monthView.frame.size.width);
-    PPDebug(@"hhaahahhahhax height is %f", self.monthView.frame.size.height);
 
-    PPDebug(@"need hahahahahhax height is %f", self.rightLineImageView.frame.size.height);
-    
     [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
                              forState:UIControlStateNormal];
     
@@ -226,19 +236,16 @@
     
     Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
     if (booking != nil) {
-        PPDebug(@"routeType = %d", _routeType);
-        if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-            if (booking.status == 1) {
-                bookingInfo = NSLS(@"未开售") ;
-            }else if (booking.status == 2) {            
-                NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
-                bookingInfo = [NSString stringWithFormat:@"%d\n可报%@", booking.adultPrice, remainder];
-            }else if (booking.status == 3) {
-                bookingInfo = NSLS(@"满");
-            }
-        }else {
-            bookingInfo = [NSString stringWithFormat:@"%d", booking.adultPrice];
+        
+        if (booking.status == 1) {
+            bookingInfo = NSLS(@"未开售") ;
+        }else if (booking.status == 2) {
+            bookingInfo = [NSString stringWithFormat:@"%@%d", _currency, booking.adultPrice];
+        }else if (booking.status == 3) {
+            bookingInfo = NSLS(@"满");
         }
+        
+        //bookingInfo = [NSString stringWithFormat:@"%d",booking.adultPrice];
     }
     
     return bookingInfo;

@@ -155,7 +155,7 @@
     NSString *string = @"";
     switch (orderStatus) {
         case 1:
-            string = NSLS(@"意向订单");
+            string = NSLS(@"已成功提交意向订单");
             break;
             
         case 2:

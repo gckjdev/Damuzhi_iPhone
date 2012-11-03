@@ -577,7 +577,13 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
         int totalCount = 0;
         
         if ([AppUtils hasLocalCityData:[[AppManager defaultManager] getCurrentCityId]] == YES){
-            
+            [_localPlaceManager switchCity:currentCityId];
+            list = [_localPlaceManager findNearbyPlaces:type
+                                               latitude:latitude
+                                              longitude:longitude
+                                               distance:distance
+                                             totalCount:&totalCount];
+            resultCode = 0;
         }
         else{
             CommonNetworkOutput* output = [TravelNetworkRequest queryNearbyList:type

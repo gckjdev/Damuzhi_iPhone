@@ -12,7 +12,4 @@
 
 @interface LocalRouteListController : PPTableViewController <RouteServiceDelegate, AppManagerProtocol>
 
-- (id)initWithCityId:(int)cityId;
-
-
 @end
