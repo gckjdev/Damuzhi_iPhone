@@ -230,6 +230,22 @@
     return texts;
 }
 
+- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextColorsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
+{
+    NSMutableArray *colors = [[[NSMutableArray alloc] init] autorelease];
+    NSArray *markTexts = [self calendarMonthView:monthView markTextsFromDate:startDate toDate:lastDate];
+    
+    for (NSString *str in markTexts) {
+        if ([str isEqualToString:NSLS(@"销售中")]) {
+            [colors addObject:[UIColor redColor]];
+        } else {
+            [colors addObject:[UIColor blackColor]];
+        }
+    }
+    
+    return colors;
+}
+
 - (NSString*)bookingStringWithDate:(NSDate *)date
 {
     NSString *bookingInfo = @"";
@@ -237,15 +253,17 @@
     Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
     if (booking != nil) {
         
-        if (booking.status == 1) {
-            bookingInfo = NSLS(@"未开售") ;
-        }else if (booking.status == 2) {
-            bookingInfo = [NSString stringWithFormat:@"%@%d", _currency, booking.adultPrice];
-        }else if (booking.status == 3) {
-            bookingInfo = NSLS(@"满");
+        NSDate *nowStartDate = getDateStart([NSDate date]);
+        NSTimeInterval diffTimeInterval = [date timeIntervalSinceDate:nowStartDate];
+        if (diffTimeInterval < 0 ) {
+            bookingInfo = NSLS(@"");
+        } else {
+            if (booking.status == 1) {
+                bookingInfo = NSLS(@"未开售");
+            }else if (booking.status == 2) {
+                bookingInfo = NSLS(@"销售中");
+            }
         }
-        
-        //bookingInfo = [NSString stringWithFormat:@"%d",booking.adultPrice];
     }
     
     return bookingInfo;

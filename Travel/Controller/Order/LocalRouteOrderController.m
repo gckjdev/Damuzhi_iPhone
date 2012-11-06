@@ -456,7 +456,7 @@
 {
     if (resultCode == 0) {
         if ( result == 0) {;
-            [self popupMessage:NSLS(@"预订成功") title:nil];
+            [self popupMessage:NSLS(@"已成功提交意向订单") title:nil];
             
             OrderListController *controller = [[OrderListController alloc] initWithOrderType:OBJECT_LIST_LOCAL_ROUTE_ORDER];
             [self.navigationController pushViewController:controller animated:YES];
