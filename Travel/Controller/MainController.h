@@ -11,7 +11,6 @@
 #import "CommonPlaceListController.h"
 #import "MoreController.h"
 #import "NearbyController.h"
-#import "WBEngine.h"
 #import "UserService.h"
 #import "CommonDialog.h"
 

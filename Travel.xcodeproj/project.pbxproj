@@ -84,16 +84,6 @@
 		A3E456AD15B1192B00430D2A /* RouteStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E456AC15B1192B00430D2A /* RouteStorage.m */; };
 		A3E456B215B136A200430D2A /* FollowRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E456B015B136A200430D2A /* FollowRouteController.m */; };
 		A3E456B315B136A200430D2A /* FollowRouteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A3E456B115B136A200430D2A /* FollowRouteController.xib */; };
-		A3EB73E4152E965C003BA8B8 /* IOS SDK Readme 2.0.0.docx in Resources */ = {isa = PBXBuildFile; fileRef = A3EB738F152E965B003BA8B8 /* IOS SDK Readme 2.0.0.docx */; };
-		A3EB73FD152E965C003BA8B8 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73BC152E965B003BA8B8 /* SFHFKeychainUtils.m */; };
-		A3EB73FE152E965C003BA8B8 /* WBAuthorize.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73BE152E965B003BA8B8 /* WBAuthorize.m */; };
-		A3EB73FF152E965C003BA8B8 /* WBAuthorizeWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73C0152E965B003BA8B8 /* WBAuthorizeWebView.m */; };
-		A3EB7400152E965C003BA8B8 /* WBEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73C2152E965B003BA8B8 /* WBEngine.m */; };
-		A3EB7401152E965C003BA8B8 /* WBLogInAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73C4152E965B003BA8B8 /* WBLogInAlertView.m */; };
-		A3EB7402152E965C003BA8B8 /* WBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73C6152E965B003BA8B8 /* WBRequest.m */; };
-		A3EB7403152E965C003BA8B8 /* WBSendView.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73C9152E965B003BA8B8 /* WBSendView.m */; };
-		A3EB7404152E965C003BA8B8 /* WBUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73CB152E965B003BA8B8 /* WBUtil.m */; };
-		A3EB7405152E965C003BA8B8 /* SinaWeiBoSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EB73D0152E965B003BA8B8 /* SinaWeiBoSDK.m */; };
 		A3EB740E152E96E4003BA8B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EB740D152E96E4003BA8B8 /* Security.framework */; };
 		A3ED59661557742900312715 /* ResendService.m in Sources */ = {isa = PBXBuildFile; fileRef = A3ED59651557742900312715 /* ResendService.m */; };
 		A3ED596A15577CA700312715 /* ResendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3ED596915577CA700312715 /* ResendManager.m */; };
@@ -673,6 +663,12 @@
 		EA0EFC66160C12F90057E36C /* TicketHotelController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC64160C12F90057E36C /* TicketHotelController.m */; };
 		EA0EFC67160C12F90057E36C /* TicketHotelController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC65160C12F90057E36C /* TicketHotelController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
+		EA140191164A4315009DF6DC /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140188164A4315009DF6DC /* JSONKit.m */; };
+		EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EA140189164A4315009DF6DC /* SinaWeibo.bundle */; };
+		EA140193164A4315009DF6DC /* SinaWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = EA14018B164A4315009DF6DC /* SinaWeibo.m */; };
+		EA140194164A4315009DF6DC /* SinaWeiboAuthorizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA14018D164A4315009DF6DC /* SinaWeiboAuthorizeView.m */; };
+		EA140195164A4315009DF6DC /* SinaWeiboRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140190164A4315009DF6DC /* SinaWeiboRequest.m */; };
+		EA140199164A4794009DF6DC /* SinaweiboManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140198164A4794009DF6DC /* SinaweiboManager.m */; };
 		EA16E1B316252B63002F388B /* line_zk2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA16E1B216252B63002F388B /* line_zk2@2x.png */; };
 		EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */; };
 		EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */; };
@@ -736,13 +732,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = QWeiboSDK4iOS;
-		};
-		A3EB7407152E965C003BA8B8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A3EB73D1152E965B003BA8B8 /* SinaWeiBoSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E6ABCC1914988423008E0A37;
-			remoteInfo = SinaWeiBoSDK;
 		};
 		CA238F9714FB562500114175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -881,28 +870,6 @@
 		A3E456AF15B136A200430D2A /* FollowRouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowRouteController.h; sourceTree = "<group>"; };
 		A3E456B015B136A200430D2A /* FollowRouteController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowRouteController.m; sourceTree = "<group>"; };
 		A3E456B115B136A200430D2A /* FollowRouteController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowRouteController.xib; sourceTree = "<group>"; };
-		A3EB738F152E965B003BA8B8 /* IOS SDK Readme 2.0.0.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IOS SDK Readme 2.0.0.docx"; sourceTree = "<group>"; };
-		A3EB73BB152E965B003BA8B8 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		A3EB73BC152E965B003BA8B8 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		A3EB73BD152E965B003BA8B8 /* WBAuthorize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAuthorize.h; sourceTree = "<group>"; };
-		A3EB73BE152E965B003BA8B8 /* WBAuthorize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAuthorize.m; sourceTree = "<group>"; };
-		A3EB73BF152E965B003BA8B8 /* WBAuthorizeWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBAuthorizeWebView.h; sourceTree = "<group>"; };
-		A3EB73C0152E965B003BA8B8 /* WBAuthorizeWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBAuthorizeWebView.m; sourceTree = "<group>"; };
-		A3EB73C1152E965B003BA8B8 /* WBEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBEngine.h; sourceTree = "<group>"; };
-		A3EB73C2152E965B003BA8B8 /* WBEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBEngine.m; sourceTree = "<group>"; };
-		A3EB73C3152E965B003BA8B8 /* WBLogInAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBLogInAlertView.h; sourceTree = "<group>"; };
-		A3EB73C4152E965B003BA8B8 /* WBLogInAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBLogInAlertView.m; sourceTree = "<group>"; };
-		A3EB73C5152E965B003BA8B8 /* WBRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBRequest.h; sourceTree = "<group>"; };
-		A3EB73C6152E965B003BA8B8 /* WBRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBRequest.m; sourceTree = "<group>"; };
-		A3EB73C7152E965B003BA8B8 /* WBSDKGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSDKGlobal.h; sourceTree = "<group>"; };
-		A3EB73C8152E965B003BA8B8 /* WBSendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSendView.h; sourceTree = "<group>"; };
-		A3EB73C9152E965B003BA8B8 /* WBSendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBSendView.m; sourceTree = "<group>"; };
-		A3EB73CA152E965B003BA8B8 /* WBUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUtil.h; sourceTree = "<group>"; };
-		A3EB73CB152E965B003BA8B8 /* WBUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUtil.m; sourceTree = "<group>"; };
-		A3EB73CE152E965B003BA8B8 /* SinaWeiBoSDK-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SinaWeiBoSDK-Prefix.pch"; sourceTree = "<group>"; };
-		A3EB73CF152E965B003BA8B8 /* SinaWeiBoSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaWeiBoSDK.h; sourceTree = "<group>"; };
-		A3EB73D0152E965B003BA8B8 /* SinaWeiBoSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaWeiBoSDK.m; sourceTree = "<group>"; };
-		A3EB73D1152E965B003BA8B8 /* SinaWeiBoSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SinaWeiBoSDK.xcodeproj; sourceTree = "<group>"; };
 		A3EB740D152E96E4003BA8B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A3ED59641557742900312715 /* ResendService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResendService.h; sourceTree = "<group>"; };
 		A3ED59651557742900312715 /* ResendService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResendService.m; sourceTree = "<group>"; };
@@ -1770,6 +1737,18 @@
 		EA0EFC64160C12F90057E36C /* TicketHotelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TicketHotelController.m; sourceTree = "<group>"; };
 		EA0EFC65160C12F90057E36C /* TicketHotelController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TicketHotelController.xib; sourceTree = "<group>"; };
 		EA1007B915550E1600E299D1 /* pin_yl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_yl@2x.png"; sourceTree = "<group>"; };
+		EA140187164A4315009DF6DC /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		EA140188164A4315009DF6DC /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		EA140189164A4315009DF6DC /* SinaWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SinaWeibo.bundle; sourceTree = "<group>"; };
+		EA14018A164A4315009DF6DC /* SinaWeibo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaWeibo.h; sourceTree = "<group>"; };
+		EA14018B164A4315009DF6DC /* SinaWeibo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaWeibo.m; sourceTree = "<group>"; };
+		EA14018C164A4315009DF6DC /* SinaWeiboAuthorizeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaWeiboAuthorizeView.h; sourceTree = "<group>"; };
+		EA14018D164A4315009DF6DC /* SinaWeiboAuthorizeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaWeiboAuthorizeView.m; sourceTree = "<group>"; };
+		EA14018E164A4315009DF6DC /* SinaWeiboConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaWeiboConstants.h; sourceTree = "<group>"; };
+		EA14018F164A4315009DF6DC /* SinaWeiboRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaWeiboRequest.h; sourceTree = "<group>"; };
+		EA140190164A4315009DF6DC /* SinaWeiboRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaWeiboRequest.m; sourceTree = "<group>"; };
+		EA140197164A4794009DF6DC /* SinaweiboManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaweiboManager.h; sourceTree = "<group>"; };
+		EA140198164A4794009DF6DC /* SinaweiboManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaweiboManager.m; sourceTree = "<group>"; };
 		EA16E1B216252B63002F388B /* line_zk2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_zk2@2x.png"; sourceTree = "<group>"; };
 		EA194DF115FDF53500FA437F /* LocalRouteDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteDetailController.h; sourceTree = "<group>"; };
 		EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteDetailController.m; sourceTree = "<group>"; };
@@ -1963,8 +1942,8 @@
 		A3CD5AE0152803830049D2F3 /* 3PP-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				EA140185164A4315009DF6DC /* SinaWeiBoSDK_sso */,
 				A31334E0152FFB460047D013 /* QQWeiboEngine */,
-				A3EB737C152E965B003BA8B8 /* SinaWeiBoSDK */,
 				A3CD5AE1152803A80049D2F3 /* MobClick */,
 			);
 			name = "3PP-SDK";
@@ -2026,84 +2005,6 @@
 				EA254954160976690062E075 /* FollowLocalRouteController.xib */,
 			);
 			path = FollowRoute;
-			sourceTree = "<group>";
-		};
-		A3EB737C152E965B003BA8B8 /* SinaWeiBoSDK */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB738F152E965B003BA8B8 /* IOS SDK Readme 2.0.0.docx */,
-				A3EB7390152E965B003BA8B8 /* src */,
-			);
-			name = SinaWeiBoSDK;
-			path = "../Common_iPhone_20/3PP-SDK/SinaWeiBoSDK";
-			sourceTree = "<group>";
-		};
-		A3EB7390152E965B003BA8B8 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB7392152E965B003BA8B8 /* SinaWeiBoSDK */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		A3EB7392152E965B003BA8B8 /* SinaWeiBoSDK */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB7394152E965B003BA8B8 /* SinaWeiBoSDK */,
-				A3EB73D1152E965B003BA8B8 /* SinaWeiBoSDK.xcodeproj */,
-			);
-			path = SinaWeiBoSDK;
-			sourceTree = "<group>";
-		};
-		A3EB7394152E965B003BA8B8 /* SinaWeiBoSDK */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB7395152E965B003BA8B8 /* SinaWeiBoSDK */,
-				A3EB73CE152E965B003BA8B8 /* SinaWeiBoSDK-Prefix.pch */,
-				A3EB73CF152E965B003BA8B8 /* SinaWeiBoSDK.h */,
-				A3EB73D0152E965B003BA8B8 /* SinaWeiBoSDK.m */,
-			);
-			path = SinaWeiBoSDK;
-			sourceTree = "<group>";
-		};
-		A3EB7395152E965B003BA8B8 /* SinaWeiBoSDK */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB73BA152E965B003BA8B8 /* SFHFKeychainUtils */,
-				A3EB73BD152E965B003BA8B8 /* WBAuthorize.h */,
-				A3EB73BE152E965B003BA8B8 /* WBAuthorize.m */,
-				A3EB73BF152E965B003BA8B8 /* WBAuthorizeWebView.h */,
-				A3EB73C0152E965B003BA8B8 /* WBAuthorizeWebView.m */,
-				A3EB73C1152E965B003BA8B8 /* WBEngine.h */,
-				A3EB73C2152E965B003BA8B8 /* WBEngine.m */,
-				A3EB73C3152E965B003BA8B8 /* WBLogInAlertView.h */,
-				A3EB73C4152E965B003BA8B8 /* WBLogInAlertView.m */,
-				A3EB73C5152E965B003BA8B8 /* WBRequest.h */,
-				A3EB73C6152E965B003BA8B8 /* WBRequest.m */,
-				A3EB73C7152E965B003BA8B8 /* WBSDKGlobal.h */,
-				A3EB73C8152E965B003BA8B8 /* WBSendView.h */,
-				A3EB73C9152E965B003BA8B8 /* WBSendView.m */,
-				A3EB73CA152E965B003BA8B8 /* WBUtil.h */,
-				A3EB73CB152E965B003BA8B8 /* WBUtil.m */,
-			);
-			path = SinaWeiBoSDK;
-			sourceTree = "<group>";
-		};
-		A3EB73BA152E965B003BA8B8 /* SFHFKeychainUtils */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB73BB152E965B003BA8B8 /* SFHFKeychainUtils.h */,
-				A3EB73BC152E965B003BA8B8 /* SFHFKeychainUtils.m */,
-			);
-			path = SFHFKeychainUtils;
-			sourceTree = "<group>";
-		};
-		A3EB73D2152E965B003BA8B8 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A3EB7408152E965C003BA8B8 /* libSinaWeiBoSDK.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		A3ED59601557737C00312715 /* Resend */ = {
@@ -4204,6 +4105,7 @@
 		CA585F9114F7376300471880 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EA140196164A4794009DF6DC /* Share */,
 				EA1A348C160829AA000E325B /* Constants */,
 				A4BAD17E15B404DD00596460 /* PlaceItemList */,
 				A4BB6E4D152A415C001CEA6B /* SelectedItems */,
@@ -4294,6 +4196,41 @@
 				EA0EFC65160C12F90057E36C /* TicketHotelController.xib */,
 			);
 			path = TicketHotel;
+			sourceTree = "<group>";
+		};
+		EA140185164A4315009DF6DC /* SinaWeiBoSDK_sso */ = {
+			isa = PBXGroup;
+			children = (
+				EA140186164A4315009DF6DC /* JSONKit */,
+				EA140189164A4315009DF6DC /* SinaWeibo.bundle */,
+				EA14018A164A4315009DF6DC /* SinaWeibo.h */,
+				EA14018B164A4315009DF6DC /* SinaWeibo.m */,
+				EA14018C164A4315009DF6DC /* SinaWeiboAuthorizeView.h */,
+				EA14018D164A4315009DF6DC /* SinaWeiboAuthorizeView.m */,
+				EA14018E164A4315009DF6DC /* SinaWeiboConstants.h */,
+				EA14018F164A4315009DF6DC /* SinaWeiboRequest.h */,
+				EA140190164A4315009DF6DC /* SinaWeiboRequest.m */,
+			);
+			name = SinaWeiBoSDK_sso;
+			path = "../Common_iPhone_20/3PP-SDK/SinaWeiBoSDK_sso";
+			sourceTree = "<group>";
+		};
+		EA140186164A4315009DF6DC /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				EA140187164A4315009DF6DC /* JSONKit.h */,
+				EA140188164A4315009DF6DC /* JSONKit.m */,
+			);
+			path = JSONKit;
+			sourceTree = "<group>";
+		};
+		EA140196164A4794009DF6DC /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				EA140197164A4794009DF6DC /* SinaweiboManager.h */,
+				EA140198164A4794009DF6DC /* SinaweiboManager.m */,
+			);
+			path = Share;
 			sourceTree = "<group>";
 		};
 		EA19E11C1606C1BC006A04A3 /* local_route */ = {
@@ -4402,10 +4339,6 @@
 					ProductGroup = A31334D5152FFA6F0047D013 /* Products */;
 					ProjectRef = A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */;
 				},
-				{
-					ProductGroup = A3EB73D2152E965B003BA8B8 /* Products */;
-					ProjectRef = A3EB73D1152E965B003BA8B8 /* SinaWeiBoSDK.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -4420,13 +4353,6 @@
 			fileType = archive.ar;
 			path = libQWeiboSDK4iOS.a;
 			remoteRef = A31334DB152FFA6F0047D013 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		A3EB7408152E965C003BA8B8 /* libSinaWeiBoSDK.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSinaWeiBoSDK.a;
-			remoteRef = A3EB7407152E965C003BA8B8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CA238F9814FB562500114175 /* libProtocolBuffers.a */ = {
@@ -4492,7 +4418,6 @@
 				EAFE21EC152861480013D040 /* NearByRecommendController.xib in Resources */,
 				A4BB6E3215294CF4001CEA6B /* CityListCell.xib in Resources */,
 				A4BB6E3415294CF4001CEA6B /* DownloadListCell.xib in Resources */,
-				A3EB73E4152E965C003BA8B8 /* IOS SDK Readme 2.0.0.docx in Resources */,
 				A313DE5E152F02EB004E0964 /* ShareToSinaController.xib in Resources */,
 				A3DE351F153285B80034C6D5 /* ShareToQQController.xib in Resources */,
 				A48E050F1534058900B2695E /* app.dat in Resources */,
@@ -4831,6 +4756,7 @@
 				EA35B868162D36E600216678 /* update_4@2x.png in Resources */,
 				EA35B869162D36E600216678 /* update_5_btn@2x.png in Resources */,
 				EA00B39316352AAA0081525F /* signup_bg2@2x.png in Resources */,
+				EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5049,15 +4975,6 @@
 				A4C6BC4D152DF83000681DD7 /* HotelDetailViewHandler.m in Sources */,
 				A4C6BC4E152DF83000681DD7 /* RestaurantDetailViewHandler.m in Sources */,
 				A4C6BC4F152DF83000681DD7 /* ShoppingDetailViewHandler.m in Sources */,
-				A3EB73FD152E965C003BA8B8 /* SFHFKeychainUtils.m in Sources */,
-				A3EB73FE152E965C003BA8B8 /* WBAuthorize.m in Sources */,
-				A3EB73FF152E965C003BA8B8 /* WBAuthorizeWebView.m in Sources */,
-				A3EB7400152E965C003BA8B8 /* WBEngine.m in Sources */,
-				A3EB7401152E965C003BA8B8 /* WBLogInAlertView.m in Sources */,
-				A3EB7402152E965C003BA8B8 /* WBRequest.m in Sources */,
-				A3EB7403152E965C003BA8B8 /* WBSendView.m in Sources */,
-				A3EB7404152E965C003BA8B8 /* WBUtil.m in Sources */,
-				A3EB7405152E965C003BA8B8 /* SinaWeiBoSDK.m in Sources */,
 				A313DE5D152F02EB004E0964 /* ShareToSinaController.m in Sources */,
 				A31334E7152FFB460047D013 /* QVerifyWebViewController.m in Sources */,
 				A31334E8152FFB460047D013 /* QWeiboAsyncApi.m in Sources */,
@@ -5160,6 +5077,11 @@
 				EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */,
 				EA0EFC66160C12F90057E36C /* TicketHotelController.m in Sources */,
 				EA35B85D162D2FA000216678 /* CommonDialog.m in Sources */,
+				EA140191164A4315009DF6DC /* JSONKit.m in Sources */,
+				EA140193164A4315009DF6DC /* SinaWeibo.m in Sources */,
+				EA140194164A4315009DF6DC /* SinaWeiboAuthorizeView.m in Sources */,
+				EA140195164A4315009DF6DC /* SinaWeiboRequest.m in Sources */,
+				EA140199164A4794009DF6DC /* SinaweiboManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5244,8 +5166,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				PROVISIONING_PROFILE = "CA39F6C6-9267-4406-8A61-079493D897F0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CA39F6C6-9267-4406-8A61-079493D897F0";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 			};
@@ -5269,8 +5191,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				PROVISIONING_PROFILE = "CA39F6C6-9267-4406-8A61-079493D897F0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CA39F6C6-9267-4406-8A61-079493D897F0";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 				VALIDATE_PRODUCT = YES;
@@ -5292,8 +5214,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				PROVISIONING_PROFILE = "CA39F6C6-9267-4406-8A61-079493D897F0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CA39F6C6-9267-4406-8A61-079493D897F0";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
@@ -5315,8 +5237,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C1560B8D-9B93-4461-9EFD-CD7E1E5701C8";
+				PROVISIONING_PROFILE = "CA39F6C6-9267-4406-8A61-079493D897F0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CA39F6C6-9267-4406-8A61-079493D897F0";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
