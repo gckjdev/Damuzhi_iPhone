@@ -88,7 +88,7 @@ typedef enum{
 //    
 //    
     
-    [UIUtils addViewController:[[LocalRouteListController alloc] init]
+    [UIUtils addViewController:[LocalRouteListController alloc]
                      viewTitle:nil
                      viewImage:@"menu_btn2_off.png" 
               hasNavController:YES 

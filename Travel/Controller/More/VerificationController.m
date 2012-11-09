@@ -57,6 +57,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self setTitle:NSLS(@"注册验证")];
+    
     [self setNavigationLeftButton:NSLS(@" 返回") 
                          fontSize:FONT_SIZE
                         imageName:@"back.png"

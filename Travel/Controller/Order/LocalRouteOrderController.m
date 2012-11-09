@@ -204,6 +204,8 @@
         cell.rightButton.hidden = NO;
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         [cell.rightButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
+        [cell.leftButton setTitleColor:DEPARTDATA_TEXT_COLOR forState:UIControlStateNormal];
+        [cell.rightButton setTitleColor:DEPARTDATA_TEXT_COLOR forState:UIControlStateNormal];
         
         [cell.leftButton setTitle:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult] forState:UIControlStateNormal];
         [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 

@@ -270,7 +270,7 @@
     }
     
     int orderType;
-    [self popupMessage:NSLS(@"预订成功") title:nil];
+    [self popupMessage:NSLS(@"已成功提交意向订单") title:nil];
     switch (_routeType) 
     {
         case OBJECT_LIST_ROUTE_PACKAGE_TOUR:

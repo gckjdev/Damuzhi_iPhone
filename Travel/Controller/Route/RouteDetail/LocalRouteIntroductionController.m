@@ -42,6 +42,7 @@
     [bookingButton release];
     [priceLastLabel release];
     [_route release];
+    [_LoadWebActivityView release];
     [super dealloc];
 }
 
@@ -66,6 +67,8 @@
     self.contentWebView.alpha = 0.0;
     self.contentWebView.userInteractionEnabled = YES;
     self.contentWebView.scrollView.scrollEnabled = NO;
+    
+    [self.LoadWebActivityView stopAnimating];
 }
 
 - (void)viewDidUnload
@@ -77,6 +80,7 @@
     [self setBookingHolderView:nil];
     [self setBookingButton:nil];
     [self setPriceLastLabel:nil];
+    [self setLoadWebActivityView:nil];
     [super viewDidUnload];
 }
 
@@ -109,13 +113,17 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
     self.contentWebView.delegate = self;
     [self.contentWebView loadRequest:request];
+    [self.LoadWebActivityView startAnimating];
 }
 
 #pragma mark - 
 #pragma UIWebViewDelegate method
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    [self.LoadWebActivityView stopAnimating];
+}
 
 #define TAG_DOWN_BG  12091801
-
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
 //    CGSize actualSize = [webView sizeThatFits:CGSizeZero];
@@ -127,7 +135,7 @@
 //        CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
 //        overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
 //    }
-    
+    [self.LoadWebActivityView stopAnimating];
     webView.alpha = 1.0;
     webView.frame =  CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.scrollView.contentSize.height);
     CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;

@@ -30,6 +30,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *priceLastLabel;
 @property (retain, nonatomic) IBOutlet UIButton *bookingButton;
 @property (retain, nonatomic) id<LocalRouteIntroductionControllerDelegage> delegate;
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *LoadWebActivityView;
 
 - (void)showInView:(UIView *)superView;
 - (void)updateWithRoute:(LocalRoute *)route;

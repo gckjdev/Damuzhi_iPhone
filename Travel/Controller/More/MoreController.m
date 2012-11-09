@@ -25,6 +25,7 @@
 #import "UserInfoController.h"
 #import "FontSize.h"
 #import "FollowLocalRouteController.h"
+#import "ImageManager.h"
 
 @interface MoreController ()
 
@@ -249,12 +250,18 @@
         [cell.contentView addSubview:cityLabel];
         [cityLabel release];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.accessoryView = nil;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        UIImage* image = [[ImageManager defaultManager] accessoryImage];
+        UIImageView* cellAccessoryView = [[UIImageView alloc] initWithImage:image];
+        cell.accessoryView = cellAccessoryView;
+        [cellAccessoryView release];
     }
     
     if ([SHOW_IMAGE isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
         showImageSwitch.tag = TAG_SHOW_IMAGE_SWITCH;
         [cell.contentView addSubview:showImageSwitch];
     }else {

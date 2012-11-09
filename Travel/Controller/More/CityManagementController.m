@@ -580,7 +580,7 @@ static CityManagementController *_instance;
 {
     [[AppManager defaultManager] setCurrentCityId:city.cityId delegate:_delegate];
     
-    NSString *message = [NSString stringWithFormat:NSLS(@"已设置查看%@.%@!"), city.countryName, city.cityName];
+    NSString *message = [NSString stringWithFormat:NSLS(@"%@%@"), city.countryName, city.cityName];
     [self popupMessage:message title:NSLS(@"提示")];
     [self.dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];

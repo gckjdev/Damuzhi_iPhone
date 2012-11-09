@@ -504,8 +504,8 @@
 - (void)placeOrderDone:(int)resultCode result:(int)result reusultInfo:(NSString *)resultInfo
 {
     if (resultCode == 0) {
-        if ( result == 0) {;
-            [self popupMessage:NSLS(@"预订成功") title:nil];
+        if ( result == 0) {
+            [self popupMessage:NSLS(@"已成功提交意向订单") title:nil];
             int orderType;
             switch (_routeType) {
                 case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
