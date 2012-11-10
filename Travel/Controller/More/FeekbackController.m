@@ -175,7 +175,9 @@
         return;
     }
     
-    if ([feekback lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > MAX_LENGTH_OF_FEEKBACK) {
+    PPDebug(@"feekback content length:%d",[feekback length]);
+    
+    if ([feekback length] > MAX_LENGTH_OF_FEEKBACK) {
         [self popupMessage:NSLS(@"反馈意见字数太长") title:nil];
         return;
     }
