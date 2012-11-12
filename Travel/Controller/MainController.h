@@ -11,11 +11,10 @@
 #import "CommonPlaceListController.h"
 #import "MoreController.h"
 #import "NearbyController.h"
-#import "WBEngine.h"
 #import "UserService.h"
+#import "CommonDialog.h"
 
-
-@interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate>
+@interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate, CommonDialogDelegate, AppManagerProtocol>
 @property (retain, nonatomic) IBOutlet UIButton *homeButton;
 @property (retain, nonatomic) IBOutlet UIButton *UnpackageButton;
 @property (retain, nonatomic) IBOutlet UIButton *PackageButton;

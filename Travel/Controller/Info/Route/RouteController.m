@@ -15,21 +15,38 @@
 #import "AppConstants.h"
 #import "RouteDetailController.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
 
+#define TABLE_VIEW_CELL_HEIGHT 75
 @implementation RouteController
+
+
+- (void)dealloc {
+    [super dealloc];
+}
 
 - (void)viewDidLoad
 {
     [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     
     [self.navigationItem setTitle:NSLS(@"线路推荐")];
         
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeRoute viewController:self];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat orginY = (tableView.contentSize.height <= tableView.frame.size.height) ? tableView.frame.size.height : tableView.contentSize.height;
+    orginY = orginY - 1;
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, orginY, 320, 250)] autorelease];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [tableView addSubview:imageView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -40,6 +57,7 @@
 
 - (void)viewDidUnload
 {
+//    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -57,12 +75,14 @@
 #pragma mark Table View Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 75;
+	return TABLE_VIEW_CELL_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;		// default implementation
 }
+
+
 
 
 // Customize the appearance of table view cells.

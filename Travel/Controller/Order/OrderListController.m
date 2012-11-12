@@ -15,9 +15,11 @@
 #import "TravelNetworkConstants.h"
 #import "AppManager.h"
 #import "RouteFeekbackController.h"
+#import "FontSize.h"
+#import "LocalRouteDetailController.h"
 
 #define HEIGHT_HEADER_VIEW 44
-#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
+//#define TAG_HEADER_VIEW_BG_IMAGE_VIEW 102
 
 
 @interface OrderListController ()
@@ -60,13 +62,16 @@
     // Do any additional setup after loading the view from its nib.
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self setNavigationRightButton:NSLS(@"咨询") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
-    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过跟团游订单"), [NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], NSLS(@"您还没有下过自由行订单"), [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], NSLS(@"您还没有下过定制游订单"), [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
+    
+    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过本地游订单"), [NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], NSLS(@"即将推出"), [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
     
     
     if ([[UserManager defaultManager] isLogin]) {
@@ -114,7 +119,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [dataList count];
-
 }
 
 
@@ -134,7 +138,7 @@
     OrderCell *orderCell = (OrderCell *)cell;
     orderCell.delegate = self;
 
-	[orderCell setCellData:[dataList objectAtIndex:indexPath.row]];
+	[orderCell setCellData:[dataList objectAtIndex:indexPath.section]  orderType:_orderType];
     orderCell.cellBgImageView.image = [[ImageManager defaultManager] orderListCellBgImage:indexPath.section rowCount:[dataList count]];
     
     return cell;
@@ -143,7 +147,12 @@
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [OrderCell getCellHeight];
+//    return [OrderCell getCellHeight];
+    if (_orderType == OBJECT_LIST_LOCAL_ROUTE_ORDER) {
+        return 230;
+    } else {
+        return  [[dataList objectAtIndex:indexPath.row] hasPackageName]? 270 : 248;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -156,6 +165,7 @@
     return [self headerViewWithFrame:CGRectMake(0, 0, 302, HEIGHT_HEADER_VIEW) forSection:section];
 }
 
+#define TAG_ARROW_IMAGE_VIEW 1210101
 #define HEIGHT_IMAGE_VIEW 8
 #define WIDTH_IMAGE_VIEW 8
 - (UIView *)headerViewWithFrame:(CGRect)frame forSection:(NSInteger)section
@@ -166,7 +176,7 @@
     view.tag = section;
     
     UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:view.bounds];
-    bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
+//    bgImageView.tag = TAG_HEADER_VIEW_BG_IMAGE_VIEW;
     
     bgImageView.image = [[ImageManager defaultManager] orderListHeaderView:section rowCount:[dataList count] open:[[_sectionStat objectAtIndex:section] boolValue]];
     
@@ -183,11 +193,12 @@
     routeIdLabel.backgroundColor = [UIColor clearColor];
     int orderId = [[dataList objectAtIndex:section] orderId];
     routeIdLabel.text = [NSString stringWithFormat:NSLS(@"订单编号：%d"), orderId];
+//    NSLog(@"%d", orderId);
     [view addSubview:routeIdLabel];
     [routeIdLabel release];
     
     UILabel *bookDateLabel = [[[UILabel alloc] initWithFrame:CGRectMake(200, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
-    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:[[dataList objectAtIndex:section] bookDate]];
+    NSDate *bookDate = [NSDate dateWithTimeIntervalSince1970:[[dataList objectAtIndex:section] bookDate] - 8 * 3600];
     bookDateLabel.backgroundColor = [UIColor clearColor];
     bookDateLabel.font = [UIFont systemFontOfSize:15];
     bookDateLabel.text = dateToStringByFormat(bookDate, @"MM月dd日");
@@ -195,7 +206,13 @@
     [view addSubview:bookDateLabel];
     
     UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(270, HEIGHT_HEADER_VIEW/2-22/2, 22, 22)];
-    arrowImageView.image = [[ImageManager defaultManager] arrowImage];
+    arrowImageView.tag = TAG_ARROW_IMAGE_VIEW;
+    BOOL open = [self isSectionOpen:section];
+    if (open) {
+        [arrowImageView setImage:[[ImageManager defaultManager] arrowImage]];
+    } else {
+        [arrowImageView setImage:[[ImageManager defaultManager] arrowRightImage]];
+    }
     [view addSubview:arrowImageView];
     [arrowImageView release];
     
@@ -204,7 +221,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     
 }
 
@@ -219,10 +235,13 @@
     if ([list count] == 0) {
         [self showTipsOnTableView:[_tipDic objectForKey:[NSNumber numberWithInt:_orderType]]];
         return;
+    }else {
+        [self hideTipsOnTableView];
     }
     
     [self updateSectionStatWithSectionCount:[list count]];
     self.dataList = list;
+    
 
     [dataTableView reloadData];
 }
@@ -239,6 +258,14 @@
 {
     UIButton *button = (UIButton *)sender;
     BOOL open = [self isSectionOpen:button.tag];
+    
+    UIImageView *arrowImageView = (UIImageView *)[button viewWithTag:TAG_ARROW_IMAGE_VIEW];
+    if (open) {
+         [arrowImageView setImage:[[ImageManager defaultManager] arrowImage]];
+    } else {
+         [arrowImageView setImage:[[ImageManager defaultManager] arrowRightImage]];
+    }
+   
     
     [self setSection:button.tag Open:!open];
 }
@@ -266,9 +293,17 @@
 
 - (void)didClickRouteDetail:(Order *)order
 {
-    CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:order.routeId routeType:[self routeType]];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    int routeType = [self routeType];
+    
+    if (routeType == OBJECT_LIST_LOCAL_ROUTE) {
+        LocalRouteDetailController *controller = [[LocalRouteDetailController alloc] initWithLocalRouteId:order.routeId];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    } else {
+        CommonRouteDetailController *controller = [[CommonRouteDetailController alloc] initWithRouteId:order.routeId routeType:[self routeType]];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    }
 }
 
 - (int)routeType
@@ -285,6 +320,10 @@
             
         case OBJECT_LIST_SELF_GUIDE_TOUR_ORDER:
             routeType = OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR;
+            break;
+            
+        case OBJECT_LIST_LOCAL_ROUTE_ORDER:
+            routeType = OBJECT_LIST_LOCAL_ROUTE;
             break;
             
         default:

@@ -24,6 +24,6 @@
 + (NSString*)getCellIdentifier;
 + (CGFloat)getCellHeight;
 
-- (void)setCellData:(TouristRoute*)route;
+- (void)setCellData:(LocalRoute *)route;
 
 @end

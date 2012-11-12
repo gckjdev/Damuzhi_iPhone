@@ -12,6 +12,7 @@
 #import "PackageCell.h"
 #import "DailyScheduleCell.h"
 #import "RouteService.h"
+#import "MonthViewController.h"
 
 @protocol RouteIntroductionControllerDelegate <NSObject>
 
@@ -22,23 +23,24 @@
 
 @end
 
-@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate>
+
+@interface RouteIntroductionController : PPTableViewController <RelatedPlaceCellDelegate, DailyScheduleCellDelegate, PackageCellDelegate, RouteServiceDelegate, UIWebViewDelegate, MonthViewControllerDelegate>
 
 
 @property (assign, nonatomic) id<RouteIntroductionControllerDelegate> aDelegate;
 
 @property (retain, nonatomic) IBOutlet UIView *titleHolerView;
-@property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
-
 
 @property (retain, nonatomic) IBOutlet UIView *imagesHolderView;
-@property (retain, nonatomic) IBOutlet UILabel *agencyNameLabel;
+
+@property (retain, nonatomic) IBOutlet UILabel *departCityLabel;
 
 @property (retain, nonatomic) IBOutlet UIView *agencyInfoHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *followButton;
 
-- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
+
+//- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType;
+- (void)updateWithRoute:(TouristRoute *)route routeType:(int)routeType;
 - (void)showInView:(UIView *)superView;
 
 @end

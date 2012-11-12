@@ -12,6 +12,9 @@
 #import "PPDebug.h"
 #import "CommonWebController.h"
 #import "UIUtils.h"
+#import "MobClick.h"
+#import "FontSize.h"
+#define UM_EVENT_CLICK_RECOMMENDED_APP  @"click_recommended_app"
 
 @implementation RecommendedAppsControllerViewController
 
@@ -21,6 +24,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
@@ -87,6 +91,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RecommendedApp *app = [dataList objectAtIndex:indexPath.row];
+    [MobClick event:UM_EVENT_CLICK_RECOMMENDED_APP label:app.name];
 //    PPDebug(@"appId ＝ %@", app.appId);
     [UIUtils openApp:app.appId];
 }

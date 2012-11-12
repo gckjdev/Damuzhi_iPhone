@@ -8,8 +8,14 @@
 @class Booking_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
+@class DepartPlace;
+@class DepartPlace_Builder;
 @class Flight;
 @class Flight_Builder;
+@class LocalRoute;
+@class LocalRouteList;
+@class LocalRouteList_Builder;
+@class LocalRoute_Builder;
 @class Order;
 @class OrderList;
 @class OrderList_Builder;
@@ -357,6 +363,344 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (TouristRoute_Builder*) clearContactPhone;
 @end
 
+@interface LocalRouteList : PBGeneratedMessage {
+@private
+  NSMutableArray* mutableRoutesList;
+}
+- (NSArray*) routesList;
+- (LocalRoute*) routesAtIndex:(int32_t) index;
+
++ (LocalRouteList*) defaultInstance;
+- (LocalRouteList*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (LocalRouteList_Builder*) builder;
++ (LocalRouteList_Builder*) builder;
++ (LocalRouteList_Builder*) builderWithPrototype:(LocalRouteList*) prototype;
+
++ (LocalRouteList*) parseFromData:(NSData*) data;
++ (LocalRouteList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (LocalRouteList*) parseFromInputStream:(NSInputStream*) input;
++ (LocalRouteList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (LocalRouteList*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (LocalRouteList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface LocalRouteList_Builder : PBGeneratedMessage_Builder {
+@private
+  LocalRouteList* result;
+}
+
+- (LocalRouteList*) defaultInstance;
+
+- (LocalRouteList_Builder*) clear;
+- (LocalRouteList_Builder*) clone;
+
+- (LocalRouteList*) build;
+- (LocalRouteList*) buildPartial;
+
+- (LocalRouteList_Builder*) mergeFrom:(LocalRouteList*) other;
+- (LocalRouteList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (LocalRouteList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) routesList;
+- (LocalRoute*) routesAtIndex:(int32_t) index;
+- (LocalRouteList_Builder*) replaceRoutesAtIndex:(int32_t) index with:(LocalRoute*) value;
+- (LocalRouteList_Builder*) addRoutes:(LocalRoute*) value;
+- (LocalRouteList_Builder*) addAllRoutes:(NSArray*) values;
+- (LocalRouteList_Builder*) clearRoutesList;
+@end
+
+@interface LocalRoute : PBGeneratedMessage {
+@private
+  BOOL hasDays_:1;
+  BOOL hasAverageRank_:1;
+  BOOL hasAgencyId_:1;
+  BOOL hasPrice_:1;
+  BOOL hasRouteId_:1;
+  BOOL hasCityId_:1;
+  BOOL hasCurrency_:1;
+  BOOL hasName_:1;
+  BOOL hasThumbImage_:1;
+  BOOL hasTour_:1;
+  BOOL hasCustomerServiceTelephone_:1;
+  BOOL hasDetailUrl_:1;
+  BOOL hasBookingNotice_:1;
+  BOOL hasContactPhone_:1;
+  int32_t days;
+  int32_t averageRank;
+  int32_t agencyId;
+  int32_t price;
+  int32_t routeId;
+  int32_t cityId;
+  NSString* currency;
+  NSString* name;
+  NSString* thumbImage;
+  NSString* tour;
+  NSString* customerServiceTelephone;
+  NSString* detailUrl;
+  NSString* bookingNotice;
+  NSString* contactPhone;
+  NSMutableArray* mutableDetailImagesList;
+  NSMutableArray* mutableDepartPlacesList;
+  NSMutableArray* mutableBookingsList;
+  NSMutableArray* mutableRelatedplacesList;
+}
+- (BOOL) hasCityId;
+- (BOOL) hasRouteId;
+- (BOOL) hasName;
+- (BOOL) hasCurrency;
+- (BOOL) hasPrice;
+- (BOOL) hasAgencyId;
+- (BOOL) hasAverageRank;
+- (BOOL) hasThumbImage;
+- (BOOL) hasTour;
+- (BOOL) hasDays;
+- (BOOL) hasCustomerServiceTelephone;
+- (BOOL) hasDetailUrl;
+- (BOOL) hasBookingNotice;
+- (BOOL) hasContactPhone;
+@property (readonly) int32_t cityId;
+@property (readonly) int32_t routeId;
+@property (readonly, retain) NSString* name;
+@property (readonly, retain) NSString* currency;
+@property (readonly) int32_t price;
+@property (readonly) int32_t agencyId;
+@property (readonly) int32_t averageRank;
+@property (readonly, retain) NSString* thumbImage;
+@property (readonly, retain) NSString* tour;
+@property (readonly) int32_t days;
+@property (readonly, retain) NSString* customerServiceTelephone;
+@property (readonly, retain) NSString* detailUrl;
+@property (readonly, retain) NSString* bookingNotice;
+@property (readonly, retain) NSString* contactPhone;
+- (NSArray*) detailImagesList;
+- (NSString*) detailImagesAtIndex:(int32_t) index;
+- (NSArray*) departPlacesList;
+- (DepartPlace*) departPlacesAtIndex:(int32_t) index;
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
+- (NSArray*) relatedplacesList;
+- (PlaceTour*) relatedplacesAtIndex:(int32_t) index;
+
++ (LocalRoute*) defaultInstance;
+- (LocalRoute*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (LocalRoute_Builder*) builder;
++ (LocalRoute_Builder*) builder;
++ (LocalRoute_Builder*) builderWithPrototype:(LocalRoute*) prototype;
+
++ (LocalRoute*) parseFromData:(NSData*) data;
++ (LocalRoute*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (LocalRoute*) parseFromInputStream:(NSInputStream*) input;
++ (LocalRoute*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (LocalRoute*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (LocalRoute*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface LocalRoute_Builder : PBGeneratedMessage_Builder {
+@private
+  LocalRoute* result;
+}
+
+- (LocalRoute*) defaultInstance;
+
+- (LocalRoute_Builder*) clear;
+- (LocalRoute_Builder*) clone;
+
+- (LocalRoute*) build;
+- (LocalRoute*) buildPartial;
+
+- (LocalRoute_Builder*) mergeFrom:(LocalRoute*) other;
+- (LocalRoute_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (LocalRoute_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCityId;
+- (int32_t) cityId;
+- (LocalRoute_Builder*) setCityId:(int32_t) value;
+- (LocalRoute_Builder*) clearCityId;
+
+- (BOOL) hasRouteId;
+- (int32_t) routeId;
+- (LocalRoute_Builder*) setRouteId:(int32_t) value;
+- (LocalRoute_Builder*) clearRouteId;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (LocalRoute_Builder*) setName:(NSString*) value;
+- (LocalRoute_Builder*) clearName;
+
+- (BOOL) hasCurrency;
+- (NSString*) currency;
+- (LocalRoute_Builder*) setCurrency:(NSString*) value;
+- (LocalRoute_Builder*) clearCurrency;
+
+- (BOOL) hasPrice;
+- (int32_t) price;
+- (LocalRoute_Builder*) setPrice:(int32_t) value;
+- (LocalRoute_Builder*) clearPrice;
+
+- (BOOL) hasAgencyId;
+- (int32_t) agencyId;
+- (LocalRoute_Builder*) setAgencyId:(int32_t) value;
+- (LocalRoute_Builder*) clearAgencyId;
+
+- (BOOL) hasAverageRank;
+- (int32_t) averageRank;
+- (LocalRoute_Builder*) setAverageRank:(int32_t) value;
+- (LocalRoute_Builder*) clearAverageRank;
+
+- (BOOL) hasThumbImage;
+- (NSString*) thumbImage;
+- (LocalRoute_Builder*) setThumbImage:(NSString*) value;
+- (LocalRoute_Builder*) clearThumbImage;
+
+- (BOOL) hasTour;
+- (NSString*) tour;
+- (LocalRoute_Builder*) setTour:(NSString*) value;
+- (LocalRoute_Builder*) clearTour;
+
+- (BOOL) hasDays;
+- (int32_t) days;
+- (LocalRoute_Builder*) setDays:(int32_t) value;
+- (LocalRoute_Builder*) clearDays;
+
+- (BOOL) hasCustomerServiceTelephone;
+- (NSString*) customerServiceTelephone;
+- (LocalRoute_Builder*) setCustomerServiceTelephone:(NSString*) value;
+- (LocalRoute_Builder*) clearCustomerServiceTelephone;
+
+- (NSArray*) detailImagesList;
+- (NSString*) detailImagesAtIndex:(int32_t) index;
+- (LocalRoute_Builder*) replaceDetailImagesAtIndex:(int32_t) index with:(NSString*) value;
+- (LocalRoute_Builder*) addDetailImages:(NSString*) value;
+- (LocalRoute_Builder*) addAllDetailImages:(NSArray*) values;
+- (LocalRoute_Builder*) clearDetailImagesList;
+
+- (BOOL) hasDetailUrl;
+- (NSString*) detailUrl;
+- (LocalRoute_Builder*) setDetailUrl:(NSString*) value;
+- (LocalRoute_Builder*) clearDetailUrl;
+
+- (NSArray*) departPlacesList;
+- (DepartPlace*) departPlacesAtIndex:(int32_t) index;
+- (LocalRoute_Builder*) replaceDepartPlacesAtIndex:(int32_t) index with:(DepartPlace*) value;
+- (LocalRoute_Builder*) addDepartPlaces:(DepartPlace*) value;
+- (LocalRoute_Builder*) addAllDepartPlaces:(NSArray*) values;
+- (LocalRoute_Builder*) clearDepartPlacesList;
+
+- (NSArray*) bookingsList;
+- (Booking*) bookingsAtIndex:(int32_t) index;
+- (LocalRoute_Builder*) replaceBookingsAtIndex:(int32_t) index with:(Booking*) value;
+- (LocalRoute_Builder*) addBookings:(Booking*) value;
+- (LocalRoute_Builder*) addAllBookings:(NSArray*) values;
+- (LocalRoute_Builder*) clearBookingsList;
+
+- (NSArray*) relatedplacesList;
+- (PlaceTour*) relatedplacesAtIndex:(int32_t) index;
+- (LocalRoute_Builder*) replaceRelatedplacesAtIndex:(int32_t) index with:(PlaceTour*) value;
+- (LocalRoute_Builder*) addRelatedplaces:(PlaceTour*) value;
+- (LocalRoute_Builder*) addAllRelatedplaces:(NSArray*) values;
+- (LocalRoute_Builder*) clearRelatedplacesList;
+
+- (BOOL) hasBookingNotice;
+- (NSString*) bookingNotice;
+- (LocalRoute_Builder*) setBookingNotice:(NSString*) value;
+- (LocalRoute_Builder*) clearBookingNotice;
+
+- (BOOL) hasContactPhone;
+- (NSString*) contactPhone;
+- (LocalRoute_Builder*) setContactPhone:(NSString*) value;
+- (LocalRoute_Builder*) clearContactPhone;
+@end
+
+@interface DepartPlace : PBGeneratedMessage {
+@private
+  BOOL hasLongitude_:1;
+  BOOL hasLatitude_:1;
+  BOOL hasDepartPlaceId_:1;
+  BOOL hasDepartTime_:1;
+  BOOL hasDepartPlace_:1;
+  Float64 longitude;
+  Float64 latitude;
+  int32_t departPlaceId;
+  NSString* departTime;
+  NSString* departPlace;
+}
+- (BOOL) hasDepartPlaceId;
+- (BOOL) hasDepartTime;
+- (BOOL) hasDepartPlace;
+- (BOOL) hasLongitude;
+- (BOOL) hasLatitude;
+@property (readonly) int32_t departPlaceId;
+@property (readonly, retain) NSString* departTime;
+@property (readonly, retain) NSString* departPlace;
+@property (readonly) Float64 longitude;
+@property (readonly) Float64 latitude;
+
++ (DepartPlace*) defaultInstance;
+- (DepartPlace*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (DepartPlace_Builder*) builder;
++ (DepartPlace_Builder*) builder;
++ (DepartPlace_Builder*) builderWithPrototype:(DepartPlace*) prototype;
+
++ (DepartPlace*) parseFromData:(NSData*) data;
++ (DepartPlace*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (DepartPlace*) parseFromInputStream:(NSInputStream*) input;
++ (DepartPlace*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (DepartPlace*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (DepartPlace*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface DepartPlace_Builder : PBGeneratedMessage_Builder {
+@private
+  DepartPlace* result;
+}
+
+- (DepartPlace*) defaultInstance;
+
+- (DepartPlace_Builder*) clear;
+- (DepartPlace_Builder*) clone;
+
+- (DepartPlace*) build;
+- (DepartPlace*) buildPartial;
+
+- (DepartPlace_Builder*) mergeFrom:(DepartPlace*) other;
+- (DepartPlace_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (DepartPlace_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasDepartPlaceId;
+- (int32_t) departPlaceId;
+- (DepartPlace_Builder*) setDepartPlaceId:(int32_t) value;
+- (DepartPlace_Builder*) clearDepartPlaceId;
+
+- (BOOL) hasDepartTime;
+- (NSString*) departTime;
+- (DepartPlace_Builder*) setDepartTime:(NSString*) value;
+- (DepartPlace_Builder*) clearDepartTime;
+
+- (BOOL) hasDepartPlace;
+- (NSString*) departPlace;
+- (DepartPlace_Builder*) setDepartPlace:(NSString*) value;
+- (DepartPlace_Builder*) clearDepartPlace;
+
+- (BOOL) hasLongitude;
+- (Float64) longitude;
+- (DepartPlace_Builder*) setLongitude:(Float64) value;
+- (DepartPlace_Builder*) clearLongitude;
+
+- (BOOL) hasLatitude;
+- (Float64) latitude;
+- (DepartPlace_Builder*) setLatitude:(Float64) value;
+- (DepartPlace_Builder*) clearLatitude;
+@end
+
 @interface DailySchedule : PBGeneratedMessage {
 @private
   BOOL hasDay_:1;
@@ -468,12 +812,16 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   BOOL hasName_:1;
   BOOL hasNote_:1;
   BOOL hasPrice_:1;
+  BOOL hasFlightNote_:1;
+  BOOL hasAccommodationNote_:1;
   BOOL hasDepartFlight_:1;
   BOOL hasReturnFlight_:1;
   int32_t packageId;
   NSString* name;
   NSString* note;
   NSString* price;
+  NSString* flightNote;
+  NSString* accommodationNote;
   Flight* departFlight;
   Flight* returnFlight;
   NSMutableArray* mutableAccommodationsList;
@@ -484,12 +832,16 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (BOOL) hasPrice;
 - (BOOL) hasDepartFlight;
 - (BOOL) hasReturnFlight;
+- (BOOL) hasFlightNote;
+- (BOOL) hasAccommodationNote;
 @property (readonly) int32_t packageId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* note;
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) Flight* departFlight;
 @property (readonly, retain) Flight* returnFlight;
+@property (readonly, retain) NSString* flightNote;
+@property (readonly, retain) NSString* accommodationNote;
 - (NSArray*) accommodationsList;
 - (Accommodation*) accommodationsAtIndex:(int32_t) index;
 
@@ -567,20 +919,30 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (TravelPackage_Builder*) addAccommodations:(Accommodation*) value;
 - (TravelPackage_Builder*) addAllAccommodations:(NSArray*) values;
 - (TravelPackage_Builder*) clearAccommodationsList;
+
+- (BOOL) hasFlightNote;
+- (NSString*) flightNote;
+- (TravelPackage_Builder*) setFlightNote:(NSString*) value;
+- (TravelPackage_Builder*) clearFlightNote;
+
+- (BOOL) hasAccommodationNote;
+- (NSString*) accommodationNote;
+- (TravelPackage_Builder*) setAccommodationNote:(NSString*) value;
+- (TravelPackage_Builder*) clearAccommodationNote;
 @end
 
 @interface Booking : PBGeneratedMessage {
 @private
   BOOL hasDate_:1;
   BOOL hasStatus_:1;
-  BOOL hasRemainder_:1;
   BOOL hasAdultPrice_:1;
   BOOL hasChildrenPrice_:1;
+  BOOL hasRemainder_:1;
   int32_t date;
   int32_t status;
+  int32_t adultPrice;
+  int32_t childrenPrice;
   NSString* remainder;
-  NSString* adultPrice;
-  NSString* childrenPrice;
 }
 - (BOOL) hasDate;
 - (BOOL) hasStatus;
@@ -590,8 +952,8 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 @property (readonly) int32_t date;
 @property (readonly) int32_t status;
 @property (readonly, retain) NSString* remainder;
-@property (readonly, retain) NSString* adultPrice;
-@property (readonly, retain) NSString* childrenPrice;
+@property (readonly) int32_t adultPrice;
+@property (readonly) int32_t childrenPrice;
 
 + (Booking*) defaultInstance;
 - (Booking*) defaultInstance;
@@ -643,13 +1005,13 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (Booking_Builder*) clearRemainder;
 
 - (BOOL) hasAdultPrice;
-- (NSString*) adultPrice;
-- (Booking_Builder*) setAdultPrice:(NSString*) value;
+- (int32_t) adultPrice;
+- (Booking_Builder*) setAdultPrice:(int32_t) value;
 - (Booking_Builder*) clearAdultPrice;
 
 - (BOOL) hasChildrenPrice;
-- (NSString*) childrenPrice;
-- (Booking_Builder*) setChildrenPrice:(NSString*) value;
+- (int32_t) childrenPrice;
+- (Booking_Builder*) setChildrenPrice:(int32_t) value;
 - (Booking_Builder*) clearChildrenPrice;
 @end
 
@@ -974,32 +1336,42 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 
 @interface Order : PBGeneratedMessage {
 @private
-  BOOL hasOrderId_:1;
-  BOOL hasBookDate_:1;
-  BOOL hasRouteId_:1;
-  BOOL hasAgencyId_:1;
-  BOOL hasDepartDate_:1;
-  BOOL hasAdult_:1;
-  BOOL hasChildren_:1;
-  BOOL hasStatus_:1;
+  BOOL hasPraiseRank_:1;
   BOOL hasPackageId_:1;
-  BOOL hasRouteName_:1;
-  BOOL hasDepartCityName_:1;
+  BOOL hasStatus_:1;
   BOOL hasPrice_:1;
+  BOOL hasChildren_:1;
+  BOOL hasAdult_:1;
+  BOOL hasDepartDate_:1;
+  BOOL hasAgencyId_:1;
+  BOOL hasRouteId_:1;
+  BOOL hasBookDate_:1;
+  BOOL hasOrderId_:1;
+  BOOL hasDepartCityName_:1;
+  BOOL hasRouteName_:1;
   BOOL hasPriceStatus_:1;
-  int32_t orderId;
-  int32_t bookDate;
-  int32_t routeId;
-  int32_t agencyId;
-  int32_t departDate;
-  int32_t adult;
-  int32_t children;
-  int32_t status;
+  BOOL hasCurrency_:1;
+  BOOL hasPackageName_:1;
+  BOOL hasFeedback_:1;
+  BOOL hasDepartPlace_:1;
+  int32_t praiseRank;
   int32_t packageId;
-  NSString* routeName;
+  int32_t status;
+  int32_t price;
+  int32_t children;
+  int32_t adult;
+  int32_t departDate;
+  int32_t agencyId;
+  int32_t routeId;
+  int32_t bookDate;
+  int32_t orderId;
   NSString* departCityName;
-  NSString* price;
+  NSString* routeName;
   NSString* priceStatus;
+  NSString* currency;
+  NSString* packageName;
+  NSString* feedback;
+  DepartPlace* departPlace;
 }
 - (BOOL) hasOrderId;
 - (BOOL) hasBookDate;
@@ -1013,7 +1385,12 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (BOOL) hasPrice;
 - (BOOL) hasPriceStatus;
 - (BOOL) hasStatus;
+- (BOOL) hasCurrency;
 - (BOOL) hasPackageId;
+- (BOOL) hasPackageName;
+- (BOOL) hasPraiseRank;
+- (BOOL) hasFeedback;
+- (BOOL) hasDepartPlace;
 @property (readonly) int32_t orderId;
 @property (readonly) int32_t bookDate;
 @property (readonly) int32_t routeId;
@@ -1023,10 +1400,15 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 @property (readonly) int32_t departDate;
 @property (readonly) int32_t adult;
 @property (readonly) int32_t children;
-@property (readonly, retain) NSString* price;
+@property (readonly) int32_t price;
 @property (readonly, retain) NSString* priceStatus;
 @property (readonly) int32_t status;
+@property (readonly, retain) NSString* currency;
 @property (readonly) int32_t packageId;
+@property (readonly, retain) NSString* packageName;
+@property (readonly) int32_t praiseRank;
+@property (readonly, retain) NSString* feedback;
+@property (readonly, retain) DepartPlace* departPlace;
 
 + (Order*) defaultInstance;
 - (Order*) defaultInstance;
@@ -1108,8 +1490,8 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (Order_Builder*) clearChildren;
 
 - (BOOL) hasPrice;
-- (NSString*) price;
-- (Order_Builder*) setPrice:(NSString*) value;
+- (int32_t) price;
+- (Order_Builder*) setPrice:(int32_t) value;
 - (Order_Builder*) clearPrice;
 
 - (BOOL) hasPriceStatus;
@@ -1122,9 +1504,36 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (Order_Builder*) setStatus:(int32_t) value;
 - (Order_Builder*) clearStatus;
 
+- (BOOL) hasCurrency;
+- (NSString*) currency;
+- (Order_Builder*) setCurrency:(NSString*) value;
+- (Order_Builder*) clearCurrency;
+
 - (BOOL) hasPackageId;
 - (int32_t) packageId;
 - (Order_Builder*) setPackageId:(int32_t) value;
 - (Order_Builder*) clearPackageId;
+
+- (BOOL) hasPackageName;
+- (NSString*) packageName;
+- (Order_Builder*) setPackageName:(NSString*) value;
+- (Order_Builder*) clearPackageName;
+
+- (BOOL) hasPraiseRank;
+- (int32_t) praiseRank;
+- (Order_Builder*) setPraiseRank:(int32_t) value;
+- (Order_Builder*) clearPraiseRank;
+
+- (BOOL) hasFeedback;
+- (NSString*) feedback;
+- (Order_Builder*) setFeedback:(NSString*) value;
+- (Order_Builder*) clearFeedback;
+
+- (BOOL) hasDepartPlace;
+- (DepartPlace*) departPlace;
+- (Order_Builder*) setDepartPlace:(DepartPlace*) value;
+- (Order_Builder*) setDepartPlaceBuilder:(DepartPlace_Builder*) builderForValue;
+- (Order_Builder*) mergeDepartPlace:(DepartPlace*) value;
+- (Order_Builder*) clearDepartPlace;
 @end
 

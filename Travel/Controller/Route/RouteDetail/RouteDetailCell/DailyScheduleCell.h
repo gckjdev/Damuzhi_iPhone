@@ -14,7 +14,7 @@
 #define HEIGHT_PLACE_TOUR_LABEL 21
 #define EDGE_TOP 1
 #define EDGE_BOTTOM 3
-#define HEIGHT_DINING_LABEL 25
+#define HEIGHT_DINING_LABEL 68/3
 #define HEIGHT_HOTEL_LABEL 25
 
 @protocol DailyScheduleCellDelegate <NSObject>
@@ -30,11 +30,14 @@
 
 @property (retain, nonatomic) IBOutlet UIButton *titleButton;
 @property (retain, nonatomic) IBOutlet UIImageView *placeToursBgImageView;
-@property (retain, nonatomic) IBOutlet UIButton *diningButton;
 @property (retain, nonatomic) IBOutlet UIButton *hotelButton;
 @property (retain, nonatomic) IBOutlet UIButton *placeToursTagButton;
 @property (retain, nonatomic) IBOutlet UIButton *diningTagButton;
 @property (retain, nonatomic) IBOutlet UIButton *hotelTagButton;
+@property (retain, nonatomic) IBOutlet UIImageView *diningBgImageView;
+@property (retain, nonatomic) IBOutlet UIButton *breakfastButton;
+@property (retain, nonatomic) IBOutlet UIButton *lunchButton;
+@property (retain, nonatomic) IBOutlet UIButton *dinnerButton;
 
 - (void)setCellData:(DailySchedule *)dailySchedule rowNum:(int)rowNum rowCount:(int)rowCount;
 

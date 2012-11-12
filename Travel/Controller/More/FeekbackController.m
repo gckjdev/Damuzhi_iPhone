@@ -14,10 +14,13 @@
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
 
+#import "UserManager.h"
+#import "FontSize.h"
 @implementation FeekbackController
 @synthesize viewCenter = _viewCenter;
 @synthesize feekbackTextView;
 @synthesize contactWayTextField;
+@synthesize contactWayLabel;
 
 
 #pragma mark -
@@ -38,10 +41,12 @@
     
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"提交") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
         
@@ -57,12 +62,19 @@
     
     // Set text field delegate
     self.contactWayTextField.delegate = self;
+    
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        self.contactWayLabel.hidden = YES;
+        self.contactWayTextField.hidden = YES;
+    }
 }
 
 - (void)viewDidUnload
 {
     [self setFeekbackTextView:nil];
     [self setContactWayTextField:nil];
+    [self setContactWayLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -92,6 +104,7 @@
 - (void)dealloc {
     PPRelease(feekbackTextView);
     PPRelease(contactWayTextField);
+    [contactWayLabel release];
     [super dealloc];
 }
 
@@ -152,17 +165,19 @@
         return;
     }
     
-    if ([contact compare:@""] == 0) {
+    if ([contact compare:@""] == 0 && ![[UserManager defaultManager] isLogin]) {
         [self popupMessage:NSLS(@"请输入联系方式") title:nil];
         return;
     }
     
-    if (!((NSStringIsValidEmail(contact)) || (NSStringIsValidPhone(contact)))) {
+    if ((!((NSStringIsValidEmail(contact)) || (NSStringIsValidPhone(contact)))) && ![[UserManager defaultManager] isLogin]) {
         [self popupMessage:NSLS(@"请输入正确的Email或手机号码") title:nil];
         return;
     }
     
-    if ([feekback lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > MAX_LENGTH_OF_FEEKBACK) {
+    PPDebug(@"feekback content length:%d",[feekback length]);
+    
+    if ([feekback length] > MAX_LENGTH_OF_FEEKBACK) {
         [self popupMessage:NSLS(@"反馈意见字数太长") title:nil];
         return;
     }
@@ -171,6 +186,8 @@
         [self popupMessage:NSLS(@"联系方式字数太长") title:nil];
         return;
     }
+    
+    
 
     
     [self hideKeyboard];
@@ -197,7 +214,9 @@
 - (void)submitFeekbackDidFinish:(int)resultCode
 {
     if (resultCode == ERROR_SUCCESS) {
-        [self popupMessage:NSLS(@"提交成功") title:nil];
+        [self popupMessage:NSLS(@"提交成功，感谢您的意见和建议") title:nil];
+        self.feekbackTextView.text = @"";
+        self.contactWayTextField.text = @"";
     }
     else {
         [self popupMessage:NSLS(@"网络不稳定，提交失败") title:nil];

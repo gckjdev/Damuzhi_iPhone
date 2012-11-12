@@ -9,7 +9,7 @@
 #import "HistoryController.h"
 #import "PlaceStorage.h"
 #import "PlaceListController.h"
-
+#import "FontSize.h"
 @interface HistoryController ()
 
 @property (retain, nonatomic) NSArray *placeList;
@@ -36,10 +36,12 @@
     [self.navigationItem setTitle:HISTORY];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"清空") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickDelete:)];
     

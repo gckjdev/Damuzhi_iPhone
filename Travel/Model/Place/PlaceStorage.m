@@ -66,7 +66,8 @@ static PlaceStorage* _historyManager = nil;
         filePath = [AppUtils getFavoriteFilePath:[[AppManager defaultManager] getCurrentCityId]];
     }
     else {
-        filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
+        //filePath = [AppUtils getHistoryFilePath:[[AppManager defaultManager] getCurrentCityId]];
+        filePath = [AppUtils getDefaultHistoryFilePath];
     }
     
     return filePath;
@@ -87,9 +88,7 @@ static PlaceStorage* _historyManager = nil;
 
 - (NSArray*)allPlaces
 {
-    if ([self.placeList listList] == nil || [[self.placeList listList] count] < 1) {
-        [self loadPlaceList];
-    }
+    [self loadPlaceList];
     return [self.placeList listList];
 }
 

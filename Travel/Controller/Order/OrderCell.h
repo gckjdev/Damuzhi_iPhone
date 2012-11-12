@@ -26,21 +26,9 @@
 
 @property (retain, nonatomic) IBOutlet UIButton *routeDetail;
 
-
-@property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
-@property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
-@property (retain, nonatomic) IBOutlet UILabel *departCityLabel;
-@property (retain, nonatomic) IBOutlet UILabel *departDateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *bookingDateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *personCountLabel;
-@property (retain, nonatomic) IBOutlet UILabel *priceLabel;
-@property (retain, nonatomic) IBOutlet UILabel *orderStatusLabel;
-@property (retain, nonatomic) IBOutlet UILabel *packageIdLabel;
-@property (retain, nonatomic) IBOutlet UILabel *packageIdTitleLabel;
-
 @property (retain, nonatomic) IBOutlet UIImageView *cellBgImageView;
 
 
-- (void)setCellData:(Order *)order;
+- (void)setCellData:(Order *)order orderType:(int )orderType;
 
 @end

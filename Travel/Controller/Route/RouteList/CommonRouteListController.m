@@ -20,7 +20,7 @@
 #import "Item.h"
 #import "FollowRouteController.h"
 #import "AppDelegate.h"
-
+#import "FontSize.h"
 #define TAG_DEPART_CITY_LABEL 18
 #define TAG_AGENCY_LABEL 19
 #define TAG_ROUTE_COUNT_LABEL 20
@@ -102,11 +102,19 @@
         
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
+        self.footerRefreshType = AutoAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"正在加载...");
         
         self.selectedItemIds = [[SelectedItemIdsManager defaultManager] getRouteSelectedItems:[_filterHandler getRouteType]];
     }
     
     return self;
+}
+
+- (CGFloat)offsetStartLoadMoreData
+{
+    return 0;
 }
 
 - (void)hideTabBar:(BOOL)isHide
@@ -148,6 +156,7 @@
     // Init UI Interface
     
     [self setNavigationRightButton:NSLS(@"我的关注") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn2.png"
                             action:@selector(clickMyFollow:)];
     
@@ -205,44 +214,44 @@
                    list:(NSArray *)routeList 
              statistics:(RouteStatistics *)statistics
 {
-    [self dataSourceDidFinishLoadingNewData];
-    [self dataSourceDidFinishLoadingMoreData];
-    
     if (_routeStatistics == nil) {
         self.routeStatistics = statistics;
     }
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
-        return;
-    }
-    
-    if (_start == 0) {
-        self.noMoreData = NO;
-        self.dataList = [NSArray array];
-    }
-    
-    self.start += [routeList count];
-    self.totalCount = totalCount;
-    
-    self.dataList = [dataList arrayByAddingObjectsFromArray:routeList];     
-    
-    
-    if (_start >= totalCount) {
-        self.noMoreData = YES;
-    }
-    
-    if (_hasStatisticsView) {
-        [self updateStatisticsData];
+    } else {
+        if (_start == 0) {
+            self.noMoreData = NO;
+            self.dataList = [NSArray array];
+        }
+        
+        self.start += [routeList count];
+        self.totalCount = totalCount;
+        
+        self.dataList = [dataList arrayByAddingObjectsFromArray:routeList];     
+        
+        
+        if (_start >= totalCount) {
+            self.noMoreData = YES;
+        }
+        
+        if (_hasStatisticsView) {
+            [self updateStatisticsData];
+        }
+        
+        [dataTableView reloadData];
     }
     
     if ([self.dataList count] == 0) {
+        self.noMoreData = YES;
         [self showTipsOnTableView:NSLS(@"未找到相关信息")];
     }else {
         [self hideTipsOnTableView];
     }
     
-    [dataTableView reloadData];
+    [self dataSourceDidFinishLoadingNewData];
+    [self dataSourceDidFinishLoadingMoreData];
 }
 
 #pragma mark - TableView delegate
@@ -377,6 +386,8 @@
 - (void)fechMoreRouteList
 {
     if (_start >= _totalCount) {
+        self.noMoreData = YES;
+        [self dataSourceDidFinishLoadingMoreData];
         return;
     }
     
@@ -418,6 +429,7 @@
 {
     NSArray *regionList = [[AppManager defaultManager] getRegions];
     NSArray *itemList = [[AppManager defaultManager] getDestinationCityItemList];
+    [_selectedItemIds reset]; // reset to the default choice(choose all)
     SelectCityController *controller = [[SelectCityController alloc] initWithTitle:NSLS(@"目的城市") 
                                                                         regionList:regionList 
                                                                           itemList:itemList
@@ -429,6 +441,7 @@
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
+
 
 - (void)pushAgencySelectController
 {

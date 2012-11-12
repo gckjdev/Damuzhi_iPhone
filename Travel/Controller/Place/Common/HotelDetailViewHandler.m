@@ -80,7 +80,7 @@
     
     [self addStarLevelViewWith: NSLS(@"酒店星级") description:[PlaceUtils hotelStarToString:[place hotelStar]] starCount:[place hotelStar] controller:controller];
     
-    [controller addSegmentViewWith: NSLS(@"推荐理由") description:[[place keywordsList] componentsJoinedByString:@"、"]];
+    //[controller addSegmentViewWith: NSLS(@"推荐理由") description:[[place keywordsList] componentsJoinedByString:@"、"]];
     
     [controller addSegmentViewWith: NSLS(@"房间价格") description:[PlaceUtils getDetailPrice:place]];
     

@@ -11,7 +11,7 @@
 #import "PPNetworkRequest.h"
 #import "StringUtil.h"
 #import "UIImageUtil.h"
-
+#import "FontSize.h"
 @interface VerificationController ()
 
 @property (copy, nonatomic) NSString *telephone;
@@ -57,11 +57,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self setTitle:NSLS(@"注册验证")];
+    
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickFinish:)];
     
@@ -119,8 +123,11 @@
 //    }
     NSString *str = codeTextField.text;
     str = [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (0 == [str length]) {
-        [self popupMessage:@"您输入的验证码为空，请重新输入" title:nil];
+    if (0 == [str length]) 
+    {
+        UIAlertView *alert =[[UIAlertView alloc]initWithTitle:nil message:@"您输入的验证码为空，请重新输入" delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
         return;
     }
     
@@ -136,7 +143,9 @@
     }
     
     if (result != 0) {
-        [self popupMessage:resultInfo title:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:resultInfo delegate:nil cancelButtonTitle:@"我知道了" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
         return;
     }
     

@@ -105,7 +105,7 @@ static ImageManager *_defaultManager = nil;
 
 - (UIImage *)routeDetailAgencyBgImage
 {
-    return [UIImage strectchableImageName:@"line_title_bg2.png"];
+    return [UIImage strectchableImageName:@"line_title_bg2@2x.png"];
 }
 
 - (UIImage *)bookButtonImage
@@ -128,7 +128,8 @@ static ImageManager *_defaultManager = nil;
 
 - (UIImage *)lineNavBgImage
 {
-    return [UIImage strectchableImageName:@"line_nav_bg.png"];
+//    return [UIImage strectchableImageName:@"line_nav_bg.png"];
+    return [UIImage strectchableImageName:@"line_n_bg1@2x.png"];
 }
 
 - (UIImage *)lineListBgImage
@@ -192,6 +193,11 @@ static ImageManager *_defaultManager = nil;
 - (UIImage *)arrowImage
 {
     return [UIImage imageNamed:@"line_zk.png"];
+}
+
+- (UIImage *)arrowRightImage
+{
+    return [UIImage imageNamed:@"line_zk2.png"];
 }
 
 //- (UIImage *)bookingBgImage
@@ -364,5 +370,24 @@ static ImageManager *_defaultManager = nil;
     }
 }
 
+- (UIImage *)flyImage
+{
+    return [UIImage imageNamed:@"fly_p1.png"];
+}
+
+- (UIImage *)placeTourBgImage
+{
+    return [UIImage strectchableImageName:@"line_table_2b.png" topCapHeight:5];
+}
+
+- (UIImage *)placeTourBtnBgImage
+{
+    return [UIImage strectchableImageName:@"line_table_2a.png" topCapHeight:5];
+}
+    
+- (UIImage *)accommodationBgImage:(BOOL)isLast
+{
+    return [UIImage imageNamed:(isLast ? @"line_n_t4.png" : @"line_n_t7.png")];
+}
 
 @end

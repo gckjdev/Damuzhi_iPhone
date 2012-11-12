@@ -43,6 +43,7 @@
 - (UIImage *)tableLeftBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)tableRightBgImageWithRowNum:(int)rowNum rowCount:(int)rowCount;
 - (UIImage *)arrowImage;
+- (UIImage *)arrowRightImage;
 
 //- (UIImage *)bookingBgImage;
 
@@ -70,5 +71,11 @@
                                          column:(int)column
                                       totalRows:(int)totalRows  
                                     totalColumn:(int)totalColumn;
+
+- (UIImage *)flyImage;
+- (UIImage *)accommodationBgImage:(BOOL)isLast;
+
+- (UIImage *)placeTourBgImage;
+- (UIImage *)placeTourBtnBgImage;
 
 @end

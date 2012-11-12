@@ -14,7 +14,7 @@
 #import "UserManager.h"
 #import "LoginController.h"
 #import "AppManager.h"
-
+#import "FontSize.h"
 @interface OrderManagerController ()
 
 @property (retain, nonatomic) NSArray *orderTypeList;
@@ -40,19 +40,23 @@
 - (void)viewDidLoad
 {
     self.title = @"订单管理";
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
 
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
 
     [self updateNavButtons];
-    self.dataList = [NSArray arrayWithObjects:NSLS(@"跟团游订单管理"), NSLS(@"自由行订单管理"), NSLS(@"自定制订单管理"),nil];
-    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_PACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_UNPACKAGE_TOUR_ORDER], [NSNumber numberWithInt:OBJECT_LIST_SELF_GUIDE_TOUR_ORDER], nil];
+    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机+酒订单管理"),nil];
+    
+    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
+    
     
 }
 
@@ -60,11 +64,13 @@
 {
     if ([[UserManager defaultManager] isLogin]) {
         [self setNavigationRightButton:NSLS(@"退出登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
     }else {
         [self setNavigationRightButton:NSLS(@"会员登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
     }

@@ -24,7 +24,7 @@
     
     [controller addSegmentViewWith:NSLS(@"人均消费") description:[PlaceUtils getDetailPrice:place]];
     
-    [controller addSegmentViewWith: NSLS(@"推荐理由") description:[[place keywordsList] componentsJoinedByString:@"、"]];
+    //[controller addSegmentViewWith: NSLS(@"推荐理由") description:[[place keywordsList] componentsJoinedByString:@"、"]];
     
     [controller addSegmentViewWith: NSLS(@"特色菜式") description:[[place typicalDishesList] componentsJoinedByString:@" "]];
     

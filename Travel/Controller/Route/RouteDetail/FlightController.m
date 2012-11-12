@@ -11,6 +11,7 @@
 #import "TouristRoute.pb.h"
 #import "ImageManager.h"
 #import "UIImageUtil.h"
+#import "FontSize.h"
 @interface FlightController ()
 
 @property (retain, nonatomic) Flight *departFlight;
@@ -70,6 +71,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     

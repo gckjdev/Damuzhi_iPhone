@@ -23,6 +23,9 @@
 #import "ShareToSinaController.h"
 #import "ShareToQQController.h"
 #import "UserInfoController.h"
+#import "FontSize.h"
+#import "FollowLocalRouteController.h"
+#import "ImageManager.h"
 
 @interface MoreController ()
 
@@ -41,14 +44,15 @@
 
 #define CITIES              NSLS(@"已开通城市")
 #define VERSION             NSLS(@"版本更新")
-#define ABOUT               NSLS(@"关于大拇指旅行")
+#define ABOUT               NSLS(@"应用帮助")
 #define PRAISE              NSLS(@"给我一个好评吧")
 #define SHOW_IMAGE          NSLS(@"列表中显示图片")
 
 #define ORDER_NON_MEMBER    NSLS(@"非会员订单查询")
 #define USER_INFO           NSLS(@"个人资料")
 #define ORDER_MANAGER       NSLS(@"订单管理")
-#define MY_FAVORITE         NSLS(@"我的收藏")
+#define MY_FOLLOW           NSLS(@"关注线路")
+//#define MY_FAVORITE         NSLS(@"我的收藏")
 #define SHARE               NSLS(@"推荐给好友")
 
 
@@ -125,6 +129,7 @@
     
     if ([[UserManager defaultManager] isLogin]) {
         [self setNavigationRightButton:NSLS(@"退出登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogout:)];
         
@@ -133,19 +138,22 @@
         
     }else {
         [self setNavigationRightButton:NSLS(@"会员登录") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn2.png"
                                 action:@selector(clickLogin:)];
         
         [dataDictionary setObject:ORDER_NON_MEMBER forKey:[NSNumber numberWithInt:i++]];
     }
     
-    [dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
+    //[dataDictionary setObject:HISTORY forKey:[NSNumber numberWithInt:i++]];
     
-    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
+    [dataDictionary setObject:MY_FOLLOW forKey:[NSNumber numberWithInt:i++]];
+    
+//    [dataDictionary setObject:MY_FAVORITE forKey:[NSNumber numberWithInt:i++]];
     
     [dataDictionary setObject:FEEDBACK forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:VERSION forKey:[NSNumber numberWithInt:i++]];
-    [dataDictionary setObject:ABOUT forKey:[NSNumber numberWithInt:i++]];
     [dataDictionary setObject:SHARE forKey:[NSNumber numberWithInt:i++]];
     
     if (kShowPraise == 1) {
@@ -214,7 +222,6 @@
 	UITableViewCell *cell = [theTableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];				
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;		
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell.imageView setImage:[UIImage imageNamed:@"more_icon.png"]];
         
@@ -243,12 +250,18 @@
         [cell.contentView addSubview:cityLabel];
         [cityLabel release];
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.accessoryView = nil;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        UIImage* image = [[ImageManager defaultManager] accessoryImage];
+        UIImageView* cellAccessoryView = [[UIImageView alloc] initWithImage:image];
+        cell.accessoryView = cellAccessoryView;
+        [cellAccessoryView release];
     }
     
     if ([SHOW_IMAGE isEqualToString:[dataDictionary objectForKey:[NSNumber numberWithInt:row]]]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryView = nil;
         showImageSwitch.tag = TAG_SHOW_IMAGE_SWITCH;
         [cell.contentView addSubview:showImageSwitch];
     }else {
@@ -288,7 +301,7 @@
 }
 
 #pragma -mark UserServiceDelegate
-- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
+- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion title:(NSString *)title content:(NSString *)content
 {
     if (version && dataVersion) {
         NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -329,6 +342,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    
     NSString *title = [dataDictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
     
     if ([title isEqualToString:CITIES]) {
@@ -358,11 +373,14 @@
     else if ([title isEqualToString:USER_INFO]) {
         [self showUserInfo];
     }
-    else if ([title isEqualToString:MY_FAVORITE]) {
-        [self showFavorite];
-    }
+//    else if ([title isEqualToString:MY_FAVORITE]) {
+//        [self showFavorite];
+//    }
     else if ([title isEqualToString:SHARE]) {
         [self showShare];
+    }
+    else if ([title isEqualToString:MY_FOLLOW]) {
+        [self showMyFollow];
     }
     else
     {
@@ -397,9 +415,9 @@
 
 - (void)showFavorite
 {
-    FavoriteController *fc = [[FavoriteController alloc] init];
-    [self.navigationController pushViewController:fc animated:YES];
-    [fc release];
+//    FavoriteController *fc = [[FavoriteController alloc] init];
+//    [self.navigationController pushViewController:fc animated:YES];
+//    [fc release];
 }
 
 - (void)showShare
@@ -456,5 +474,23 @@
     }
 }
 
+- (void)showMyFollow
+{
+    FollowLocalRouteController *controller  = [[FollowLocalRouteController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+#pragma mark -
+#pragma CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    
+}
+
+- (void)didClickCancelButton
+{
+    
+}
 
 @end

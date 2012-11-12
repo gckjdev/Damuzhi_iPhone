@@ -10,6 +10,7 @@
 #import "AppUtils.h"
 #import "AppManager.h"
 #import "PPDebug.h"
+#import "StringUtil.h"
 
 @implementation PackageManager
 
@@ -81,7 +82,7 @@ static PackageManager *_instance = nil;
     return packageList;
 }
 
-- (NSArray*)getLocalCityList
+- (NSArray*)getDownLoadLocalCityList
 {
     NSMutableArray *cityList = [[[NSMutableArray alloc] init] autorelease];
     for (Package *package in _packageList) {
@@ -90,8 +91,58 @@ static PackageManager *_instance = nil;
             [cityList addObject:city];
         }
     }
-    
     return cityList;
+}
+
+
+
+- (NSArray*)getDownLoadCountryGroupList
+{
+    NSMutableArray *countryNameList = [[[NSMutableArray alloc] init] autorelease];
+    for (Package *package in _packageList) {
+        City *city = [[AppManager defaultManager] getCity:package.cityId];
+        if (city != nil) {
+            [countryNameList addObject:city.countryName];
+        }
+    }
+
+    countryNameList = [self deleteRepeatedObjectsFromArray:countryNameList];
+    
+    NSArray *sortedArray = [countryNameList sortedArrayUsingComparator: ^(id obj1, id obj2) {
+        NSString *countryName1 = (NSString *)obj1;
+        NSString *countryName2 = (NSString *)obj2;
+        return [[countryName1 pinyinFirstLetter] compare:[countryName2 pinyinFirstLetter] options:NSCaseInsensitiveSearch];
+    }];
+    
+    return sortedArray;
+}
+
+
+- (NSMutableArray *)getdownLoadCityListFromCountry:(NSString *) countryName
+{
+
+    NSMutableArray *localCityListFromCountry = [NSMutableArray array];
+    NSArray *localCityList = [self getDownLoadLocalCityList];
+    for (City *city in localCityList) 
+    {
+        if ([city.countryName isEqualToString:countryName])
+        {
+            [localCityListFromCountry addObject:city];
+        }
+    }
+    return localCityListFromCountry;
+}
+
+
+-(NSMutableArray *)deleteRepeatedObjectsFromArray:(NSArray *) originalArray
+{
+    NSMutableArray *deletedArray = [[[NSMutableArray alloc] init] autorelease];
+    for (unsigned i = 0; i < [originalArray count]; i++){  
+        if ([deletedArray containsObject:[originalArray objectAtIndex:i]] == NO){  
+            [deletedArray addObject:[originalArray objectAtIndex:i]];  
+        }  
+    }  
+    return deletedArray;
 }
 
 @end

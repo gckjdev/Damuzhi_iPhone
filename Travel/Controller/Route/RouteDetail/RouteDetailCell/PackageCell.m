@@ -8,14 +8,15 @@
 
 #import "PackageCell.h"
 #import "LocaleUtils.h"
-
 #import "PPDebug.h"
+#import "OHAttributedLabel.h"
+#import "NSAttributedString+Attributes.h"
+#import "ImageManager.h"
+#import "LocaleUtils.h"
 
-#define FONT_DURATION_LABEL [UIFont systemFontOfSize:13]
-#define TEXT_COLOR_DURATION_LABEL [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
-
-#define FONT_HOTEL_NAME_LABEL [UIFont boldSystemFontOfSize:13]
-#define TEXT_COLOR_HOTEL_NAME_LABEL [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1]
+#define FONT_DURATION_LABEL     [UIFont systemFontOfSize:13]
+#define COLOR_DURATION_TITLE    [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
+#define COLOR_DURATION_CONTENT  [UIColor colorWithRed:41.0/255.0 green:65.0/255.0 blue:80.0/255.0 alpha:1]
 
 @interface PackageCell ()
 
@@ -26,14 +27,16 @@
 @implementation PackageCell
 
 @synthesize aDelegate = _aDelegate;
+@synthesize flightTitleButton = _flightTitleButton;
+@synthesize flightButton = _flightButton;
+@synthesize accommodationTitleButton = _accommodationTitleButton;
 @synthesize package = _package;
-@synthesize flightButton;
-@synthesize flightLabel = _flightLabel;
 
 - (void)dealloc {
-    [flightButton release];
     [_package release];
-    [_flightLabel release];
+    [_flightTitleButton release];
+    [_flightButton release];
+    [_accommodationTitleButton release];
     [super dealloc];
 }
 
@@ -42,67 +45,137 @@
     return @"PackageCell";
 }
 
-- (void)setCellData:(TravelPackage *)package
+- (UIImageView *)createAccessoryImage
 {
-    self.package = package;
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[[ImageManager defaultManager] accessoryImage]] autorelease];
+    imageView.frame = CGRectMake(_flightButton.frame.size.width - 13, 10, 8, 8);
     
-    NSString *flight = [NSString stringWithFormat:NSLS(@"往：%@%@ 返：%@%@"), package.departFlight.company, package.departFlight.flightId, package.returnFlight.company, package.returnFlight.flightId];
-    
-    self.flightLabel.text = flight;
-    self.flightLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
-    self.flightLabel.font = FONT_HOTEL_NAME_LABEL;
-    
-    CGFloat originX = flightButton.frame.origin.x + 10;
-    CGFloat originY = flightButton.frame.origin.y + flightButton.frame.size.height + EDGE;    
-    CGFloat width = flightButton.frame.size.width;
-    CGFloat height = HEIGHT_ACCOMODATION_VIEW;
-    
-    CGRect frame = CGRectMake(originX, originY, width, height);
-    for (Accommodation *accommodation in package.accommodationsList) {
-        UIView *view = [self acommodationViewWithFrame:frame accommodation:accommodation];
-        [self addSubview:view];
-        
-        originY += height + EDGE;
-        frame = CGRectMake(originX, originY , width, height);
-    }
+    return imageView;
 }
 
 
-- (UIView *)acommodationViewWithFrame:(CGRect)frame
-                        accommodation:(Accommodation *)accommodation
-{    
-    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+#define TAG_LIGHTLABEL  12080301
+- (void)createLightLabel
+{
+    NSString *departTitle = NSLS(@"出发:");
+    NSString *departInfo = [NSString stringWithFormat:@"%@%@",_package.departFlight.company, _package.departFlight.flightId];
+    NSString *returnTitle = NSLS(@"回程:");
+    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",_package.returnFlight.company, _package.returnFlight.flightId];
+    NSString *flightInfo = [NSString stringWithFormat:@"%@%@  %@%@",departTitle, departInfo, returnTitle, returnInfo];
     
-    [button setBackgroundImage:[UIImage imageNamed:@"line_tr2.png"] forState:UIControlStateNormal];
+    NSMutableAttributedString *aString = [NSMutableAttributedString attributedStringWithString:flightInfo];
+    NSRange range1 = [flightInfo rangeOfString:departTitle];
+    NSRange range2 = [flightInfo rangeOfString:departInfo];
+    NSRange range3 = [flightInfo rangeOfString:returnTitle];
+    NSRange range4 = [flightInfo rangeOfString:returnInfo];
+    [aString setTextColor:COLOR_DURATION_TITLE range:range1];
+    [aString setTextColor:COLOR_DURATION_TITLE range:range3];
+    [aString setTextColor:COLOR_DURATION_CONTENT range:range2];
+    [aString setTextColor:COLOR_DURATION_CONTENT range:range4];
+    [aString setFont:FONT_DURATION_LABEL];
+    [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
+    [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
+    
+    OHAttributedLabel *flightLabel = (OHAttributedLabel*)[_flightButton viewWithTag:TAG_LIGHTLABEL];
+    [flightLabel removeFromSuperview];
+    flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
+    flightLabel.backgroundColor = [UIColor clearColor];
+    flightLabel.tag = TAG_LIGHTLABEL;
+    if (_package.returnFlight.flightId == 0 && _package.departFlight.flightId == 0) {
+        aString =  [NSMutableAttributedString attributedStringWithString:@"                               暂没有信息"];
+        _flightButton.userInteractionEnabled = NO;
+        [aString setFont:FONT_DURATION_LABEL];// do not delete
+        flightLabel.attributedText = aString;
+        [_flightButton addSubview:flightLabel];
+        flightLabel.textColor = COLOR_DURATION_CONTENT;
+
+    }
+    else
+    {
+        flightLabel.attributedText = aString;
+        [_flightButton addSubview:flightLabel];
+        UIImageView *accessoryImage = [self createAccessoryImage];
+        [_flightButton addSubview:accessoryImage];
+    }
+  
+}
+
+
+#define WIDTH_DURATION  86.0
+- (UIView *)acommodationViewWithFrame:(CGRect)frame
+                        accommodation:(Accommodation *)accommodation 
+                               isLast:(BOOL)isLast
+{
+    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
     
     [button addTarget:self action:@selector(clickAcommodation:) forControlEvents:UIControlEventTouchUpInside];
     
+    UIImage *buttonBackgroundImage = [[ImageManager defaultManager] accommodationBgImage:isLast];
+    [button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
     button.tag = accommodation.hotelId;
     
-    CGRect rect = CGRectMake(30, 2, self.flightLabel.frame.size.width, frame.size.height/2);
-    UILabel *durationLabel = [[[UILabel alloc] initWithFrame:rect] autorelease];
+    CGRect durationFrame = CGRectMake(0, 1, WIDTH_DURATION, frame.size.height);
+    UILabel *durationLabel = [[[UILabel alloc] init] autorelease];
+    durationLabel.frame = CGRectMake(durationFrame.origin.x + 10, durationFrame.origin.y, durationFrame.size.width-10, durationFrame.size.height);
     durationLabel.backgroundColor = [UIColor clearColor];
-    durationLabel.text =  accommodation.duration;
+    durationLabel.textColor = COLOR_DURATION_TITLE;
     durationLabel.font = FONT_DURATION_LABEL;
-    durationLabel.textColor = TEXT_COLOR_DURATION_LABEL;
-    
+    durationLabel.text = accommodation.duration;
     [button addSubview:durationLabel];
     
-    rect = CGRectMake(30, durationLabel.frame.origin.y+durationLabel.frame.size.height - 4, self.flightLabel.frame.size.width, durationLabel.frame.size.height);
+    CGRect hotelFrame = CGRectMake(WIDTH_DURATION, 1, frame.size.width - WIDTH_DURATION, frame.size.height);
+    UILabel *hotelLable = [[[UILabel alloc] init] autorelease];
+    hotelLable.frame = CGRectMake(hotelFrame.origin.x +8 , hotelFrame.origin.y, hotelFrame.size.width-8, hotelFrame.size.height);
+    hotelLable.backgroundColor = [UIColor clearColor];
+    hotelLable.textColor = COLOR_DURATION_CONTENT;
+    hotelLable.font = FONT_DURATION_LABEL;
+    hotelLable.text = accommodation.hotelName;
+    [button addSubview:hotelLable];
     
-    UILabel *hotelNameLabel = [[[UILabel alloc] initWithFrame:rect] autorelease];
-    hotelNameLabel.backgroundColor = [UIColor clearColor];
-    hotelNameLabel.text =  accommodation.hotelName;
-    hotelNameLabel.font = FONT_HOTEL_NAME_LABEL;
-    hotelNameLabel.textColor = TEXT_COLOR_HOTEL_NAME_LABEL;
-    [button addSubview:hotelNameLabel];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(287, frame.size.height/2 - 6/2 , 5.5, 6)];
-    imageView.image = [UIImage imageNamed:@"go_btn.png"];
-    [button addSubview:imageView];
-    [imageView release];
+    UIImageView *accessoryImage = [self createAccessoryImage];
+    [button addSubview:accessoryImage];
     
     return button;
+}
+
+
+- (void)setCellData:(TravelPackage *)package
+{
+    self.package = package;
+    self.flightTitleButton.enabled = NO;
+    self.accommodationTitleButton.enabled = NO;
+
+    [self createLightLabel];
+    
+    CGFloat originX = _accommodationTitleButton.frame.origin.x + 10;
+    CGFloat originY = _accommodationTitleButton.frame.origin.y + _accommodationTitleButton.frame.size.height;    
+    CGFloat width = _accommodationTitleButton.frame.size.width;
+    CGFloat height = _flightButton.frame.size.height;
+    
+    CGRect frame = CGRectMake(originX, originY, width, height);
+    int count=0;
+    for (Accommodation *accommodation in package.accommodationsList) {
+        count++;
+        BOOL isLast = (count == [package.accommodationsList count] ? YES : NO);
+        
+        UIView *view = [self acommodationViewWithFrame:frame accommodation:accommodation isLast:isLast];
+        [self addSubview:view];
+        
+        originY += height;
+        frame = CGRectMake(originX, originY , width, height);
+    }
+    
+    if (count == 0) {
+        UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+        UIImage *image = [UIImage imageNamed:@"line_table_6@2x.png"];
+        [button setBackgroundImage:image forState:UIControlStateNormal];
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitle:NSLS(@"暂没有信息") forState:UIControlStateNormal];
+        [button setTitleColor:COLOR_DURATION_CONTENT forState:UIControlStateNormal];
+        button.titleLabel.font = FONT_DURATION_LABEL;
+        button.userInteractionEnabled = NO;
+        [self addSubview:button];
+    }
 }
 
 - (void)clickAcommodation:(id)sender
@@ -120,6 +193,5 @@
         [_aDelegate didClickFlight:_package.packageId];
     }
 }
-
 
 @end

@@ -20,7 +20,7 @@
 #import "PlaceUtils.h"
 #import "ImageManager.h"
 #import "AppService.h"
-
+#import "FontSize.h"
 #define TAG_PLACE_COUNT_LABEL 1
 #define EACH_FETCH 20
 
@@ -35,15 +35,16 @@
                          count:(int)count
                selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
                 needStatistics:(BOOL)needStatistics 
-                viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
-
+                viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+                        filter:(id<PlaceListFilterProtocol>)filter
 {
     [[PlaceService defaultService] findPlacesWithCategoryId:[self getCategoryId]
                                                              start:start 
                                                              count:count
                                                    selectedItemIds:selectedItemIds 
                                                     needStatistics:needStatistics
-                                                    viewController:viewController];
+                                                    viewController:viewController
+                                                            filter:filter];
 }
 
 @end
@@ -133,10 +134,12 @@
 
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"帮助") 
+    [self setNavigationRightButton:NSLS(@"帮助")
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickHelp:)];
     
@@ -155,11 +158,15 @@
     [_placeListController showInView:_placeListHolderView];
 
 //    [_filterHandler findAllPlaces:self];
+    
+    _start = 0;
+    
     [_filterHandler findAllPlacesWithStart:_start 
                                      count:EACH_FETCH
                            selectedItemIds:_selectedItemIds
                             needStatistics:YES
-                            viewController:self];
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -227,9 +234,6 @@
              totalCount:(int)totalCount
               placeList:(NSArray *)placeList
 {
-    [_placeListController dataSourceDidFinishLoadingNewData];
-    [_placeListController dataSourceDidFinishLoadingMoreData];
-    
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
     }
@@ -242,7 +246,7 @@
     _start += [placeList count];
     _totalCount = totalCount;
     
-    if (_start >= totalCount) {
+    if (_start >= totalCount || [placeList count] == 0) {
         _placeListController.noMoreData = YES;
     }
     
@@ -253,14 +257,14 @@
     // Update place count in navigation bar.
     [self updateNavigationBarTitle];
     
+    
+    self.dataTableView.tableFooterView.hidden = NO;
+    
     // Reload place list.
     [_placeListController setPlaceList:_placeList];
     
-    for (Place *place in _placeList) {
-        PPDebug(@"place name = %@", place.name);
-    }
-    
-    PPDebug(@"place count = %d", [_placeList count]);
+    [_placeListController dataSourceDidFinishLoadingNewData];
+    [_placeListController dataSourceDidFinishLoadingMoreData];
 }
 
 - (void)didPullDownToRefresh
@@ -268,7 +272,12 @@
 //    [_filterHandler findAllPlaces:self];
     _start = 0;
     
-    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
+    [_filterHandler findAllPlacesWithStart:_start 
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:NO 
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)didPullUpToLoadMore
@@ -277,7 +286,8 @@
                                      count:EACH_FETCH
                            selectedItemIds:_selectedItemIds
                             needStatistics:NO
-                            viewController:self];
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (NSArray*)filterAndSort:(NSArray*)placeList
@@ -377,7 +387,7 @@
 
 - (void)clickArea:(id)sender
 {
-    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:_currentCityId];
+    NSArray *areaItemList = [[AppManager defaultManager] getAreaItemList:[_filterHandler getCategoryId]];
     
     [self pushSelectedControllerWithTitle:((UIButton*)sender).titleLabel.text
                                  itemList:areaItemList
@@ -433,7 +443,12 @@
 {     
     _start = 0;
     
-    [_filterHandler findAllPlacesWithStart:_start count:EACH_FETCH selectedItemIds:_selectedItemIds needStatistics:NO viewController:self];
+    [_filterHandler findAllPlacesWithStart:_start
+                                     count:EACH_FETCH
+                           selectedItemIds:_selectedItemIds
+                            needStatistics:NO 
+                            viewController:self
+                                    filter:self.filterHandler];
 }
 
 - (void)viewWillAppear:(BOOL)animated

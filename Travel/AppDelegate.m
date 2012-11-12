@@ -25,10 +25,21 @@
 #import "UnPackageTourListFilter.h"
 #import "PackageTourListFilter.h"
 #import "MoreController.h"
-#import "CustomTourController.h"
+#import "HappyTourController.h"
+#import "TicketHotelController.h"
+#import "LocalRouteListController.h"
+#import "UserManager.h"
+
+typedef enum{
+    NotificationTypeNone = 0,
+    NotificationTypeNormal,
+    NotificationTypeNewVersion,
+    NotificationTypeUpdateOfflineCity
+}NotificationType;
 
 #define UMENG_KEY @"4fb377b35270152b5a0000fe"
 #define SPLASH_VIEW_TAG 20120506
+
 
 @implementation AppDelegate
 
@@ -64,28 +75,46 @@
 					 viewImage:@"menu_btn1_off.png"
 			  hasNavController:YES			
 			   viewControllers:controllers];	
+//    
+//    NSObject<RouteListFilterProtocol>* unPackageFilter = [UnPackageTourListFilter createFilter];
+//    CommonRouteListController *unPackageController = [[[CommonRouteListController alloc] initWithFilterHandler:unPackageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+//    
+//    [UIUtils addInitViewController:unPackageController 
+//                         viewTitle:nil
+//                         viewImage:@"menu_btn2_off.png" 
+//                  hasNavController:YES 
+//                 hideNavigationBar:NO 
+//                   viewControllers:controllers];
+//    
+//    
     
-    NSObject<RouteListFilterProtocol>* unPackageFilter = [UnPackageTourListFilter createFilter];
-    CommonRouteListController *unPackageController = [[[CommonRouteListController alloc] initWithFilterHandler:unPackageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+    [UIUtils addViewController:[LocalRouteListController alloc]
+                     viewTitle:nil
+                     viewImage:@"menu_btn2_off.png" 
+              hasNavController:YES 
+             hideNavigationBar:NO 
+               viewControllers:controllers];
     
-    [UIUtils addInitViewController:unPackageController 
-                         viewTitle:nil
-                         viewImage:@"menu_btn2_off.png" 
-                  hasNavController:YES 
-                 hideNavigationBar:NO 
-                   viewControllers:controllers];
+//    NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
+//    CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
+//    
+//    [UIUtils addInitViewController:packageController 
+//                         viewTitle:nil
+//                         viewImage:@"menu_btn3_off.png" 
+//                  hasNavController:YES 
+//                 hideNavigationBar:NO 
+//                   viewControllers:controllers];
     
-    NSObject<RouteListFilterProtocol>* packageFilter = [PackageTourListFilter createFilter];
-    CommonRouteListController *packageController = [[[CommonRouteListController alloc] initWithFilterHandler:packageFilter DepartCityId:7 destinationCityId:0 hasStatisticsLabel:NO] autorelease];
     
-    [UIUtils addInitViewController:packageController 
-                         viewTitle:nil
-                         viewImage:@"menu_btn3_off.png" 
-                  hasNavController:YES 
-                 hideNavigationBar:NO 
-                   viewControllers:controllers];
+    [UIUtils addViewController:[TicketHotelController alloc]
+                     viewTitle:nil
+                     viewImage:@"menu_btn3_off.png"
+              hasNavController:YES
+             hideNavigationBar:NO
+               viewControllers:controllers];
     
-    [UIUtils addViewController:[CustomTourController alloc] 
+    
+    [UIUtils addViewController:[HappyTourController alloc] 
                          viewTitle:nil
                          viewImage:@"menu_btn4_off.png" 
                   hasNavController:YES 
@@ -106,6 +135,7 @@
                                                   @"menu_btn3_on.png", 
                                                   @"menu_btn4_on.png", 
                                                   @"menu_btn5_on.png", nil]];
+    
     _tabBarController.selectedIndex = 0;
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"menu_arrow.png"]];
@@ -117,12 +147,19 @@
 	[controllers release];
 }
 
-
+- (void) setSeletedTabbarIndex:(NSInteger)index
+{
+    UIButton *button = [_tabBarController.buttons objectAtIndex:index];
+    [_tabBarController selectedTab:button];
+}
 
 #define EVER_LAUNCHED @"everLaunched"
 #define FIRST_LAUNCH @"firstLaunch"
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    PPDebug(@"didFinishLaunchingWithOptions :%@",launchOptions);
+    
+    
     application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
 //    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
@@ -138,6 +175,11 @@
     }        
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+    
+    // Push Setup
+    if (![self isPushNotificationEnable]){
+        [self bindDevice];
+    }
     
 //    //juage if app is firstLaunch
 //    if (![[NSUserDefaults standardUserDefaults] boolForKey:EVER_LAUNCHED]) {
@@ -161,10 +203,6 @@
     // update help html 
     [[AppService defaultService] updateHelpHtmlFile];
     
-    //register user
-    //[[UserService defaultService] autoRegisterUser:@"123"];
-    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
-    
     //resend favorete place
     [[ResendService defaultService] resendFavorite];
     
@@ -177,22 +215,27 @@
 //    self.mainController.navigationItem.title = NSLS(@"大拇指旅行");
 //    
 //    self.window.rootViewController = navigationController;
-//    
-//    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.jpg"]];
-//    splashView.frame = [self.window bounds];
-//    splashView.tag = SPLASH_VIEW_TAG;
-//    [self.window.rootViewController.view addSubview:splashView];
-//    [splashView release];
-//    
-//    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
-    
+//
     
     [self initTabViewControllers];
     [self.window addSubview:_tabBarController.view];
+
     
     [self.window makeKeyAndVisible];
+    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    splashView.frame = [self.window bounds];
+    splashView.tag = SPLASH_VIEW_TAG;
+    [self.window addSubview:splashView];
+    [splashView release];
+    [self performSelector:@selector(removeSplashView) withObject:nil afterDelay:2.0f];
     
     [[UserService defaultService] queryVersion:self];
+    
+    
+    //register user
+    if ([[UserManager defaultManager] getUserId] == nil) {
+        [self registerUser];
+    }
 
     return YES;
 }
@@ -203,10 +246,15 @@
 	[UIView setAnimationDuration:2.0f];
 	
 	[UIView setAnimationTransition:UIViewAnimationTransitionCurlUp
-						   forView:self.window.rootViewController.view 
+						   forView:self.window
                              cache:YES];
     [UIView commitAnimations];
-    [[self.window.rootViewController.view viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+    [[self.window viewWithTag:SPLASH_VIEW_TAG] removeFromSuperview];
+}
+
+- (void)registerUser
+{
+    [[UserService defaultService] autoRegisterUser:[self getDeviceToken]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -259,16 +307,19 @@
 
 
 #pragma mark - UserServiceDelegate
-- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion
+- (void)queryVersionFinish:(NSString *)version dataVersion:(NSString *)dataVersion title:(NSString *)title content:(NSString *)content
 {
     if (version && dataVersion) {
         NSString *localVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
         float versionFloat = [version floatValue];
         float localVersionFloat = [localVersion floatValue];
-        if (localVersionFloat < versionFloat) {
-            UIAlertView *alertView = [[UIAlertView  alloc] initWithTitle:nil message:NSLS(@"有新版本，是否更新？") delegate:self cancelButtonTitle:NSLS(@"稍后更新") otherButtonTitles:@"立即更新", nil];
-            [alertView show];
-            [alertView release];
+        if (localVersionFloat < versionFloat) {            
+            if (title == nil || [title length] == 0) {
+                title = [NSString stringWithFormat:NSLS(@"大拇指旅行%@发布了"),version];
+            }
+            
+            CommonDialog *dialog = [CommonDialog createDialogWithTitle:NSLS(@"新版本升级提示") subTitle:title content:content OKButtonTitle:NSLS(@"立刻升级") cancelButtonTitle:NSLS(@"稍后提醒") delegate:self];
+            [self.window insertSubview:dialog belowSubview:[self.window viewWithTag:SPLASH_VIEW_TAG]];
         }
     }
     else {
@@ -276,16 +327,50 @@
     }
 }
 
-#pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+
+#pragma mark - Device Notification Delegate
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    PPDebug(@"Get token successfully: %@", deviceToken);
+    
+	[self saveDeviceToken:deviceToken];
+    
+    [self registerUser];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        return ;
-    }else if(buttonIndex == 1)
-    {
-        [UIUtils openApp:kAppId];
+    PPDebug(@"Failed to get token, error: %@", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    PPDebug(@"didReceiveRemoteNotification :%@", userInfo);
+    
+    NSNumber *type = [userInfo objectForKey:@"type"];
+    switch (type.intValue) {
+        case NotificationTypeNormal:
+            break;
+        case NotificationTypeNewVersion:{
+            [[UserService defaultService] queryVersion:self];
+            break;
+        }
+        case NotificationTypeUpdateOfflineCity:
+            break;
+        default:
+            break;
     }
 }
 
+#pragma mark - 
+#pragma CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    [UIUtils openApp:kAppId];
+}
+
+- (void)didClickCancelButton
+{
+    return;
+}
 
 @end

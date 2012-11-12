@@ -26,6 +26,7 @@
 #import "AppService.h"
 #import "MapUtils.h"
 #import "UIImageUtil.h"
+#import "FontSize.h"
 
 #define NO_DETAIL_DATA NSLS(@"暂无")
 
@@ -154,6 +155,11 @@
     controller.navigationItem.title = NSLS(@"帮助");
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
+}
+
+- (void)clickHomeButton:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)clickMap:(id)sender
@@ -848,6 +854,7 @@
     
     SlideImageView* slideImageView = [[SlideImageView alloc] initWithFrame:imageHolderView.bounds];
     slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    
     [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
     [slideImageView setImages:imagePathList];
     [self.imageHolderView addSubview:slideImageView];
@@ -861,12 +868,25 @@
     [super viewDidLoad];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"") 
-                         imageName:@"map_po.png" 
-                            action:@selector(clickMap:)];
+    UIView *rightBarView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 73, 32)] autorelease];
+    UIButton *homeButon = [[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)] autorelease];
+    UIButton *mapButon = [[[UIButton alloc] initWithFrame:CGRectMake(40, 0, 32, 32)] autorelease];
+    
+    [homeButon setImage:[UIImage imageNamed:@"home_po.png"] forState:UIControlStateNormal];
+    [mapButon setImage:[UIImage imageNamed:@"map_po.png"] forState:UIControlStateNormal];
+    [homeButon addTarget:self action:@selector(clickHomeButton:) forControlEvents:UIControlEventTouchUpInside];
+    [mapButon addTarget:self action:@selector(clickMap:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [rightBarView addSubview:homeButon];
+    [rightBarView addSubview:mapButon];
+    
+    UIBarButtonItem *rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:rightBarView] autorelease];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    
     
     [self setTitle:[self.place name]];
     
@@ -899,7 +919,7 @@
     
     [self addBottomImage];
     
-    [[PlaceStorage historyManager] addPlace:self.place];
+    //[[PlaceStorage historyManager] addPlace:self.place];
 }
 
 - (void)viewDidUnload

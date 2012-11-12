@@ -12,18 +12,20 @@
 #import "RouteStorage.h"
 #import "CommonRouteDetailController.h"
 #import "TravelNetworkConstants.h"
+#import "FontSize.h"
 
 @interface FollowRouteController ()
 
 @property (assign, nonatomic) int routeType;
-
+@property (retain, nonatomic) UIButton* deleteButton;
 @end
 
 @implementation FollowRouteController
 @synthesize routeType = _routeType;
-
+@synthesize deleteButton;
 - (void)dealloc
-{
+{  
+    [deleteButton release];
     [super dealloc];
 }
 
@@ -42,21 +44,27 @@
     [super viewDidLoad];
     self.title = @"我的关注";
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
-    
-    UIButton *deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 11, 46, 22)];
+    deleteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 7, 46, 30)];
     [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-    [deleteButton setImageEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
+    deleteButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"topmenu_btn_right.png"]];
+    [deleteButton setImageEdgeInsets:UIEdgeInsetsMake(2, 3, 0, 0)];
+
+    deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:FONT_SIZE - 1];
+    
     [deleteButton addTarget:self action:@selector(clickClear:) forControlEvents:UIControlEventTouchUpInside];
-    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+
+    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50 , 44)];
     [rightButtonView addSubview:deleteButton];
-    [deleteButton release];
+
+
     
     UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButtonView];
-    [rightButtonView release];
     self.navigationItem.rightBarButtonItem = rightButtonItem;
     [rightButtonItem release];
+    [rightButtonView release];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
@@ -142,6 +150,29 @@
 
 - (void)clickClear:(id)sender
 {
+    [deleteButton removeFromSuperview];
+    
+    static int controlFlag = 0;
+    controlFlag++;
+    if (controlFlag % 2) 
+    {
+        [deleteButton setImage:nil forState:UIControlStateNormal]; //necessary
+        [deleteButton setTitle:@"完成" forState:UIControlStateNormal];
+    }
+    else 
+    {
+        [deleteButton setImage:[UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+    }
+    
+    UIView *rightButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50 , 44)];
+    [rightButtonView addSubview:deleteButton];
+    
+    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightButtonView];
+    self.navigationItem.rightBarButtonItem = rightButtonItem;
+    
+    [rightButtonItem release];
+    [rightButtonView release];
+    
     [dataTableView setEditing:!dataTableView.editing animated:YES];
     [dataTableView reloadData];
 }
@@ -150,7 +181,7 @@
 - (void)updateNoDataTips
 {
     if ([dataList count] ==0 ) {
-        [self showTipsOnTableView:NSLS(@"暂没关注信息")];
+        [self showTipsOnTableView:NSLS(@"您还没有关注线路")];
     } else {
         [self hideTipsOnTableView];
     }

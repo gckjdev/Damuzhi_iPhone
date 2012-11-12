@@ -14,7 +14,7 @@
 #import "PlaceUtils.h"
 #import "Item.h"
 #import "AppConstants.h"
-
+#import "FontSize.h"
 @interface SelectController ()
 
 @property (copy, nonatomic) NSString *navigationTitle;
@@ -41,6 +41,7 @@
 
 @synthesize tableView;
 @synthesize delegate;
+@synthesize cellTextColor = _cellTextColor;
 
 - (void)dealloc {
     [_navigationTitle release];
@@ -49,7 +50,7 @@
     [_selectedItemIdsBeforConfirm release];
     
     [tableView release];
-
+    [_cellTextColor release];
     [super dealloc];
 }
 
@@ -81,11 +82,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     if (_needConfirm) {
         [self setNavigationRightButton:NSLS(@"确定") 
+                              fontSize:FONT_SIZE
                              imageName:@"topmenu_btn_right.png" 
                                 action:@selector(clickFinish:)];
     }
@@ -135,7 +138,7 @@
 	}
     
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellForCategory"] autorelease];
-
+    
     Item *item = [_itemList objectAtIndex:row];
 
     if (_needShowCount) {
@@ -145,10 +148,13 @@
         NSString *text = [NSString stringWithFormat:@"%@", item.itemName];
         [[cell textLabel] setText:text];
     }
-
+    
     
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
+    if (_cellTextColor) {
+        cell.textLabel.textColor = _cellTextColor;
+    }
     
     if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];
@@ -246,7 +252,7 @@
 - (void)clickFinish:(id)sender
 {
     if ([_selectedItemIdsBeforConfirm count] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"亲，您还没有选择哦！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"您还没有进行选择！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
         
         [alert show];
         [alert release];

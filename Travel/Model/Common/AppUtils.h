@@ -66,6 +66,9 @@
 // For follow routes data dir
 + (NSString*)getFollowRoutesDir;
 
+//For follow local routes data dir
++ (NSString*)getFollowLocalRoutesDir;
+
 // Interface for app data file.
 + (NSString*)getAppFilePath;
 
@@ -112,9 +115,13 @@
 
 // For getting history file path
 + (NSString*)getHistoryFilePath:(int)cityId;
++ (NSString*)getDefaultHistoryFilePath;
 
 // For getting follow routes file path 
 + (NSString *)getFollowRoutesFilePath:(int)type;
+
+// For getting follow local routes file path 
++ (NSString *)getFollowLocalRoutesFilePath;
 
 // For place image showable.
 + (BOOL)isShowImage;

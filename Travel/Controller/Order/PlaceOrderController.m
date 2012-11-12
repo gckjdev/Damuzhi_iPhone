@@ -15,7 +15,8 @@
 #import "UserManager.h"
 #import "LoginController.h"
 #import "TravelNetworkConstants.h"
-
+#import "OrderListController.h"
+#import "FontSize.h"
 
 @interface PlaceOrderController ()
 
@@ -23,12 +24,15 @@
 @property (assign, nonatomic) int adult;
 @property (assign, nonatomic) int children;
 @property (assign, nonatomic) int packageId;
+
 @property (retain, nonatomic) TouristRoute *route;
 @property (retain, nonatomic) NSMutableArray *selectedAdultIdList;
 @property (retain, nonatomic) NSMutableArray *selectedChildrenIdList;
 @property (retain, nonatomic) NSDate *departDate;
 @property (retain, nonatomic) NonMemberOrderController *nonMemberOrderController;
 @property (retain, nonatomic) NSArray *phoneList;
+
+@property (retain, nonatomic) NSMutableArray *selectPacekageIdList;
 
 - (void)setDirectionsCell:(PlaceOrderCell *)cell;
 - (void)clickDepartDateButton;
@@ -37,13 +41,15 @@
 - (void)clickMemberBookButton;
 - (void)clickNonMemberBookButton;
 
+-(void)clickSelectPackageIdButton;
+
 @end
 
 
 #define TITLE_ROUTE_NAME    NSLS(@"线路名称 :")
 #define TITLE_ROUTE_ID      NSLS(@"线路编号 :")
-#define TITLE_PACKAGE_ID    NSLS(@"套餐编号 :")
 #define TITLE_DEPART_CITY   NSLS(@"出发城市 :")
+#define TITLE_PACKAGE_ID    NSLS(@"套餐选择 :")
 #define TITLE_DEPART_DATE   NSLS(@"出发日期 :")
 #define TITLE_PEOPLE_NUMBER NSLS(@"出游人数 :")
 #define TITLE_PRICE         NSLS(@"参考价格 :")
@@ -62,6 +68,8 @@
 @synthesize nonMemberOrderController = _nonMemberOrderController;
 @synthesize phoneList = _phoneList;
 
+@synthesize selectPacekageIdList = _selectPacekageIdList;
+
 - (void)dealloc
 {
     PPRelease(_route);
@@ -69,20 +77,23 @@
     PPRelease(_selectedChildrenIdList);
     PPRelease(_departDate);
     PPRelease(_phoneList);
+    PPRelease(_nonMemberOrderController);
+    PPRelease(_selectPacekageIdList);
     [super dealloc];
 }
 
 
 - (id)initWithRoute:(TouristRoute *)route 
           routeType:(int)routeType
-          packageId:(int)packageId
+          packageId:(int)packageId 
 {
     if (self = [super init]) {
         self.route = route;
         self.routeType = routeType;
         self.packageId = packageId;
-        self.selectedAdultIdList = [NSMutableArray array];
-        self.selectedChildrenIdList = [NSMutableArray array];
+        self.selectedAdultIdList = [[[NSMutableArray alloc] init] autorelease];
+        self.selectedChildrenIdList = [[[NSMutableArray alloc] init] autorelease];
+        self.selectPacekageIdList = [[[NSMutableArray alloc] init] autorelease];
         self.adult = 1;
         self.children = 0;
     }
@@ -96,20 +107,29 @@
     [super viewDidLoad];
     self.title = @"线路预订";
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:NSLS(@"咨询") 
+    [self setNavigationRightButton:NSLS(@"咨询")
+                          fontSize:FONT_SIZE 
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
+//    PPDebug(@"_packageId isisisis: %d", _packageId);
+    if ([_route.packagesList count] >= 1) {
+        self.packageId = [[_route.packagesList objectAtIndex:0] packageId];
+        PPDebug(@"_packageId isisisis: %d", _packageId);
+    }
+    
+    [self.selectPacekageIdList addObject:[NSNumber numberWithInt:_packageId]];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
-    [_selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
-    [_selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
+    [self.selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
+    [self.selectedChildrenIdList addObject:[NSNumber numberWithInt:_children]];
     
-    NSMutableArray *mutableArray = [NSMutableArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_ROUTE_ID, TITLE_PACKAGE_ID, TITLE_DEPART_CITY, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
+    NSMutableArray *mutableArray = [NSMutableArray arrayWithObjects:TITLE_ROUTE_NAME, TITLE_ROUTE_ID, TITLE_DEPART_CITY, TITLE_PACKAGE_ID, TITLE_DEPART_DATE, TITLE_PEOPLE_NUMBER, TITLE_PRICE, TITLE_DIRECTIONS,nil];
     if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
         [mutableArray removeObject:TITLE_PACKAGE_ID];
     }
@@ -160,6 +180,19 @@
 }
 
 
+-(NSString *)getSelectedPackageName
+{
+    NSNumber *selectedPackageId = [_selectPacekageIdList objectAtIndex:0];
+    NSString *selectedPackageName = nil;
+    for (TravelPackage *package in _route.packagesList) {
+        if (package.packageId == [selectedPackageId intValue]) {
+            selectedPackageName = package.name;
+            break;
+        }
+    }
+    return selectedPackageName;
+}
+
 #define BUTTON_WIDTH_DEPART_DATE    130
 #define BUTTON_HEIGHT_DEPART_DATE   28
 #define BUTTON_WIDTH_PEOPLE         74
@@ -195,15 +228,19 @@
     else if ([cellTitle isEqualToString:TITLE_ROUTE_ID]) {
         cell.contentLabel.text = [NSString stringWithFormat:@"%d" ,_route.routeId]; 
     }
-    else if ([cellTitle isEqualToString:TITLE_PACKAGE_ID]){
-        cell.contentLabel.text = [NSString stringWithFormat:@"%d" ,_packageId]; 
-    }
     else if ([cellTitle isEqualToString:TITLE_DEPART_CITY])
     {
         cell.contentLabel.text = [[AppManager defaultManager] getDepartCityName:_route.departCityId];
     }
+    else if ([cellTitle isEqualToString:TITLE_PACKAGE_ID]){
+        [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
+        cell.leftButton.hidden = NO;
+        CGRect departFrame = cell.leftButton.frame;
+        cell.leftButton.frame = CGRectMake(departFrame.origin.x, departFrame.origin.y, BUTTON_WIDTH_DEPART_DATE, departFrame.size.height);
+        [cell.leftButton setTitle:@"haha" forState:UIControlStateNormal];
+        [cell.leftButton setTitle:([self getSelectedPackageName] == nil) ? NSLS(@"套餐1") : [self getSelectedPackageName] forState:UIControlStateNormal];
+    }
     else if ([cellTitle isEqualToString:TITLE_DEPART_DATE]) {
-        cell.contentLabel.hidden = YES;
         cell.leftButton.hidden = NO;
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         CGRect departFrame = cell.leftButton.frame;
@@ -217,8 +254,8 @@
         [cell.leftButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         [cell.rightButton setBackgroundImage:[[ImageManager defaultManager] selectDownImage] forState:UIControlStateNormal];
         
-        [cell.leftButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult]] forState:UIControlStateNormal];
-        [cell.rightButton setTitle:[NSString stringWithFormat:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children]] forState:UIControlStateNormal]; 
+        [cell.leftButton setTitle:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult] forState:UIControlStateNormal];
+        [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
         cell.contentLabel.text = _route.price;
@@ -230,6 +267,7 @@
     
     return cell;
 }
+
 
 
 - (void)setDirectionsCell:(PlaceOrderCell *)cell
@@ -248,6 +286,13 @@
     cell.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     [cell.leftButton setTitle:NSLS(@"会员确认预订") forState:UIControlStateNormal];
     [cell.rightButton setTitle:NSLS(@"非会员确认预订") forState:UIControlStateNormal];
+    
+    if ([[UserManager defaultManager]isLogin]) {
+        cell.rightButton.hidden = YES;
+        cell.leftButton.center = CGPointMake(160, cell.leftButton.center.y);
+        cell.titleLabel.hidden = YES;
+    }
+    
     [cell.leftButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cell.rightButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     cell.leftButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
@@ -281,6 +326,10 @@
     {
         [self clickMemberBookButton];
     }
+    else if ([cellTitle isEqualToString:TITLE_PACKAGE_ID])
+    {
+        [self clickSelectPackageIdButton];
+    }
 }
 
 
@@ -312,7 +361,8 @@
 - (void)clickAdultButton
 {
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出游人数")
-                                                                  itemList:[[AppManager defaultManager] buildAdultItemList]  selectedItemIds:_selectedAdultIdList
+                                                                  itemList:[[AppManager defaultManager] buildAdultItemList]  
+                                                           selectedItemIds:_selectedAdultIdList
                                                               multiOptions:NO 
                                                                needConfirm:NO 
                                                              needShowCount:NO];
@@ -325,7 +375,8 @@
 - (void)clickChildrenButton
 {
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"出游人数")
-                                                                  itemList:[[AppManager defaultManager] buildChildrenItemList]  selectedItemIds:_selectedChildrenIdList
+                                                                  itemList:[[AppManager defaultManager] buildChildrenItemList]  
+                                                           selectedItemIds:_selectedChildrenIdList
                                                               multiOptions:NO 
                                                                needConfirm:NO 
                                                              needShowCount:NO];
@@ -353,8 +404,37 @@
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle:NSLS(@"确定") otherButtonTitles:NSLS(@"取消"),nil] autorelease];
     [alert show];
+
     
 }
+
+
+
+-(void)clickSelectPackageIdButton;
+{
+
+    SelectController *controller = [[[SelectController alloc] initWithTitle:NSLS(@"套餐号")
+                                                                  itemList:[[AppManager defaultManager] getSelectedPackageIdItemList: _route] 
+                                                           selectedItemIds:_selectPacekageIdList
+                                                              multiOptions:NO 
+                                                               needConfirm:NO 
+                                                             needShowCount:NO] autorelease];
+    controller.delegate = self;
+    
+    if ([_route.packagesList count] == 1) {
+        [self popupMessage:@"只有一个套餐可供选择" title:nil];
+        return;
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+
+
+
+
+
 
 //- (void) alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex    //wrong
 - (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex  // after animation
@@ -362,28 +442,19 @@
     NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
     NSString * str2 = [NSString stringWithFormat:@"确定"];
     if ([str1 isEqualToString: str2]) 
-    {
+    {  
         UserManager *manager = [UserManager defaultManager];
-        if ([[UserManager defaultManager] isLogin]) {
-            OrderService *service = [OrderService defaultService];
-            [service placeOrderUsingLoginId:[manager loginId] 
-                                      token:[manager token]
-                                    routeId:_route.routeId 
-                                  packageId:_packageId
-                                 departDate:_departDate
-                                      adult:_adult 
-                                   children:_children 
-                              contactPerson:nil
-                                  telephone:nil
-                                   delegate:self];
-        } 
-        else 
-        {
-            LoginController *controller  = [[LoginController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-            [controller release];
-        }
-        return;
+        OrderService *service = [OrderService defaultService];
+        [service placeOrderUsingLoginId:[manager loginId] 
+                                  token:[manager token]
+                                routeId:_route.routeId 
+                              packageId:_packageId
+                             departDate:_departDate
+                                  adult:_adult 
+                               children:_children 
+                          contactPerson:nil
+                              telephone:nil
+                               delegate:self];
     }
 }
 
@@ -399,22 +470,16 @@
     
     if (_nonMemberOrderController == nil) {
         NonMemberOrderController *controller = [[NonMemberOrderController alloc] initWithRoute:_route 
+                                                                                     routeType:_routeType
                                                                                     departDate:_departDate 
                                                                                          adult:_adult 
-                                                                                      children:_children];
-        controller.delegate = self;
+                                                                                      children:_children 
+                                                                                     packageId:_packageId];
         self.nonMemberOrderController = controller;
         [controller release];
     }
-    
     [self.navigationController pushViewController:_nonMemberOrderController animated:YES];
-//    [self popupMessage:@"yunyunyun" title:nil];
 }
-
-
-
-
-
 
 
 
@@ -430,6 +495,7 @@
 {
     self.adult = [[_selectedAdultIdList objectAtIndex:0] intValue];
     self.children = [[_selectedChildrenIdList objectAtIndex:0] intValue];
+    self.packageId = [[_selectPacekageIdList objectAtIndex:0] intValue];
     [dataTableView reloadData];
 }
 
@@ -439,7 +505,26 @@
 {
     if (resultCode == 0) {
         if ( result == 0) {
-            [self popupMessage:NSLS(@"预订成功") title:nil];
+            [self popupMessage:NSLS(@"已成功提交意向订单") title:nil];
+            int orderType;
+            switch (_routeType) {
+                case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
+                    orderType = OBJECT_LIST_PACKAGE_TOUR_ORDER;
+                    break;
+                case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
+                    orderType = OBJECT_LIST_UNPACKAGE_TOUR_ORDER;
+                    break;
+                case OBJECT_LIST_ROUTE_SELF_GUIDE_TOUR:
+                    orderType = OBJECT_LIST_SELF_GUIDE_TOUR_ORDER;
+                    break;
+                default:
+                    break;
+            }
+            
+            OrderListController *controller = [[OrderListController alloc]initWithOrderType:orderType];
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
+            
         } else {
             [self popupMessage:resultInfo title:nil];
         }
@@ -447,24 +532,5 @@
         [self popupMessage:NSLS(@"网络弱，请稍后再试") title:nil];
     }
 }
-
-
-#pragma mark - NonMemberOrderDelegate
-- (void)didclickSubmit:(NSString *)contactPerson telephone:(NSString *)telephone
-{
-    UserManager *manager = [UserManager defaultManager];
-    
-    OrderService *service = [OrderService defaultService];
-    [service placeOrderUsingUserId:[manager getUserId]  
-                           routeId:_route.routeId  
-                         packageId:_packageId 
-                        departDate:_departDate 
-                             adult:_adult 
-                          children:_children 
-                     contactPerson:contactPerson 
-                         telephone:telephone 
-                          delegate:self];
-}
-
 
 @end

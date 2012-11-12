@@ -23,7 +23,7 @@
 #pragma - mark PlaceListFilterProtocol
 #define FILTER_BUTTON_WIDTH 58
 #define FILTER_BUTTON_HEIGHT 36
-- (void)createFilterButtons:(UIView*)superView controller:(PPTableViewController*)commonPlaceController
+- (void)createFilterButtons:(UIView*)superView controller:(PPViewController*)commonPlaceController
 {
     CGRect frame = CGRectMake(0, superView.frame.size.height/2-HEIGHT_OF_FILTER_BUTTON/2, WIDTH_OF_FILTER_BUTTON, HEIGHT_OF_FILTER_BUTTON);
     

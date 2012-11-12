@@ -14,19 +14,33 @@
 #import "AppUtils.h"
 #import "CommonWebController.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
+
+#define  TABLE_VIEW_CELL_HEIGHT 42
+#define SECTION_HEADER_HEIGHT 18
 
 @implementation GuideController
 
+
+- (void)dealloc 
+{
+//    [scrollView release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self.navigationItem setTitle:NSLS(@"游记攻略")];
     
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeGuide viewController:self];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -59,6 +73,7 @@
 #pragma mark - TravelTipsServiceDelegate
 - (void)findRequestDone:(int)resulteCode tipList:(NSArray*)tipList
 {
+    
     if (resulteCode != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
         return;
@@ -67,6 +82,15 @@
     self.dataList = tipList;
     [self.dataTableView reloadData];
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat orginY = (tableView.contentSize.height <= tableView.frame.size.height) ? tableView.frame.size.height : tableView.contentSize.height;
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, orginY, 320, 250)] autorelease];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [tableView addSubview:imageView];
+}
+
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -101,12 +125,12 @@
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 42;
+    return TABLE_VIEW_CELL_HEIGHT;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 18;
+    return SECTION_HEADER_HEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -31,11 +31,13 @@
 {
     BOOL _showMap;
     BOOL _firstIn;
+    MKCoordinateSpan _span;
 }
 
 @property (assign, nonatomic) BOOL canDelete;
 @property (retain, nonatomic) UINavigationController *superNavigationController;
 @property (retain, nonatomic) UIButton *locateButton;
+@property (retain, nonatomic) UIImageView *bottomImageview;
 
 @end
 
@@ -49,6 +51,7 @@
 @synthesize locateButton = _locateButton;
 @synthesize alertViewType = _alertViewType;
 @synthesize isNearby = _isNearby;
+@synthesize bottomImageview = _bottomImageview;
 
 - (void)dealloc
 {
@@ -56,6 +59,7 @@
     [_superNavigationController release];
     [_mapView release];
     [_locateButton release];
+    [_bottomImageview release];
     [super dealloc];
 }
 
@@ -69,12 +73,21 @@
     _mapView.delegate = self;
     _mapView.mapType = MKMapTypeStandard;   
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
-    [MapUtils setMapSpan:_mapView span:span];
+    _span = MKCoordinateSpanMake(0.028, 0.028);
+    [MapUtils setMapSpan:_mapView span:_span];
     
     [self addMyLocationBtnTo:_mapView];
     
+    
+    if (!self.supportRefreshFooter && !self.supportRefreshHeader) {
+        
+        UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+        [self.dataTableView addSubview:imageView];
+    }
+    
     [self switchToListMode];
+    self.dataTableView.backgroundColor = [UIColor colorWithRed:220/255.0 green:224/255.0 blue:227/255.0 alpha:1.0];
 }
 
 #pragma mark For Sub Class to override and implement
@@ -110,6 +123,9 @@
         self.superNavigationController = superNavigationController;
         self.supportRefreshHeader = supportPullDownToRefresh;
         self.supportRefreshFooter = supportPullUpToLoadMore;
+        self.footerRefreshType = AutoAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"加载中...");
         self.pullDelegate = pullDelegate;
         _firstIn = YES;
     }
@@ -141,6 +157,30 @@
 }
 
 
+#define TAG_BOTTOM 12101301
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [super scrollViewDidScroll:scrollView];
+    
+    CGFloat scrollPosition = scrollView.contentSize.height - scrollView.frame.size.height - scrollView.contentOffset.y;
+    if (self.noMoreData && scrollPosition < 0) {
+        if ([self.dataTableView viewWithTag:TAG_BOTTOM] == nil) {
+            
+            if (self.bottomImageview == nil) {
+                self.bottomImageview = [[[UIImageView alloc] init] autorelease];
+                _bottomImageview.tag = TAG_BOTTOM;
+                [_bottomImageview setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+            }
+            CGFloat cHeight = dataTableView.contentSize.height;
+            CGFloat fHeight = dataTableView.frame.size.height;
+            CGFloat y = (cHeight > fHeight ? cHeight : fHeight);
+            _bottomImageview.frame = CGRectMake(0, y, 320, 250);
+            [dataTableView addSubview:_bottomImageview];
+        }
+    } else {
+        [_bottomImageview removeFromSuperview];
+    }
+}
+
 #pragma mark -
 #pragma mark TableView Delegate
 
@@ -149,7 +189,7 @@
 	// return [self getRowHeight:indexPath.row totalRow:[dataList count]];
 	// return cellImageHeight;
 	
-	return 76;
+	return [PlaceCell getCellHeight];
 }
 
 - (Class)getClassByPlace:(Place*)place
@@ -277,7 +317,25 @@
     }else {
         [self reloadTableView];
     }
+    
+    if (!self.supportRefreshFooter && !self.supportRefreshHeader) {
+        CGFloat height = [placeList count] * [PlaceCell getCellHeight];
+        CGFloat originY = height < self.dataTableView.frame.size.height ? self.dataTableView.frame.size.height : height;
+        
+        UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, originY, 320, 250)] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [self.dataTableView addSubview:imageView];
+    }
+    
+    
+    
+//    [self addBottomImage];
 }
+
+//- (void)addBottomImage
+//{
+//    CGFloat offset = [PlaceCell getCellHeight] * [dataList count] < self.dataTableView.frame.size.height ? self.dataTableView.frame.size.height : [PlaceCell getCellHeight] * [dataList count];
+//}
 
 - (void)reloadMap
 {   
@@ -293,11 +351,11 @@
 {
     if (_locateButton.selected) {
         CLLocation *location = [[AppService defaultService] currentLocation];
-        [MapUtils gotoLocation:_mapView latitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+        [MapUtils gotoLocation:_mapView latitude:location.coordinate.latitude longitude:location.coordinate.longitude span:_span];
     }else {
         if ([dataList count] > 0) {
             Place *place = [dataList objectAtIndex:0];
-            [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+            [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude span:_span];
         }
     }
 }
@@ -311,6 +369,7 @@
     }else {
         [self hideTipsOnTableView];
     }
+    
 }
 
 - (void)addMyLocationBtnTo:(UIView*)view
@@ -333,7 +392,7 @@
     }else {
         _mapView.showsUserLocation = NO;
         Place *place = [dataList objectAtIndex:0];
-        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude span:_span];
     }
     
     MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
@@ -365,7 +424,7 @@
     [[AppService defaultService] setCurrentLocation:userLocation.location];
     
     if (_showMap) {
-        [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+        [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude span:_span];
     }else {
         [self reloadTableView];
     }

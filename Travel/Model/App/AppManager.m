@@ -18,8 +18,11 @@
 #import "PlaceUtils.h"
 #import "RouteUtils.h"
 #import "PlaceItemList.h"
+#import "StringUtil.h"
 
-#define TEST_CITY
+#import "TouristRoute.pb.h"
+
+//#define TEST_CITY
 
 #ifdef TEST_CITY
 #define CITY_LIST [self allCities]
@@ -32,6 +35,7 @@
 @property (retain, nonatomic) NSArray *allCities;
 @property (retain, nonatomic) NSMutableDictionary *placeItemDic;
 
+@property (retain, nonatomic) TouristRoute *route;
 @end
 
 @implementation AppManager
@@ -42,7 +46,7 @@ static AppManager* _defaultAppManager = nil;
 @synthesize allCities = _allCities;
 @synthesize placeItemDic = _placeItemDic;
 
-
+@synthesize route = _route;
 + (id)defaultManager
 {
     if (_defaultAppManager == nil){
@@ -437,7 +441,19 @@ static AppManager* _defaultAppManager = nil;
     return [self getCityName:cityId];
 }
 
-- (void)setCurrentCityId:(int)newCityId
+//- (void)setCurrentCityId:(int)newCityId 
+//{
+//    int currentCityId = [self getCurrentCityId];
+//    if (newCityId == currentCityId) {
+//        return;
+//    }
+//    
+//    NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
+//    [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
+//    [userDefault synchronize];
+//}
+
+- (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate
 {
     int currentCityId = [self getCurrentCityId];
     if (newCityId == currentCityId) {
@@ -447,6 +463,10 @@ static AppManager* _defaultAppManager = nil;
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults]; 
     [userDefault setObject:[NSNumber numberWithInt:newCityId] forKey:KEY_CURRENT_CITY];
     [userDefault synchronize];
+    
+    if ([delegate respondsToSelector:@selector(currentCityDidChange:)]) {
+        [delegate currentCityDidChange:newCityId];
+    }
 }
 
 - (NSArray*)getSubCategoryItemList:(int)categoryId
@@ -720,7 +740,7 @@ static AppManager* _defaultAppManager = nil;
 
 - (int)getRegionIdByCityId:(int)cityId
 {
-    int reId = -1;
+    int reId = ALL_CATEGORY;
     
     for (RouteCity *city in _app.destinationCitiesList) {
         if (city.routeCityId == cityId) {
@@ -804,7 +824,7 @@ static AppManager* _defaultAppManager = nil;
     
     for (Statistics *statistics in staticticsList) {
         [retArray addObject:[Item itemWithStatistics:statistics]];
-        PPDebug(@"name = %@ count = %d",statistics.name, statistics.count);
+        //PPDebug(@"name = %@ count = %d",statistics.name, statistics.count);
     }
     
     return retArray;
@@ -822,6 +842,18 @@ static AppManager* _defaultAppManager = nil;
     
     return nil;
 }
+
+- (Agency*)getAgency:(int)agencyId
+{
+    for (Agency *agency in _app.agenciesList) {
+        if (agency.agencyId == agencyId) {
+            return agency;
+        }
+    }
+    
+    return nil; 
+}
+
 
 - (NSString*)getAgencyName:(int)agencyId
 {
@@ -877,9 +909,48 @@ static AppManager* _defaultAppManager = nil;
                                   itemName:NSLS(@"成人7位") 
                                      count:0]];
     
+    [adultItems addObject:[Item itemWithId:8
+                                  itemName:NSLS(@"成人8位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:9
+                                  itemName:NSLS(@"成人9位") 
+                                     count:0]];
+    
+    [adultItems addObject:[Item itemWithId:10
+                                  itemName:NSLS(@"成人10位") 
+                                     count:0]];
     
     return adultItems;
 }
+
+
+
+
+
+
+
+- (NSArray*)getSelectedPackageIdItemList:(TouristRoute *)aRoute
+{
+    NSMutableArray *packageIdItems = [[[NSMutableArray alloc] init] autorelease];    
+        
+    for (TravelPackage *package in aRoute.packagesList) {
+        [packageIdItems addObject:[Item itemWithId:package.packageId 
+                                          itemName:package.name 
+                                             count:0]];
+    }
+
+    return packageIdItems;
+}
+
+//- (NSInteger)getTotalSelectedPackageIds:(TouristRoute *)aRoute
+//{
+//    return [aRoute.packagesList count];
+//}
+
+
+
+
 
 - (NSArray*)buildChildrenItemList
 {
@@ -916,6 +987,18 @@ static AppManager* _defaultAppManager = nil;
     [childrenItems addObject:[Item itemWithId:7
                                   itemName:NSLS(@"儿童7位") 
                                      count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:8
+                                     itemName:NSLS(@"儿童8位") 
+                                        count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:9
+                                     itemName:NSLS(@"儿童9位") 
+                                        count:0]];
+    
+    [childrenItems addObject:[Item itemWithId:10
+                                     itemName:NSLS(@"儿童10位") 
+                                        count:0]];
     
     return childrenItems;
 }
@@ -1006,5 +1089,168 @@ static AppManager* _defaultAppManager = nil;
     return [NSArray arrayWithObjects:_app.serviceTelephone, nil];
 }
 
+
+- (NSString *)getCityGroupName:(int)groupId
+{
+    for (CityGroup *group in _app.cityGroupsList) {
+        if (group.groupId == groupId) {
+            return group.name;
+        }
+    }
+    return nil;
+}
+
+
+
+- (NSArray *)getCityListInGroup:(int)groupId
+{
+    NSMutableArray *cityList = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if (city.groupId == groupId) {
+            [cityList addObject:city];
+        }
+    } 
+    
+    return cityList;
+}
+
+
+- (NSDictionary *)getGroupCitysDicList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    
+    NSMutableArray *hotCities  = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if (city.hotCity) {
+            [hotCities addObject:city];
+        }
+    }
+    [dic setObject:hotCities forKey:NSLS(@"热门")];
+
+    for (NSString *countryName in [self getCountryNameList]) {
+        NSArray *cities = [self getCitiesOfCountry:countryName];
+        [dic setObject:cities forKey:countryName];
+    }
+    
+    return dic;
+}
+
+- (NSDictionary *)getNonRepeatedGroupCitysDicList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    for (NSString *countryName in [self getCountryNameList]) {
+        NSArray *cities = [self getCitiesOfCountry:countryName];
+        [dic setObject:cities forKey:countryName];
+    }
+    
+    return dic;
+}
+
+- (NSArray *)getGroupNameList
+{
+    NSMutableArray *groupName = [NSMutableArray array];
+    [groupName addObject:NSLS(@"热门")];
+    [groupName addObjectsFromArray:[self getCountryNameList]];
+    
+    return groupName;
+}
+
+
+- (NSArray *)getCitiesOfCountry:(NSString *)countryName
+{
+    NSMutableArray *cities = [NSMutableArray array];
+    for (City *city in CITY_LIST) {
+        if ([city.countryName isEqualToString:countryName]) {
+            [cities addObject:city];
+        }
+    }
+    
+    return cities;
+}
+
+- (NSArray *)getCountryNameList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+
+    for (City *city in CITY_LIST) {
+        [dic setObject:NSLS(@"") forKey:city.countryName];
+    }
+    
+    NSArray *countryNameList =  [[dic allKeys] sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSString *countryName1 = (NSString *)obj1;
+        NSString *countryName2 = (NSString *)obj2;
+        
+        return [[countryName1 pinyinFirstLetter] compare:[countryName2 pinyinFirstLetter] options:NSCaseInsensitiveSearch];
+    }];
+    
+    return countryNameList;
+}
+
+- (NSArray *)getAgencyListFromLocalRouteList:(NSArray *)list
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LocalRoute *route in list) {
+        [array addObject:[self getAgency:route.agencyId]];
+    }
+    
+    return [self deleteRepeatedObjectsFromArray:array];
+}
+
+
+-(NSMutableArray *)deleteRepeatedObjectsFromArray:(NSArray *) originalArray
+{
+    NSMutableArray *deletedArray = [[[NSMutableArray alloc] init] autorelease];
+    for (unsigned i = 0; i < [originalArray count]; i++){  
+        if ([deletedArray containsObject:[originalArray objectAtIndex:i]] == NO){  
+            [deletedArray addObject:[originalArray objectAtIndex:i]];  
+        }  
+    }  
+    return deletedArray;
+}
+
+
+
+
+- (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
+                              localRouteList:(NSArray *)routeList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    
+    for (Agency *agency in agencyList) {
+        NSArray *array =  [self filterLocalRoutes:routeList agencyId:agency.agencyId];
+        [dic setObject:array forKey:agency.name];
+    }
+    
+    return dic;
+}
+
+
+- (NSArray *)filterLocalRoutes:(NSArray *)list agencyId:(int)agencyId 
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    for (LocalRoute *route in list) {
+        if (route.agencyId == agencyId) {
+            [array addObject:route];
+        }
+    }
+    
+    return array;
+}
+
+- (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList
+{
+    NSMutableArray *items = [[[NSMutableArray alloc] init] autorelease];    
+    
+    
+    for (DepartPlace *departPlace in departPlaceList) {
+        [items addObject:[Item itemWithId:departPlace.departPlaceId
+                                 itemName:departPlace.departPlace
+                                    count:0]];
+    }
+    
+    return items;
+}
 
 @end

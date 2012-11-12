@@ -48,7 +48,7 @@
     return 76.0;
 }
 
-- (void)setCellData:(TouristRoute *)route
+- (void)setCellData:(LocalRoute *)route
 {
     [self setRouteThumbImage:route.thumbImage];
     
@@ -59,17 +59,19 @@
     
     [daysLabel setText:[NSString stringWithFormat:NSLS(@"行程 : %d天"), route.days]];
     
-    [priceLabel setText:route.price];
+    
+    priceLabel.text = [NSString stringWithFormat:@"%@%d", route.currency, route.price];
 }
 
 - (void)setRouteThumbImage:(NSString*)thumbImageUrl
 {
+    thumbImageView.image = [UIImage imageNamed:@"default_s.png"];
+
     if (![AppUtils isShowImage] ) {
         return;
     }
     
     [thumbImageView clear];
-    thumbImageView.image = [UIImage imageNamed:@"default_s.png"];
     [thumbImageView showLoadingWheel];
     
     thumbImageView.callbackOnSetImage = self;

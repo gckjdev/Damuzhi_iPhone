@@ -21,43 +21,56 @@
 #import "UIUtils.h"
 #import "PlaceUtils.h"
 #import "AppUtils.h"
+#import "FontSize.h"
 
 //#define TEST_FOR_SIMULATE__LOCATION
 
-#define POINT_OF_DISTANCE_500M  CGPointMake(28, 18)
-#define POINT_OF_DISTANCE_1KM   CGPointMake(83, 18)
-#define POINT_OF_DISTANCE_5KM   CGPointMake(164, 18)
-#define POINT_OF_DISTANCE_10KM   CGPointMake(287, 18)
+#define POINT_OF_DISTANCE_250M  CGPointMake(28, 18)
+#define POINT_OF_DISTANCE_500M   CGPointMake(66, 18)
+#define POINT_OF_DISTANCE_1KM   CGPointMake(125, 18)
+#define POINT_OF_DISTANCE_5KM   CGPointMake(287, 18)
 
-#define DISTANCE_500M 500
-#define DISTANCE_1KM  1000
-#define DISTANCE_5KM 5000
-#define DISTANCE_10KM 10000
+#define DISTANCE_250M 0.250
+#define DISTANCE_500M 0.500
+#define DISTANCE_1KM  1.000
+#define DISTANCE_5KM  5.000
 
 #define TAG_RED_START_IMAGE_VIEW 789
 
+#define ONCE_COUNT  20
+
+typedef enum {
+    TypeNearbyPlaceAll = 9999,
+    TypeNearbyPlaceSpot = 1,
+    TypeNearbyPlaceHotel = 2,
+    TypeNearbyPlaceRestraurant = 3,
+    TypeNearbyPlaceShopping = 4,
+    TypeNearbyPlaceEntertainment = 5,
+}TypeNearbyPlace;
+
 @interface NearbyController ()
 
-@property (assign, nonatomic) int categoryId;
-@property (assign, nonatomic) int distance;
-@property (retain, nonatomic) NSArray *allPlaceList;
+@property (assign, nonatomic) TypeNearbyPlace typeNearbyPlace;
+@property (assign, nonatomic) double distance;
 @property (retain, nonatomic) NSArray *placeList;
 @property (retain, nonatomic) PlaceListController* placeListController;
+
+@property (assign, nonatomic) int start;
+@property (assign, nonatomic) int totalCount;
 
 #ifdef TEST_FOR_SIMULATE__LOCATION
 @property (retain, nonatomic) CLLocation *testLocation;
 #endif
 
 - (void)setSelectedBtn:(int)categoryId;
-- (NSArray*)filterAndSortWithPlaceList:(NSArray *)placeList;
+//- (NSArray*)filterAndSortWithPlaceList:(NSArray *)placeList;
 
 @end
 
 @implementation NearbyController
 
-@synthesize categoryId = _categoryId;
+@synthesize typeNearbyPlace = _typeNearbyPlace;
 @synthesize distance = _distance;
-@synthesize allPlaceList = _allPlaceList;
 @synthesize placeList = _placeList;
 @synthesize placeListController = _placeListController;
 
@@ -80,7 +93,6 @@
 - (void)dealloc
 {
     PPRelease(_placeList);
-    PPRelease(_allPlaceList);
     PPRelease(_placeListController);
     
     [distanceView release];
@@ -96,18 +108,9 @@
 #ifdef TEST_FOR_SIMULATE__LOCATION
     PPRelease(testLocation);
 #endif
-
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-
-}
 
 - (void)viewDidLoad
 {
@@ -116,10 +119,12 @@
     self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"地图") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickMapBtn:)];
     
@@ -129,28 +134,29 @@
     
     UIImageView *imageRedStartView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"red_star.png"]] autorelease];
     imageRedStartView.tag = TAG_RED_START_IMAGE_VIEW;
-    [imageRedStartView setCenter:POINT_OF_DISTANCE_1KM];
+    [imageRedStartView setCenter:POINT_OF_DISTANCE_500M];
     [distanceView addSubview:imageRedStartView];
     
     [categoryBtnsHolderView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage strectchableImageName:@"options_bg2.png"]]];    
     
-    self.distance = DISTANCE_1KM;
-    self.categoryId = PlaceCategoryTypePlaceAll;
+    self.distance = DISTANCE_500M;
+    self.typeNearbyPlace = TypeNearbyPlaceAll;
     allPlaceButton.selected = YES;
     
-    [self setSelectedBtn:_categoryId];
+    [self setSelectedBtn:_typeNearbyPlace];
     
-    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:YES supportPullUpToLoadMore:NO pullDelegate:self] autorelease];
+    self.placeListController = [[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:YES supportPullUpToLoadMore:YES pullDelegate:self] autorelease];
     _placeListController.aDelegate = self;
-    
     [_placeListController showInView:placeListHolderView];
+    [self showActivityWithText:NSLS(@"正在获取地理位置...")];
     
     UIButton *button = [_placeListController valueForKey:@"locateButton"];
     [_placeListController performSelector:@selector(clickMyLocationBtn:) withObject:button];
     
-    [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+    //[[PlaceService defaultService] findPlaces:_categoryId viewController:self];
     
     _placeListController.isNearby = YES;
+    
     
 #ifdef TEST_FOR_SIMULATE__LOCATION
     self.testLocation = [[[CLLocation alloc] initWithLatitude:0.0 longitude:0.0] autorelease];
@@ -249,28 +255,28 @@ UITextField * alertTextField;
 #endif
 
 
-- (NSArray*)filterAndSortWithPlaceList:(NSArray *)list
-{
-    if ([[AppService defaultService] currentLocation] == nil) {
-        return nil;
-    }
-    
-    NSMutableArray *placeList = [[[NSMutableArray alloc] init] autorelease];
-    
-    NSArray *array = [PlaceUtils getPlaceList:list ofCategory:_categoryId];
-    for (Place *place in array) {
-        CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:[place latitude] longitude:[place longitude]];
-        
-        CLLocationDistance distance = [[[AppService defaultService] currentLocation] distanceFromLocation:placeLocation];
-        [placeLocation release];
-                
-        if (distance <= _distance) {
-            [placeList addObject:place];
-        }
-    }
-
-    return [PlaceUtils sortedByDistance:[[AppService defaultService] currentLocation] array:placeList type:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR];
-}
+//- (NSArray*)filterAndSortWithPlaceList:(NSArray *)list
+//{
+//    if ([[AppService defaultService] currentLocation] == nil) {
+//        return nil;
+//    }
+//    
+//    NSMutableArray *placeList = [[[NSMutableArray alloc] init] autorelease];
+//    
+//    NSArray *array = [PlaceUtils getPlaceList:list ofCategory:_categoryId];
+//    for (Place *place in array) {
+//        CLLocation *placeLocation = [[CLLocation alloc] initWithLatitude:[place latitude] longitude:[place longitude]];
+//        
+//        CLLocationDistance distance = [[[AppService defaultService] currentLocation] distanceFromLocation:placeLocation];
+//        [placeLocation release];
+//                
+//        if (distance <= _distance) {
+//            [placeList addObject:place];
+//        }
+//    }
+//
+//    return [PlaceUtils sortedByDistance:[[AppService defaultService] currentLocation] array:placeList type:SORT_BY_DESTANCE_FROM_NEAR_TO_FAR];
+//}
 
 - (void )clickMapBtn:(id)sender
 {
@@ -304,13 +310,28 @@ UITextField * alertTextField;
 {
     if (need) {
         [UIImageView beginAnimations:nil context:nil];
-        [UIImageView setAnimationDuration:1];
+        [UIImageView setAnimationDuration:0.6];
         [imageView setCenter:center];
         [UIImageView commitAnimations];        
     }else{
         [imageView setCenter:center];        
     }
 }
+
+
+- (IBAction)click250M:(id)sender{
+    if (_distance != DISTANCE_250M) {
+        self.distance = DISTANCE_250M;
+        
+        [self moveImageView:[distanceView viewWithTag:TAG_RED_START_IMAGE_VIEW]
+                   toCenter:POINT_OF_DISTANCE_250M
+              needAnimation:YES];
+        
+        _start = 0;
+        [self findNearbyPlaces];
+    }
+}
+
 
 - (IBAction)click500M:(id)sender {
     if (_distance != DISTANCE_500M) {
@@ -320,8 +341,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_500M 
               needAnimation:YES];
         
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
@@ -333,8 +354,8 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_1KM 
               needAnimation:YES];
         
-        [self updateDataSorce];
-
+        _start = 0;
+        [self findNearbyPlaces];
     }   
 }
 
@@ -346,76 +367,68 @@ UITextField * alertTextField;
                    toCenter:POINT_OF_DISTANCE_5KM 
               needAnimation:YES];
         
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+        _start = 0;
+        [self findNearbyPlaces];;
     }    
 }
 
-- (IBAction)click10K:(id)sender {
-    if (_distance != DISTANCE_10KM) {
-        self.distance = DISTANCE_10KM;
-        
-        [self moveImageView:[distanceView viewWithTag:TAG_RED_START_IMAGE_VIEW]
-                   toCenter:POINT_OF_DISTANCE_10KM 
-              needAnimation:YES];
-        
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
-    }
-}
-
 - (IBAction)clickSpotBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceSpot) {
-        self.categoryId = PlaceCategoryTypePlaceSpot;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+    if (_typeNearbyPlace != TypeNearbyPlaceSpot) {
+        self.typeNearbyPlace = TypeNearbyPlaceSpot;
+        [self setSelectedBtn:_typeNearbyPlace];
+        
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
 - (IBAction)clickHotelBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceHotel) {
-        self.categoryId = PlaceCategoryTypePlaceHotel;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+    if (_typeNearbyPlace != TypeNearbyPlaceHotel) {
+        self.typeNearbyPlace = TypeNearbyPlaceHotel;
+        [self setSelectedBtn:_typeNearbyPlace];
+
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
 - (IBAction)clickAllBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceAll) {
-        self.categoryId = PlaceCategoryTypePlaceAll;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
-
+    if (_typeNearbyPlace != TypeNearbyPlaceAll) {
+        self.typeNearbyPlace = TypeNearbyPlaceAll;
+        [self setSelectedBtn:_typeNearbyPlace];
+        
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
 - (IBAction)clickRestaurantBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceRestraurant) {
-        self.categoryId = PlaceCategoryTypePlaceRestraurant;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+    if (_typeNearbyPlace != TypeNearbyPlaceRestraurant) {
+        self.typeNearbyPlace = TypeNearbyPlaceRestraurant;
+        [self setSelectedBtn:_typeNearbyPlace];
+        
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
 - (IBAction)clickShoppingBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceShopping) {
-        self.categoryId = PlaceCategoryTypePlaceShopping;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+    if (_typeNearbyPlace != TypeNearbyPlaceShopping) {
+        self.typeNearbyPlace = TypeNearbyPlaceShopping;
+        [self setSelectedBtn:_typeNearbyPlace];
+        
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
 - (IBAction)clickEntertainmentBtn:(id)sender {
-    if (_categoryId != PlaceCategoryTypePlaceEntertainment) {
-        self.categoryId = PlaceCategoryTypePlaceEntertainment;
-        [self setSelectedBtn:_categoryId];
-//        [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
-        [self updateDataSorce];
+    if (_typeNearbyPlace != TypeNearbyPlaceEntertainment) {
+        self.typeNearbyPlace = TypeNearbyPlaceEntertainment;
+        [self setSelectedBtn:_typeNearbyPlace];
+        
+        _start = 0;
+        [self findNearbyPlaces];
     }
 }
 
@@ -437,49 +450,119 @@ UITextField * alertTextField;
     }
 }
 
-- (void)findRequestDone:(int)result placeList:(NSArray*)placeList
-{    
-    [_placeListController dataSourceDidFinishLoadingNewData];
-    
-    if (result != ERROR_SUCCESS) {
-        [self popupMessage:@"网络弱，数据加载失败" title:nil];
-    }
-    
-    self.allPlaceList = placeList;
-//    self.placeList = [self filterByDistanceAndSort:_allPlaceList distance:_distance];
+//- (void)findRequestDone:(int)result placeList:(NSArray*)placeList
+//{    
+//    [_placeListController dataSourceDidFinishLoadingNewData];
+//    
+//    if (result != ERROR_SUCCESS) {
+//        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+//    }
+//    
+//    self.allPlaceList = placeList;
+////    self.placeList = [self filterByDistanceAndSort:_allPlaceList distance:_distance];
+////    
+////    // Update place count in navigation bar.
+////    self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
+////    
+////    // Reload place list.
+////    [_placeListController setPlaceList:_placeList];
+//    [self updateDataSorce];
+//}
+//
+//- (void)updateDataSorce
+//{
+//    //self.placeList = [self filterAndSortWithPlaceList:_allPlaceList];
 //    
 //    // Update place count in navigation bar.
 //    self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
 //    
 //    // Reload place list.
 //    [_placeListController setPlaceList:_placeList];
-    [self updateDataSorce];
-}
-
-- (void)updateDataSorce
-{
-    self.placeList = [self filterAndSortWithPlaceList:_allPlaceList];
-    
-    // Update place count in navigation bar.
-    self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), [_placeList count]];
-    
-    // Reload place list.
-    [_placeListController setPlaceList:_placeList];
-}
+//}
 
 - (void)didPullDownToRefresh
 {
-    [[PlaceService defaultService] findPlaces:_categoryId viewController:self]; 
+    _start = 0;
+    [self findNearbyPlaces];
+}
+
+- (void)didPullUpToLoadMore
+{
+    [self findNearbyPlaces];
 }
 
 - (void)didUpdateToLocation
 {
-    [self updateDataSorce];
+    [self hideActivity];
+    _start = 0;
+    [self findNearbyPlaces];
 }
 
 - (void)didFailUpdateLocation
 {
-    [self updateDataSorce];
+    [self hideActivity];
+    [self popupMessage:NSLS(@"未能获取当前地理位置！") title:nil];
+}
+
+- (void)findNearbyPlaces
+{
+    [self showActivityWithText:NSLS(@"数据加载中......")];
+    
+    CLLocation *userCurrentLocation =  [[AppService defaultService] currentLocation];
+    
+    [[PlaceService defaultService] findNearbyPlaces:_typeNearbyPlace
+                                           Latitude:userCurrentLocation.coordinate.latitude
+                                          longitude:userCurrentLocation.coordinate.longitude
+                                           distance:_distance
+                                              start:_start
+                                              count:ONCE_COUNT
+                                           delegate:self];
+    
+//    [[PlaceService defaultService] findNearbyPlaces:_typeNearbyPlace
+//                                           Latitude:23.128571
+//                                          longitude:113.273958
+//                                           distance:_distance
+//                                              start:_start
+//                                              count:ONCE_COUNT
+//                                           delegate:self];
+}
+
+- (void)findRequestDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo totalCount:(int)totalCount placeList:(NSArray *)placeList
+{
+    [self hideActivity];
+ 
+    PPDebug(@"findRequestDone result:%d totalCount:%d listCount:%d", result, totalCount, [placeList count]);
+    
+    if (result != ERROR_SUCCESS) {
+        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+    }
+    
+    self.title = [NSString stringWithFormat:NSLS(@"我的附近(%d)"), totalCount];
+    
+    if (_start == 0) {
+        _placeListController.noMoreData = NO;
+        
+        self.placeList = nil;
+        self.placeList = placeList;
+    } else {
+        NSMutableArray *newPlaceList = [NSMutableArray arrayWithArray:self.placeList];
+        [newPlaceList addObjectsFromArray:placeList];
+        self.placeList = newPlaceList;
+    }
+    
+    _start += [placeList count];
+    _totalCount = totalCount;
+    
+    if (_start >= totalCount || [placeList count] == 0) {
+        _placeListController.noMoreData = YES;
+    } else {
+        _placeListController.noMoreData = NO;
+    }
+    
+    [_placeListController setPlaceList:self.placeList];
+    
+    [_placeListController dataSourceDidFinishLoadingNewData];
+    [_placeListController dataSourceDidFinishLoadingMoreData];
 }
 
 @end

@@ -14,15 +14,13 @@
 // for test service
 //#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
+
 // for formal service
-
 #define URL_SERVICE                 @"http://api.trip8888.com/service/"
-
-//#define URL_SERVICE                 @"http://61.143.225.198:8012/Service/"
 
 // URL
 #define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
-#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeekback.aspx?")
+#define URL_TRAVEL_ROUTE_FEEDBACK       (URL_SERVICE@"routeFeedback.aspx?")
 
 //query place list
 #define URL_TRAVEL_QUERY_LIST       (URL_SERVICE@"queryList.aspx?")
@@ -50,6 +48,8 @@
 #define URL_TRAVEL_PLACE_ORDER          (URL_SERVICE@"placeOrder.aspx?")
 
 #define URL_TRAVE_FOLLOW_ROUTE          (URL_SERVICE@"followRoute.aspx?")
+
+#define URL_TRAVEL_NEARBY               (URL_SERVICE@"nearby.aspx?")
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -114,6 +114,9 @@
 #define PARA_TRAVEL_APP_VERSION             @"app_version"
 #define PARA_TRAVEL_APP_DATA_VERSION        @"app_data_version"
 
+#define PARA_TRAVEL_APP_UPDATE_TITLE        @"app_update_title"
+#define PARA_TRAVEL_APP_UPDATE_CONTENT      @"app_update_content"
+
 #define PARA_TRAVEL_TELEPHONE               @"telephone"
 #define PARA_TRAVEL_CODE                    @"code"
 
@@ -126,6 +129,9 @@
 #define PARA_TRAVEL_ADULT                   @"adult"
 #define PARA_TRAVEL_CHILDREN                @"children"
 #define PARA_TRAVEL_CONTACT_PERSION         @"contactPersion"
+#define PARA_TRAVEL_CONTACT                 @"contact"
+#define PARA_TRAVEL_ORDER_ID                @"orderId"
+#define PARA_TRAVEL_DEPART_PLACE_ID         @"departPlaceId"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
@@ -169,9 +175,10 @@
 #define OBJECT_LIST_PACKAGE_TOUR_ORDER              80
 #define OBJECT_LIST_UNPACKAGE_TOUR_ORDER            81
 #define OBJECT_LIST_SELF_GUIDE_TOUR_ORDER           82
+#define OBJECT_LIST_LOCAL_ROUTE_ORDER               83
+#define OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER         84
 
-
-#define OBJECT_LIST_CITY_IMAGE                      90
+#define OBJECT_LIST_LOCAL_ROUTE                     90
 
 // For object type
 #define OBJECT_TYPE_PLACE                       1
@@ -182,6 +189,7 @@
 #define OBJECT_TYPE_HELP_INOF                   8
 #define OBJECT_TYPE_APP_DATA                    10
 #define OBJECT_TYPE_ROUTE_DETAIL                50
+#define OBJECT_TYPE_LOCAL_ROUTE_DETAIL          51
 
 
 #define STRING_SEPARATOR    @","

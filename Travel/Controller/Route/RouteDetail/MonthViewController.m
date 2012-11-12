@@ -15,15 +15,18 @@
 #import "UIViewUtils.h"
 #import "RouteUtils.h"
 #import "TravelNetworkConstants.h"
-
+#import "LogUtil.h"
+#import "TimeUtils.h"
+#import "FontSize.h"
 @interface MonthViewController ()
 {
     int _routeType;
 }
 
-@property (retain, nonatomic) TKCalendarMonthView *monthView;
 @property (retain, nonatomic) NSArray *bookings;
 @property (retain, nonatomic) NSMutableArray *dataArray;
+//@property (retain, nonatomic) NSDate *date;
+@property (retain, nonatomic) NSString *currency;
 
 @end
 
@@ -34,10 +37,15 @@
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
 @synthesize buttonHolderView = _buttonHolderView;
+@synthesize backgroundImageView = _backgroundImageView;
+@synthesize rightLineImageView = _rightLineImageView;
 
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
 @synthesize dataArray = _dataArray;
+//@synthesize date = _date;
+@synthesize currency = _currency;
+
 
 - (void)dealloc {
     [_monthView release];
@@ -49,14 +57,39 @@
     [_monthHolderView release];
     [_aBgView release];
     [_buttonHolderView release];
+//    [_date release];
+
+    [_backgroundImageView release];
+    [_rightLineImageView release];
+    
+    [_currency release];
     [super dealloc];
 }
 
-- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
+- (id)initWithBookings:(NSArray *)bookings
 {
     if (self= [super init]) {
         self.bookings = bookings;
-        _routeType = routeType;
+    }
+    
+    return self;
+}
+
+//- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
+//{
+//    if (self= [super init]) {
+//        self.bookings = bookings;
+//        _routeType = routeType;
+//    }
+//    
+//    return self;
+//}
+
+- (id)initWithBookings:(NSArray *)bookings currency:(NSString *)currency
+{
+    if (self= [super init]) {
+        self.bookings = bookings;
+        self.currency = currency;
     }
     
     return self;
@@ -68,19 +101,26 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
-    
-    NSDate *now = [NSDate date];
+    self.backgroundImageView.image = [[UIImage imageNamed:@"date_t_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+    self.rightLineImageView.backgroundColor = [UIColor colorWithRed:209/255.0 green:210/255.0 blue:214/255.0 alpha:1.0];
     self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
-                                                                    date:now
+                                                                    date:[NSDate date]
                                                     hasMonthYearAndArrow:NO 
                                                         hasTopBackground:NO
                                                                hasShadow:NO 
                                                    userInteractionEnable:YES] autorelease];
+
+    [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
+                             forState:UIControlStateNormal];
     
-    [self.currentMonthButton setTitle:dateToStringByFormat(now, @"yyyy年MM月") forState:UIControlStateNormal];
-    [self.nextMonthButton  setTitle:dateToStringByFormat([now nextMonth], @"yyyy年MM月") forState:UIControlStateNormal];
+    [self.nextMonthButton  setTitle:dateToChineseStringByFormat([[[NSDate date] chineseFirstOfMonth] chineseNextMonth], @"yyyy年MM月")
+                           forState:UIControlStateNormal];
+
+//    PPDebug(@"current time is %@",dateToChineseStringByFormat(now, @"yyyy年MM月dd日 HH:mm"));
+//    PPDebug(@"next month time is %@",dateToChineseStringByFormat([now chineseNextMonth], @"yyyy年MM月dd日 HH:mm"));
     
     _monthView.delegate = self;
     _monthView.dataSource = self;
@@ -90,8 +130,11 @@
     }
         
     [_monthView reload];
-    
     [self.monthHolderView addSubview:_monthView];
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (void)viewDidUnload
@@ -101,6 +144,8 @@
     [self setMonthHolderView:nil];
     [self setABgView:nil];
     [self setButtonHolderView:nil];
+    [self setBackgroundImageView:nil];
+    [self setRightLineImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -121,6 +166,12 @@
     [_monthView performSelector:@selector(changeMonth:) withObject:button];
     self.currentMonthButton.selected = YES;
     self.nextMonthButton.selected = NO;
+    
+    PPDebug(@"height: %f", self.monthView.frame.size.height);
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (IBAction)clickNextMonthButton:(id)sender {
@@ -133,6 +184,13 @@
     
     self.nextMonthButton.selected = YES;
     self.currentMonthButton.selected = NO;
+    
+    PPDebug(@"height: %f", self.monthView.frame.size.height);
+
+    
+    if ([_aDelegate respondsToSelector:@selector(didChangeFrame:)]) {
+        [_aDelegate didChangeFrame:_monthView.frame];
+    }
 }
 
 - (void) generateRandomDataForStartDate:(NSDate*)start endDate:(NSDate*)end{
@@ -172,24 +230,39 @@
     return texts;
 }
 
+- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextColorsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
+{
+    NSMutableArray *colors = [[[NSMutableArray alloc] init] autorelease];
+    NSArray *markTexts = [self calendarMonthView:monthView markTextsFromDate:startDate toDate:lastDate];
+    
+    for (NSString *str in markTexts) {
+        if ([str isEqualToString:NSLS(@"销售中")]) {
+            [colors addObject:[UIColor redColor]];
+        } else {
+            [colors addObject:[UIColor blackColor]];
+        }
+    }
+    
+    return colors;
+}
+
 - (NSString*)bookingStringWithDate:(NSDate *)date
 {
     NSString *bookingInfo = @"";
     
     Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
     if (booking != nil) {
-        PPDebug(@"routeType = %d", _routeType);
-        if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
+        
+        NSDate *nowStartDate = getDateStart([NSDate date]);
+        NSTimeInterval diffTimeInterval = [date timeIntervalSinceDate:nowStartDate];
+        if (diffTimeInterval < 0 ) {
+            bookingInfo = NSLS(@"");
+        } else {
             if (booking.status == 1) {
-                bookingInfo = NSLS(@"未开售") ;
-            }else if (booking.status == 2) {            
-                NSString *remainder = ([booking.remainder intValue] > 9) ? NSLS(@">9") : booking.remainder; 
-                bookingInfo = [NSString stringWithFormat:@"%@\n可报%@", booking.adultPrice, remainder];
-            }else if (booking.status == 3) {
-                bookingInfo = NSLS(@"满");
+                bookingInfo = NSLS(@"未开售");
+            }else if (booking.status == 2) {
+                bookingInfo = NSLS(@"销售中");
             }
-        }else {
-            bookingInfo = [NSString stringWithFormat:@"%@", booking.adultPrice];
         }
     }
     
@@ -217,6 +290,15 @@
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
 {
     if ([_aDelegate respondsToSelector:@selector(didSelecteDate:)]) {
+        [self clearUnPopupMessages];
+        
+        NSDate *nowStartDate = getDateStart([NSDate date]);
+        NSTimeInterval diffTimeInterval = [date timeIntervalSinceDate:nowStartDate];
+        if (diffTimeInterval < 0 ) {
+            [self popupMessage:NSLS(@"不能预订今天之前的日期") title:nil];
+            return;
+        }
+        
         Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
         
         if (booking.status == 1) {
@@ -224,12 +306,12 @@
         }else if (booking.status == 2) {
             [_aDelegate didSelecteDate:date];
             [self.navigationController popViewControllerAnimated:YES];
+            
         }else if (booking.status == 3) {
             [self popupMessage:NSLS(@"该日期已满") title:nil];
         }else {
-            [self popupMessage:NSLS(@"该日期不出团") title:nil];
+            [self popupMessage:NSLS(@"该日期没有行程") title:nil];
         }
-        
     }
 }
 

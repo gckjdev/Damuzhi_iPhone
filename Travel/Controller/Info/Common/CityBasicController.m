@@ -15,7 +15,7 @@
 #import "PPNetworkRequest.h"
 #import "PPDebug.h"
 #import "UIImageUtil.h"
-
+#import "FontSize.h"
 @implementation CityBasicController
 
 @synthesize scrollView;
@@ -68,6 +68,7 @@
     [self.navigationItem setTitle:[dataSource getTitleName]];
     
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
         
@@ -79,11 +80,11 @@
     [imageView release];
 
     scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
-    
     [dataSource requestDataWithDelegate:self];
     
     
 }
+
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {

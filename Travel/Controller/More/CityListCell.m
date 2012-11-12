@@ -9,17 +9,17 @@
 #import "CityListCell.h"
 #import "AppUtils.h"
 #import "PPDebug.h"
-#import "ImageName.h"
 #import "LocalCityManager.h"
 #import "LocaleUtils.h"
 #import "Reachability.h"
 #import "CityDownloadService.h"
 #import "SSZipArchive.h"
 #import "AppConstants.h"
-
+#import "PPViewController.h"
 @implementation CityListCell
 
 @synthesize city = _city;
+@synthesize appManagerDelegate = _appManagerDelegate;
 @synthesize cityListCellDelegate = _cityListCellDelegate;
 @synthesize selectCurrentCityBtn;
 @synthesize dataSizeLabel;
@@ -61,7 +61,7 @@
 
 + (CGFloat)getCellHeight
 {
-    return 44.0f;
+    return 54.0f;
 }
 
 
@@ -71,7 +71,7 @@
 {
     self.city = city;    
     self.selectCurrentCityBtn.selected = ([[AppManager defaultManager] getCurrentCityId] == _city.cityId); 
-    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@.%@"), _city.countryName, _city.cityName];
+    self.cityNameLabel.text = [NSString stringWithFormat:NSLS(@"%@"),_city.cityName];
     self.cityNameLabel.textColor = ([[AppManager defaultManager] getCurrentCityId] == _city.cityId)?[UIColor redColor]:[UIColor darkGrayColor];
     self.dataSizeLabel.text = [self getCityDataSizeString];
     self.downloadDoneLabel.textColor = [UIColor darkGrayColor];
@@ -160,7 +160,7 @@
     
     downloadButton.hidden = YES;
     cancelDownloadBtn.hidden = NO;
-    onlineButton.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -173,11 +173,12 @@
     dataSizeLabel.hidden = YES;
     downloadProgressView.hidden = NO;
     downloadPersentLabel.hidden = NO;
-    pauseDownloadBtn.hidden = NO;
+    pauseDownloadBtn.hidden = YES;
     
-    downloadButton.hidden = YES;
+    downloadButton.hidden = NO;
+    downloadButton.selected = YES;
     cancelDownloadBtn.hidden = NO;
-    onlineButton.hidden = NO;
+    onlineButton.hidden = YES;
     
     downloadDoneLabel.hidden = YES;
     moreDetailBtn.hidden = YES;
@@ -243,10 +244,13 @@
 }
 
 - (IBAction)clickPauseBtn:(id)sender {
+    PPViewController *pointer = [[[PPViewController alloc]init] autorelease];
     UIButton *button = (UIButton *)sender;
     button.selected = !button.selected;
     if (button.selected) {
+        [pointer popupMessage:@"已暂停" title:nil];
         [self pause];
+        
     }
     else {
         //TODO, resume download request
@@ -255,6 +259,7 @@
             [AppUtils showAlertViewWhenUsingCellNetworkForDownloadWithTag:ALERT_USING_CELL_NEWORK delegate:self];
         }
         else {
+            [pointer popupMessage:@"开始下载" title:nil];
             [self download];
         }
     }
@@ -282,13 +287,27 @@
 }
 
 - (IBAction)clickCancel:(id)sender {
-    [[CityDownloadService defaultService] cancel:_city];
     
-    self.pauseDownloadBtn.selected = NO;
-    if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
-        [_cityListCellDelegate didCancelDownload:_city];
-    }
+    
+    UIAlertView *alert = [[[UIAlertView alloc]initWithTitle:nil message:@"是否取消下载" delegate:self cancelButtonTitle:@"是" otherButtonTitles:@"否", nil] autorelease];
+    [alert show];
 }
+
+//delegate method
+- (void)alertView:(UIAlertView *)alertView1 didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString * str1 = [alertView1 buttonTitleAtIndex:buttonIndex];
+    if ([str1 isEqualToString:@"是"])
+    {
+        [[CityDownloadService defaultService] cancel:_city];
+        self.pauseDownloadBtn.selected = NO;
+        downloadButton.selected = NO;
+        if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didCancelDownload:)]) {
+            [_cityListCellDelegate didCancelDownload:_city];
+        } 
+    }
+
+}  
 
 - (IBAction)clickOnlineBtn:(id)sender {
     [self selectCurrentCity];
@@ -309,7 +328,7 @@
     }
     
     // Set current cityId.
-    [[AppManager defaultManager] setCurrentCityId:_city.cityId];
+//    [[AppManager defaultManager] setCurrentCityId:_city.cityId delegate:_appManagerDelegate];
     
     // Call delegate metchod to do some addition work.
     if (_cityListCellDelegate && [_cityListCellDelegate respondsToSelector:@selector(didSelectCurrendCity:)]) {

@@ -34,8 +34,4 @@
                       type:(CommonOverviewType)type
                   delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
 
-- (void)findCityImages:(int)cityId 
-                 start:(int)start
-                 count:(int)count
-              delegate:(PPViewController<CityOverviewServiceDelegate>*)viewController;
 @end

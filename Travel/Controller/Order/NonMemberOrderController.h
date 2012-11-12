@@ -8,26 +8,29 @@
 
 #import "PPViewController.h"
 #import "TouristRoute.pb.h"
-
-@protocol NonMemberOrderDelegate <NSObject>
-
-- (void)didclickSubmit:(NSString *)contactPerson telephone:(NSString *)telephone;
-
-@end
+#import "OrderService.h"
 
 
-@interface NonMemberOrderController : PPViewController <UITextFieldDelegate>
+@interface NonMemberOrderController : PPViewController <UITextFieldDelegate,UIAlertViewDelegate, OrderServiceDelegate>
 
 @property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
 @property (retain, nonatomic) IBOutlet UITextField *contactPersonTextField;
 @property (retain, nonatomic) IBOutlet UITextField *telephoneTextField;
-@property (assign, nonatomic) id<NonMemberOrderDelegate>  delegate;
 
 @property (retain, nonatomic) IBOutlet UIScrollView *backGroundScrollView;
 
+- (id)initWithLocalRoute:(LocalRoute *)localRoute
+               routeType:(int)routeType 
+           departPlaceId:(int)departPlaceId
+              departDate:(NSDate *)departDate
+                   adult:(int)adult
+                children:(int)children;
+
 - (id)initWithRoute:(TouristRoute *)route
+          routeType:(int)routeType
          departDate:(NSDate *)departDate
               adult:(int)adult
-           children:(int)children;
+           children:(int)children 
+          packageId:(int)packageId;
 
 @end

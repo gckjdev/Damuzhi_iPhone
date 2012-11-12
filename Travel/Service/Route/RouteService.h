@@ -31,6 +31,9 @@
 - (void)findRequestDone:(int)result
                   route:(TouristRoute *)route;
 
+- (void)findRequestDone:(int)result
+             localRoute:(LocalRoute *)route;
+
 - (void)followRouteDone:(int)resultCode 
                  result:(int)result 
              resultInfo:(NSString *)resultInfo;
@@ -50,6 +53,8 @@
 @interface RouteService : CommonService
 
 + (RouteService*)defaultService;
+
+
 
 - (void)findRoutesWithType:(int)routeType
                      start:(int)start
@@ -74,7 +79,27 @@
      viewController:(PPViewController<RouteServiceDelegate>*)viewController;
 
 - (void)routeFeedbackWithRouteId:(int)routeId 
+                         orderId:(int)orderId
                             rank:(int)rank
                          content:(NSString *)content   
                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+
+
+
+//for local route
+- (void)findLocalRoutes:(int)cityId
+                  start:(int)start
+                  count:(int)count 
+         needStatistics:(BOOL)needStatistics 
+         viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+
+- (void)findLocalRouteWithRouteId:(int)routeId 
+                   viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)followLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
+- (void)unFollowLocalRoute:(LocalRoute *)route viewController:(PPViewController<RouteServiceDelegate>*)viewController;
+
 @end

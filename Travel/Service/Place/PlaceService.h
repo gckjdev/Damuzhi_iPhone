@@ -15,6 +15,7 @@
 @class PlaceManager;
 @class PPViewController;
 @class Place;
+@class PlaceListFilter;
 
 @protocol PlaceServiceDelegate <NSObject>
 
@@ -39,6 +40,33 @@
 
 @end
 
+@protocol PlaceListFilterProtocol <NSObject>
+
+@optional
+- (void)createFilterButtons:(UIView*)superView controller:(PPViewController*)controller;
+//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
++ (PlaceListFilter<PlaceListFilterProtocol>*)createFilter;
+
+- (int)getCategoryId;
+- (NSString*)getCategoryName;
+
+- (NSArray*)filterAndSotrPlaceList:(NSArray*)placeList selectedItems:(PlaceSelectedItemIds*)selectedItemIds;
+
+@end
+
+@interface PlaceListFilter : NSObject <PlaceListFilterProtocol>
+
+//- (void)findAllPlaces:(PPViewController<PlaceServiceDelegate>*)viewController;
+- (void)findAllPlacesWithStart:(int)start
+                         count:(int)count
+               selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
+                needStatistics:(BOOL)needStatistics 
+                viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+                        filter:(id<PlaceListFilterProtocol>)filter;
+
+@end
+
+
 @interface PlaceService : CommonService
 {
     PlaceManager    *_localPlaceManager;
@@ -54,7 +82,8 @@
                            count:(int)count
                  selectedItemIds:(PlaceSelectedItemIds *)selectedItemIds
                   needStatistics:(BOOL)needStatistics 
-                  viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+                  viewController:(PPViewController<PlaceServiceDelegate>*)viewController
+                          filter:(id<PlaceListFilterProtocol>)filter;
 
 - (void)findPlacesNearby:(int)categoryId place:(Place*)place num:(int)num viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
 
@@ -69,5 +98,13 @@
 - (void)findTopFavoritePlaces:(PPViewController<PlaceServiceDelegate>*)viewController type:(int)type;
 
 - (void)findPlace:(int)placeId viewController:(PPViewController<PlaceServiceDelegate>*)viewController;
+
+- (void)findNearbyPlaces:(int)type
+                Latitude:(double)latitude
+               longitude:(double)longitude
+                distance:(double)distance
+                   start:(int)start
+                   count:(int)count
+                delegate:(id<PlaceServiceDelegate>)delegate;
 
 @end

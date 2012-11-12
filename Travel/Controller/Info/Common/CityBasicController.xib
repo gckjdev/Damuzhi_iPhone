@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">11D50b</string>
+		<string key="IBDocument.SystemVersion">11G56</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
-		<string key="IBDocument.AppKitVersion">1138.32</string>
-		<string key="IBDocument.HIToolboxVersion">568.00</string>
+		<string key="IBDocument.AppKitVersion">1138.51</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">1181</string>
@@ -43,7 +43,7 @@
 							<object class="IBUIView" id="225824039">
 								<reference key="NSNextResponder" ref="674773411"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrameSize">{320, 172}</string>
+								<string key="NSFrameSize">{320, 140}</string>
 								<reference key="NSSuperview" ref="674773411"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="871788901"/>
@@ -59,7 +59,7 @@
 							<object class="IBUIWebView" id="871788901">
 								<reference key="NSNextResponder" ref="674773411"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 174}, {320, 242}}</string>
+								<string key="NSFrame">{{0, 142}, {320, 274}}</string>
 								<reference key="NSSuperview" ref="674773411"/>
 								<reference key="NSWindow"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="832484120">

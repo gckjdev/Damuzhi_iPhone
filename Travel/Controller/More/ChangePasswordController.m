@@ -10,7 +10,7 @@
 #import "PPDebug.h"
 #import "PPViewController.h"
 #import "PPNetworkRequest.h"
-
+#import "FontSize.h"
 
 
 #define TITLE_OLD_PASSWORD          NSLS(@"原  密  码:")
@@ -61,6 +61,7 @@
     [_passwordDic release];
     [oldPassword release];
     [lastPassword release];
+    [lastPasswordAgain release];
     [_currentInputTextField release];
     [super dealloc];
 }
@@ -69,11 +70,13 @@
 {
     [super viewDidLoad];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.navigationItem.title = NSLS(@"修改密码");
     
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
 

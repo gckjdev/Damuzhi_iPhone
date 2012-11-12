@@ -17,6 +17,7 @@
 #import "UIImageUtil.h"
 #import "App.pb.h"
 #import "PPNetworkRequest.h"
+#import "FontSize.h"
 
 @interface FavoriteController ()
 
@@ -101,16 +102,14 @@
 {
     [super viewDidLoad];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self createRightBarButton];
     
-    
     [buttonHolderView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage strectchableImageName:@"options_bg2.png"]]];
 
-    PlaceListController *myController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
-    self.myFavPlaceListController = myController;
-    [myController release];
+    self.myFavPlaceListController =[[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil] autorelease];
     [myFavPlaceListController showInView:myFavPlaceListView];    
     
     PlaceListController *topController =[[PlaceListController alloc] initWithSuperNavigationController:self.navigationController supportPullDownToRefresh:NO supportPullUpToLoadMore:NO pullDelegate:nil];
@@ -228,7 +227,6 @@
     delImageView.frame = CGRectMake(14, 4, DELETE_IMAGE_WIDTH, DELETE_IMAGE_HIGHT);
     [self.deleteButton addSubview:delImageView];
     [delImageView release];
-    //deleteButton.backgroundColor = [UIColor blueColor];
     [self.deleteButton addTarget:self action:@selector(clickDelete:) forControlEvents:UIControlEventTouchUpInside];
     [rightButtonView addSubview:self.deleteButton];
     
@@ -242,6 +240,7 @@
 {
     [[PlaceService defaultService] findTopFavoritePlaces:self type:type];
 }
+
 
 #pragma mark - deletePlaceDelegate 
 - (void)deletedPlace:(Place *)place
@@ -481,5 +480,6 @@
     }
     return array;
 }
+
 
 @end

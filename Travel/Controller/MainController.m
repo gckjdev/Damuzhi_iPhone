@@ -33,13 +33,11 @@
 #import "PackageManager.h"
 #import "MobClick.h"
 #import "PPDebug.h"
-
 #include "UserService.h"
-
 #import "CommonRouteListController.h"
 #import "PackageTourListFilter.h"
 #import "UnPackageTourListFilter.h"
-
+#import "FavoriteController.h"
 
 @interface MainController()
 
@@ -87,6 +85,7 @@
 -(void) clickTitle:(id)sender
 {
     CityManagementController *controller = [CityManagementController getInstance];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -99,11 +98,10 @@
     UIFont *font = [UIFont systemFontOfSize:17];
     CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
     
-    NSString *title = [NSString stringWithFormat:@"大拇指旅行 — %@", [[AppManager defaultManager] getCurrentCityName]];    
+    NSString *title = [NSString stringWithFormat:@"城市指南 — %@", [[AppManager defaultManager] getCurrentCityName]];    
     CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
-    
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
     
@@ -112,6 +110,9 @@
     button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
     
+//    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
+    
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
     
     self.navigationItem.titleView = button;
@@ -127,10 +128,10 @@
     [self setBackgroundImageName:@"index_bg.png"];
     [super viewDidLoad];
     
+    [self checkCurrentCityVersion];
+    
     self.currentSelectedButton = self.homeButton;
     self.currentSelectedButton.selected = YES;
-        
-    [self checkCurrentCityVersion];
     
     [[UserService defaultService] autoLogin:self];
 }
@@ -243,6 +244,11 @@
     CommonWebController *controller = [[CommonWebController alloc]initWithDataSource:[TravelTransportDataSource createDataSource]];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];  
+    
+//    FavoriteController *controller = [[FavoriteController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
+    
 }
 
 - (IBAction)clickTraveGuideButton:(id)sender
@@ -253,7 +259,10 @@
 }
 
 - (IBAction)clickTravelRouteBtn:(id)sender {
-    RouteController *controller = [[RouteController alloc] init];
+//    RouteController *controller = [[RouteController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
+    FavoriteController *controller = [[FavoriteController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -274,43 +283,38 @@
     self.currentSelectedButton.selected = YES;
 }
 
-
-#pragma -mark share UIActionSheet delegate
-
+- (void)showUpdateCityAlert
+{
+    int currentCityId= [[AppManager defaultManager] getCurrentCityId];
+    NSString *currentCityName = [[AppManager defaultManager] getCurrentCityName];
+    NSString *currentCityCountry = [[AppManager defaultManager] getCountryName:currentCityId];
+    int citySize = [[AppManager defaultManager] getCityDataSize:currentCityId];
+    NSString *citySizeString = [NSString stringWithFormat:@"%0.2fM", citySize/1024.0/1024.0];
+    
+    NSString *alertTitle = NSLS(@"离线数据包更新提示");
+    NSString *alertSubtitle = [NSString stringWithFormat:@"%@.%@", currentCityCountry, currentCityName];
+    NSString *alertContent = [NSString stringWithFormat:@"有新的城市指南信息升级，是否更新？\n大小:%@", citySizeString];
+    
+    CommonDialog *dialog = [CommonDialog createDialogWithTitle:alertTitle
+                                                      subTitle:alertSubtitle
+                                                       content:alertContent
+                                                 OKButtonTitle:NSLS(@"立刻升级")
+                                             cancelButtonTitle:NSLS(@"下次提醒")
+                                                      delegate:self];
+    dialog.contentTextView.textAlignment = NSTextAlignmentCenter;
+    [dialog showInView:self.view];
+}
 
 - (void)checkCurrentCityVersion
 {
     City *currentCity = [[AppManager defaultManager] getCity:[[AppManager defaultManager] getCurrentCityId]];
+    
     if (![AppUtils hasLocalCityData:currentCity.cityId]) {
         return;
     }
         
     if (![currentCity.latestVersion isEqualToString:[[PackageManager defaultManager] getCityVersion:currentCity.cityId]]){
-        NSString *message = NSLS(@"离线数据有更新，是否现在更新？");
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLS(@"提示") message:message delegate:self cancelButtonTitle:NSLS(@"以后再说") otherButtonTitles:NSLS(@"现在更新"),nil] autorelease];
-        alert.tag = TAG_CITY_UPDATE_ALERT;
-        [alert show];
-    }
-}
-
-#pragma mark -
-#pragma mark: implementation of alert view delegate.
-
-- (void)alertView:(UIAlertView *)alertView1 clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    switch (alertView1.tag) {
-        case TAG_CITY_UPDATE_ALERT:
-            if (buttonIndex == 1) {
-                CityManagementController *controller = [CityManagementController getInstance];
-
-                [self.navigationController pushViewController:controller animated:YES];
-                
-                [controller clickDownloadListButton:controller.downloadListBtn];
-            }
-            break;
-            
-        default:
-            break;
+        [self showUpdateCityAlert];
     }
 }
 
@@ -331,5 +335,21 @@
     
     [self popupMessage:NSLS(@"登录成功") title:nil];    
 }
+
+#pragma mark - CommonDialogDelegate methods
+- (void)didClickOkButton
+{
+    CityManagementController *controller = [CityManagementController getInstance];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller clickDownloadListButton:controller.downloadListBtn];
+}
+
+
+#pragma mark - AppManagerProtocol methods
+- (void)currentCityDidChange:(int)newCityId
+{
+    [self checkCurrentCityVersion];
+}
+
 
 @end

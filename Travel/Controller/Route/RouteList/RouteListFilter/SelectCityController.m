@@ -11,7 +11,7 @@
 #import "AppConstants.h"
 #import "AppManager.h"
 #import "StringUtil.h"
-
+#import "FontSize.h"
 @interface SelectCityController ()
 {
     typeCity _typeCity;
@@ -22,21 +22,27 @@
 @property (assign, nonatomic) id<SelectCityDelegate> delegate;
 @property (retain, nonatomic) NSMutableArray *selectedItemIds;
 @property (retain, nonatomic) NSMutableArray *selectedItemIdsBeforConfirm;
-@property (retain, nonatomic) NSArray *areaList;
+@property (retain, nonatomic) NSMutableArray *regionList;
+@property (assign, nonatomic) int selectedRegionRow;
 
 @end
+
+
+#define TAG_REGION_TABLEVIEW    12072701
+#define TAG_DATA_TABLEVIEW      12072702
+
 
 @implementation SelectCityController
 
 @synthesize navigationTitle = _navigationTitle;
 @synthesize searchBar = _searchBar;
-@synthesize areaView = _areaView;
+@synthesize regionTableView = _regionTableView;
 @synthesize delegate = _delegate;
 @synthesize allDataList = _allDataList;
 @synthesize selectedItemIds = _selectedItemIds;
 @synthesize selectedItemIdsBeforConfirm = _selectedItemIdsBeforConfirm;
-@synthesize areaList = _areaList;
-
+@synthesize regionList = _regionList;
+@synthesize selectedRegionRow = _selectedRegionRow;
 
 - (void)dealloc
 {
@@ -45,8 +51,8 @@
     PPRelease(_searchBar);
     PPRelease(_selectedItemIds);
     PPRelease(_selectedItemIdsBeforConfirm);
-    PPRelease(_areaList);
-    PPRelease(_areaView);
+    PPRelease(_regionList);
+    [_regionTableView release];
     [super dealloc];
 }
 
@@ -62,7 +68,7 @@
     self = [super init];
     if (self) {
         self.navigationTitle = title;
-        self.areaList = regionList;
+        self.regionList = [NSMutableArray arrayWithArray:regionList];
         self.allDataList = itemList;
         self.dataList = itemList;
         self.selectedItemIds = selectedItemIdList;
@@ -75,24 +81,69 @@
 }
 
 
+- (NSArray *)sortsCityList:(NSArray *)sourceList
+{
+    NSMutableArray *selectedList = [[NSMutableArray alloc] init];
+    NSMutableArray *noSelectedList = [[NSMutableArray alloc] init];
+    
+    for (Item *item in sourceList){
+        if (item.itemId == ALL_CATEGORY || [self isSelectedId:item.itemId]) {
+            [selectedList addObject:item];
+        }else {
+            [noSelectedList addObject:item];
+        }
+    }
+    
+    NSMutableArray *returnList = [[[NSMutableArray alloc] initWithArray:selectedList] autorelease];
+    [returnList addObjectsFromArray:noSelectedList];
+    [selectedList release];
+    [noSelectedList release];
+    
+    return returnList;
+}
+
+#define WIDTH_REGION_TABLEVIEW  85
+#define WIDTH_DATA_TABLEVIEW    235
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setTitle:_navigationTitle];
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
-    dataTableView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:239.0/255.0 alpha:1];
-    _areaView.frame = CGRectMake(_areaView.frame.origin.x, _areaView.frame.origin.y, _areaView.frame.size.width, 0);
+    
+    self.dataTableView.tag = TAG_DATA_TABLEVIEW;
+    self.regionTableView.tag = TAG_REGION_TABLEVIEW;
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:239.0/255.0 alpha:1];
+    self.dataTableView.backgroundColor = backgroundColor;
+    self.regionTableView.backgroundColor = backgroundColor;
+    
+    self.allDataList = [self sortsCityList:_allDataList];
+    self.dataList = _allDataList;
     
     if (_typeCity == destination) {
-        [self addAreaButton];
+        _regionTableView.frame = CGRectMake(_regionTableView.frame.origin.x, _regionTableView.frame.origin.y, WIDTH_REGION_TABLEVIEW, _regionTableView.frame.size.height);
+        dataTableView.frame = CGRectMake(WIDTH_REGION_TABLEVIEW, dataTableView.frame.origin.y, WIDTH_DATA_TABLEVIEW, dataTableView.frame.size.height);
         
-        //默认选中第一个按钮
-        [self clickAreaButton:[[self buttonList] objectAtIndex:0]];
+        _regionTableView.showsVerticalScrollIndicator = NO;
+        
+        Region_Builder *builder = [[[Region_Builder alloc] init] autorelease];
+        [builder setRegionId:ALL_CATEGORY];
+        [builder setRegionName:NSLS(@"全部")];
+        Region *region = [builder build];
+        [_regionList insertObject:region atIndex:0];
+        
+        [self filterCityByRegionRow:0];
+    } else {
+        _regionTableView.frame = CGRectMake(_regionTableView.frame.origin.x, _regionTableView.frame.origin.y, 0, _regionTableView.frame.size.height);
+        dataTableView.frame = CGRectMake(0, dataTableView.frame.origin.y, dataTableView.frame.size.width, dataTableView.frame.size.height);
     }
 }
 
@@ -100,7 +151,7 @@
 - (void)viewDidUnload
 {
     [self setSearchBar:nil];
-    [self setAreaView:nil];
+    [self setRegionTableView:nil];
     [super viewDidUnload];
 }
 
@@ -114,65 +165,119 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataList count];
+    if (tableView.tag == TAG_REGION_TABLEVIEW) {
+        if ([_regionList count] > 9) {
+            return [_regionList count];
+        }else {
+            return 9;
+        }
+    } else {
+        return [dataList count];
+    }
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellIdentifier = @"SelectCityControllerCell";
-    UITableViewCell *cell = [dataTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+    if (tableView.tag == TAG_REGION_TABLEVIEW) {
+        NSString *regionCell = @"RegionCell";
+        UITableViewCell *cell = [_regionTableView dequeueReusableCellWithIdentifier:regionCell];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:regionCell] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UIImageView *lineView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"city_bg3.png"]] autorelease];
+            lineView.frame = CGRectMake(0, 0, 79, 1.5);
+            [cell.contentView addSubview:lineView];
+        }
+        cell.textLabel.font = [UIFont systemFontOfSize:16];
+        
+        
+        if (indexPath.row < [_regionList count]) {
+            Region *region = [_regionList objectAtIndex:indexPath.row];
+            cell.textLabel.text = region.regionName;
+        }else {
+            cell.textLabel.text = nil;
+        }
+        
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        
+        UIImage *iamge = nil;
+        if (indexPath.row == _selectedRegionRow) {
+            iamge = [UIImage imageNamed:@"city_left_off.png"];
+            cell.textLabel.textColor = [UIColor whiteColor];
+        }else {
+            iamge = [UIImage imageNamed:@"city_bg2.png"];
+            cell.textLabel.textColor = [UIColor blackColor];
+        }
+        
+        UIImageView* backgroundView = [[[UIImageView alloc] initWithImage:iamge] autorelease];	
+        cell.backgroundView = backgroundView;
+        
+        return cell;
     }
-    cell.textLabel.font = [UIFont systemFontOfSize:16];
-    
-    Item *item = [dataList objectAtIndex:indexPath.row];
-    NSString *text;
-    if (_typeCity == depart && item.count != 0) {
-        text = [NSString stringWithFormat:@"%@ (%d)", item.itemName, item.count];
-    } else {
-        text = item.itemName;
+    else {
+        NSString *cellIdentifier = @"CityCell";
+        UITableViewCell *cell = [dataTableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        cell.textLabel.font = [UIFont systemFontOfSize:16];
+        
+        Item *item = [dataList objectAtIndex:indexPath.row];
+        NSString *text;
+        if (_typeCity == depart && item.count != 0) {
+            text = [NSString stringWithFormat:@"%@ (%d)", item.itemName, item.count];
+        } else {
+            text = item.itemName;
+        }
+        cell.textLabel.text = text;
+        
+        BOOL found = [self isSelectedId: item.itemId];
+        if (found) {
+            cell.imageView.image = [UIImage imageNamed:@"yes_s.png"];
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"no_s.png"];
+        }
+        
+        return cell;
     }
-    cell.textLabel.text = text;
-    
-    BOOL found = [self isSelectedId: item.itemId];
-    if (found) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    
-    return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Item *item = [dataList objectAtIndex:indexPath.row];
-    
-    BOOL found = [self isSelectedId:item.itemId];
-    
-    if (_multiOptions) {
-        if (item.itemId == ALL_CATEGORY) {
-            [_selectedItemIdsBeforConfirm removeAllObjects];
-        } else {
-            NSNumber *delNumber = [self findSelectedId:ALL_CATEGORY];
-            [_selectedItemIdsBeforConfirm removeObject:delNumber];
+    if (tableView.tag == TAG_REGION_TABLEVIEW) {
+        if (indexPath.row < [_regionList count]) {
+            [self filterCityByRegionRow:indexPath.row];
         }
+    } else if (tableView.tag == TAG_DATA_TABLEVIEW){
+        Item *item = [dataList objectAtIndex:indexPath.row];
         
-        if (found) {
-            NSNumber *delNumber = [self findSelectedId:item.itemId];
-            [_selectedItemIdsBeforConfirm removeObject:delNumber];
+        BOOL found = [self isSelectedId:item.itemId];
+        
+        if (_multiOptions) {
+            if (item.itemId == ALL_CATEGORY) {
+                [_selectedItemIdsBeforConfirm removeAllObjects];
+            } else {
+                NSNumber *delNumber = [self findSelectedId:ALL_CATEGORY];
+                [_selectedItemIdsBeforConfirm removeObject:delNumber];
+            }
+            
+            if (found) {
+                NSNumber *delNumber = [self findSelectedId:item.itemId];
+                [_selectedItemIdsBeforConfirm removeObject:delNumber];
+            } else {
+                [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
+            }
         } else {
+            [_selectedItemIdsBeforConfirm removeAllObjects];
             [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
         }
-    } else {
-        [_selectedItemIdsBeforConfirm removeAllObjects];
-        [_selectedItemIdsBeforConfirm addObject:[NSNumber numberWithInt:item.itemId]];
+        
+        [dataTableView reloadData];
     }
-
-    [dataTableView reloadData];
 }
 
 
@@ -202,10 +307,7 @@
     [self updateHideKeyboardButton];
     [self update:searchBar.text];
     
-    NSArray *list = [self buttonList];
-    for (UIButton *button in list) {
-        button.selected = NO;
-    }
+    [self showNoSelectRegion];
 }
 
 
@@ -225,7 +327,7 @@
 - (void)clickSubmit:(id)sender
 {
     if ([_selectedItemIdsBeforConfirm count] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"亲，您还没有选择哦！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:NSLS(@"您还没有进行选择！") delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
         [alert show];
         [alert release];
         return;
@@ -324,108 +426,39 @@
 }
 
 
-#define BUTTON_START_TAG    100
-#define BUTTON_COLUMNS      4
-#define BUTTON_WIDTH        80
-#define BUTTON_HEIGHT       30
-- (void)addAreaButton
+- (void)showNoSelectRegion
 {
-    if ([_areaList count] <= 1) {
-        return;
-    }
-
-    CGFloat buttonWidth = BUTTON_WIDTH;
-    CGFloat buttonHeight = BUTTON_HEIGHT;
-    
-    CGFloat totalHeight = (([_areaList count]-1) / 4 + 1) * buttonHeight; 
-    _areaView.frame = CGRectMake(_areaView.frame.origin.x, _areaView.frame.origin.y, _areaView.frame.size.width, totalHeight);
-    
-    CGFloat x;
-    CGFloat y;
-    int count = 0;
-    for (Region *region in _areaList) {
-        //PPDebug(@"<SelectCityController> Region:%d n:%@",region.regionId, region.regionName);
-        int column = count % BUTTON_COLUMNS;
-        int row = count / BUTTON_COLUMNS;
-        x = column * buttonWidth;
-        y = row * buttonHeight;
-        CGRect frame = CGRectMake(x, y, buttonWidth, buttonHeight);
-        UIButton *button = [[UIButton alloc] initWithFrame:frame];
-        button.tag = BUTTON_START_TAG + count;
-        [button addTarget:self action:@selector(clickAreaButton:) forControlEvents:UIControlEventTouchUpInside];
-        [button setBackgroundImage:[UIImage imageNamed:@"filter_2_off.png"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"filter_2_on.png"] forState:UIControlStateSelected];
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        button.titleLabel.font = [UIFont systemFontOfSize:16];
-        [button setTitle:region.regionName forState:UIControlStateNormal];
-        [_areaView addSubview:button];
-        [button release];
-        count++;
-    }
+    _selectedRegionRow = -1;
+    [_regionTableView reloadData];
 }
 
 
-- (NSArray *)buttonList
+- (void)filterCityByRegionRow:(int)row;
 {
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    int num = 0;
-    for (Region *region in _areaList) {
-        UIButton *button = (UIButton *)[_areaView viewWithTag:BUTTON_START_TAG + num];
-        [mutableArray addObject:button];
-        
-        num ++;
-    }
-    return mutableArray;
-}
-
-
-- (int)selectedRegionIdBySelectedButton:(UIButton *)button
-{
-    int index = button.tag - BUTTON_START_TAG;
-    Region *region = [_areaList objectAtIndex:index];
-    return region.regionId;
-}
-
-
-- (void)filterByRegionId:(int)regionId
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
+    self.allDataList = [self sortsCityList:_allDataList];
     
+    _selectedRegionRow = row;
+    [_regionTableView reloadData];
     
-    for(Item *item in self.allDataList){
-        int cityRegionId = [[AppManager defaultManager] getRegionIdByCityId:item.itemId];
-        if (cityRegionId == regionId) {
-            [array addObject:item];
+    Region *region = [_regionList objectAtIndex:_selectedRegionRow];
+    
+    if (region.regionId == ALL_CATEGORY) {
+        self.dataList = _allDataList;
+    }else {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        for(Item *item in self.allDataList){
+            int cityRegionId = [[AppManager defaultManager] getRegionIdByCityId:item.itemId];
+            if (cityRegionId == region.regionId) {
+                [array addObject:item];
+            }
         }
+        
+        self.dataList = array;
+        [array release];
     }
-    
-    self.dataList = array;
-    [array release];
+
     [dataTableView reloadData];
 }
 
-
-- (void)clickAreaButton:(id)sender
-{
-    UIButton *currentButton = (UIButton *)sender;
-    
-    NSArray *list = [self buttonList];
-    for (UIButton *button in list) {
-        if (currentButton.tag != button.tag) {
-            button.selected = NO;
-        }
-    }
-    
-    currentButton.selected = !currentButton.selected;
-    
-    if (currentButton.selected) {
-        int selectedRegionId = [self selectedRegionIdBySelectedButton:currentButton];
-        [self filterByRegionId:selectedRegionId];
-    } else {
-        self.dataList = _allDataList;
-        [dataTableView reloadData];
-    }
-}
 
 @end

@@ -10,6 +10,7 @@
 #import "RouteService.h"
 #import "RouteIntroductionController.h"
 #import "PlaceService.h"
+#import "PlaceOrderController.h"
 
 @interface CommonRouteDetailController : PPTableViewController <RouteServiceDelegate, RouteIntroductionControllerDelegate, PlaceServiceDelegate, UIActionSheetDelegate>
 
@@ -20,6 +21,9 @@
 @property (retain, nonatomic) IBOutlet UIView *buttonsHolderView;
 
 @property (retain, nonatomic) IBOutlet UIView *contentView;
+@property (retain, nonatomic) IBOutlet UILabel *routeNameLabel;
+@property (retain, nonatomic) IBOutlet UILabel *routeIdLabel;
+@property (retain, nonatomic) IBOutlet UILabel *agencyNameLabel;
 
 - (id)initWithRouteId:(int)routeId routeType:(int)routeType;
 

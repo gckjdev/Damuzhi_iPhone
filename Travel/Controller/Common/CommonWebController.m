@@ -12,12 +12,13 @@
 #import "PPDebug.h"
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
-
+#import "FontSize.h"
 @implementation CommonWebController
 
 @synthesize htmlPath = _htmlPath;
 @synthesize webView;
 @synthesize dataSource;
+//@synthesize scrollView;
 
 
 - (CommonWebController*)initWithWebUrl:(NSString*)htmlPath
@@ -28,6 +29,7 @@
     }
     return self;
 }
+
 
 - (id)initWithDataSource:(NSObject<CommonWebDataSourceProtocol>*)source
 {
@@ -45,18 +47,22 @@
     
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
 
     webView.delegate = self;
-
+    
     if (dataSource) {
         [self.navigationItem setTitle:[dataSource getTitleName]];
         [dataSource requestDataWithDelegate:self];
     }
     else {
         //handle urlString, if there has local data, urlString is a relative path, otherwise, it is a absolute URL.
-        NSURL *url = [AppUtils getNSURLFromHtmlFileOrURL:_htmlPath];
+        NSURL *url = nil;
+        if (_htmlPath) {
+            url = [AppUtils getNSURLFromHtmlFileOrURL:_htmlPath];
+        }
         
         //request from a url, load request to web view.
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -64,11 +70,22 @@
             [self.webView loadRequest:request];        
         }
     }
+//    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 1);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+//    [scrollView addSubview:imageView];
+//    [imageView release];
+    
+    [webView.scrollView addSubview:imageView];
+    
+//    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
+    webView.backgroundColor = [UIColor colorWithRed:211/255.0 green:215/255.0 blue:218/255.0 alpha:1];
 }
 
 - (void)viewDidUnload
 {
     [self setWebView:nil];
+//    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -86,6 +103,7 @@
 - (void)dealloc {
     [_htmlPath release];
     [webView release];
+//    [scrollView release];
     [super dealloc];
 }
 
@@ -96,14 +114,20 @@
 {
     return YES;
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView
+- (void)webViewDidStartLoad:(UIWebView *)webView1
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webViewDidFinishLoad:(UIWebView *)webView1
 {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView1.scrollView.contentSize.height, 320, 250)];
+    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+    [webView1.scrollView addSubview:imageView];
+    [imageView release];
+    
     [self hideActivity];
+ 
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -143,11 +167,11 @@
 
 -(void) showInView:(UIView *)superView
 {
-    [superView removeAllSubviews];
-
+//    [superView removeAllSubviews];
     webView.frame = superView.bounds;
     [superView addSubview:self.view];
 }
+
 
 @end
 

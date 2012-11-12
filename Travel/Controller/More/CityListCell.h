@@ -29,6 +29,7 @@
 }
 
 @property (retain, nonatomic) City *city;
+@property (assign, nonatomic) id<AppManagerProtocol> appManagerDelegate;
 @property (assign, nonatomic) id<CityListCellDelegate> cityListCellDelegate;
 
 @property (retain, nonatomic) IBOutlet UIButton *selectCurrentCityBtn;

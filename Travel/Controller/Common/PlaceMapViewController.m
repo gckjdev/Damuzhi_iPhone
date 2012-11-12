@@ -54,12 +54,17 @@
 #import "MapUtils.h"
 #import "AppUtils.h"
 #import "UIViewUtils.h"
-
+#import "FontSize.h"
 @interface PlaceMapViewController ()
+{
+    MKCoordinateSpan _span;
+}
+
 
 @property (nonatomic, retain) IBOutlet MKMapView *mapView;
 @property (nonatomic, retain) NSArray* placeList;
 @property (nonatomic, assign) UINavigationController* superNavigationController;
+
 
 - (void)loadAllAnnotations;
 
@@ -76,7 +81,8 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view from its nib.
-    [self setNavigationLeftButton:NSLS(@" 返回") 
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE 
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
@@ -84,8 +90,8 @@
     _mapView.mapType = MKMapTypeStandard;   
     _mapView.showsUserLocation = NO;
     
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
-    [MapUtils setMapSpan:_mapView span:span];
+    _span = MKCoordinateSpanMake(0.028, 0.028);
+    [MapUtils setMapSpan:_mapView span:_span];
     
     [self addMyLocationBtnTo:self.view];
 }
@@ -139,7 +145,10 @@
 
     if ([_placeList count] != 0) {
         Place *place = [_placeList objectAtIndex:0];
-        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+        [MapUtils gotoLocation:_mapView
+                      latitude:place.latitude 
+                     longitude:place.longitude
+                          span:_span];
     }
     
     [self loadAllAnnotations];
@@ -177,7 +186,7 @@
     }else {
         _mapView.showsUserLocation = NO;
         Place *place = [_placeList objectAtIndex:0];
-        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude];
+        [MapUtils gotoLocation:_mapView latitude:place.latitude longitude:place.longitude span:_span];
     }
     
     MKCoordinateSpan span = MKCoordinateSpanMake(0.028, 0.028);
@@ -189,7 +198,7 @@
 
 - (void)mapView:(MKMapView *)mapView1 didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    [MapUtils gotoLocation:mapView1 latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+    [MapUtils gotoLocation:mapView1 latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude span:_span];
 }
 
 //The event handling method

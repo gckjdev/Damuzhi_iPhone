@@ -18,6 +18,8 @@
 #import "RouteUtils.h"
 #import "PPDebug.h"
 #import "UIUtils.h"
+#import "AppManager.h"
+#import "FontSize.h"
 
 @interface CommonRouteDetailController ()
 
@@ -39,19 +41,24 @@
 
 @synthesize routeId = _routeId;
 @synthesize routeType = _routeType;
-@synthesize route = _route;
 
+@synthesize route = _route;
 @synthesize introductionController = _introductionController;
 @synthesize feeController = _feeController;
 @synthesize bookingPolicyController = _bookingPolicyController;
-@synthesize feekbackListController = _feekbackListController;
 
+@synthesize feekbackListController = _feekbackListController;
 @synthesize introductionButton = _introductionButton;
 @synthesize costDescriptionButton = _costDescriptionButton;
 @synthesize bookingPolicyButton = _bookingPolicyButton;
+
 @synthesize userFeekbackButton = _userFeekbackButton;
 @synthesize buttonsHolderView = _buttonsHolderView;
 @synthesize contentView = _contentView;
+@synthesize routeNameLabel = _routeNameLabel;
+
+@synthesize routeIdLabel = _routeIdLabel;
+@synthesize agencyNameLabel = _agencyNameLabel;
 @synthesize currentSelectedButton = _currentSelectedButton;
 @synthesize phoneList = _phoneList;
 
@@ -70,6 +77,11 @@
     [_contentView release];
     [_currentSelectedButton release];
     [_phoneList release];
+    
+    [_routeNameLabel release];
+    [_routeIdLabel release];
+    [_agencyNameLabel release];
+    [_bookingPolicyController release];
     [super dealloc];
 }
 
@@ -90,21 +102,33 @@
     // Do any additional setup after loading the view from its nib.
     // Set navigation bar buttons
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"咨询") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
-    
-
-//    self.phoneList = [NSArray arrayWithObjects:@"toBeFinished", nil];
     
     self.buttonsHolderView.backgroundColor = [UIColor colorWithPatternImage:[[ImageManager defaultManager] lineNavBgImage]];
     
     self.currentSelectedButton = self.introductionButton;
     self.introductionButton.selected = YES;
-    
+
+    [self.introductionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.costDescriptionButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.bookingPolicyButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+    [self.userFeekbackButton setContentEdgeInsets:UIEdgeInsetsMake(4, 3, 2, 3)];
+
+    self.introductionController = [[[RouteIntroductionController alloc] init] autorelease];
+    [self.introductionController showInView:self.contentView];
+    _introductionController.aDelegate = self;
+    self.introductionButton.selected = YES;
+    self.costDescriptionButton.userInteractionEnabled = NO;
+    self.userFeekbackButton.userInteractionEnabled = NO;
+    self.bookingPolicyButton.userInteractionEnabled = NO;
+
     [[RouteService defaultService] findRouteWithRouteId:_routeId viewController:self];
 }
 
@@ -119,6 +143,7 @@
     UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
     
     for(NSString* title in self.phoneList){
+        PPDebug(@"phone/title is %@",title);
         [actionSheet addButtonWithTitle:title];
     }
     [actionSheet addButtonWithTitle:NSLS(@"返回")];
@@ -134,6 +159,7 @@
     }
     
     NSString *phone = [self.phoneList objectAtIndex:buttonIndex];
+    PPDebug(@"phone is %@", phone);
 //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];    
     [UIUtils makeCall:phone];
 }
@@ -148,6 +174,9 @@
     [self setUserFeekbackButton:nil];
     [self setButtonsHolderView:nil];
     [self setContentView:nil];
+    [self setRouteNameLabel:nil];
+    [self setRouteIdLabel:nil];
+    [self setAgencyNameLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -159,19 +188,21 @@
     self.currentSelectedButton.selected = NO;
     self.currentSelectedButton = button;
     self.currentSelectedButton.selected = YES;
+    UIColor *color = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0];
+    [button setTitleColor:color forState:UIControlStateSelected];
 }
 
 
 - (IBAction)clickIntroductionButton:(id)sender {
+    
     UIButton *button  = (UIButton *)sender;
     [self updateSelectedButton:button];
-    
-    if (_introductionController == nil) {
-        self.introductionController = [[[RouteIntroductionController alloc] initWithRoute:_route routeType:_routeType] autorelease];
-        _introductionController.aDelegate = self;
-    }
-    
-    [_introductionController showInView:self.contentView];
+//    if (_introductionController == nil) {
+//        self.introductionController = [[[RouteIntroductionController alloc] init] autorelease];
+//        _introductionController.aDelegate = self;
+//        [_introductionController showInView:self.contentView];
+//    }
+    [self.contentView bringSubviewToFront:_introductionController.view];
 }
 
 
@@ -182,9 +213,12 @@
     
     if (_feeController == nil) {
         self.feeController = [[[CommonWebController alloc] initWithWebUrl:_route.fee] autorelease];
+        _feeController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
+        
+        [_feeController showInView:self.contentView];
     }
     
-    [_feeController showInView:self.contentView];    
+    [self.contentView bringSubviewToFront:_feeController.view];
 }
 
 
@@ -195,10 +229,12 @@
     
     if (_bookingPolicyController == nil) {
         self.bookingPolicyController = [[[CommonWebController alloc] initWithWebUrl:_route.bookingNotice] autorelease];
+        
+        _bookingPolicyController.view.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height + 79);
+        [_bookingPolicyController showInView:self.contentView];  
     }
     
-    [_bookingPolicyController showInView:self.contentView];        
-    
+    [self.contentView bringSubviewToFront:_bookingPolicyController.view];
 }
 
 
@@ -208,14 +244,18 @@
     
     if (_feekbackListController == nil) {
         self.feekbackListController = [[[RouteFeekbackListController alloc] initWithRouteId:_routeId] autorelease];
-
+        [_feekbackListController showInView:self.contentView];   
     }
-
-    [_feekbackListController showInView:self.contentView];   
+    
+    [self.contentView bringSubviewToFront:_feekbackListController.view];
 }
 
 - (void)findRequestDone:(int)result route:(TouristRoute *)route
 {
+    self.costDescriptionButton.userInteractionEnabled = YES;
+    self.userFeekbackButton.userInteractionEnabled = YES;
+    self.bookingPolicyButton.userInteractionEnabled = YES;
+    
     if (result != ERROR_SUCCESS) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
         return;
@@ -224,9 +264,18 @@
     self.route = route;
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
-//    NSLog(@"contact phone is %@", _route.contactPhone);
+    PPDebug(@"_route.contactPhone is %@",_route.contactPhone);
     
-    [self clickIntroductionButton:_introductionButton];
+    [self.routeNameLabel setText:_route.name];
+    PPDebug(@"_route.name is %@",_route.name);
+    self.routeNameLabel.textColor = [UIColor colorWithRed:255/255.0 green:102/255.0 blue:0.0 alpha:1.0];
+    _routeIdLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
+    [self.routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
+    
+    _agencyNameLabel.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1.0];
+    [_agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
+
+    [_introductionController updateWithRoute:_route routeType:_routeType];
 }
 
 - (void)didClickBookButton:(int)packageId
@@ -234,7 +283,6 @@
     PlaceOrderController *controller = [[[PlaceOrderController alloc] initWithRoute:_route routeType:_routeType packageId:packageId] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
-
 
 - (void)didSelectedPlace:(int)placeId
 {
@@ -267,7 +315,6 @@
     TravelPackage *package = [RouteUtils findPackageByPackageId:packageId fromPackageList:_route.packagesList];
     
     FlightController *controller = [[FlightController alloc] initWithDepartReturnFlight:package.departFlight returnFlight:package.returnFlight];
-    
     
     
     [self.navigationController pushViewController:controller animated:YES];

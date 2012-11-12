@@ -20,7 +20,11 @@
 #import "UIViewUtils.h"
 #import "RouteStorage.h"
 #import "AnimationManager.h"
+#import "ReferenceCell.h"
+#import "ImageManager.h"
+#import "UIImageUtil.h"
 
+#define TAG_ARROW_IMAGE_VIEW 101 
 
 #define CELL_IDENTIFY_CHARACTICS @"CharacticsCell"
 
@@ -55,6 +59,11 @@
 @property (retain, nonatomic) TouristRoute *route;
 @property (assign, nonatomic) int routeType;
 @property (retain, nonatomic) NSMutableDictionary *sectionInfo;
+@property (assign, nonatomic) CGFloat referenceHeight;
+
+@property (retain, nonatomic) NSMutableDictionary *sectionHeaderViews;
+@property (assign, nonatomic) CGRect bookingCellFrame;
+@property (retain, nonatomic) MonthViewController *monthViewController;
 
 - (RankView *)headerRankView;
 
@@ -67,14 +76,15 @@
 @synthesize route = _route;
 @synthesize routeType = _routeType;
 @synthesize sectionInfo = _sectionInfo;
-
+@synthesize referenceHeight = _referenceHeight;
+@synthesize sectionHeaderViews = _sectionHeaderViews;
 @synthesize titleHolerView;
-@synthesize routeNameLabel;
-@synthesize routeIdLabel;
 @synthesize imagesHolderView;
-@synthesize agencyNameLabel;
+@synthesize departCityLabel = _departCityLabel;
 @synthesize agencyInfoHolderView;
 @synthesize followButton;
+@synthesize bookingCellFrame = _bookingCellFrame;
+@synthesize monthViewController = _monthViewController;
 
 - (void)dealloc {
     [_sectionStat release];
@@ -83,21 +93,73 @@
     [titleHolerView release];
     [imagesHolderView release];
     [agencyInfoHolderView release];
-    [agencyNameLabel release];
-    [routeNameLabel release];
-    [routeIdLabel release];
     [followButton release];
+    [_sectionHeaderViews release];
+    [_departCityLabel release];
+    [_monthViewController release];
     [super dealloc];
 }
 
-- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType
+//- (id)initWithRoute:(TouristRoute *)route routeType:(int)routeType
+//{
+//    if (self = [super init]) {
+//        self.route = route;
+//        self.routeType = routeType;
+//    }
+//    
+//    return self;
+//}
+
+- (void)updateWithRoute:(TouristRoute *)route routeType:(int)routeType
 {
-    if (self = [super init]) {
-        self.route = route;
-        self.routeType = routeType;
-    }
+    self.route = route;
+    self.routeType = routeType;
     
-    return self;
+    // Do any additional setup after loading the view from its nib
+    
+    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
+    self.monthViewController.aDelegate = self;
+    
+    //    // the following view is used here just to get its frame.
+    //    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+    //                                                                           date:[NSDate date]
+    //                                                           hasMonthYearAndArrow:NO 
+    //                                                               hasTopBackground:NO
+    //                                                                      hasShadow:NO 
+    //                                                        userInteractionEnable:YES] autorelease];
+    //    self.bookingCellFrame = view.frame;
+    
+    
+    self.sectionHeaderViews = [NSMutableDictionary dictionary];
+    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
+    
+    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+    
+    [self setAgencyInfoHolderViewAppearance];
+    
+    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
+    
+    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
+    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+    
+//    slideImageView.defaultImage = @"all_page_bg2.jpg";
+//    imagesHolderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]];
+
+    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
+    [slideImageView setImages:_route.detailImagesList];
+    
+    [imagesHolderView addSubview:slideImageView];
+    
+    [self updateFollowButton];
+    
+    [self initSectionStat];
+    
+    self.referenceHeight = 0;
+    
+    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
+    
+    
+    [self.dataTableView reloadData];
 }
 
 - (int)sectionCount
@@ -110,7 +172,11 @@
     self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
     
     for (int i = 0; i < [self sectionCount]; i++) {
-        [_sectionStat addObject:[NSNumber numberWithBool:YES]];
+        if ([[self titleForSection:i] isEqualToString:SECTION_TITLE_REFERENCE]) {
+            [_sectionStat addObject:[NSNumber numberWithBool:NO]];
+        } else {
+            [_sectionStat addObject:[NSNumber numberWithBool:YES]];
+        }
     }
 }
 
@@ -119,24 +185,46 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
-    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
-    
-    [routeNameLabel setText:_route.name];
-    [routeIdLabel setText:[NSString stringWithFormat:NSLS(@"编号：%d"), _route.routeId]];
-    
-    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
-    [self setAgencyInfoHolderViewAppearance];
-    
-    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
-    
-    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
-    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
-    [slideImageView setImages:_route.detailImagesList];
-    [imagesHolderView addSubview:slideImageView];
-    
-    [self updateFollowButton];
-    
-    [self initSectionStat];
+//    self.monthViewController = [[[MonthViewController alloc] initWithBookings:_route.bookingsList routeType:_routeType] autorelease];
+//    self.monthViewController.aDelegate = self;
+//    
+////    // the following view is used here just to get its frame.
+////    TKCalendarMonthView *view = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+////                                                                           date:[NSDate date]
+////                                                           hasMonthYearAndArrow:NO 
+////                                                               hasTopBackground:NO
+////                                                                      hasShadow:NO 
+////                                                        userInteractionEnable:YES] autorelease];
+////    self.bookingCellFrame = view.frame;
+//    
+//    
+//    self.sectionHeaderViews = [NSMutableDictionary dictionary];
+//    [titleHolerView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailTitleBgImage]]];
+//    
+//    [agencyInfoHolderView setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] routeDetailAgencyBgImage]]];
+//    
+//    [self setAgencyInfoHolderViewAppearance];
+//    
+//    self.dataTableView.backgroundColor = [UIColor colorWithRed:235.0/255.0 green:240.0/255.0 blue:241.0/255.0 alpha:1];
+//    
+//    SlideImageView *slideImageView = [[[SlideImageView alloc] initWithFrame:imagesHolderView.bounds] autorelease];
+//    slideImageView.defaultImage = IMAGE_PLACE_DETAIL;
+//    [slideImageView.pageControl setPageIndicatorImageForCurrentPage:[UIImage strectchableImageName:@"point_pic3.png"] forNotCurrentPage:[UIImage strectchableImageName:@"point_pic4.png"]];
+//    [slideImageView setImages:_route.detailImagesList];
+//    
+// 
+//    
+//    
+//    
+//    [imagesHolderView addSubview:slideImageView];
+//    
+//    [self updateFollowButton];
+//    
+//    [self initSectionStat];
+//    
+//    self.referenceHeight = 0;
+//    
+//    PPDebug(@"agencyInfoHolderView height:%f", self.agencyInfoHolderView.frame.size.height);
 }
 
 - (NSMutableDictionary *)sectionInfo
@@ -170,10 +258,9 @@
     [self setTitleHolerView:nil];
     [self setImagesHolderView:nil];
     [self setAgencyInfoHolderView:nil];
-    [self setAgencyNameLabel:nil];
-    [self setRouteNameLabel:nil];
-    [self setRouteIdLabel:nil];
+//    [self setAgencyNameLabel:nil];
     [self setFollowButton:nil];
+    [self setDepartCityLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -184,61 +271,35 @@
 
 - (void)setAgencyInfoHolderViewAppearance
 {
-    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
     
-    CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+//    [agencyNameLabel setText:[[AppManager defaultManager] getAgencyShortName:_route.agencyId]];
+    NSString *string = [[AppManager defaultManager]  getDepartCityName:_route.departCityId];
     
-    CGFloat origin_x;
-    CGFloat origin_y;
+    NSString *departCityName = [NSString stringWithFormat:@"出发 : %@",string];
+    [_departCityLabel setText:departCityName];
+
+    
+    //CGSize agencyNameSize = [agencyNameLabel.text sizeWithFont:agencyNameLabel.font forWidth:160 lineBreakMode:UILineBreakModeWordWrap];
+    
+//    CGFloat origin_x;
+//    CGFloat origin_y;
 
     UILabel *priceLabel;
     UILabel *priceSuffixLabel;
     UIButton *bookButton;
     
-    RankView *rankView;
+
+
+    priceLabel = [self genPriceLabelWithFrame:CGRectMake(123, 12, 80, HEIGHT_PRICE_LABEL)];
+    [agencyInfoHolderView addSubview:priceLabel];
     
-    switch (_routeType) {
-        case OBJECT_LIST_ROUTE_PACKAGE_TOUR:
-            origin_x = 140;
-            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
-            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x + 10, origin_y, 80, HEIGHT_PRICE_LABEL)];
-            [agencyInfoHolderView addSubview:priceLabel];
-            
-            origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
-            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_SUFFIX_LABEL/2 + 1; 
-            priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(origin_x, origin_y, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
-            [agencyInfoHolderView addSubview:priceSuffixLabel];
-            
-            origin_x = priceSuffixLabel.frame.origin.x + priceSuffixLabel.frame.size.width + 10;
-            origin_y = agencyNameLabel.frame.size.height/2 - 22/2; 
-            bookButton = [self genBookBttonWithFrame:CGRectMake(origin_x - 12, origin_y, 70, 22)];
-            [agencyInfoHolderView addSubview:bookButton];
-            
-            break;
-        
-        case OBJECT_LIST_ROUTE_UNPACKAGE_TOUR:
-            rankView = [self headerRankView];
-            origin_x = agencyInfoHolderView.frame.size.width / 2 - rankView.frame.size.width;
-            if (agencyNameSize.width+10 > origin_x) {
-                origin_x = agencyNameSize.width+10;
-            }
-            rankView.frame = CGRectMake(origin_x, (agencyInfoHolderView.frame.size.height-rankView.frame.size.height)/2, rankView.frame.size.width, rankView.frame.size.height);
-            [agencyInfoHolderView addSubview:rankView];
-            
-            origin_x = 220;
-            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_LABEL/2; 
-            priceLabel = [self genPriceLabelWithFrame:CGRectMake(origin_x + 10, origin_y, 70, HEIGHT_PRICE_LABEL)];
-            [agencyInfoHolderView addSubview:priceLabel];
-            
-            origin_x = priceLabel.frame.origin.x + priceLabel.frame.size.width + 1;
-            origin_y = agencyNameLabel.frame.size.height/2 - HEIGHT_PRICE_SUFFIX_LABEL/2 + 1; 
-            priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(origin_x, origin_y, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
-            [agencyInfoHolderView addSubview:priceSuffixLabel];
-            break;
-            
-        default:
-            break;
-    }
+
+    priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(205 , 13, 15, HEIGHT_PRICE_SUFFIX_LABEL)];
+    [agencyInfoHolderView addSubview:priceSuffixLabel];
+    
+
+    bookButton = [self genBookBttonWithFrame:CGRectMake(215 , 0, 100, 40)];
+    [agencyInfoHolderView addSubview:bookButton];
 }
 
 - (UILabel *)genPriceLabelWithFrame:(CGRect)frame
@@ -276,7 +337,7 @@
 
 - (void)showInView:(UIView *)superView
 {
-    [superView removeAllSubviews];
+//    [superView removeAllSubviews];
     
 //    superView.contentSize = self.view.bounds.size;
     [superView addSubview:self.view];
@@ -408,25 +469,29 @@
 
 - (UITableViewCell *)cellForReferenceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CharacticsCell getCellIdentifier]];
+    UITableViewCell *cell = nil;
+    cell = [tableView dequeueReusableCellWithIdentifier:[ReferenceCell getCellIdentifier]];
     
     if (cell == nil) {
-        cell = [CharacticsCell createCell:self];	
+        cell = [ReferenceCell createCell:self];	
     }
     
-    CharacticsCell *characticsCell = (CharacticsCell *)cell;
-    characticsCell.characticsLabel.textColor = COLOR_CONTENT;
-    [characticsCell setCellData:_route.reference];
+    ReferenceCell *referenceCell = (ReferenceCell *)cell;
+   
+    NSURL *requestUrl = [NSURL URLWithString:_route.reference];
+    NSURLRequest *request = [NSURLRequest requestWithURL:requestUrl];
+    referenceCell.contentWebView.alpha = 0.0;
+    referenceCell.contentWebView.delegate = self;
+    [referenceCell.contentWebView loadRequest:request];
+    
+    PPDebug(@"<RouteIntroductionController> reference:%@",_route.reference);
     
     return cell;
 }
 
 - (CGFloat)cellHeightForReferenceWithIndex:(NSIndexPath *)indexPath
 {
-    CGSize withinSize = CGSizeMake(WIDTH_CHARACTICS_LABEL, MAXFLOAT);
-    CGSize size = [_route.reference sizeWithFont:FONT_CHARACTICS_LABEL constrainedToSize:withinSize lineBreakMode:LINE_BREAK_MODE_CHARACTICS_LABEL];
-    
-    return size.height + 5;
+    return _referenceHeight;
 }
 
 - (UITableViewCell *)cellForDailyScheduleWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
@@ -450,7 +515,7 @@
     int count = [[[_route.dailySchedulesList objectAtIndex:indexPath.row] placeToursList] count];
     
     CGFloat placeToursheight = MAX(count, 1)* HEIGHT_PLACE_TOUR_LABEL + EDGE_TOP + EDGE_BOTTOM;
-
+    
     return HEIGHT_DAILY_SCHEDULE_TITLE_LABEL + placeToursheight + HEIGHT_DINING_LABEL + HEIGHT_HOTEL_LABEL;
 }
 
@@ -467,15 +532,24 @@
     BookingCell *bookingCell = (BookingCell *)cell;
 //    bookingCell.bookingBgImageView.image = [[ImageManager defaultManager] bookingBgImage];
     
-    [bookingCell setCellData:NO bookings:_route.bookingsList routeType:_routeType];
+//    [bookingCell setCellData:NO bookings:_route.bookingsList routeType:_routeType];
+    [bookingCell setCellData:_monthViewController];
     
     return cell;
 }
 
 - (CGFloat)cellHeightForBookingWithIndex:(NSIndexPath *)indexPath
-{
-    return [BookingCell getCellHeight];
+{   
+    return _bookingCellFrame.size.height;    
+//    return [BookingCell getCellHeight];
 }
+
+- (void)didChangeFrame:(CGRect)frame
+{
+    self.bookingCellFrame = frame;
+    [dataTableView reloadData];
+}
+
 
 - (UITableViewCell *)cellForRelatedPlaceWithIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
@@ -522,7 +596,14 @@
 {
     TravelPackage *package = [[_route packagesList] objectAtIndex:indexPath.row];
     
-    CGFloat height = 5 + 32 + (HEIGHT_ACCOMODATION_VIEW + EDGE) * [package.accommodationsList count];
+    CGFloat height = 0;
+    if ([package.accommodationsList count] > 0) {
+        height = 96 + 28 * [package.accommodationsList count];
+    } else {
+        height = 96 + 28;
+    }
+    
+    //CGFloat height = 5 + 32 + (HEIGHT_ACCOMODATION_VIEW + EDGE) * [package.accommodationsList count];
     
     return height;
 }
@@ -578,7 +659,13 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [self headerViewForSection:section];
+    UIView *view = (UIView *)[_sectionHeaderViews objectForKey:[NSNumber numberWithInt:section]];
+    if (view == nil) {
+        view = [self headerViewForSection:section];
+        [_sectionHeaderViews setObject:view forKey:[NSNumber numberWithInt:section]];
+    }
+    
+    return view;
 }
 
 - (NSString *)titleForSection:(NSInteger)section
@@ -627,23 +714,22 @@
 
 - (UIView *)headerViewForSection:(NSInteger)section
 {
-    UIView *headerView = [self headerView];
+    UIView *headerView = [self headerView:section];
     headerView.tag = section;
     
     UILabel *label = [self headerTitle];
     label.text = [self titleForSection:section];
     [headerView addSubview:label];
     
-    //特殊处理
-    if (_routeType == OBJECT_LIST_ROUTE_PACKAGE_TOUR) {
-        //跟团游
-        
-        if ([label.text isEqualToString:SECTION_TITLE_CHARACTICS]) {
-            RankView * rankView = [self headerRankView];
-            [headerView addSubview:rankView];
-        }
-        
-    } else if (_routeType == OBJECT_LIST_ROUTE_UNPACKAGE_TOUR){
+    
+    
+    if ([label.text isEqualToString:SECTION_TITLE_CHARACTICS]) {
+        RankView * rankView = [self headerRankView];
+        [headerView addSubview:rankView];
+    }
+    
+    
+    if (_routeType == OBJECT_LIST_ROUTE_UNPACKAGE_TOUR){
         //自由行
         
         for (TravelPackage * package in _route.packagesList) {
@@ -657,21 +743,6 @@
                 CGSize labelTextSize = [label.text sizeWithFont:label.font];
                 noteLabel.frame = CGRectMake(label.frame.origin.x + labelTextSize.width + 5, noteLabel.frame.origin.y, noteLabel.frame.size.width, noteLabel.frame.size.height);
                 [headerView addSubview:noteLabel];
-                
-                
-                UILabel *priceLabel = [self genPriceLabelWithFrame:CGRectMake(150, 0, 40, 30)];
-                priceLabel.text = package.price;
-                [headerView addSubview:priceLabel];
-                
-                UILabel *priceSuffixLabel = [self genPriceSuffixLabelWithFrame:CGRectMake(190, 0, 15, 30)];
-                [headerView addSubview:priceSuffixLabel];
-                
-                UIButton *bookButton = [[[UIButton alloc] init] autorelease];
-                bookButton.frame = CGRectMake(210, 0, 70, 30);
-                [bookButton setImage:[[ImageManager defaultManager] bookButtonImage] forState:UIControlStateNormal];
-                bookButton.tag = package.packageId;
-                [bookButton addTarget:self action:@selector(clickBookButton:) forControlEvents:UIControlEventTouchUpInside];
-                [headerView addSubview:bookButton];
                 
                 break;
             }
@@ -692,7 +763,7 @@
     return headerView;
 }
 
-- (UIView *)headerView
+- (UIView *)headerView:(NSInteger)section
 {
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, HEIGHT_HEADER_VIEW);
     UIButton *headerView = [[[UIButton alloc] initWithFrame:rect] autorelease];
@@ -700,8 +771,14 @@
     [headerView addTarget:self action:@selector(clickSectionHeaderView:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(280 + 8, HEIGHT_HEADER_VIEW/2-22/2 + 1, 22 - 2, 22)];
+    arrowImageView.tag = TAG_ARROW_IMAGE_VIEW;
+
     arrowImageView.image = [[ImageManager defaultManager] arrowImage];
     [headerView addSubview:arrowImageView];
+    
+    int angle = [self isSectionOpen:section] ? (0) : (-90);
+    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*angle);
+
     [arrowImageView release];
     
     return headerView;
@@ -709,12 +786,13 @@
 
 - (UILabel *)headerTitle
 {
-    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
+//    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 80, HEIGHT_HEADER_VIEW)] autorelease];
+    UILabel *headerTitle = [[[UILabel alloc] initWithFrame:CGRectMake(13, 0, 250, HEIGHT_HEADER_VIEW)] autorelease];
     headerTitle.backgroundColor = [UIColor clearColor];
     headerTitle.textColor = [UIColor colorWithRed:37.0/255.0 green:66.0/255.0 blue:80.0/255.0 alpha:1];
     headerTitle.font = FONT_SECTION_TITLE;
     headerTitle.textColor = COLOR_SECTION_TITLE;
-    
+//    headerTitle.backgroundColor = [UIColor redColor];
     return headerTitle;
 }
 
@@ -730,6 +808,13 @@
     UIButton *button = (UIButton *)sender;
     BOOL open = [self isSectionOpen:button.tag];
     [self setSection:button.tag Open:!open];
+    
+    UIView *arrowImageView = [button viewWithTag:TAG_ARROW_IMAGE_VIEW];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:2];
+    int angle = open ? (-90) : (90);
+    arrowImageView.transform = CGAffineTransformRotate(arrowImageView.transform, M_PI/180*angle);
+    [CATransaction commit];
 }
 
 - (void)didSelectedRelatedPlace:(int)placeId
@@ -750,8 +835,8 @@
     button.titleLabel.font = [UIFont systemFontOfSize:14];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(-8, 20, 0, 0)];
-    CGPoint fromPosition = CGPointMake(320/2, 345);
-    CGPoint toPosition = CGPointMake(320/2, 345);
+    CGPoint fromPosition = CGPointMake(320/2, 283);
+    CGPoint toPosition = CGPointMake(320/2, 283);
     [self.view addSubview:button];
     [button release];
     
@@ -806,6 +891,22 @@
     [self updateFollowButton]; 
 }
 
+#pragma mark - UIWebViewDelegate methods
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGSize actualSize = [webView sizeThatFits:CGSizeZero];
+    CGRect newFrame = webView.frame;
+    newFrame.size.height = actualSize.height;
+    webView.frame = newFrame;
+    webView.alpha = 1.0;
+    
+    PPDebug(@"<RouteIntroductionController> referenceHeight:%f",_referenceHeight);
+    
+    if (self.referenceHeight != newFrame.size.height) {
+        self.referenceHeight = newFrame.size.height;
+        [self.dataTableView reloadData];
+    }
+}
 
 
 @end

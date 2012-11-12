@@ -10,7 +10,7 @@
 #import "TravelNetworkConstants.h"
 #import "AppManager.h"
 #import "RouteSelectCell.h"
-
+#import "FontSize.h"
 #define SECTION_TITLE_PRICE_RANK NSLS(@"价格区间")
 #define SECTION_TITLE_DAYS_RANGE NSLS(@"出行天数")
 #define SECTION_TITLE_ROUTE_THEME NSLS(@"路线主题")
@@ -79,10 +79,12 @@
     
     // Init UI Interface
     [self setNavigationLeftButton:NSLS(@" 返回") 
+                         fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
     
     [self setNavigationRightButton:NSLS(@"确定") 
+                          fontSize:FONT_SIZE
                          imageName:@"topmenu_btn2.png"
                             action:@selector(clickFinish:)];
     
@@ -237,7 +239,7 @@
     NSDictionary *dic = [self checkSelectItemList];
     for (NSString *key in [dic allKeys]) {
         if ([[dic valueForKey:key] boolValue] == NO) {
-            NSString *message = [NSString stringWithFormat:NSLS(@"亲，您还没有选择%@哦！"), key];
+            NSString *message = [NSString stringWithFormat:NSLS(@"您还没有选择%@！"), key];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLS(@"温馨提示") message:message delegate:nil cancelButtonTitle:NSLS(@"好的") otherButtonTitles:nil];
             
             [alert show];

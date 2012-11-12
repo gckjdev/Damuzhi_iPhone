@@ -12,7 +12,12 @@
 #import "LocalCity.h"
 #import "Package.pb.h"
 
+@protocol AppManagerProtocol <NSObject>
 
+@optional 
+- (void)currentCityDidChange:(int)newCityId;
+
+@end
 
 @interface AppManager : NSObject<CommonManagerProtocol>
 
@@ -48,7 +53,7 @@
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
-- (void)setCurrentCityId:(int)newCity;
+- (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate;
 
 // Get item list for select controller.
 //- (NSArray *)getSubCategoryItemList:(int)categoryId placeList:(NSArray *)placeList;
@@ -79,11 +84,17 @@
 - (NSArray *)getAgencyItemList:(NSArray *)staticticsList;
 
 - (NSString*)getDepartCityName:(int)routeCityId;
+- (Agency*)getAgency:(int)agencyId;
+
 - (NSString*)getAgencyName:(int)agencyId;
 - (NSString*)getAgencyShortName:(int)agencyId;
 
 - (NSArray*)buildAdultItemList;
 - (NSArray*)buildChildrenItemList;
+
+- (NSArray*)getSelectedPackageIdItemList:(TouristRoute *)aRoute;
+
+
 
 - (NSArray *)buildRoutePriceRankItemList;
 - (NSArray *)buildDaysRangeItemList;
@@ -91,6 +102,15 @@
 
 - (NSArray *)getServicePhoneList;
 
+- (NSArray *)getCityListInGroup:(int)groupId;
+- (NSDictionary *)getGroupCitysDicList;
+- (NSArray *)getGroupNameList;
+- (NSDictionary *)getNonRepeatedGroupCitysDicList;
 
+- (NSArray *)getAgencyListFromLocalRouteList:(NSArray *)list;
+- (NSDictionary *)getAgencyDicFromAgencyList:(NSArray *)agencyList
+                              localRouteList:(NSArray *)routeList;
+
+- (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList;
 
 @end

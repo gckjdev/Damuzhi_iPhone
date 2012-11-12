@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "PPViewController.h"
-#import "WBEngine.h"
+#import "SinaweiboManager.h"
 
-@interface ShareToSinaController : PPViewController<WBEngineDelegate, UITextViewDelegate>
+@interface ShareToSinaController : PPViewController<UITextViewDelegate, SinaWeiboDelegate, SinaWeiboRequestDelegate>
 
 - (IBAction)backgroundTap:(id)sender;
 

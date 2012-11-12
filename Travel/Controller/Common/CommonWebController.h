@@ -24,6 +24,7 @@
 @property (retain, nonatomic) NSObject<CommonWebDataSourceProtocol> *dataSource;
 
 - (CommonWebController*)initWithWebUrl:(NSString*)htmlPath;
+
 - (id)initWithDataSource:(NSObject<CommonWebDataSourceProtocol>*)source;
 
 - (void)showInView:(UIView *)superView;

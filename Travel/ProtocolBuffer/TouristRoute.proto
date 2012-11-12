@@ -44,6 +44,50 @@ message TouristRoute {
   optional string contactPhone = 100;               // 线路咨询电话
 }
 
+message LocalRouteList{
+  repeated LocalRoute routes = 1;
+}
+
+//　用于本地游和本地游详情和列表
+message LocalRoute {
+  // 基础数据
+  required int32 cityId = 1;                // 所属城市
+  required int32  routeId = 2;				// 线路编号
+  required string name = 3;                 // 线路名称
+
+  optional string currency = 4;             // 货币符号
+  optional int32 price = 5;                 // 线路价格
+  optional int32 agencyId = 6;				// 旅行社id。基础数据
+  optional int32 averageRank = 7;			// 用户综合评级
+
+  // 简要数据
+  optional string thumbImage = 10;                  // 线路列表中显示的小图片的绝对URL地址
+  optional string tour = 11;                        // 线路列表中显示经过的地方
+  optional int32 days = 12;                         // 线路游览天数
+
+
+  // 路线详情
+  optional string customerServiceTelephone = 20;	// 客服电话
+  repeated string detailImages = 25;                // 线路详情中滑动图片的绝对URL地址
+  optional string detailUrl = 30;                   // 详情的html的url
+  repeated DepartPlace departPlaces = 31;           // 出发地点
+  
+  repeated Booking bookings = 41;                   // 线路预订情况
+  
+  repeated PlaceTour relatedplaces = 48;            // 线路相关景点
+  optional string bookingNotice = 51;               // 线路预订须知，返回html的绝对url
+  optional string contactPhone = 100;               // 线路咨询电话
+}
+
+message DepartPlace {
+  required int32 departPlaceId = 1;         // 出发地点编号
+  optional string departTime = 2;           // 出发时间
+  optional string departPlace = 3;          // 出发地点
+  
+  optional double longitude = 11;           // 出发地点经纬度
+  optional double latitude = 12;
+}
+
 message DailySchedule {
   required int32 day = 1;                       // 第几天
   required string title = 2;                    // 每日行程标题
@@ -62,6 +106,9 @@ message TravelPackage {
   optional Flight departFlight = 10;            // 出发航班
   optional Flight returnFlight = 11;            // 回程航班
   repeated Accommodation accommodations = 15;	// 入住
+  
+  optional string flightNote = 50;              // 当没有具体航班时的显示信息
+  optional string accommodationNote = 51;       // 当没有酒店信息时的显示信息    
 }
 
 enum BookingStatus{
@@ -74,8 +121,8 @@ message Booking {
   required int32 date = 1;              // 日期，从1970年1月1日0时0分0秒算起，经过的秒数。
   optional int32 status = 2;            // 状态
   optional string remainder = 3;        // 剩余票数
-  optional string adultPrice = 4;       // 成人价格
-  optional string childrenPrice = 5;	// 儿童价格
+  optional int32 adultPrice = 4;        // 成人价格
+  optional int32 childrenPrice = 5;     // 儿童价格
 }
 
 message Flight {
@@ -123,11 +170,18 @@ message Order {
   optional int32 adult = 8;             // 成人个数
   optional int32 children = 9 ;         // 儿童个数
 
-  optional string price = 10;           // 大拇指价
+  optional int32 price = 10;            // 大拇指价
   optional string priceStatus = 11;     // 价格状态
   optional int32 status = 12;           // 订单状态
+  optional string currency = 13;        // 货币符号
   
-    
   optional int32 packageId = 20;        // 套餐Id
+  optional string packageName = 21;     // 套餐名字
+  
+  optional int32 praiseRank = 30;        // 大拇指等级
+  optional string feedback = 31;         // 用户评价
+  
+  optional DepartPlace departPlace = 50;   // 出发地点
+
 }
 

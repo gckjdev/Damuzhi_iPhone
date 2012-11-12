@@ -166,8 +166,37 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
 
 + (CommonNetworkOutput*)routeFeedback:(NSString *)loginId 
                                 token:(NSString *)token 
-                              routeId:(int)routeId
+                              routeId:(int)routeId 
+                              orderId:(int)orderId
                                  rank:(int)rank 
-                            content:(NSString *)content;
+                              content:(NSString *)content;
+
++ (CommonNetworkOutput*)localRouteOrderWithUserId:(NSString *)userId 
+                                          routeId:(int)routeId
+                                    departPlaceId:(int)departPlaceId
+                                       departDate:(NSString *)departDate
+                                            adult:(int)adult
+                                         children:(int)children
+                                    contactPerson:(NSString *)contactPersion
+                                        telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)localRouteOrderWithLoginId:(NSString *)loginId 
+                                             token:(NSString *)token
+                                           routeId:(int)routeId
+                                     departPlaceId:(int)departPlaceId
+                                        departDate:(NSString *)departDate
+                                             adult:(int)adult
+                                          children:(int)children
+                                     contactPerson:(NSString *)contactPersion
+                                         telephone:(NSString *)telephone;
+
++ (CommonNetworkOutput*)queryNearbyList:(int)type
+                                 cityId:(int)cityId
+                               latitude:(double)latitude
+                              longitude:(double)longitude
+                               distance:(double)distance
+                                  start:(int)start
+                                  count:(int)count
+                                   lang:(int)lang;
 
 @end

@@ -10,9 +10,10 @@
 #import "PPTableViewController.h"
 #import "CityManagementController.h"
 #import "UserService.h"
-#import "WBEngine.h"
 
-@interface MoreController : PPTableViewController <UIActionSheetDelegate,UserServiceDelegate>
+#import "CommonDialog.h"
+
+@interface MoreController : PPTableViewController <UIActionSheetDelegate,UserServiceDelegate, CommonDialogDelegate>
 
 
 @end

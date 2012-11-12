@@ -13,11 +13,13 @@
 
 @optional
 - (void)didSelecteDate:(NSDate *)date;
+- (void)didChangeFrame:(CGRect)frame;
 
 @end
 
 @interface MonthViewController : PPViewController <TKCalendarMonthViewDelegate, TKCalendarMonthViewDataSource>
 
+@property (retain, nonatomic) TKCalendarMonthView *monthView;
 @property (assign, nonatomic) id<MonthViewControllerDelegate> aDelegate;
 
 @property (retain, nonatomic) IBOutlet UIView *aBgView;
@@ -27,7 +29,14 @@
 @property (retain, nonatomic) IBOutlet UIView *monthHolderView;
 @property (retain, nonatomic) IBOutlet UIView *buttonHolderView;
 
-- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;
+@property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
+
+@property (retain, nonatomic) IBOutlet UIImageView *rightLineImageView;
+
+//- (id)initWithBookings:(NSArray *)bookings;
+//- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;
+- (id)initWithBookings:(NSArray *)bookings currency:(NSString *)currency;
+
 - (void)showInView:(UIView *)superView;
 
 @end

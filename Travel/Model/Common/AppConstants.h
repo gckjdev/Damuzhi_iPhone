@@ -58,6 +58,7 @@
 #define DIR_OF_FAVORITE                     @"app/user/favorite/"
 #define DIR_OF_HISTORY                      @"app/user/history/"
 #define DIR_OF_FOLLOW_ROUTES                @"app/user/followRoutes/"
+#define DIR_OF_FOLLOW_LOCAL_ROUTES          @"app/user/followLocalRoutes/"
 
 // Under city dir, relative.
 #define FLAG_OF_UNZIP_SUCCESS               @"unzip_success" 
@@ -82,6 +83,7 @@
 
 #define ALERT_USING_CELL_NEWORK 1
 #define ALERT_DELETE_CITY 2
+#define ALERT_CANCEL_UPDATE_CITT 3
 
 #define ALL_CATEGORY   (-1)
 
