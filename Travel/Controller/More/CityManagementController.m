@@ -18,7 +18,7 @@
 #define CITY_SEARCH_BAR_HEIGHT 44
 #define SELF_VIEW_WIDTH 320
 #define NAVIGATION_BAR_HEIGHT 44
-#define SELF_VIEW_HEIGHT (460 - NAVIGATION_BAR_HEIGHT)
+#define SELF_VIEW_HEIGHT ([[UIScreen mainScreen] bounds].size.height- 20 - NAVIGATION_BAR_HEIGHT)
 
 
 
@@ -77,8 +77,9 @@ static CityManagementController *_instance;
     [_firstPinyinList release];
     [_filteredListContent release];
     [_label release];
+    [_cityListBackgroundImageView release];
     [super dealloc];
-}
+} 
 
 - (void)getCityData
 {
@@ -107,8 +108,10 @@ static CityManagementController *_instance;
 
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:IMAGE_CITY_MAIN_BOTTOM];
+    //[self setBackgroundImageName:IMAGE_CITY_MAIN_BOTTOM];
     [super viewDidLoad];
+    [self.cityListBackgroundImageView setImage:[UIImage imageNamed:IMAGE_CITY_MAIN_BOTTOM]];
+    
     self.downloadingCities = [NSMutableArray array];
     
     self.label = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
@@ -228,6 +231,7 @@ static CityManagementController *_instance;
 //    [self setTipsLabel:nil];
     [self setPromptLabel:nil];
     [self setCitySearchBar:nil];
+    [self setCityListBackgroundImageView:nil];
     [super viewDidUnload];
 }
 

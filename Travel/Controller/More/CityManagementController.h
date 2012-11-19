@@ -32,6 +32,7 @@
 
 @property (retain, nonatomic) UIButton *cityListBtn;
 @property (retain, nonatomic) UIButton *downloadListBtn;
+@property (retain, nonatomic) IBOutlet UIImageView *cityListBackgroundImageView;
 
 
 

@@ -38,20 +38,13 @@
 #import "PackageTourListFilter.h"
 #import "UnPackageTourListFilter.h"
 #import "FavoriteController.h"
+#import "DeviceDetection.h"
 
 @interface MainController()
-
-@property (retain, nonatomic) UIButton *currentSelectedButton;
 
 @end
 
 @implementation MainController
-@synthesize homeButton = _homeButton;
-@synthesize UnpackageButton = _UnpackageButton;
-@synthesize PackageButton = _PackageButton;
-@synthesize moreButton = _moreButton;
-
-@synthesize currentSelectedButton = _currentSelectedButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,11 +57,19 @@
 
 - (void)dealloc
 {
-    [_currentSelectedButton release];
-    [_homeButton release];
-    [_UnpackageButton release];
-    [_PackageButton release];
-    [_moreButton release];
+    [_mainBackgroundImageView release];
+    [_nearbyButton release];
+    [_spotButton release];
+    [_hotelButton release];
+    [_restaurantButton release];
+    [_shoppingButton release];
+    [_entertainmentButton release];
+    [_cityBasicButton release];
+    [_travelPreparationButton release];
+    [_travelUtilityButton release];
+    [_travelTransportButton release];
+    [_traveGuideButton release];
+    [_favoriteButton release];
     [super dealloc];
 }
 
@@ -125,13 +126,29 @@
 
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:@"index_bg.png"];
     [super viewDidLoad];
     
-    [self checkCurrentCityVersion];
+    if ([DeviceDetection isIPhone5]) {
+        PPDebug(@"is iPhone5");
+        
+        self.nearbyButton.frame = CGRectOffset(self.nearbyButton.frame, 0, 10);
+        self.spotButton.frame = CGRectOffset(self.spotButton.frame, 0, 10);
+        self.hotelButton.frame = CGRectOffset(self.hotelButton.frame, 0, 10);
+        self.restaurantButton.frame = CGRectOffset(self.restaurantButton.frame, 0, 20);
+        self.shoppingButton.frame = CGRectOffset(self.shoppingButton.frame, 0, 20);
+        self.entertainmentButton.frame = CGRectOffset(self.entertainmentButton.frame, 0, 20);
+        
+        self.cityBasicButton.frame = CGRectOffset(self.cityBasicButton.frame, 0, 44);
+        self.travelPreparationButton.frame = CGRectOffset(self.travelPreparationButton.frame, 0, 44);
+        self.travelUtilityButton.frame = CGRectOffset(self.travelUtilityButton.frame, 0, 44);
+        self.travelTransportButton.frame = CGRectOffset(self.travelTransportButton.frame, 0, 44);
+        self.traveGuideButton.frame = CGRectOffset(self.traveGuideButton.frame, 0, 44);
+        self.favoriteButton.frame = CGRectOffset(self.favoriteButton.frame, 0, 44);
+    } else {
+        PPDebug(@"is not iPhone5");
+    }
     
-    self.currentSelectedButton = self.homeButton;
-    self.currentSelectedButton.selected = YES;
+    [self checkCurrentCityVersion];
     
     [[UserService defaultService] autoLogin:self];
 }
@@ -169,10 +186,19 @@
 
 - (void)viewDidUnload
 {
-    [self setHomeButton:nil];
-    [self setUnpackageButton:nil];
-    [self setPackageButton:nil];
-    [self setMoreButton:nil];
+    [self setMainBackgroundImageView:nil];
+    [self setNearbyButton:nil];
+    [self setSpotButton:nil];
+    [self setHotelButton:nil];
+    [self setRestaurantButton:nil];
+    [self setShoppingButton:nil];
+    [self setEntertainmentButton:nil];
+    [self setCityBasicButton:nil];
+    [self setTravelPreparationButton:nil];
+    [self setTravelUtilityButton:nil];
+    [self setTravelTransportButton:nil];
+    [self setTraveGuideButton:nil];
+    [self setFavoriteButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -258,10 +284,7 @@
     [controller release];
 }
 
-- (IBAction)clickTravelRouteBtn:(id)sender {
-//    RouteController *controller = [[RouteController alloc] init];
-//    [self.navigationController pushViewController:controller animated:YES];
-//    [controller release];
+- (IBAction)clickFavoriteButton:(id)sender {
     FavoriteController *controller = [[FavoriteController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
@@ -274,14 +297,6 @@
     [controller release];  
 }
 
-
-
-- (void)updateSelectedButton:(UIButton *)button
-{
-    self.currentSelectedButton.selected = NO;
-    self.currentSelectedButton = button;
-    self.currentSelectedButton.selected = YES;
-}
 
 - (void)showUpdateCityAlert
 {

@@ -15,10 +15,19 @@
 #import "CommonDialog.h"
 
 @interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate, CommonDialogDelegate, AppManagerProtocol>
-@property (retain, nonatomic) IBOutlet UIButton *homeButton;
-@property (retain, nonatomic) IBOutlet UIButton *UnpackageButton;
-@property (retain, nonatomic) IBOutlet UIButton *PackageButton;
-@property (retain, nonatomic) IBOutlet UIButton *moreButton;
+@property (retain, nonatomic) IBOutlet UIImageView *mainBackgroundImageView;
+@property (retain, nonatomic) IBOutlet UIButton *nearbyButton;
+@property (retain, nonatomic) IBOutlet UIButton *spotButton;
+@property (retain, nonatomic) IBOutlet UIButton *hotelButton;
+@property (retain, nonatomic) IBOutlet UIButton *restaurantButton;
+@property (retain, nonatomic) IBOutlet UIButton *shoppingButton;
+@property (retain, nonatomic) IBOutlet UIButton *entertainmentButton;
+@property (retain, nonatomic) IBOutlet UIButton *cityBasicButton;
+@property (retain, nonatomic) IBOutlet UIButton *travelPreparationButton;
+@property (retain, nonatomic) IBOutlet UIButton *travelUtilityButton;
+@property (retain, nonatomic) IBOutlet UIButton *travelTransportButton;
+@property (retain, nonatomic) IBOutlet UIButton *traveGuideButton;
+@property (retain, nonatomic) IBOutlet UIButton *favoriteButton;
 
 - (IBAction)clickSpotButton:(id)sender;
 - (IBAction)clickHotelButton:(id)sender;

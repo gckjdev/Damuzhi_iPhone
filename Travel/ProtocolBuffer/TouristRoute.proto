@@ -112,7 +112,7 @@ message TravelPackage {
 }
 
 enum BookingStatus{
-  NOT_IN_SALE = 1;
+  NOT_IN_SALE = 1;Flight
   IN_SALE = 2;
   SOLD_OUT = 3;
 }
