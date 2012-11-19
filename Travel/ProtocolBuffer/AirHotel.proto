@@ -46,8 +46,8 @@ message HotelOrderRoomInfo {
 
 //酒店订单
 message HotelOrder {
-    required int32 checkInTime = 1;             //入住时间
-    required int32 checkOutTime = 2;            //退房时间
+    required int32 checkInDate = 1;             //入住日期
+    required int32 checkOutDate = 2;            //退房日期
     required int32 hotelId = 3;                 //酒店id(对应Place结构的placeId)
     repeated HotelOrderRoomInfo roomInfos = 4;  //房间预订信息
     repeated Person checkInPersons = 5;         //入住人信息
@@ -70,10 +70,11 @@ message FlightClass {
 
 //航班
 message Flight {
+    //基本数据
     required string flightNumber = 1;           //航班编号
     required int32 airlineId = 2;               //航空公司id
     optional string craftType = 3;              //机型
-    repeated FlightClass flightClasses = 4;     //舱位
+    optional string price = 4;                  //参考价格（用于列表显示）
     
     optional string departAirport = 5;          //出发机场
     optional string arriveAirport = 6;          //达到机场
@@ -82,6 +83,13 @@ message Flight {
     
     optional bool transit = 9;                  //是否中转
     optional string transitInfo = 10;           //中转信息
+    
+    //详情数据
+    repeated FlightClass flightClasses = 5;     //舱位
+}
+
+message FlightList{
+  repeated Flight flights = 1;
 }
 
 //机票订单
@@ -121,12 +129,16 @@ message PaymentInfo {
 
 //机+酒订单
 message AirHotelOrder {
-    optional int32 departCityId = 1;            //出发城市id
-    optional int32 arriveCityId = 2;            //目的城市id
-    repeated AirOrder airOrders = 3;            //机票订单
-    repeated HotelOrder hotelOrders = 4;        //酒店订单
-    optional PaymentInfo paymentInfo = 5;       //支付信息
-    optional Person contactPerson = 6;          //联系人
+    optional string userId = 1;                 //用户id (用于非会员下订)
+    optional string loginId = 2;                //登陆id (用于会员下订)
+    optional string token = 3;                  //登陆token (用于会员下订)
+
+    optional int32 departCityId = 4;            //出发城市id
+    optional int32 arriveCityId = 5;            //目的城市id
+    repeated AirOrder airOrders = 6;            //机票订单
+    repeated HotelOrder hotelOrders = 7;        //酒店订单
+    optional PaymentInfo paymentInfo = 8;       //支付信息
+    optional Person contactPerson = 9;          //联系人
 
     optional optional orderNumber = 20;         //订单编号 (仅用于订单查询)
     optional int32 orderDate = 21;              //订单日期 (仅用于订单查询)
@@ -134,8 +146,11 @@ message AirHotelOrder {
 
     optional string hotelPrice = 30;            //酒店总价格 (仅用于订单查询)
     optional string airPrice = 31;              //机票总价格 (仅用于订单查询)
-    optional int32 hotelPaymentStatus = 32;     //酒店支付状态 (仅用于订单查询)
     optional AirPaymentStatus airPaymentStatus = 33;   //机票支付状态 (仅用于订单查询)
 }
 
+// 用于查询订单列表
+message AirHotelOrderList {
+    repeated AirHotelOrder airHotelOrders = 1;
+}
 

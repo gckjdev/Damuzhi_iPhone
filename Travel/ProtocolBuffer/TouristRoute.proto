@@ -96,15 +96,15 @@ message DailySchedule {
   optional string lunch = 5;                    // 午餐
   optional string dinner = 6;                   // 晚餐
   optional Accommodation accommodation = 7;     // 入住
-} 
+}
 
 message TravelPackage {
   required int32 packageId = 1;                 // 套餐编号
   required string name = 2;                     // 套餐名称：如“套餐1”
   optional string note = 3;                     // 套餐备注：如“(机票+酒店)”
   optional string price = 5;                    // 套餐价格：如“4800元/人”
-  optional Flight departFlight = 10;            // 出发航班
-  optional Flight returnFlight = 11;            // 回程航班
+  //optional Flight departFlight = 10;            // 出发航班
+  //optional Flight returnFlight = 11;            // 回程航班
   repeated Accommodation accommodations = 15;	// 入住
   
   optional string flightNote = 50;              // 当没有具体航班时的显示信息
@@ -112,7 +112,7 @@ message TravelPackage {
 }
 
 enum BookingStatus{
-  NOT_IN_SALE = 1;Flight
+  NOT_IN_SALE = 1;
   IN_SALE = 2;
   SOLD_OUT = 3;
 }
@@ -125,18 +125,18 @@ message Booking {
   optional int32 childrenPrice = 5;     // 儿童价格
 }
 
-message Flight {
-  required string flightId = 1;             // 航班号
-  optional string company = 2;              // 航空公司
-  optional string mode = 3;                 // 机型
-  optional string departCityName = 4; 		// 起飞城市id
-  optional string departTime = 5;           // 起飞时间
-  optional string departAirport = 6;     	// 起飞机场
-  optional string arriveCityName = 7; 		// 到达城市id
-  optional string arriveTime = 8;           // 到达时间
-  optional string arriveAirport = 9;     	// 到达机场
-  optional string note = 10;                // 航班提示：如“需到北京机场经传”
-}
+//message Flight {
+//  required string flightId = 1;             // 航班号
+//  optional string company = 2;              // 航空公司
+//  optional string mode = 3;                 // 机型
+//  optional string departCityName = 4; 		// 起飞城市id
+//  optional string departTime = 5;           // 起飞时间
+//  optional string departAirport = 6;     	// 起飞机场
+//  optional string arriveCityName = 7; 		// 到达城市id
+//  optional string arriveTime = 8;           // 到达时间
+//  optional string arriveAirport = 9;     	// 到达机场
+//  optional string note = 10;                // 航班提示：如“需到北京机场经传”
+//}
 
 message PlaceTour {
   required string name = 1;             // 名称
