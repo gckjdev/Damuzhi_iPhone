@@ -133,6 +133,9 @@
 #define PARA_TRAVEL_ORDER_ID                @"orderId"
 #define PARA_TRAVEL_DEPART_PLACE_ID         @"departPlaceId"
 
+#define PARA_TRAVEL_CHECK_IN_DATE           @"checkInDate"
+#define PARA_TRAVEL_CHECK_OUT_DATE          @"checkOutDate"
+
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
 #define OBJECT_LIST_TYPE_SPOT            21
@@ -179,6 +182,9 @@
 #define OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER         84
 
 #define OBJECT_LIST_LOCAL_ROUTE                     90
+
+
+#define OBJECT_LIST_CHECK_IN_HOTEL                  101
 
 // For object type
 #define OBJECT_TYPE_PLACE                       1

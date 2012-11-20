@@ -26,7 +26,7 @@
 #import "PackageTourListFilter.h"
 #import "MoreController.h"
 #import "HappyTourController.h"
-#import "TicketHotelController.h"
+#import "AirHotelController.h"
 #import "LocalRouteListController.h"
 #import "UserManager.h"
 
@@ -106,7 +106,7 @@ typedef enum{
 //                   viewControllers:controllers];
     
     
-    [UIUtils addViewController:[TicketHotelController alloc]
+    [UIUtils addViewController:[AirHotelController alloc]
                      viewTitle:nil
                      viewImage:@"menu_btn3_off.png"
               hasNavController:YES

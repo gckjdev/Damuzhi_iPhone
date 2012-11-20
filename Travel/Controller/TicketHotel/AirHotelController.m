@@ -1,19 +1,19 @@
 //
-//  TicketHotelController.m
+//  AirHotelController.m
 //  Travel
 //
 //  Created by kaibin on 12-9-21.
 //
 //
 
-#import "TicketHotelController.h"
+#import "AirHotelController.h"
 #import "AppDelegate.h"
 
-@interface TicketHotelController ()
+@interface AirHotelController ()
 
 @end
 
-@implementation TicketHotelController
+@implementation AirHotelController
 
 
 - (void)viewDidLoad
