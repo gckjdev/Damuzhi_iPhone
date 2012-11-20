@@ -381,8 +381,6 @@
 		A4C6BC4E152DF83000681DD7 /* RestaurantDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC4A152DF83000681DD7 /* RestaurantDetailViewHandler.m */; };
 		A4C6BC4F152DF83000681DD7 /* ShoppingDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A4C6BC4B152DF83000681DD7 /* ShoppingDetailViewHandler.m */; };
 		A4CD756615A2B69300713F0B /* login_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4CD756515A2B69300713F0B /* login_bg@2x.png */; };
-		A4CD756A15A2D14600713F0B /* FlightController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CD756815A2D14500713F0B /* FlightController.m */; };
-		A4CD756B15A2D14600713F0B /* FlightController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4CD756915A2D14600713F0B /* FlightController.xib */; };
 		A4D9F30F1592F14700566B32 /* SignUpController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D9F30D1592F14700566B32 /* SignUpController.m */; };
 		A4D9F3101592F14700566B32 /* SignUpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4D9F30E1592F14700566B32 /* SignUpController.xib */; };
 		A4D9F3131592FB3A00566B32 /* signup_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A4D9F3121592FB3A00566B32 /* signup_bg@2x.png */; };
@@ -683,6 +681,7 @@
 		EA1A348B16081DBE000E325B /* XQueryComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1A348A16081DBE000E325B /* XQueryComponents.m */; };
 		EA1A349416085D4A000E325B /* DepartPlaceMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1A349216085D49000E325B /* DepartPlaceMapController.m */; };
 		EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */; };
+		EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1BC555165B305C00699C77 /* AirHotel.pb.m */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
 		EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EA25495016096CC10062E075 /* LocalRouteStorage.m */; };
 		EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA254953160976690062E075 /* FollowLocalRouteController.m */; };
@@ -1240,9 +1239,6 @@
 		A4C6BC4A152DF83000681DD7 /* RestaurantDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestaurantDetailViewHandler.m; sourceTree = "<group>"; };
 		A4C6BC4B152DF83000681DD7 /* ShoppingDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingDetailViewHandler.m; sourceTree = "<group>"; };
 		A4CD756515A2B69300713F0B /* login_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login_bg@2x.png"; sourceTree = "<group>"; };
-		A4CD756715A2D14500713F0B /* FlightController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightController.h; sourceTree = "<group>"; };
-		A4CD756815A2D14500713F0B /* FlightController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightController.m; sourceTree = "<group>"; };
-		A4CD756915A2D14600713F0B /* FlightController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlightController.xib; sourceTree = "<group>"; };
 		A4D9F30C1592F14700566B32 /* SignUpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpController.h; sourceTree = "<group>"; };
 		A4D9F30D1592F14700566B32 /* SignUpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpController.m; sourceTree = "<group>"; };
 		A4D9F30E1592F14700566B32 /* SignUpController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpController.xib; sourceTree = "<group>"; };
@@ -1770,6 +1766,8 @@
 		EA1A349116085D49000E325B /* DepartPlaceMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartPlaceMapController.h; sourceTree = "<group>"; };
 		EA1A349216085D49000E325B /* DepartPlaceMapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartPlaceMapController.m; sourceTree = "<group>"; };
 		EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepartPlaceMapController.xib; sourceTree = "<group>"; };
+		EA1BC554165B305C00699C77 /* AirHotel.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotel.pb.h; sourceTree = "<group>"; };
+		EA1BC555165B305C00699C77 /* AirHotel.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotel.pb.m; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
 		EA25494F16096CC10062E075 /* LocalRouteStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteStorage.h; sourceTree = "<group>"; };
@@ -2314,9 +2312,6 @@
 				A406A2B21597FFEE00CE938A /* MonthViewController.h */,
 				A406A2B31597FFEE00CE938A /* MonthViewController.m */,
 				A406A2B41597FFEE00CE938A /* MonthViewController.xib */,
-				A4CD756715A2D14500713F0B /* FlightController.h */,
-				A4CD756815A2D14500713F0B /* FlightController.m */,
-				A4CD756915A2D14600713F0B /* FlightController.xib */,
 			);
 			path = RouteDetail;
 			sourceTree = "<group>";
@@ -3006,6 +3001,8 @@
 		CA238F3114FB526C00114175 /* Gen */ = {
 			isa = PBXGroup;
 			children = (
+				EA1BC554165B305C00699C77 /* AirHotel.pb.h */,
+				EA1BC555165B305C00699C77 /* AirHotel.pb.m */,
 				A4EBF07615776E2000B088A0 /* TouristRoute.pb.h */,
 				A4EBF07715776E2000B088A0 /* TouristRoute.pb.m */,
 				CA238F3214FB526C00114175 /* App.pb.h */,
@@ -4644,7 +4641,6 @@
 				A48A542415A1959B0012C782 /* menu_right@2x.png in Resources */,
 				A48A542915A210120012C782 /* PackageCell.xib in Resources */,
 				A4CD756615A2B69300713F0B /* login_bg@2x.png in Resources */,
-				A4CD756B15A2D14600713F0B /* FlightController.xib in Resources */,
 				A43BAFFD15A2FA70008F3AFC /* fly_p1@2x.png in Resources */,
 				A43BAFFE15A2FA70008F3AFC /* fly_p2@2x.png in Resources */,
 				A43BAFFF15A2FA70008F3AFC /* fly_p3@2x.png in Resources */,
@@ -5047,7 +5043,6 @@
 				A49B79561599B47F00F3A926 /* OrderCell.m in Sources */,
 				A49B795F1599BC7D00F3A926 /* OrderListController.m in Sources */,
 				A48A542815A210120012C782 /* PackageCell.m in Sources */,
-				A4CD756A15A2D14600713F0B /* FlightController.m in Sources */,
 				A3E1956415A2F0B600972886 /* RankView.m in Sources */,
 				A440FD9115A3FA18005C4759 /* UnPackageTourHomePageController.m in Sources */,
 				EAC88F9F15A441510068C3C0 /* UserInfoCell.m in Sources */,
@@ -5086,6 +5081,7 @@
 				EA140194164A4315009DF6DC /* SinaWeiboAuthorizeView.m in Sources */,
 				EA140195164A4315009DF6DC /* SinaWeiboRequest.m in Sources */,
 				EA140199164A4794009DF6DC /* SinaweiboManager.m in Sources */,
+				EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

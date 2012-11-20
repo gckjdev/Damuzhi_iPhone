@@ -17,6 +17,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [TravelTipsRoot registerAllExtensions:registry];
     [AppRoot registerAllExtensions:registry];
     [TouristRouteRoot registerAllExtensions:registry];
+    [AirHotelRoot registerAllExtensions:registry];
     extensionRegistry = [registry retain];
   }
 }
@@ -1679,6 +1680,8 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
 @property (retain) RouteFeekbackList* routeFeekbackList;
 @property (retain) OrderList* orderList;
 @property (retain) CityImageList* cityImageList;
+@property (retain) FlightList* flightList;
+@property (retain) AirHotelOrderList* airHotelOrderList;
 @end
 
 @implementation TravelResponse
@@ -1830,6 +1833,20 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
   hasCityImageList_ = !!value;
 }
 @synthesize cityImageList;
+- (BOOL) hasFlightList {
+  return !!hasFlightList_;
+}
+- (void) setHasFlightList:(BOOL) value {
+  hasFlightList_ = !!value;
+}
+@synthesize flightList;
+- (BOOL) hasAirHotelOrderList {
+  return !!hasAirHotelOrderList_;
+}
+- (void) setHasAirHotelOrderList:(BOOL) value {
+  hasAirHotelOrderList_ = !!value;
+}
+@synthesize airHotelOrderList;
 - (void) dealloc {
   self.resultInfo = nil;
   self.place = nil;
@@ -1850,6 +1867,8 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
   self.routeFeekbackList = nil;
   self.orderList = nil;
   self.cityImageList = nil;
+  self.flightList = nil;
+  self.airHotelOrderList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -1875,6 +1894,8 @@ static RouteStatistics* defaultRouteStatisticsInstance = nil;
     self.routeFeekbackList = [RouteFeekbackList defaultInstance];
     self.orderList = [OrderList defaultInstance];
     self.cityImageList = [CityImageList defaultInstance];
+    self.flightList = [FlightList defaultInstance];
+    self.airHotelOrderList = [AirHotelOrderList defaultInstance];
   }
   return self;
 }
@@ -1979,6 +2000,16 @@ static TravelResponse* defaultTravelResponseInstance = nil;
       return NO;
     }
   }
+  if (self.hasFlightList) {
+    if (!self.flightList.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasAirHotelOrderList) {
+    if (!self.airHotelOrderList.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2044,6 +2075,12 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (self.hasCityImageList) {
     [output writeMessage:40 value:self.cityImageList];
+  }
+  if (self.hasFlightList) {
+    [output writeMessage:50 value:self.flightList];
+  }
+  if (self.hasAirHotelOrderList) {
+    [output writeMessage:55 value:self.airHotelOrderList];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2116,6 +2153,12 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (self.hasCityImageList) {
     size += computeMessageSize(40, self.cityImageList);
+  }
+  if (self.hasFlightList) {
+    size += computeMessageSize(50, self.flightList);
+  }
+  if (self.hasAirHotelOrderList) {
+    size += computeMessageSize(55, self.airHotelOrderList);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -2254,6 +2297,12 @@ static TravelResponse* defaultTravelResponseInstance = nil;
   }
   if (other.hasCityImageList) {
     [self mergeCityImageList:other.cityImageList];
+  }
+  if (other.hasFlightList) {
+    [self mergeFlightList:other.flightList];
+  }
+  if (other.hasAirHotelOrderList) {
+    [self mergeAirHotelOrderList:other.airHotelOrderList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2448,6 +2497,24 @@ static TravelResponse* defaultTravelResponseInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setCityImageList:[subBuilder buildPartial]];
+        break;
+      }
+      case 402: {
+        FlightList_Builder* subBuilder = [FlightList builder];
+        if (self.hasFlightList) {
+          [subBuilder mergeFrom:self.flightList];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFlightList:[subBuilder buildPartial]];
+        break;
+      }
+      case 442: {
+        AirHotelOrderList_Builder* subBuilder = [AirHotelOrderList builder];
+        if (self.hasAirHotelOrderList) {
+          [subBuilder mergeFrom:self.airHotelOrderList];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAirHotelOrderList:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3039,6 +3106,268 @@ static TravelResponse* defaultTravelResponseInstance = nil;
 - (TravelResponse_Builder*) clearCityImageList {
   result.hasCityImageList = NO;
   result.cityImageList = [CityImageList defaultInstance];
+  return self;
+}
+- (BOOL) hasFlightList {
+  return result.hasFlightList;
+}
+- (FlightList*) flightList {
+  return result.flightList;
+}
+- (TravelResponse_Builder*) setFlightList:(FlightList*) value {
+  result.hasFlightList = YES;
+  result.flightList = value;
+  return self;
+}
+- (TravelResponse_Builder*) setFlightListBuilder:(FlightList_Builder*) builderForValue {
+  return [self setFlightList:[builderForValue build]];
+}
+- (TravelResponse_Builder*) mergeFlightList:(FlightList*) value {
+  if (result.hasFlightList &&
+      result.flightList != [FlightList defaultInstance]) {
+    result.flightList =
+      [[[FlightList builderWithPrototype:result.flightList] mergeFrom:value] buildPartial];
+  } else {
+    result.flightList = value;
+  }
+  result.hasFlightList = YES;
+  return self;
+}
+- (TravelResponse_Builder*) clearFlightList {
+  result.hasFlightList = NO;
+  result.flightList = [FlightList defaultInstance];
+  return self;
+}
+- (BOOL) hasAirHotelOrderList {
+  return result.hasAirHotelOrderList;
+}
+- (AirHotelOrderList*) airHotelOrderList {
+  return result.airHotelOrderList;
+}
+- (TravelResponse_Builder*) setAirHotelOrderList:(AirHotelOrderList*) value {
+  result.hasAirHotelOrderList = YES;
+  result.airHotelOrderList = value;
+  return self;
+}
+- (TravelResponse_Builder*) setAirHotelOrderListBuilder:(AirHotelOrderList_Builder*) builderForValue {
+  return [self setAirHotelOrderList:[builderForValue build]];
+}
+- (TravelResponse_Builder*) mergeAirHotelOrderList:(AirHotelOrderList*) value {
+  if (result.hasAirHotelOrderList &&
+      result.airHotelOrderList != [AirHotelOrderList defaultInstance]) {
+    result.airHotelOrderList =
+      [[[AirHotelOrderList builderWithPrototype:result.airHotelOrderList] mergeFrom:value] buildPartial];
+  } else {
+    result.airHotelOrderList = value;
+  }
+  result.hasAirHotelOrderList = YES;
+  return self;
+}
+- (TravelResponse_Builder*) clearAirHotelOrderList {
+  result.hasAirHotelOrderList = NO;
+  result.airHotelOrderList = [AirHotelOrderList defaultInstance];
+  return self;
+}
+@end
+
+@interface TravelRequest ()
+@property (retain) AirHotelOrder* airHotelOrder;
+@end
+
+@implementation TravelRequest
+
+- (BOOL) hasAirHotelOrder {
+  return !!hasAirHotelOrder_;
+}
+- (void) setHasAirHotelOrder:(BOOL) value {
+  hasAirHotelOrder_ = !!value;
+}
+@synthesize airHotelOrder;
+- (void) dealloc {
+  self.airHotelOrder = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.airHotelOrder = [AirHotelOrder defaultInstance];
+  }
+  return self;
+}
+static TravelRequest* defaultTravelRequestInstance = nil;
++ (void) initialize {
+  if (self == [TravelRequest class]) {
+    defaultTravelRequestInstance = [[TravelRequest alloc] init];
+  }
+}
++ (TravelRequest*) defaultInstance {
+  return defaultTravelRequestInstance;
+}
+- (TravelRequest*) defaultInstance {
+  return defaultTravelRequestInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasAirHotelOrder) {
+    if (!self.airHotelOrder.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasAirHotelOrder) {
+    [output writeMessage:10 value:self.airHotelOrder];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasAirHotelOrder) {
+    size += computeMessageSize(10, self.airHotelOrder);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (TravelRequest*) parseFromData:(NSData*) data {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromData:data] build];
+}
++ (TravelRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (TravelRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromInputStream:input] build];
+}
++ (TravelRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TravelRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromCodedInputStream:input] build];
+}
++ (TravelRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (TravelRequest*)[[[TravelRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (TravelRequest_Builder*) builder {
+  return [[[TravelRequest_Builder alloc] init] autorelease];
+}
++ (TravelRequest_Builder*) builderWithPrototype:(TravelRequest*) prototype {
+  return [[TravelRequest builder] mergeFrom:prototype];
+}
+- (TravelRequest_Builder*) builder {
+  return [TravelRequest builder];
+}
+@end
+
+@interface TravelRequest_Builder()
+@property (retain) TravelRequest* result;
+@end
+
+@implementation TravelRequest_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[TravelRequest alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (TravelRequest_Builder*) clear {
+  self.result = [[[TravelRequest alloc] init] autorelease];
+  return self;
+}
+- (TravelRequest_Builder*) clone {
+  return [TravelRequest builderWithPrototype:result];
+}
+- (TravelRequest*) defaultInstance {
+  return [TravelRequest defaultInstance];
+}
+- (TravelRequest*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (TravelRequest*) buildPartial {
+  TravelRequest* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (TravelRequest_Builder*) mergeFrom:(TravelRequest*) other {
+  if (other == [TravelRequest defaultInstance]) {
+    return self;
+  }
+  if (other.hasAirHotelOrder) {
+    [self mergeAirHotelOrder:other.airHotelOrder];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (TravelRequest_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (TravelRequest_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 82: {
+        AirHotelOrder_Builder* subBuilder = [AirHotelOrder builder];
+        if (self.hasAirHotelOrder) {
+          [subBuilder mergeFrom:self.airHotelOrder];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAirHotelOrder:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasAirHotelOrder {
+  return result.hasAirHotelOrder;
+}
+- (AirHotelOrder*) airHotelOrder {
+  return result.airHotelOrder;
+}
+- (TravelRequest_Builder*) setAirHotelOrder:(AirHotelOrder*) value {
+  result.hasAirHotelOrder = YES;
+  result.airHotelOrder = value;
+  return self;
+}
+- (TravelRequest_Builder*) setAirHotelOrderBuilder:(AirHotelOrder_Builder*) builderForValue {
+  return [self setAirHotelOrder:[builderForValue build]];
+}
+- (TravelRequest_Builder*) mergeAirHotelOrder:(AirHotelOrder*) value {
+  if (result.hasAirHotelOrder &&
+      result.airHotelOrder != [AirHotelOrder defaultInstance]) {
+    result.airHotelOrder =
+      [[[AirHotelOrder builderWithPrototype:result.airHotelOrder] mergeFrom:value] buildPartial];
+  } else {
+    result.airHotelOrder = value;
+  }
+  result.hasAirHotelOrder = YES;
+  return self;
+}
+- (TravelRequest_Builder*) clearAirHotelOrder {
+  result.hasAirHotelOrder = NO;
+  result.airHotelOrder = [AirHotelOrder defaultInstance];
   return self;
 }
 @end

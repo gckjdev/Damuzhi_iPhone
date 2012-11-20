@@ -19,6 +19,306 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
+@interface HotelRoom ()
+@property int32_t roomId;
+@property (retain) NSString* name;
+@property (retain) NSString* breakfast;
+@property (retain) NSString* price;
+@end
+
+@implementation HotelRoom
+
+- (BOOL) hasRoomId {
+  return !!hasRoomId_;
+}
+- (void) setHasRoomId:(BOOL) value {
+  hasRoomId_ = !!value;
+}
+@synthesize roomId;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) value {
+  hasName_ = !!value;
+}
+@synthesize name;
+- (BOOL) hasBreakfast {
+  return !!hasBreakfast_;
+}
+- (void) setHasBreakfast:(BOOL) value {
+  hasBreakfast_ = !!value;
+}
+@synthesize breakfast;
+- (BOOL) hasPrice {
+  return !!hasPrice_;
+}
+- (void) setHasPrice:(BOOL) value {
+  hasPrice_ = !!value;
+}
+@synthesize price;
+- (void) dealloc {
+  self.name = nil;
+  self.breakfast = nil;
+  self.price = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.roomId = 0;
+    self.name = @"";
+    self.breakfast = @"";
+    self.price = @"";
+  }
+  return self;
+}
+static HotelRoom* defaultHotelRoomInstance = nil;
++ (void) initialize {
+  if (self == [HotelRoom class]) {
+    defaultHotelRoomInstance = [[HotelRoom alloc] init];
+  }
+}
++ (HotelRoom*) defaultInstance {
+  return defaultHotelRoomInstance;
+}
+- (HotelRoom*) defaultInstance {
+  return defaultHotelRoomInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasRoomId) {
+    return NO;
+  }
+  if (!self.hasName) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasRoomId) {
+    [output writeInt32:1 value:self.roomId];
+  }
+  if (self.hasName) {
+    [output writeString:2 value:self.name];
+  }
+  if (self.hasBreakfast) {
+    [output writeString:3 value:self.breakfast];
+  }
+  if (self.hasPrice) {
+    [output writeString:4 value:self.price];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasRoomId) {
+    size += computeInt32Size(1, self.roomId);
+  }
+  if (self.hasName) {
+    size += computeStringSize(2, self.name);
+  }
+  if (self.hasBreakfast) {
+    size += computeStringSize(3, self.breakfast);
+  }
+  if (self.hasPrice) {
+    size += computeStringSize(4, self.price);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (HotelRoom*) parseFromData:(NSData*) data {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromData:data] build];
+}
++ (HotelRoom*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (HotelRoom*) parseFromInputStream:(NSInputStream*) input {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromInputStream:input] build];
+}
++ (HotelRoom*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (HotelRoom*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromCodedInputStream:input] build];
+}
++ (HotelRoom*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (HotelRoom*)[[[HotelRoom builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (HotelRoom_Builder*) builder {
+  return [[[HotelRoom_Builder alloc] init] autorelease];
+}
++ (HotelRoom_Builder*) builderWithPrototype:(HotelRoom*) prototype {
+  return [[HotelRoom builder] mergeFrom:prototype];
+}
+- (HotelRoom_Builder*) builder {
+  return [HotelRoom builder];
+}
+@end
+
+@interface HotelRoom_Builder()
+@property (retain) HotelRoom* result;
+@end
+
+@implementation HotelRoom_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[HotelRoom alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (HotelRoom_Builder*) clear {
+  self.result = [[[HotelRoom alloc] init] autorelease];
+  return self;
+}
+- (HotelRoom_Builder*) clone {
+  return [HotelRoom builderWithPrototype:result];
+}
+- (HotelRoom*) defaultInstance {
+  return [HotelRoom defaultInstance];
+}
+- (HotelRoom*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (HotelRoom*) buildPartial {
+  HotelRoom* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (HotelRoom_Builder*) mergeFrom:(HotelRoom*) other {
+  if (other == [HotelRoom defaultInstance]) {
+    return self;
+  }
+  if (other.hasRoomId) {
+    [self setRoomId:other.roomId];
+  }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
+  if (other.hasBreakfast) {
+    [self setBreakfast:other.breakfast];
+  }
+  if (other.hasPrice) {
+    [self setPrice:other.price];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (HotelRoom_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (HotelRoom_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setRoomId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setName:[input readString]];
+        break;
+      }
+      case 26: {
+        [self setBreakfast:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setPrice:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasRoomId {
+  return result.hasRoomId;
+}
+- (int32_t) roomId {
+  return result.roomId;
+}
+- (HotelRoom_Builder*) setRoomId:(int32_t) value {
+  result.hasRoomId = YES;
+  result.roomId = value;
+  return self;
+}
+- (HotelRoom_Builder*) clearRoomId {
+  result.hasRoomId = NO;
+  result.roomId = 0;
+  return self;
+}
+- (BOOL) hasName {
+  return result.hasName;
+}
+- (NSString*) name {
+  return result.name;
+}
+- (HotelRoom_Builder*) setName:(NSString*) value {
+  result.hasName = YES;
+  result.name = value;
+  return self;
+}
+- (HotelRoom_Builder*) clearName {
+  result.hasName = NO;
+  result.name = @"";
+  return self;
+}
+- (BOOL) hasBreakfast {
+  return result.hasBreakfast;
+}
+- (NSString*) breakfast {
+  return result.breakfast;
+}
+- (HotelRoom_Builder*) setBreakfast:(NSString*) value {
+  result.hasBreakfast = YES;
+  result.breakfast = value;
+  return self;
+}
+- (HotelRoom_Builder*) clearBreakfast {
+  result.hasBreakfast = NO;
+  result.breakfast = @"";
+  return self;
+}
+- (BOOL) hasPrice {
+  return result.hasPrice;
+}
+- (NSString*) price {
+  return result.price;
+}
+- (HotelRoom_Builder*) setPrice:(NSString*) value {
+  result.hasPrice = YES;
+  result.price = value;
+  return self;
+}
+- (HotelRoom_Builder*) clearPrice {
+  result.hasPrice = NO;
+  result.price = @"";
+  return self;
+}
+@end
+
 @interface Place ()
 @property int32_t placeId;
 @property int32_t cityId;
@@ -49,6 +349,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @property (retain) NSString* parkingGuide;
 @property int32_t placeFavoriteCount;
 @property int32_t hasDiscount;
+@property (retain) NSMutableArray* mutableRoomsList;
 @end
 
 @implementation Place
@@ -220,6 +521,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
   hasHasDiscount_ = !!value;
 }
 @synthesize hasDiscount;
+@synthesize mutableRoomsList;
 - (void) dealloc {
   self.name = nil;
   self.mutableProvidedServiceIdList = nil;
@@ -238,6 +540,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
   self.mutableKeywordsList = nil;
   self.mutableTypicalDishesList = nil;
   self.parkingGuide = nil;
+  self.mutableRoomsList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -322,6 +625,13 @@ static Place* defaultPlaceInstance = nil;
   id value = [mutableTypicalDishesList objectAtIndex:index];
   return value;
 }
+- (NSArray*) roomsList {
+  return mutableRoomsList;
+}
+- (HotelRoom*) roomsAtIndex:(int32_t) index {
+  id value = [mutableRoomsList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
   if (!self.hasPlaceId) {
     return NO;
@@ -349,6 +659,11 @@ static Place* defaultPlaceInstance = nil;
   }
   if (!self.hasIntroduction) {
     return NO;
+  }
+  for (HotelRoom* element in self.roomsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
   }
   return YES;
 }
@@ -439,6 +754,9 @@ static Place* defaultPlaceInstance = nil;
   }
   if (self.hasHasDiscount) {
     [output writeInt32:61 value:self.hasDiscount];
+  }
+  for (HotelRoom* element in self.roomsList) {
+    [output writeMessage:70 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -565,6 +883,9 @@ static Place* defaultPlaceInstance = nil;
   }
   if (self.hasHasDiscount) {
     size += computeInt32Size(61, self.hasDiscount);
+  }
+  for (HotelRoom* element in self.roomsList) {
+    size += computeMessageSize(70, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -746,6 +1067,12 @@ static Place* defaultPlaceInstance = nil;
   if (other.hasHasDiscount) {
     [self setHasDiscount:other.hasDiscount];
   }
+  if (other.mutableRoomsList.count > 0) {
+    if (result.mutableRoomsList == nil) {
+      result.mutableRoomsList = [NSMutableArray array];
+    }
+    [result.mutableRoomsList addObjectsFromArray:other.mutableRoomsList];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -881,6 +1208,12 @@ static Place* defaultPlaceInstance = nil;
       }
       case 488: {
         [self setHasDiscount:[input readInt32]];
+        break;
+      }
+      case 562: {
+        HotelRoom_Builder* subBuilder = [HotelRoom builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addRooms:[subBuilder buildPartial]];
         break;
       }
     }
@@ -1438,6 +1771,35 @@ static Place* defaultPlaceInstance = nil;
 - (Place_Builder*) clearHasDiscount {
   result.hasHasDiscount = NO;
   result.hasDiscount = 0;
+  return self;
+}
+- (NSArray*) roomsList {
+  if (result.mutableRoomsList == nil) { return [NSArray array]; }
+  return result.mutableRoomsList;
+}
+- (HotelRoom*) roomsAtIndex:(int32_t) index {
+  return [result roomsAtIndex:index];
+}
+- (Place_Builder*) replaceRoomsAtIndex:(int32_t) index with:(HotelRoom*) value {
+  [result.mutableRoomsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (Place_Builder*) addAllRooms:(NSArray*) values {
+  if (result.mutableRoomsList == nil) {
+    result.mutableRoomsList = [NSMutableArray array];
+  }
+  [result.mutableRoomsList addObjectsFromArray:values];
+  return self;
+}
+- (Place_Builder*) clearRoomsList {
+  result.mutableRoomsList = nil;
+  return self;
+}
+- (Place_Builder*) addRooms:(HotelRoom*) value {
+  if (result.mutableRoomsList == nil) {
+    result.mutableRoomsList = [NSMutableArray array];
+  }
+  [result.mutableRoomsList addObject:value];
   return self;
 }
 @end

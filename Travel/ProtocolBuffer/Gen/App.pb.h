@@ -24,8 +24,6 @@
 @class DailySchedule_Builder;
 @class DepartPlace;
 @class DepartPlace_Builder;
-@class Flight;
-@class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;
 @class LocalRoute;
@@ -898,17 +896,22 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   BOOL hasServiceTelephone_:1;
   NSString* dataVersion;
   NSString* serviceTelephone;
-  NSMutableArray* mutableCitiesList;
-  NSMutableArray* mutableTestCitiesList;
-  NSMutableArray* mutablePlaceMetaDataListList;
-  NSMutableArray* mutableRecommendedAppsList;
-  NSMutableArray* mutableRegionsList;
-  NSMutableArray* mutableDepartCitiesList;
-  NSMutableArray* mutableDestinationCitiesList;
-  NSMutableArray* mutableRouteThemesList;
-  NSMutableArray* mutableRouteCategorysList;
-  NSMutableArray* mutableAgenciesList;
+  NSMutableArray* mutableBanksList;
+  NSMutableArray* mutableIssuePlacesList;
+  NSMutableArray* mutableCardsList;
+  NSMutableArray* mutableNationalitysList;
+  NSMutableArray* mutableAirlinesList;
   NSMutableArray* mutableCityGroupsList;
+  NSMutableArray* mutableAgenciesList;
+  NSMutableArray* mutableRouteCategorysList;
+  NSMutableArray* mutableRouteThemesList;
+  NSMutableArray* mutableDestinationCitiesList;
+  NSMutableArray* mutableDepartCitiesList;
+  NSMutableArray* mutableRegionsList;
+  NSMutableArray* mutableRecommendedAppsList;
+  NSMutableArray* mutablePlaceMetaDataListList;
+  NSMutableArray* mutableTestCitiesList;
+  NSMutableArray* mutableCitiesList;
 }
 - (BOOL) hasDataVersion;
 - (BOOL) hasServiceTelephone;
@@ -936,6 +939,16 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (Agency*) agenciesAtIndex:(int32_t) index;
 - (NSArray*) cityGroupsList;
 - (CityGroup*) cityGroupsAtIndex:(int32_t) index;
+- (NSArray*) airlinesList;
+- (NameIdPair*) airlinesAtIndex:(int32_t) index;
+- (NSArray*) nationalitysList;
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index;
+- (NSArray*) cardsList;
+- (NameIdPair*) cardsAtIndex:(int32_t) index;
+- (NSArray*) issuePlacesList;
+- (NameIdPair*) issuePlacesAtIndex:(int32_t) index;
+- (NSArray*) banksList;
+- (NameIdPair*) banksAtIndex:(int32_t) index;
 
 + (App*) defaultInstance;
 - (App*) defaultInstance;
@@ -1057,5 +1070,40 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (App_Builder*) addCityGroups:(CityGroup*) value;
 - (App_Builder*) addAllCityGroups:(NSArray*) values;
 - (App_Builder*) clearCityGroupsList;
+
+- (NSArray*) airlinesList;
+- (NameIdPair*) airlinesAtIndex:(int32_t) index;
+- (App_Builder*) replaceAirlinesAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addAirlines:(NameIdPair*) value;
+- (App_Builder*) addAllAirlines:(NSArray*) values;
+- (App_Builder*) clearAirlinesList;
+
+- (NSArray*) nationalitysList;
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index;
+- (App_Builder*) replaceNationalitysAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addNationalitys:(NameIdPair*) value;
+- (App_Builder*) addAllNationalitys:(NSArray*) values;
+- (App_Builder*) clearNationalitysList;
+
+- (NSArray*) cardsList;
+- (NameIdPair*) cardsAtIndex:(int32_t) index;
+- (App_Builder*) replaceCardsAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addCards:(NameIdPair*) value;
+- (App_Builder*) addAllCards:(NSArray*) values;
+- (App_Builder*) clearCardsList;
+
+- (NSArray*) issuePlacesList;
+- (NameIdPair*) issuePlacesAtIndex:(int32_t) index;
+- (App_Builder*) replaceIssuePlacesAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addIssuePlaces:(NameIdPair*) value;
+- (App_Builder*) addAllIssuePlaces:(NSArray*) values;
+- (App_Builder*) clearIssuePlacesList;
+
+- (NSArray*) banksList;
+- (NameIdPair*) banksAtIndex:(int32_t) index;
+- (App_Builder*) replaceBanksAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addBanks:(NameIdPair*) value;
+- (App_Builder*) addAllBanks:(NSArray*) values;
+- (App_Builder*) clearBanksList;
 @end
 

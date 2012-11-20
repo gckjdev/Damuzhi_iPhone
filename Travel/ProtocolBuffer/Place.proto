@@ -4,7 +4,7 @@ package damuzhi;
 option java_package = "com.damuzhi.travel";
 option java_outer_classname = "PlaceListProtos";
 
-messag HotelRoom {
+message HotelRoom {
     required int32 roomId = 1;              //房间id
     required string name = 2;               //房间名称
     optional string breakfast = 3;          //早餐信息

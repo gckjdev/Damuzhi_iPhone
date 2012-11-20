@@ -7,11 +7,18 @@
 #import "TravelTips.pb.h"
 #import "App.pb.h"
 #import "TouristRoute.pb.h"
+#import "AirHotel.pb.h"
 
 @class Accommodation;
 @class Accommodation_Builder;
 @class Agency;
 @class Agency_Builder;
+@class AirHotelOrder;
+@class AirHotelOrderList;
+@class AirHotelOrderList_Builder;
+@class AirHotelOrder_Builder;
+@class AirOrder;
+@class AirOrder_Builder;
 @class App;
 @class App_Builder;
 @class Booking;
@@ -36,14 +43,26 @@
 @class CommonTravelTipList;
 @class CommonTravelTipList_Builder;
 @class CommonTravelTip_Builder;
+@class CreditCard;
+@class CreditCard_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
 @class DepartPlace;
 @class DepartPlace_Builder;
 @class Flight;
+@class FlightClass;
+@class FlightClass_Builder;
+@class FlightList;
+@class FlightList_Builder;
 @class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;
+@class HotelOrder;
+@class HotelOrderRoomInfo;
+@class HotelOrderRoomInfo_Builder;
+@class HotelOrder_Builder;
+@class HotelRoom;
+@class HotelRoom_Builder;
 @class LocalRoute;
 @class LocalRouteList;
 @class LocalRouteList_Builder;
@@ -56,6 +75,10 @@
 @class Order_Builder;
 @class Package;
 @class Package_Builder;
+@class PaymentInfo;
+@class PaymentInfo_Builder;
+@class Person;
+@class Person_Builder;
 @class Place;
 @class PlaceList;
 @class PlaceList_Builder;
@@ -86,6 +109,8 @@
 @class TouristRoute_Builder;
 @class TravelPackage;
 @class TravelPackage_Builder;
+@class TravelRequest;
+@class TravelRequest_Builder;
 @class TravelResponse;
 @class TravelResponse_Builder;
 @class TravelTips;
@@ -503,9 +528,11 @@ BOOL LoginTypeIsValidValue(LoginType value);
 
 @interface TravelResponse : PBGeneratedMessage {
 @private
-  BOOL hasResultCode_:1;
   BOOL hasTotalCount_:1;
+  BOOL hasResultCode_:1;
   BOOL hasResultInfo_:1;
+  BOOL hasAirHotelOrderList_:1;
+  BOOL hasFlightList_:1;
   BOOL hasCityImageList_:1;
   BOOL hasOrderList_:1;
   BOOL hasRouteFeekbackList_:1;
@@ -524,9 +551,11 @@ BOOL LoginTypeIsValidValue(LoginType value);
   BOOL hasTravelTip_:1;
   BOOL hasOverview_:1;
   BOOL hasPlace_:1;
-  int32_t resultCode;
   int32_t totalCount;
+  int32_t resultCode;
   NSString* resultInfo;
+  AirHotelOrderList* airHotelOrderList;
+  FlightList* flightList;
   CityImageList* cityImageList;
   OrderList* orderList;
   RouteFeekbackList* routeFeekbackList;
@@ -567,6 +596,8 @@ BOOL LoginTypeIsValidValue(LoginType value);
 - (BOOL) hasRouteFeekbackList;
 - (BOOL) hasOrderList;
 - (BOOL) hasCityImageList;
+- (BOOL) hasFlightList;
+- (BOOL) hasAirHotelOrderList;
 @property (readonly) int32_t resultCode;
 @property (readonly, retain) NSString* resultInfo;
 @property (readonly, retain) Place* place;
@@ -588,6 +619,8 @@ BOOL LoginTypeIsValidValue(LoginType value);
 @property (readonly, retain) RouteFeekbackList* routeFeekbackList;
 @property (readonly, retain) OrderList* orderList;
 @property (readonly, retain) CityImageList* cityImageList;
+@property (readonly, retain) FlightList* flightList;
+@property (readonly, retain) AirHotelOrderList* airHotelOrderList;
 
 + (TravelResponse*) defaultInstance;
 - (TravelResponse*) defaultInstance;
@@ -763,5 +796,69 @@ BOOL LoginTypeIsValidValue(LoginType value);
 - (TravelResponse_Builder*) setCityImageListBuilder:(CityImageList_Builder*) builderForValue;
 - (TravelResponse_Builder*) mergeCityImageList:(CityImageList*) value;
 - (TravelResponse_Builder*) clearCityImageList;
+
+- (BOOL) hasFlightList;
+- (FlightList*) flightList;
+- (TravelResponse_Builder*) setFlightList:(FlightList*) value;
+- (TravelResponse_Builder*) setFlightListBuilder:(FlightList_Builder*) builderForValue;
+- (TravelResponse_Builder*) mergeFlightList:(FlightList*) value;
+- (TravelResponse_Builder*) clearFlightList;
+
+- (BOOL) hasAirHotelOrderList;
+- (AirHotelOrderList*) airHotelOrderList;
+- (TravelResponse_Builder*) setAirHotelOrderList:(AirHotelOrderList*) value;
+- (TravelResponse_Builder*) setAirHotelOrderListBuilder:(AirHotelOrderList_Builder*) builderForValue;
+- (TravelResponse_Builder*) mergeAirHotelOrderList:(AirHotelOrderList*) value;
+- (TravelResponse_Builder*) clearAirHotelOrderList;
+@end
+
+@interface TravelRequest : PBGeneratedMessage {
+@private
+  BOOL hasAirHotelOrder_:1;
+  AirHotelOrder* airHotelOrder;
+}
+- (BOOL) hasAirHotelOrder;
+@property (readonly, retain) AirHotelOrder* airHotelOrder;
+
++ (TravelRequest*) defaultInstance;
+- (TravelRequest*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (TravelRequest_Builder*) builder;
++ (TravelRequest_Builder*) builder;
++ (TravelRequest_Builder*) builderWithPrototype:(TravelRequest*) prototype;
+
++ (TravelRequest*) parseFromData:(NSData*) data;
++ (TravelRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TravelRequest*) parseFromInputStream:(NSInputStream*) input;
++ (TravelRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (TravelRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (TravelRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface TravelRequest_Builder : PBGeneratedMessage_Builder {
+@private
+  TravelRequest* result;
+}
+
+- (TravelRequest*) defaultInstance;
+
+- (TravelRequest_Builder*) clear;
+- (TravelRequest_Builder*) clone;
+
+- (TravelRequest*) build;
+- (TravelRequest*) buildPartial;
+
+- (TravelRequest_Builder*) mergeFrom:(TravelRequest*) other;
+- (TravelRequest_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (TravelRequest_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasAirHotelOrder;
+- (AirHotelOrder*) airHotelOrder;
+- (TravelRequest_Builder*) setAirHotelOrder:(AirHotelOrder*) value;
+- (TravelRequest_Builder*) setAirHotelOrderBuilder:(AirHotelOrder_Builder*) builderForValue;
+- (TravelRequest_Builder*) mergeAirHotelOrder:(AirHotelOrder*) value;
+- (TravelRequest_Builder*) clearAirHotelOrder;
 @end
 

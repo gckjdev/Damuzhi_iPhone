@@ -3407,6 +3407,11 @@ static CityGroup* defaultCityGroupInstance = nil;
 @property (retain) NSMutableArray* mutableAgenciesList;
 @property (retain) NSString* serviceTelephone;
 @property (retain) NSMutableArray* mutableCityGroupsList;
+@property (retain) NSMutableArray* mutableAirlinesList;
+@property (retain) NSMutableArray* mutableNationalitysList;
+@property (retain) NSMutableArray* mutableCardsList;
+@property (retain) NSMutableArray* mutableIssuePlacesList;
+@property (retain) NSMutableArray* mutableBanksList;
 @end
 
 @implementation App
@@ -3436,6 +3441,11 @@ static CityGroup* defaultCityGroupInstance = nil;
 }
 @synthesize serviceTelephone;
 @synthesize mutableCityGroupsList;
+@synthesize mutableAirlinesList;
+@synthesize mutableNationalitysList;
+@synthesize mutableCardsList;
+@synthesize mutableIssuePlacesList;
+@synthesize mutableBanksList;
 - (void) dealloc {
   self.dataVersion = nil;
   self.mutableCitiesList = nil;
@@ -3450,6 +3460,11 @@ static CityGroup* defaultCityGroupInstance = nil;
   self.mutableAgenciesList = nil;
   self.serviceTelephone = nil;
   self.mutableCityGroupsList = nil;
+  self.mutableAirlinesList = nil;
+  self.mutableNationalitysList = nil;
+  self.mutableCardsList = nil;
+  self.mutableIssuePlacesList = nil;
+  self.mutableBanksList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3548,6 +3563,41 @@ static App* defaultAppInstance = nil;
   id value = [mutableCityGroupsList objectAtIndex:index];
   return value;
 }
+- (NSArray*) airlinesList {
+  return mutableAirlinesList;
+}
+- (NameIdPair*) airlinesAtIndex:(int32_t) index {
+  id value = [mutableAirlinesList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) nationalitysList {
+  return mutableNationalitysList;
+}
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index {
+  id value = [mutableNationalitysList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) cardsList {
+  return mutableCardsList;
+}
+- (NameIdPair*) cardsAtIndex:(int32_t) index {
+  id value = [mutableCardsList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) issuePlacesList {
+  return mutableIssuePlacesList;
+}
+- (NameIdPair*) issuePlacesAtIndex:(int32_t) index {
+  id value = [mutableIssuePlacesList objectAtIndex:index];
+  return value;
+}
+- (NSArray*) banksList {
+  return mutableBanksList;
+}
+- (NameIdPair*) banksAtIndex:(int32_t) index {
+  id value = [mutableBanksList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
   if (!self.hasDataVersion) {
     return NO;
@@ -3607,6 +3657,31 @@ static App* defaultAppInstance = nil;
       return NO;
     }
   }
+  for (NameIdPair* element in self.airlinesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (NameIdPair* element in self.nationalitysList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (NameIdPair* element in self.cardsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (NameIdPair* element in self.issuePlacesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  for (NameIdPair* element in self.banksList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -3648,6 +3723,21 @@ static App* defaultAppInstance = nil;
   }
   if (self.hasServiceTelephone) {
     [output writeString:100 value:self.serviceTelephone];
+  }
+  for (NameIdPair* element in self.airlinesList) {
+    [output writeMessage:110 value:element];
+  }
+  for (NameIdPair* element in self.nationalitysList) {
+    [output writeMessage:112 value:element];
+  }
+  for (NameIdPair* element in self.cardsList) {
+    [output writeMessage:113 value:element];
+  }
+  for (NameIdPair* element in self.issuePlacesList) {
+    [output writeMessage:114 value:element];
+  }
+  for (NameIdPair* element in self.banksList) {
+    [output writeMessage:115 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3696,6 +3786,21 @@ static App* defaultAppInstance = nil;
   }
   if (self.hasServiceTelephone) {
     size += computeStringSize(100, self.serviceTelephone);
+  }
+  for (NameIdPair* element in self.airlinesList) {
+    size += computeMessageSize(110, element);
+  }
+  for (NameIdPair* element in self.nationalitysList) {
+    size += computeMessageSize(112, element);
+  }
+  for (NameIdPair* element in self.cardsList) {
+    size += computeMessageSize(113, element);
+  }
+  for (NameIdPair* element in self.issuePlacesList) {
+    size += computeMessageSize(114, element);
+  }
+  for (NameIdPair* element in self.banksList) {
+    size += computeMessageSize(115, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3844,6 +3949,36 @@ static App* defaultAppInstance = nil;
     }
     [result.mutableCityGroupsList addObjectsFromArray:other.mutableCityGroupsList];
   }
+  if (other.mutableAirlinesList.count > 0) {
+    if (result.mutableAirlinesList == nil) {
+      result.mutableAirlinesList = [NSMutableArray array];
+    }
+    [result.mutableAirlinesList addObjectsFromArray:other.mutableAirlinesList];
+  }
+  if (other.mutableNationalitysList.count > 0) {
+    if (result.mutableNationalitysList == nil) {
+      result.mutableNationalitysList = [NSMutableArray array];
+    }
+    [result.mutableNationalitysList addObjectsFromArray:other.mutableNationalitysList];
+  }
+  if (other.mutableCardsList.count > 0) {
+    if (result.mutableCardsList == nil) {
+      result.mutableCardsList = [NSMutableArray array];
+    }
+    [result.mutableCardsList addObjectsFromArray:other.mutableCardsList];
+  }
+  if (other.mutableIssuePlacesList.count > 0) {
+    if (result.mutableIssuePlacesList == nil) {
+      result.mutableIssuePlacesList = [NSMutableArray array];
+    }
+    [result.mutableIssuePlacesList addObjectsFromArray:other.mutableIssuePlacesList];
+  }
+  if (other.mutableBanksList.count > 0) {
+    if (result.mutableBanksList == nil) {
+      result.mutableBanksList = [NSMutableArray array];
+    }
+    [result.mutableBanksList addObjectsFromArray:other.mutableBanksList];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3937,6 +4072,36 @@ static App* defaultAppInstance = nil;
       }
       case 802: {
         [self setServiceTelephone:[input readString]];
+        break;
+      }
+      case 882: {
+        NameIdPair_Builder* subBuilder = [NameIdPair builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addAirlines:[subBuilder buildPartial]];
+        break;
+      }
+      case 898: {
+        NameIdPair_Builder* subBuilder = [NameIdPair builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addNationalitys:[subBuilder buildPartial]];
+        break;
+      }
+      case 906: {
+        NameIdPair_Builder* subBuilder = [NameIdPair builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addCards:[subBuilder buildPartial]];
+        break;
+      }
+      case 914: {
+        NameIdPair_Builder* subBuilder = [NameIdPair builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addIssuePlaces:[subBuilder buildPartial]];
+        break;
+      }
+      case 922: {
+        NameIdPair_Builder* subBuilder = [NameIdPair builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addBanks:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4291,6 +4456,151 @@ static App* defaultAppInstance = nil;
     result.mutableCityGroupsList = [NSMutableArray array];
   }
   [result.mutableCityGroupsList addObject:value];
+  return self;
+}
+- (NSArray*) airlinesList {
+  if (result.mutableAirlinesList == nil) { return [NSArray array]; }
+  return result.mutableAirlinesList;
+}
+- (NameIdPair*) airlinesAtIndex:(int32_t) index {
+  return [result airlinesAtIndex:index];
+}
+- (App_Builder*) replaceAirlinesAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableAirlinesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllAirlines:(NSArray*) values {
+  if (result.mutableAirlinesList == nil) {
+    result.mutableAirlinesList = [NSMutableArray array];
+  }
+  [result.mutableAirlinesList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearAirlinesList {
+  result.mutableAirlinesList = nil;
+  return self;
+}
+- (App_Builder*) addAirlines:(NameIdPair*) value {
+  if (result.mutableAirlinesList == nil) {
+    result.mutableAirlinesList = [NSMutableArray array];
+  }
+  [result.mutableAirlinesList addObject:value];
+  return self;
+}
+- (NSArray*) nationalitysList {
+  if (result.mutableNationalitysList == nil) { return [NSArray array]; }
+  return result.mutableNationalitysList;
+}
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index {
+  return [result nationalitysAtIndex:index];
+}
+- (App_Builder*) replaceNationalitysAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableNationalitysList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllNationalitys:(NSArray*) values {
+  if (result.mutableNationalitysList == nil) {
+    result.mutableNationalitysList = [NSMutableArray array];
+  }
+  [result.mutableNationalitysList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearNationalitysList {
+  result.mutableNationalitysList = nil;
+  return self;
+}
+- (App_Builder*) addNationalitys:(NameIdPair*) value {
+  if (result.mutableNationalitysList == nil) {
+    result.mutableNationalitysList = [NSMutableArray array];
+  }
+  [result.mutableNationalitysList addObject:value];
+  return self;
+}
+- (NSArray*) cardsList {
+  if (result.mutableCardsList == nil) { return [NSArray array]; }
+  return result.mutableCardsList;
+}
+- (NameIdPair*) cardsAtIndex:(int32_t) index {
+  return [result cardsAtIndex:index];
+}
+- (App_Builder*) replaceCardsAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableCardsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllCards:(NSArray*) values {
+  if (result.mutableCardsList == nil) {
+    result.mutableCardsList = [NSMutableArray array];
+  }
+  [result.mutableCardsList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearCardsList {
+  result.mutableCardsList = nil;
+  return self;
+}
+- (App_Builder*) addCards:(NameIdPair*) value {
+  if (result.mutableCardsList == nil) {
+    result.mutableCardsList = [NSMutableArray array];
+  }
+  [result.mutableCardsList addObject:value];
+  return self;
+}
+- (NSArray*) issuePlacesList {
+  if (result.mutableIssuePlacesList == nil) { return [NSArray array]; }
+  return result.mutableIssuePlacesList;
+}
+- (NameIdPair*) issuePlacesAtIndex:(int32_t) index {
+  return [result issuePlacesAtIndex:index];
+}
+- (App_Builder*) replaceIssuePlacesAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableIssuePlacesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllIssuePlaces:(NSArray*) values {
+  if (result.mutableIssuePlacesList == nil) {
+    result.mutableIssuePlacesList = [NSMutableArray array];
+  }
+  [result.mutableIssuePlacesList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearIssuePlacesList {
+  result.mutableIssuePlacesList = nil;
+  return self;
+}
+- (App_Builder*) addIssuePlaces:(NameIdPair*) value {
+  if (result.mutableIssuePlacesList == nil) {
+    result.mutableIssuePlacesList = [NSMutableArray array];
+  }
+  [result.mutableIssuePlacesList addObject:value];
+  return self;
+}
+- (NSArray*) banksList {
+  if (result.mutableBanksList == nil) { return [NSArray array]; }
+  return result.mutableBanksList;
+}
+- (NameIdPair*) banksAtIndex:(int32_t) index {
+  return [result banksAtIndex:index];
+}
+- (App_Builder*) replaceBanksAtIndex:(int32_t) index with:(NameIdPair*) value {
+  [result.mutableBanksList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllBanks:(NSArray*) values {
+  if (result.mutableBanksList == nil) {
+    result.mutableBanksList = [NSMutableArray array];
+  }
+  [result.mutableBanksList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearBanksList {
+  result.mutableBanksList = nil;
+  return self;
+}
+- (App_Builder*) addBanks:(NameIdPair*) value {
+  if (result.mutableBanksList == nil) {
+    result.mutableBanksList = [NSMutableArray array];
+  }
+  [result.mutableBanksList addObject:value];
   return self;
 }
 @end

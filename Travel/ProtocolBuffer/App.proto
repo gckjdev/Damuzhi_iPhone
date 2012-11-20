@@ -121,9 +121,12 @@ message App {
   repeated CityGroup cityGroups = 80;                // 城市分组
   
   repeated NameIdPair airlines = 110;               //航空公司
-  repeated NameIdPair nationalitys = 111;           //国籍
-  repeated NameIdPair cards = 112;                  //证件类型
-  repeated NameIdPair issuePlaces = 113;            //签发地
-  repeated NameIdPair banks = 114;                  //银行
+  repeated NameIdPair nationalitys = 112;           //国籍
+  repeated NameIdPair cards = 113;                  //证件类型
+  repeated NameIdPair issuePlaces = 114;            //签发地（和国家一样？？？）
+  repeated NameIdPair banks = 115;                  //银行
+
+//  repeated NameIdPair flightClass = 111;            //舱位类型
+
 }
 
