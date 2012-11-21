@@ -11,10 +11,10 @@
 @class CreditCard;
 @class CreditCard_Builder;
 @class Flight;
-@class FlightClass;
-@class FlightClass_Builder;
 @class FlightList;
 @class FlightList_Builder;
+@class FlightSeat;
+@class FlightSeat_Builder;
 @class Flight_Builder;
 @class HotelOrder;
 @class HotelOrderRoomInfo;
@@ -333,124 +333,106 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (HotelOrder_Builder*) clearCheckInPersonsList;
 @end
 
-@interface FlightClass : PBGeneratedMessage {
+@interface FlightSeat : PBGeneratedMessage {
 @private
-  BOOL hasType_:1;
-  BOOL hasRemainingCount_:1;
+  BOOL hasCode_:1;
   BOOL hasName_:1;
+  BOOL hasRemainingCount_:1;
   BOOL hasTicketPrice_:1;
-  BOOL hasAirportFee_:1;
-  BOOL hasFuelFee_:1;
   BOOL hasPrice_:1;
   BOOL hasRefundNote_:1;
   BOOL hasChangeNote_:1;
-  int32_t type;
-  int32_t remainingCount;
+  NSString* code;
   NSString* name;
+  NSString* remainingCount;
   NSString* ticketPrice;
-  NSString* airportFee;
-  NSString* fuelFee;
   NSString* price;
   NSString* refundNote;
   NSString* changeNote;
 }
-- (BOOL) hasType;
+- (BOOL) hasCode;
 - (BOOL) hasName;
 - (BOOL) hasRemainingCount;
 - (BOOL) hasTicketPrice;
-- (BOOL) hasAirportFee;
-- (BOOL) hasFuelFee;
 - (BOOL) hasPrice;
 - (BOOL) hasRefundNote;
 - (BOOL) hasChangeNote;
-@property (readonly) int32_t type;
+@property (readonly, retain) NSString* code;
 @property (readonly, retain) NSString* name;
-@property (readonly) int32_t remainingCount;
+@property (readonly, retain) NSString* remainingCount;
 @property (readonly, retain) NSString* ticketPrice;
-@property (readonly, retain) NSString* airportFee;
-@property (readonly, retain) NSString* fuelFee;
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) NSString* refundNote;
 @property (readonly, retain) NSString* changeNote;
 
-+ (FlightClass*) defaultInstance;
-- (FlightClass*) defaultInstance;
++ (FlightSeat*) defaultInstance;
+- (FlightSeat*) defaultInstance;
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (FlightClass_Builder*) builder;
-+ (FlightClass_Builder*) builder;
-+ (FlightClass_Builder*) builderWithPrototype:(FlightClass*) prototype;
+- (FlightSeat_Builder*) builder;
++ (FlightSeat_Builder*) builder;
++ (FlightSeat_Builder*) builderWithPrototype:(FlightSeat*) prototype;
 
-+ (FlightClass*) parseFromData:(NSData*) data;
-+ (FlightClass*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (FlightClass*) parseFromInputStream:(NSInputStream*) input;
-+ (FlightClass*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (FlightClass*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (FlightClass*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (FlightSeat*) parseFromData:(NSData*) data;
++ (FlightSeat*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (FlightSeat*) parseFromInputStream:(NSInputStream*) input;
++ (FlightSeat*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (FlightSeat*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (FlightSeat*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
-@interface FlightClass_Builder : PBGeneratedMessage_Builder {
+@interface FlightSeat_Builder : PBGeneratedMessage_Builder {
 @private
-  FlightClass* result;
+  FlightSeat* result;
 }
 
-- (FlightClass*) defaultInstance;
+- (FlightSeat*) defaultInstance;
 
-- (FlightClass_Builder*) clear;
-- (FlightClass_Builder*) clone;
+- (FlightSeat_Builder*) clear;
+- (FlightSeat_Builder*) clone;
 
-- (FlightClass*) build;
-- (FlightClass*) buildPartial;
+- (FlightSeat*) build;
+- (FlightSeat*) buildPartial;
 
-- (FlightClass_Builder*) mergeFrom:(FlightClass*) other;
-- (FlightClass_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (FlightClass_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+- (FlightSeat_Builder*) mergeFrom:(FlightSeat*) other;
+- (FlightSeat_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (FlightSeat_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (BOOL) hasType;
-- (int32_t) type;
-- (FlightClass_Builder*) setType:(int32_t) value;
-- (FlightClass_Builder*) clearType;
+- (BOOL) hasCode;
+- (NSString*) code;
+- (FlightSeat_Builder*) setCode:(NSString*) value;
+- (FlightSeat_Builder*) clearCode;
 
 - (BOOL) hasName;
 - (NSString*) name;
-- (FlightClass_Builder*) setName:(NSString*) value;
-- (FlightClass_Builder*) clearName;
+- (FlightSeat_Builder*) setName:(NSString*) value;
+- (FlightSeat_Builder*) clearName;
 
 - (BOOL) hasRemainingCount;
-- (int32_t) remainingCount;
-- (FlightClass_Builder*) setRemainingCount:(int32_t) value;
-- (FlightClass_Builder*) clearRemainingCount;
+- (NSString*) remainingCount;
+- (FlightSeat_Builder*) setRemainingCount:(NSString*) value;
+- (FlightSeat_Builder*) clearRemainingCount;
 
 - (BOOL) hasTicketPrice;
 - (NSString*) ticketPrice;
-- (FlightClass_Builder*) setTicketPrice:(NSString*) value;
-- (FlightClass_Builder*) clearTicketPrice;
-
-- (BOOL) hasAirportFee;
-- (NSString*) airportFee;
-- (FlightClass_Builder*) setAirportFee:(NSString*) value;
-- (FlightClass_Builder*) clearAirportFee;
-
-- (BOOL) hasFuelFee;
-- (NSString*) fuelFee;
-- (FlightClass_Builder*) setFuelFee:(NSString*) value;
-- (FlightClass_Builder*) clearFuelFee;
+- (FlightSeat_Builder*) setTicketPrice:(NSString*) value;
+- (FlightSeat_Builder*) clearTicketPrice;
 
 - (BOOL) hasPrice;
 - (NSString*) price;
-- (FlightClass_Builder*) setPrice:(NSString*) value;
-- (FlightClass_Builder*) clearPrice;
+- (FlightSeat_Builder*) setPrice:(NSString*) value;
+- (FlightSeat_Builder*) clearPrice;
 
 - (BOOL) hasRefundNote;
 - (NSString*) refundNote;
-- (FlightClass_Builder*) setRefundNote:(NSString*) value;
-- (FlightClass_Builder*) clearRefundNote;
+- (FlightSeat_Builder*) setRefundNote:(NSString*) value;
+- (FlightSeat_Builder*) clearRefundNote;
 
 - (BOOL) hasChangeNote;
 - (NSString*) changeNote;
-- (FlightClass_Builder*) setChangeNote:(NSString*) value;
-- (FlightClass_Builder*) clearChangeNote;
+- (FlightSeat_Builder*) setChangeNote:(NSString*) value;
+- (FlightSeat_Builder*) clearChangeNote;
 @end
 
 @interface Flight : PBGeneratedMessage {
@@ -460,26 +442,34 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   BOOL hasDepartDate_:1;
   BOOL hasArriveDate_:1;
   BOOL hasFlightNumber_:1;
-  BOOL hasCraftType_:1;
+  BOOL hasPlaneType_:1;
   BOOL hasPrice_:1;
   BOOL hasDepartAirport_:1;
   BOOL hasArriveAirport_:1;
   BOOL hasTransitInfo_:1;
+  BOOL hasAdultAirportTax_:1;
+  BOOL hasChildAirportTax_:1;
+  BOOL hasAdultFuelTax_:1;
+  BOOL hasChildFuelTax_:1;
   BOOL transit_:1;
   int32_t airlineId;
   int32_t departDate;
   int32_t arriveDate;
   NSString* flightNumber;
-  NSString* craftType;
+  NSString* planeType;
   NSString* price;
   NSString* departAirport;
   NSString* arriveAirport;
   NSString* transitInfo;
-  NSMutableArray* mutableFlightClassesList;
+  NSString* adultAirportTax;
+  NSString* childAirportTax;
+  NSString* adultFuelTax;
+  NSString* childFuelTax;
+  NSMutableArray* mutableFlightSeatsList;
 }
 - (BOOL) hasFlightNumber;
 - (BOOL) hasAirlineId;
-- (BOOL) hasCraftType;
+- (BOOL) hasPlaneType;
 - (BOOL) hasPrice;
 - (BOOL) hasDepartAirport;
 - (BOOL) hasArriveAirport;
@@ -487,9 +477,13 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (BOOL) hasArriveDate;
 - (BOOL) hasTransit;
 - (BOOL) hasTransitInfo;
+- (BOOL) hasAdultAirportTax;
+- (BOOL) hasChildAirportTax;
+- (BOOL) hasAdultFuelTax;
+- (BOOL) hasChildFuelTax;
 @property (readonly, retain) NSString* flightNumber;
 @property (readonly) int32_t airlineId;
-@property (readonly, retain) NSString* craftType;
+@property (readonly, retain) NSString* planeType;
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) NSString* departAirport;
 @property (readonly, retain) NSString* arriveAirport;
@@ -497,8 +491,12 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @property (readonly) int32_t arriveDate;
 - (BOOL) transit;
 @property (readonly, retain) NSString* transitInfo;
-- (NSArray*) flightClassesList;
-- (FlightClass*) flightClassesAtIndex:(int32_t) index;
+@property (readonly, retain) NSString* adultAirportTax;
+@property (readonly, retain) NSString* childAirportTax;
+@property (readonly, retain) NSString* adultFuelTax;
+@property (readonly, retain) NSString* childFuelTax;
+- (NSArray*) flightSeatsList;
+- (FlightSeat*) flightSeatsAtIndex:(int32_t) index;
 
 + (Flight*) defaultInstance;
 - (Flight*) defaultInstance;
@@ -544,10 +542,10 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (Flight_Builder*) setAirlineId:(int32_t) value;
 - (Flight_Builder*) clearAirlineId;
 
-- (BOOL) hasCraftType;
-- (NSString*) craftType;
-- (Flight_Builder*) setCraftType:(NSString*) value;
-- (Flight_Builder*) clearCraftType;
+- (BOOL) hasPlaneType;
+- (NSString*) planeType;
+- (Flight_Builder*) setPlaneType:(NSString*) value;
+- (Flight_Builder*) clearPlaneType;
 
 - (BOOL) hasPrice;
 - (NSString*) price;
@@ -584,12 +582,32 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (Flight_Builder*) setTransitInfo:(NSString*) value;
 - (Flight_Builder*) clearTransitInfo;
 
-- (NSArray*) flightClassesList;
-- (FlightClass*) flightClassesAtIndex:(int32_t) index;
-- (Flight_Builder*) replaceFlightClassesAtIndex:(int32_t) index with:(FlightClass*) value;
-- (Flight_Builder*) addFlightClasses:(FlightClass*) value;
-- (Flight_Builder*) addAllFlightClasses:(NSArray*) values;
-- (Flight_Builder*) clearFlightClassesList;
+- (BOOL) hasAdultAirportTax;
+- (NSString*) adultAirportTax;
+- (Flight_Builder*) setAdultAirportTax:(NSString*) value;
+- (Flight_Builder*) clearAdultAirportTax;
+
+- (BOOL) hasChildAirportTax;
+- (NSString*) childAirportTax;
+- (Flight_Builder*) setChildAirportTax:(NSString*) value;
+- (Flight_Builder*) clearChildAirportTax;
+
+- (BOOL) hasAdultFuelTax;
+- (NSString*) adultFuelTax;
+- (Flight_Builder*) setAdultFuelTax:(NSString*) value;
+- (Flight_Builder*) clearAdultFuelTax;
+
+- (BOOL) hasChildFuelTax;
+- (NSString*) childFuelTax;
+- (Flight_Builder*) setChildFuelTax:(NSString*) value;
+- (Flight_Builder*) clearChildFuelTax;
+
+- (NSArray*) flightSeatsList;
+- (FlightSeat*) flightSeatsAtIndex:(int32_t) index;
+- (Flight_Builder*) replaceFlightSeatsAtIndex:(int32_t) index with:(FlightSeat*) value;
+- (Flight_Builder*) addFlightSeats:(FlightSeat*) value;
+- (Flight_Builder*) addAllFlightSeats:(NSArray*) values;
+- (Flight_Builder*) clearFlightSeatsList;
 @end
 
 @interface FlightList : PBGeneratedMessage {
@@ -645,28 +663,28 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @private
   BOOL hasInsurance_:1;
   BOOL hasSendTicket_:1;
-  BOOL hasFlightClassType_:1;
+  BOOL hasFlightSeatCode_:1;
   BOOL hasFlightType_:1;
   BOOL hasFlightDate_:1;
   BOOL hasFlightNumber_:1;
   BOOL hasInsuranceFee_:1;
   BOOL hasSendTicketFee_:1;
   BOOL hasFlight_:1;
-  BOOL hasFlightClass_:1;
+  BOOL hasFlightSeat_:1;
   BOOL insurance_:1;
   BOOL sendTicket_:1;
-  int32_t flightClassType;
+  int32_t flightSeatCode;
   int32_t flightType;
   int32_t flightDate;
   NSString* flightNumber;
   NSString* insuranceFee;
   NSString* sendTicketFee;
   Flight* flight;
-  FlightClass* flightClass;
+  FlightSeat* flightSeat;
   NSMutableArray* mutablePassengerList;
 }
 - (BOOL) hasFlightNumber;
-- (BOOL) hasFlightClassType;
+- (BOOL) hasFlightSeatCode;
 - (BOOL) hasFlightType;
 - (BOOL) hasFlightDate;
 - (BOOL) hasInsurance;
@@ -674,9 +692,9 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (BOOL) hasInsuranceFee;
 - (BOOL) hasSendTicketFee;
 - (BOOL) hasFlight;
-- (BOOL) hasFlightClass;
+- (BOOL) hasFlightSeat;
 @property (readonly, retain) NSString* flightNumber;
-@property (readonly) int32_t flightClassType;
+@property (readonly) int32_t flightSeatCode;
 @property (readonly) int32_t flightType;
 @property (readonly) int32_t flightDate;
 - (BOOL) insurance;
@@ -684,7 +702,7 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @property (readonly, retain) NSString* insuranceFee;
 @property (readonly, retain) NSString* sendTicketFee;
 @property (readonly, retain) Flight* flight;
-@property (readonly, retain) FlightClass* flightClass;
+@property (readonly, retain) FlightSeat* flightSeat;
 - (NSArray*) passengerList;
 - (Person*) passengerAtIndex:(int32_t) index;
 
@@ -727,10 +745,10 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (AirOrder_Builder*) setFlightNumber:(NSString*) value;
 - (AirOrder_Builder*) clearFlightNumber;
 
-- (BOOL) hasFlightClassType;
-- (int32_t) flightClassType;
-- (AirOrder_Builder*) setFlightClassType:(int32_t) value;
-- (AirOrder_Builder*) clearFlightClassType;
+- (BOOL) hasFlightSeatCode;
+- (int32_t) flightSeatCode;
+- (AirOrder_Builder*) setFlightSeatCode:(int32_t) value;
+- (AirOrder_Builder*) clearFlightSeatCode;
 
 - (BOOL) hasFlightType;
 - (int32_t) flightType;
@@ -776,12 +794,12 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (AirOrder_Builder*) mergeFlight:(Flight*) value;
 - (AirOrder_Builder*) clearFlight;
 
-- (BOOL) hasFlightClass;
-- (FlightClass*) flightClass;
-- (AirOrder_Builder*) setFlightClass:(FlightClass*) value;
-- (AirOrder_Builder*) setFlightClassBuilder:(FlightClass_Builder*) builderForValue;
-- (AirOrder_Builder*) mergeFlightClass:(FlightClass*) value;
-- (AirOrder_Builder*) clearFlightClass;
+- (BOOL) hasFlightSeat;
+- (FlightSeat*) flightSeat;
+- (AirOrder_Builder*) setFlightSeat:(FlightSeat*) value;
+- (AirOrder_Builder*) setFlightSeatBuilder:(FlightSeat_Builder*) builderForValue;
+- (AirOrder_Builder*) mergeFlightSeat:(FlightSeat*) value;
+- (AirOrder_Builder*) clearFlightSeat;
 @end
 
 @interface CreditCard : PBGeneratedMessage {

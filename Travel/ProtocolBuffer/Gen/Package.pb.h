@@ -50,10 +50,10 @@
 @class DepartPlace;
 @class DepartPlace_Builder;
 @class Flight;
-@class FlightClass;
-@class FlightClass_Builder;
 @class FlightList;
 @class FlightList_Builder;
+@class FlightSeat;
+@class FlightSeat_Builder;
 @class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;

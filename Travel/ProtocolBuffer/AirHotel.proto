@@ -54,15 +54,13 @@ message HotelOrder {
 }
 
 //舱位
-message FlightClass {
-    required int32 type = 1;                    //舱位类型
+message FlightSeat {
+    required string code = 1;                   //舱位类型
     required string name = 2;                   //舱位名称
-    optional int32 remainingCount  = 3;         //剩余票数
+    optional string remainingCount  = 3;        //剩余票数信息
     
     optional string ticketPrice = 10;           //机票价格
-    optional string airportFee = 11;            //机建费
-    optional string fuelFee = 12;                //燃油费用
-    optional string price = 13;                 //价格
+    optional string price = 11;                 //总价(怎么生成？)
     
     optional string refundNote = 20;            //退票规则
     optional string changeNote = 21;            //改签规则
@@ -73,7 +71,7 @@ message Flight {
     //基本数据
     required string flightNumber = 1;           //航班编号
     required int32 airlineId = 2;               //航空公司id，参见App基础数据定义
-    optional string craftType = 3;              //机型
+    optional string planeType = 3;              //机型
     optional string price = 4;                  //参考价格（用于列表显示，一般是所有舱位的最低价格？）
     
     optional string departAirport = 5;          //出发机场
@@ -84,8 +82,13 @@ message Flight {
     optional bool transit = 9 [default=false];  //是否中转
     optional string transitInfo = 10;           //中转信息
     
+    optional string adultAirportTax = 20;       //成人机建费
+    optional string childAirportTax = 21;       //儿童机建费
+    optional string adultFuelTax = 22;          //成人燃油费用
+    optional string childFuelTax = 23;          //儿童燃油费用
+    
     //详情数据
-    repeated FlightClass flightClasses = 20;     //舱位
+    repeated FlightSeat flightSeats = 30;     //舱位
 }
 
 message FlightList{
@@ -95,19 +98,19 @@ message FlightList{
 //机票订单
 message AirOrder {
     required string flightNumber = 1;           //航班编号
-    required int32 flightClassType = 2;         //舱位类型
+    required int32 flightSeatCode = 2;          //舱位类型
     optional int32 flightType = 3;              //1: 去程 2: 返程
     optional int32 flightDate = 4;              //航班日期
     optional bool insurance = 5;                //是否购买保险
     optional bool sendTicket = 6;               //是否快递机票
     optional string insuranceFee = 10;          //保险费用
     optional string sendTicketFee = 11;         //快递费用
-    
-    repeated Person passenger = 20;             //乘客
+
+    repeated Person passenger = 20;             //登机人
 
     // 以下信息仅用于订单查询时返回
     optional Flight flight = 30;                //航班信息(仅用于订单查询)
-    optional FlightClass flightClass = 31;      //舱位信息(仅用于订单查询)
+    optional FlightSeat flightSeat = 31;      //舱位信息(仅用于订单查询)
 }
 
 //信用卡
