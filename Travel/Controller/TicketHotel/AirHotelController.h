@@ -10,4 +10,6 @@
 
 @interface AirHotelController : PPTableViewController
 
+- (IBAction)clickDate:(id)sender;
+
 @end

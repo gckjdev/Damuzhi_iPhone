@@ -8,6 +8,7 @@
 
 #import "AirHotelController.h"
 #import "AppDelegate.h"
+#import "CommonMonthController.h"
 
 @interface AirHotelController ()
 
@@ -55,6 +56,12 @@
     self.hidesBottomBarWhenPushed = NO;
     [self hideTabBar:YES];
     [super viewDidDisappear:animated];
+}
+
+- (IBAction)clickDate:(id)sender
+{
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:nil monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

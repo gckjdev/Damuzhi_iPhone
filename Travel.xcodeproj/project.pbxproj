@@ -681,6 +681,7 @@
 		EA1A348B16081DBE000E325B /* XQueryComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1A348A16081DBE000E325B /* XQueryComponents.m */; };
 		EA1A349416085D4A000E325B /* DepartPlaceMapController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1A349216085D49000E325B /* DepartPlaceMapController.m */; };
 		EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */; };
+		EA1B6E8B165CAD5400C00EEC /* CommonMonthController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */; };
 		EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1BC555165B305C00699C77 /* AirHotel.pb.m */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
 		EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EA25495016096CC10062E075 /* LocalRouteStorage.m */; };
@@ -708,6 +709,7 @@
 		EAC88FA015A441510068C3C0 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9B15A441510068C3C0 /* UserInfoCell.xib */; };
 		EAC88FA115A441510068C3C0 /* UserInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC88F9D15A441510068C3C0 /* UserInfoController.m */; };
 		EAC88FA215A441510068C3C0 /* UserInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9E15A441510068C3C0 /* UserInfoController.xib */; };
+		EAD88349165CBCA4006947E4 /* NSDate+TKCategory.strings in Resources */ = {isa = PBXBuildFile; fileRef = EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */; };
 		EAD9A806165B713A00049BA8 /* AirHotelService.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD9A805165B713A00049BA8 /* AirHotelService.m */; };
 		EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */ = {isa = PBXBuildFile; fileRef = EAE2B6F6165639480068BFFD /* AirHotel.proto */; };
 		EAE4F094154EAFEB00A656FF /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4F093154EAFEB00A656FF /* MapUtils.m */; };
@@ -1767,6 +1769,8 @@
 		EA1A349116085D49000E325B /* DepartPlaceMapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartPlaceMapController.h; sourceTree = "<group>"; };
 		EA1A349216085D49000E325B /* DepartPlaceMapController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartPlaceMapController.m; sourceTree = "<group>"; };
 		EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepartPlaceMapController.xib; sourceTree = "<group>"; };
+		EA1B6E89165CAD5400C00EEC /* CommonMonthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMonthController.h; sourceTree = "<group>"; };
+		EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMonthController.m; sourceTree = "<group>"; };
 		EA1BC554165B305C00699C77 /* AirHotel.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotel.pb.h; sourceTree = "<group>"; };
 		EA1BC555165B305C00699C77 /* AirHotel.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotel.pb.m; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
@@ -1804,6 +1808,8 @@
 		EAC88F9C15A441510068C3C0 /* UserInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoController.h; sourceTree = "<group>"; };
 		EAC88F9D15A441510068C3C0 /* UserInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoController.m; sourceTree = "<group>"; };
 		EAC88F9E15A441510068C3C0 /* UserInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoController.xib; sourceTree = "<group>"; };
+		EAD8834A165CBCA4006947E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/NSDate+TKCategory.strings"; sourceTree = "<group>"; };
+		EAD8834C165CBCA7006947E4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/NSDate+TKCategory.strings"; sourceTree = "<group>"; };
 		EAD9A804165B713A00049BA8 /* AirHotelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelService.h; sourceTree = "<group>"; };
 		EAD9A805165B713A00049BA8 /* AirHotelService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelService.m; sourceTree = "<group>"; };
 		EAE2B6F6165639480068BFFD /* AirHotel.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AirHotel.proto; sourceTree = "<group>"; };
@@ -3108,6 +3114,8 @@
 				CA103AF4150467B200F60C03 /* PlaceMapViewController.h */,
 				CA103AF5150467B200F60C03 /* PlaceMapViewController.m */,
 				CA103AF6150467B200F60C03 /* PlaceMapViewController.xib */,
+				EA1B6E89165CAD5400C00EEC /* CommonMonthController.h */,
+				EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3259,6 +3267,7 @@
 				CA455EB114F66EDD00DA085D /* NSArray+TKCategory.m */,
 				CA455EB214F66EDD00DA085D /* NSDate+TKCategory.h */,
 				CA455EB314F66EDD00DA085D /* NSDate+TKCategory.m */,
+				EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */,
 				CA455EB414F66EDD00DA085D /* NSDictionary+TKCategory.h */,
 				CA455EB514F66EDD00DA085D /* NSDictionary+TKCategory.m */,
 				CA455EB614F66EDD00DA085D /* NSMutableURLRequest+TKCategory.h */,
@@ -4770,6 +4779,7 @@
 				EA00B39316352AAA0081525F /* signup_bg2@2x.png in Resources */,
 				EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */,
 				EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */,
+				EAD88349165CBCA4006947E4 /* NSDate+TKCategory.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5096,6 +5106,7 @@
 				EA140199164A4794009DF6DC /* SinaweiboManager.m in Sources */,
 				EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */,
 				EAD9A806165B713A00049BA8 /* AirHotelService.m in Sources */,
+				EA1B6E8B165CAD5400C00EEC /* CommonMonthController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5151,6 +5162,15 @@
 				CA49070214F5F05B00228C37 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EAD8834A165CBCA4006947E4 /* en */,
+				EAD8834C165CBCA7006947E4 /* zh-Hans */,
+			);
+			name = "NSDate+TKCategory.strings";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
