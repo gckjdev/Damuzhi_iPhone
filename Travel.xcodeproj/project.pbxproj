@@ -719,6 +719,8 @@
 		EAFE21E4152855DB0013D040 /* TravelUtilityDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE21E3152855DB0013D040 /* TravelUtilityDataSource.m */; };
 		EAFE21EB152861480013D040 /* NearByRecommendController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE21E9152861480013D040 /* NearByRecommendController.m */; };
 		EAFE21EC152861480013D040 /* NearByRecommendController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFE21EA152861480013D040 /* NearByRecommendController.xib */; };
+		EAFF0BA6165DE02D003E3DE3 /* MakeHotelOrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFF0BA5165DE02D003E3DE3 /* MakeHotelOrderCell.m */; };
+		EAFF0BA8165DE05B003E3DE3 /* MakeHotelOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFF0BA7165DE05B003E3DE3 /* MakeHotelOrderCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1823,6 +1825,9 @@
 		EAFE21E8152861480013D040 /* NearByRecommendController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByRecommendController.h; sourceTree = "<group>"; };
 		EAFE21E9152861480013D040 /* NearByRecommendController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearByRecommendController.m; sourceTree = "<group>"; };
 		EAFE21EA152861480013D040 /* NearByRecommendController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearByRecommendController.xib; sourceTree = "<group>"; };
+		EAFF0BA4165DE02C003E3DE3 /* MakeHotelOrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeHotelOrderCell.h; sourceTree = "<group>"; };
+		EAFF0BA5165DE02D003E3DE3 /* MakeHotelOrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeHotelOrderCell.m; sourceTree = "<group>"; };
+		EAFF0BA7165DE05B003E3DE3 /* MakeHotelOrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeHotelOrderCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4207,6 +4212,9 @@
 				EA0EFC63160C12F90057E36C /* AirHotelController.h */,
 				EA0EFC64160C12F90057E36C /* AirHotelController.m */,
 				EA0EFC65160C12F90057E36C /* AirHotelController.xib */,
+				EAFF0BA4165DE02C003E3DE3 /* MakeHotelOrderCell.h */,
+				EAFF0BA5165DE02D003E3DE3 /* MakeHotelOrderCell.m */,
+				EAFF0BA7165DE05B003E3DE3 /* MakeHotelOrderCell.xib */,
 			);
 			path = TicketHotel;
 			sourceTree = "<group>";
@@ -4780,6 +4788,7 @@
 				EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */,
 				EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */,
 				EAD88349165CBCA4006947E4 /* NSDate+TKCategory.strings in Resources */,
+				EAFF0BA8165DE05B003E3DE3 /* MakeHotelOrderCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5107,6 +5116,7 @@
 				EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */,
 				EAD9A806165B713A00049BA8 /* AirHotelService.m in Sources */,
 				EA1B6E8B165CAD5400C00EEC /* CommonMonthController.m in Sources */,
+				EAFF0BA6165DE02D003E3DE3 /* MakeHotelOrderCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

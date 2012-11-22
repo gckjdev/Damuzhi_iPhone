@@ -159,12 +159,15 @@ typedef enum{
 {
     PPDebug(@"didFinishLaunchingWithOptions :%@",launchOptions);
     
-    
     application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
-    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
-    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
-
+    
+    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"PP"];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"TongBu"];
+    
+    
     [MobClick updateOnlineConfig];
     
     if ([DeviceDetection isOS5]){
