@@ -7,6 +7,8 @@
 //
 
 #import "MakeHotelOrderCell.h"
+#import "AirHotel.pb.h"
+#import "TimeUtils.h"
 
 @implementation MakeHotelOrderCell
 
@@ -27,6 +29,19 @@
     return 110.0f;
 }
 
+- (NSString *)dateIntToString:(int)dateInt
+{
+    NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
+    NSString *dateString  = dateToStringByFormat(date, @"yyyy年MM月dd日");
+    return dateString;
+}
+
+- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder
+{
+    [self.checkInButton setTitle:[self dateIntToString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
+    [self.checkOutButton setTitle:[self dateIntToString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+}
+
 - (IBAction)clickCheckInButton:(id)sender {
     
     if ([delegate respondsToSelector:@selector(didClickCheckInButton:)]) {
@@ -36,15 +51,15 @@
 
 - (IBAction)clickCheckOutButton:(id)sender {
     
-    if ([delegate respondsToSelector:@selector(didClickCheckOutButton::)]) {
-        [delegate didClickCheckInButton:self.indexPath];
+    if ([delegate respondsToSelector:@selector(didClickCheckOutButton:)]) {
+        [delegate didClickCheckOutButton:self.indexPath];
     }
 }
 
 - (IBAction)clickHotelButton:(id)sender {
     
-    if ([delegate respondsToSelector:@selector(didClickHotelButton::)]) {
-        [delegate didClickCheckInButton:self.indexPath];
+    if ([delegate respondsToSelector:@selector(didClickHotelButton:)]) {
+        [delegate didClickHotelButton:self.indexPath];
     }
 }
 

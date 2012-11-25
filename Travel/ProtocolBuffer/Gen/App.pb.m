@@ -3410,7 +3410,6 @@ static CityGroup* defaultCityGroupInstance = nil;
 @property (retain) NSMutableArray* mutableAirlinesList;
 @property (retain) NSMutableArray* mutableNationalitysList;
 @property (retain) NSMutableArray* mutableCardsList;
-@property (retain) NSMutableArray* mutableIssuePlacesList;
 @property (retain) NSMutableArray* mutableBanksList;
 @end
 
@@ -3444,7 +3443,6 @@ static CityGroup* defaultCityGroupInstance = nil;
 @synthesize mutableAirlinesList;
 @synthesize mutableNationalitysList;
 @synthesize mutableCardsList;
-@synthesize mutableIssuePlacesList;
 @synthesize mutableBanksList;
 - (void) dealloc {
   self.dataVersion = nil;
@@ -3463,7 +3461,6 @@ static CityGroup* defaultCityGroupInstance = nil;
   self.mutableAirlinesList = nil;
   self.mutableNationalitysList = nil;
   self.mutableCardsList = nil;
-  self.mutableIssuePlacesList = nil;
   self.mutableBanksList = nil;
   [super dealloc];
 }
@@ -3584,13 +3581,6 @@ static App* defaultAppInstance = nil;
   id value = [mutableCardsList objectAtIndex:index];
   return value;
 }
-- (NSArray*) issuePlacesList {
-  return mutableIssuePlacesList;
-}
-- (NameIdPair*) issuePlacesAtIndex:(int32_t) index {
-  id value = [mutableIssuePlacesList objectAtIndex:index];
-  return value;
-}
 - (NSArray*) banksList {
   return mutableBanksList;
 }
@@ -3672,11 +3662,6 @@ static App* defaultAppInstance = nil;
       return NO;
     }
   }
-  for (NameIdPair* element in self.issuePlacesList) {
-    if (!element.isInitialized) {
-      return NO;
-    }
-  }
   for (NameIdPair* element in self.banksList) {
     if (!element.isInitialized) {
       return NO;
@@ -3733,11 +3718,8 @@ static App* defaultAppInstance = nil;
   for (NameIdPair* element in self.cardsList) {
     [output writeMessage:113 value:element];
   }
-  for (NameIdPair* element in self.issuePlacesList) {
-    [output writeMessage:114 value:element];
-  }
   for (NameIdPair* element in self.banksList) {
-    [output writeMessage:115 value:element];
+    [output writeMessage:114 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3796,11 +3778,8 @@ static App* defaultAppInstance = nil;
   for (NameIdPair* element in self.cardsList) {
     size += computeMessageSize(113, element);
   }
-  for (NameIdPair* element in self.issuePlacesList) {
-    size += computeMessageSize(114, element);
-  }
   for (NameIdPair* element in self.banksList) {
-    size += computeMessageSize(115, element);
+    size += computeMessageSize(114, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3967,12 +3946,6 @@ static App* defaultAppInstance = nil;
     }
     [result.mutableCardsList addObjectsFromArray:other.mutableCardsList];
   }
-  if (other.mutableIssuePlacesList.count > 0) {
-    if (result.mutableIssuePlacesList == nil) {
-      result.mutableIssuePlacesList = [NSMutableArray array];
-    }
-    [result.mutableIssuePlacesList addObjectsFromArray:other.mutableIssuePlacesList];
-  }
   if (other.mutableBanksList.count > 0) {
     if (result.mutableBanksList == nil) {
       result.mutableBanksList = [NSMutableArray array];
@@ -4093,12 +4066,6 @@ static App* defaultAppInstance = nil;
         break;
       }
       case 914: {
-        NameIdPair_Builder* subBuilder = [NameIdPair builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addIssuePlaces:[subBuilder buildPartial]];
-        break;
-      }
-      case 922: {
         NameIdPair_Builder* subBuilder = [NameIdPair builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addBanks:[subBuilder buildPartial]];
@@ -4543,35 +4510,6 @@ static App* defaultAppInstance = nil;
     result.mutableCardsList = [NSMutableArray array];
   }
   [result.mutableCardsList addObject:value];
-  return self;
-}
-- (NSArray*) issuePlacesList {
-  if (result.mutableIssuePlacesList == nil) { return [NSArray array]; }
-  return result.mutableIssuePlacesList;
-}
-- (NameIdPair*) issuePlacesAtIndex:(int32_t) index {
-  return [result issuePlacesAtIndex:index];
-}
-- (App_Builder*) replaceIssuePlacesAtIndex:(int32_t) index with:(NameIdPair*) value {
-  [result.mutableIssuePlacesList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (App_Builder*) addAllIssuePlaces:(NSArray*) values {
-  if (result.mutableIssuePlacesList == nil) {
-    result.mutableIssuePlacesList = [NSMutableArray array];
-  }
-  [result.mutableIssuePlacesList addObjectsFromArray:values];
-  return self;
-}
-- (App_Builder*) clearIssuePlacesList {
-  result.mutableIssuePlacesList = nil;
-  return self;
-}
-- (App_Builder*) addIssuePlaces:(NameIdPair*) value {
-  if (result.mutableIssuePlacesList == nil) {
-    result.mutableIssuePlacesList = [NSMutableArray array];
-  }
-  [result.mutableIssuePlacesList addObject:value];
   return self;
 }
 - (NSArray*) banksList {

@@ -8,9 +8,11 @@
 
 #import "PPTableViewController.h"
 #import "MakeHotelOrderCell.h"
+#import "MakeAirOrderTwoCell.h"
+#import "CommonMonthController.h"
+#import "SelectHotelController.h"
 
-
-@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate>
+@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate>
 
 @property (retain, nonatomic) IBOutlet UISegmentedControl *totalControl;
 

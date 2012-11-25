@@ -31,11 +31,10 @@ message Person {
     optional int32 nationalityId = 5;       //国籍id，参见App基础数据定义
     optional int32 cardTypeId = 6;          //证件类型，参见App基础数据定义
     optional string cardNumber = 7;         //证件号码
-    optional string cardIssuePlace = 8;     //证件签发地，参见App基础数据定义（和国籍统一？）
-    optional int32 cardValidDate = 9;       //证件有效日期
-    optional int32 birthday = 10;           //出生日期
+    optional int32 cardValidDate = 8;       //证件有效日期
+    optional int32 birthday = 9;           //出生日期
 
-    optional string phone = 11;             //电话
+    optional string phone = 10;             //电话
 }
 
 //预订房间信息

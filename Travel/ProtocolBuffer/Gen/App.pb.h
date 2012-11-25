@@ -897,7 +897,6 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   NSString* dataVersion;
   NSString* serviceTelephone;
   NSMutableArray* mutableBanksList;
-  NSMutableArray* mutableIssuePlacesList;
   NSMutableArray* mutableCardsList;
   NSMutableArray* mutableNationalitysList;
   NSMutableArray* mutableAirlinesList;
@@ -945,8 +944,6 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (NameIdPair*) nationalitysAtIndex:(int32_t) index;
 - (NSArray*) cardsList;
 - (NameIdPair*) cardsAtIndex:(int32_t) index;
-- (NSArray*) issuePlacesList;
-- (NameIdPair*) issuePlacesAtIndex:(int32_t) index;
 - (NSArray*) banksList;
 - (NameIdPair*) banksAtIndex:(int32_t) index;
 
@@ -1091,13 +1088,6 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (App_Builder*) addCards:(NameIdPair*) value;
 - (App_Builder*) addAllCards:(NSArray*) values;
 - (App_Builder*) clearCardsList;
-
-- (NSArray*) issuePlacesList;
-- (NameIdPair*) issuePlacesAtIndex:(int32_t) index;
-- (App_Builder*) replaceIssuePlacesAtIndex:(int32_t) index with:(NameIdPair*) value;
-- (App_Builder*) addIssuePlaces:(NameIdPair*) value;
-- (App_Builder*) addAllIssuePlaces:(NSArray*) values;
-- (App_Builder*) clearIssuePlacesList;
 
 - (NSArray*) banksList;
 - (NameIdPair*) banksAtIndex:(int32_t) index;

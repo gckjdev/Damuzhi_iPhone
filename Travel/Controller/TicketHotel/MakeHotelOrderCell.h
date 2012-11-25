@@ -18,12 +18,14 @@
 @end
 
 
-
+@class HotelOrder_Builder;
 
 @interface MakeHotelOrderCell : PPTableViewCell
 
 @property (retain, nonatomic) IBOutlet UIButton *checkInButton;
 @property (retain, nonatomic) IBOutlet UIButton *checkOutButton;
 @property (retain, nonatomic) IBOutlet UIButton *hotelButton;
+
+- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilde;
 
 @end

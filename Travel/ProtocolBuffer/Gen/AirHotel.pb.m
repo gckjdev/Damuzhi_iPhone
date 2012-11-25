@@ -54,7 +54,6 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value) {
 @property int32_t nationalityId;
 @property int32_t cardTypeId;
 @property (retain) NSString* cardNumber;
-@property (retain) NSString* cardIssuePlace;
 @property int32_t cardValidDate;
 @property int32_t birthday;
 @property (retain) NSString* phone;
@@ -111,13 +110,6 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value) {
   hasCardNumber_ = !!value;
 }
 @synthesize cardNumber;
-- (BOOL) hasCardIssuePlace {
-  return !!hasCardIssuePlace_;
-}
-- (void) setHasCardIssuePlace:(BOOL) value {
-  hasCardIssuePlace_ = !!value;
-}
-@synthesize cardIssuePlace;
 - (BOOL) hasCardValidDate {
   return !!hasCardValidDate_;
 }
@@ -143,7 +135,6 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value) {
   self.name = nil;
   self.nameEnglish = nil;
   self.cardNumber = nil;
-  self.cardIssuePlace = nil;
   self.phone = nil;
   [super dealloc];
 }
@@ -156,7 +147,6 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value) {
     self.nationalityId = 0;
     self.cardTypeId = 0;
     self.cardNumber = @"";
-    self.cardIssuePlace = @"";
     self.cardValidDate = 0;
     self.birthday = 0;
     self.phone = @"";
@@ -200,17 +190,14 @@ static Person* defaultPersonInstance = nil;
   if (self.hasCardNumber) {
     [output writeString:7 value:self.cardNumber];
   }
-  if (self.hasCardIssuePlace) {
-    [output writeString:8 value:self.cardIssuePlace];
-  }
   if (self.hasCardValidDate) {
-    [output writeInt32:9 value:self.cardValidDate];
+    [output writeInt32:8 value:self.cardValidDate];
   }
   if (self.hasBirthday) {
-    [output writeInt32:10 value:self.birthday];
+    [output writeInt32:9 value:self.birthday];
   }
   if (self.hasPhone) {
-    [output writeString:11 value:self.phone];
+    [output writeString:10 value:self.phone];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -242,17 +229,14 @@ static Person* defaultPersonInstance = nil;
   if (self.hasCardNumber) {
     size += computeStringSize(7, self.cardNumber);
   }
-  if (self.hasCardIssuePlace) {
-    size += computeStringSize(8, self.cardIssuePlace);
-  }
   if (self.hasCardValidDate) {
-    size += computeInt32Size(9, self.cardValidDate);
+    size += computeInt32Size(8, self.cardValidDate);
   }
   if (self.hasBirthday) {
-    size += computeInt32Size(10, self.birthday);
+    size += computeInt32Size(9, self.birthday);
   }
   if (self.hasPhone) {
-    size += computeStringSize(11, self.phone);
+    size += computeStringSize(10, self.phone);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -350,9 +334,6 @@ static Person* defaultPersonInstance = nil;
   if (other.hasCardNumber) {
     [self setCardNumber:other.cardNumber];
   }
-  if (other.hasCardIssuePlace) {
-    [self setCardIssuePlace:other.cardIssuePlace];
-  }
   if (other.hasCardValidDate) {
     [self setCardValidDate:other.cardValidDate];
   }
@@ -421,19 +402,15 @@ static Person* defaultPersonInstance = nil;
         [self setCardNumber:[input readString]];
         break;
       }
-      case 66: {
-        [self setCardIssuePlace:[input readString]];
-        break;
-      }
-      case 72: {
+      case 64: {
         [self setCardValidDate:[input readInt32]];
         break;
       }
-      case 80: {
+      case 72: {
         [self setBirthday:[input readInt32]];
         break;
       }
-      case 90: {
+      case 82: {
         [self setPhone:[input readString]];
         break;
       }
@@ -550,22 +527,6 @@ static Person* defaultPersonInstance = nil;
 - (Person_Builder*) clearCardNumber {
   result.hasCardNumber = NO;
   result.cardNumber = @"";
-  return self;
-}
-- (BOOL) hasCardIssuePlace {
-  return result.hasCardIssuePlace;
-}
-- (NSString*) cardIssuePlace {
-  return result.cardIssuePlace;
-}
-- (Person_Builder*) setCardIssuePlace:(NSString*) value {
-  result.hasCardIssuePlace = YES;
-  result.cardIssuePlace = value;
-  return self;
-}
-- (Person_Builder*) clearCardIssuePlace {
-  result.hasCardIssuePlace = NO;
-  result.cardIssuePlace = @"";
   return self;
 }
 - (BOOL) hasCardValidDate {

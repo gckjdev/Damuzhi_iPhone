@@ -99,7 +99,7 @@
         [self.monthView hideLeftArrow:NO];
     }
     
-    if ([[NSDate date] monthsBetweenDate:month] >= _monthCount) {
+    if ([[NSDate date] monthsBetweenDate:month] >= _monthCount - 1) {
         [self.monthView hideRightArrow:YES];
     } else {
         [self.monthView hideRightArrow:NO];
