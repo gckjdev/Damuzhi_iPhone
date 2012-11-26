@@ -34,6 +34,13 @@ message CityArea{                                      // 城市区域，用于�
   required string areaName = 2;
 }
 
+message CityLocationInfo
+{
+   optional string cityName = 1;
+   optional double longitude = 2;
+   optional double latitude = 3; 
+}
+
 message City {
   required int32 cityId = 1;            // 城市ID
   required string cityName = 2;         // 城市显示名称，如香港
@@ -53,6 +60,8 @@ message City {
   optional int32 groupId = 50;                  // 分组Id
   
   optional bool hotCity = 51 [default = false];         // 是否是热门城市
+  
+  repeated CityLocationInfo locationInfo = 55;       // 城市定位信息
 }
 
 message CityList {

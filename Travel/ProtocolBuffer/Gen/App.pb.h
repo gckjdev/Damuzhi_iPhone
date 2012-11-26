@@ -19,6 +19,8 @@
 @class CityGroup_Builder;
 @class CityList;
 @class CityList_Builder;
+@class CityLocationInfo;
+@class CityLocationInfo_Builder;
 @class City_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
@@ -270,6 +272,72 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (CityArea_Builder*) clearAreaName;
 @end
 
+@interface CityLocationInfo : PBGeneratedMessage {
+@private
+  BOOL hasLongitude_:1;
+  BOOL hasLatitude_:1;
+  BOOL hasCityName_:1;
+  Float64 longitude;
+  Float64 latitude;
+  NSString* cityName;
+}
+- (BOOL) hasCityName;
+- (BOOL) hasLongitude;
+- (BOOL) hasLatitude;
+@property (readonly, retain) NSString* cityName;
+@property (readonly) Float64 longitude;
+@property (readonly) Float64 latitude;
+
++ (CityLocationInfo*) defaultInstance;
+- (CityLocationInfo*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (CityLocationInfo_Builder*) builder;
++ (CityLocationInfo_Builder*) builder;
++ (CityLocationInfo_Builder*) builderWithPrototype:(CityLocationInfo*) prototype;
+
++ (CityLocationInfo*) parseFromData:(NSData*) data;
++ (CityLocationInfo*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityLocationInfo*) parseFromInputStream:(NSInputStream*) input;
++ (CityLocationInfo*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityLocationInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (CityLocationInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface CityLocationInfo_Builder : PBGeneratedMessage_Builder {
+@private
+  CityLocationInfo* result;
+}
+
+- (CityLocationInfo*) defaultInstance;
+
+- (CityLocationInfo_Builder*) clear;
+- (CityLocationInfo_Builder*) clone;
+
+- (CityLocationInfo*) build;
+- (CityLocationInfo*) buildPartial;
+
+- (CityLocationInfo_Builder*) mergeFrom:(CityLocationInfo*) other;
+- (CityLocationInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (CityLocationInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCityName;
+- (NSString*) cityName;
+- (CityLocationInfo_Builder*) setCityName:(NSString*) value;
+- (CityLocationInfo_Builder*) clearCityName;
+
+- (BOOL) hasLongitude;
+- (Float64) longitude;
+- (CityLocationInfo_Builder*) setLongitude:(Float64) value;
+- (CityLocationInfo_Builder*) clearLongitude;
+
+- (BOOL) hasLatitude;
+- (Float64) latitude;
+- (CityLocationInfo_Builder*) setLatitude:(Float64) value;
+- (CityLocationInfo_Builder*) clearLatitude;
+@end
+
 @interface City : PBGeneratedMessage {
 @private
   BOOL hasHotCity_:1;
@@ -297,6 +365,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   NSString* currencyId;
   NSString* currencyName;
   NSMutableArray* mutableAreaListList;
+  NSMutableArray* mutableLocationInfoList;
 }
 - (BOOL) hasCityId;
 - (BOOL) hasCityName;
@@ -324,6 +393,8 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hotCity;
 - (NSArray*) areaListList;
 - (CityArea*) areaListAtIndex:(int32_t) index;
+- (NSArray*) locationInfoList;
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index;
 
 + (City*) defaultInstance;
 - (City*) defaultInstance;
@@ -425,6 +496,13 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hotCity;
 - (City_Builder*) setHotCity:(BOOL) value;
 - (City_Builder*) clearHotCity;
+
+- (NSArray*) locationInfoList;
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index;
+- (City_Builder*) replaceLocationInfoAtIndex:(int32_t) index with:(CityLocationInfo*) value;
+- (City_Builder*) addLocationInfo:(CityLocationInfo*) value;
+- (City_Builder*) addAllLocationInfo:(NSArray*) values;
+- (City_Builder*) clearLocationInfoList;
 @end
 
 @interface CityList : PBGeneratedMessage {

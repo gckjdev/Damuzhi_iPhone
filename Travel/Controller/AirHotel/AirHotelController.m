@@ -9,6 +9,7 @@
 #import "AirHotelController.h"
 #import "AppDelegate.h"
 #import "AirHotel.pb.h"
+#import "ConfirmOrderController.h"
 
 @interface AirHotelController ()
 
@@ -34,9 +35,6 @@ enum HOTEL_DATE_TAG{
 
 
 - (void)dealloc {
-    [_makeOrderView release];
-    [_orderNoteView release];
-    [_totalControl release];
     [_hotelOrderBuilderList release];
     [_currentIndexPath release];
     [super dealloc];
@@ -58,8 +56,6 @@ enum HOTEL_DATE_TAG{
     
     self.navigationItem.title = NSLS(@"机+酒");
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
-    
-    [self updateTotalControl];
 }
 
 - (void)createHotelOrder
@@ -70,20 +66,8 @@ enum HOTEL_DATE_TAG{
     [_hotelOrderBuilderList addObject:builder];
 }
 
-- (void)updateTotalControl
-{
-    UIFont *font = [UIFont boldSystemFontOfSize:14.0f];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
-                                                           forKey:UITextAttributeFont];
-    [_totalControl setTitleTextAttributes:attributes
-                                 forState:UIControlStateNormal];
-}
-
 - (void)viewDidUnload
 {
-    [self setMakeOrderView:nil];
-    [self setOrderNoteView:nil];
-    [self setTotalControl:nil];
     [super viewDidUnload];
 }
 
@@ -112,18 +96,6 @@ enum HOTEL_DATE_TAG{
     self.hidesBottomBarWhenPushed = NO;
     [self hideTabBar:YES];
     [super viewDidDisappear:animated];
-}
-
-- (IBAction)changeTitle:(id)sender {
-    UISegmentedControl *segmentedControl = (UISegmentedControl*)sender;
-    
-    if ([segmentedControl selectedSegmentIndex] == 0) {
-        _makeOrderView.hidden = NO;
-        _orderNoteView.hidden = YES;
-    } else {
-        _makeOrderView.hidden = YES;
-        _orderNoteView.hidden = NO;
-    }
 }
 
 
@@ -242,5 +214,9 @@ enum {
     }
 }
 
+- (IBAction)clickMemberButton:(id)sender {
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 @end

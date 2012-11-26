@@ -14,10 +14,4 @@
 
 @interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate>
 
-@property (retain, nonatomic) IBOutlet UISegmentedControl *totalControl;
-
-@property (retain, nonatomic) IBOutlet UIView *makeOrderView;
-@property (retain, nonatomic) IBOutlet UIView *orderNoteView;
-
-
 @end

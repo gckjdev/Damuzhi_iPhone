@@ -10,6 +10,6 @@
 #import "RoomCell.h"
 #import "HotelHeaderView.h"
 
-@interface SelectHotelController : PPTableViewController
+@interface SelectHotelController : PPTableViewController<HotelHeaderViewDelegate>
 
 @end

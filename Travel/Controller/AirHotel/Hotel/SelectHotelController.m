@@ -8,43 +8,63 @@
 
 #import "SelectHotelController.h"
 #import "Place.pb.h"
+#import "HotelHeaderView.h"
+#import "FontSize.h"
 
 @interface SelectHotelController ()
 
-@property (retain, nonatomic) NSArray *hotelList;
+@property (retain, nonatomic) NSMutableArray *hotelList;
+@property (retain, nonatomic) NSMutableArray *viewsForSectionHeaders;
+@property (retain, nonatomic) NSMutableArray *sectionStatus;
+
+
 
 @end
 
 @implementation SelectHotelController
 @synthesize hotelList = _hotelList;
+@synthesize viewsForSectionHeaders = _viewsForSectionHeaders;
+@synthesize sectionStatus = _sectionStatus;
 
 - (void)dealloc
 {
     [_hotelList release];
+    [_viewsForSectionHeaders release];
+    [_sectionStatus release];
     [super dealloc];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = NSLS(@"酒店列表");
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
+                        imageName:@"back.png"
+                           action:@selector(clickBack:)];
     
     //test data
     [self testData];
+    [self createSectionStatus];
     [dataTableView reloadData];
 }
 
+- (void)createSectionStatus
+{
+    self.sectionStatus = [[[NSMutableArray alloc] init] autorelease];
+    for (int i = 0 ; i < [_hotelList count] ; i ++) {
+        [_sectionStatus addObject:[NSNumber numberWithBool:YES]];
+    }
+}
 
-//required int32 placeId = 1;                   // 地点ID，全局唯一
-
-//required int32 categoryId = 3;                // 分类ID，如景点／酒店／...（待确定），参见App.proto // 1,2,3,4,5
-//required int32 subCategoryId = 4;             // 子分类ID，不同分类不同，如餐馆有 西餐／自助餐，参见App.proto定义
-//required string name = 5;                     // 地点名字
-//
-//required int32 rank = 6;                      // 大拇指评级，取值从1到3
-//required double longitude = 11;               // 地点经度
-//required double latitude = 12;                // 地点纬度
-//required string icon = 31;                    // 地点小图标文件名
-//required string introduction = 33;            // 地点详情
+- (void)setSection:(NSInteger)section Open:(BOOL)open
+{
+    if ([_sectionStatus count] > section) {
+        [_sectionStatus removeObjectAtIndex:section];
+        NSNumber *num = [NSNumber numberWithBool:open];
+        [_sectionStatus insertObject:num atIndex:section];
+    }
+}
 
 - (void)testData
 {
@@ -94,11 +114,12 @@
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    Place *hotel = [_hotelList objectAtIndex:section];
-    
-    PPDebug(@"numberOfRowsInSection: %d",  [[hotel roomsList] count]);
-    
-    return [[hotel roomsList] count];
+    if ([[_sectionStatus objectAtIndex:section] boolValue]) {
+        Place *hotel = [_hotelList objectAtIndex:section];
+        return [[hotel roomsList] count];
+    } else {
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -126,12 +147,35 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 40;
+    return [HotelHeaderView getHeaderViewHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-//    HotelHeaderView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:<#(NSString *)#>];
+    HotelHeaderView *headerView;
+    if (section < [_viewsForSectionHeaders count]) {
+        headerView = [_viewsForSectionHeaders objectAtIndex:section];
+    } else {
+        headerView = [HotelHeaderView createHeaderView];
+        headerView.delegate = self;
+        
+        [_viewsForSectionHeaders addObject:headerView];
+    }
+    
+    Place *hotel = [_hotelList objectAtIndex:section];
+    [headerView setViewWith:hotel section:section];
+    
+    return headerView;
 }
+
+#pragma mark -
+#pragma HotelHeaderViewDelegate method
+- (void)didClickSelectButton:(NSInteger)section
+{
+    BOOL isOpen = [[_sectionStatus objectAtIndex:section] boolValue];
+    [self setSection:section Open:!isOpen];
+    [self.dataTableView reloadData];
+}
+
 
 @end

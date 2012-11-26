@@ -34,6 +34,8 @@
 @class CityImage_Builder;
 @class CityList;
 @class CityList_Builder;
+@class CityLocationInfo;
+@class CityLocationInfo_Builder;
 @class CityOverview;
 @class CityOverview_Builder;
 @class City_Builder;
