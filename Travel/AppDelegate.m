@@ -226,7 +226,14 @@ typedef enum{
 
     
     [self.window makeKeyAndVisible];
-    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    
+    UIImage *startImage = nil;
+    if ([DeviceDetection isIPhone5]) {
+        startImage = [UIImage imageNamed:@"Default-568h.png"];
+    } else {
+        startImage = [UIImage imageNamed:@"Default.png"];
+    }
+    UIView* splashView = [[UIImageView alloc] initWithImage:startImage];
     splashView.frame = [self.window bounds];
     splashView.tag = SPLASH_VIEW_TAG;
     [self.window addSubview:splashView];

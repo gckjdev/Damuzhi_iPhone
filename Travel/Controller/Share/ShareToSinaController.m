@@ -12,6 +12,8 @@
 #import "AppDelegate.h"
 #import "MobClick.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 #define UMENG_ONLINE_SINA_WEIBO_APP_KEY       @"sina_weibo_app_key"
 #define UMENG_ONLINE_SINA_WEIBO_APP_SECRET    @"sina_weibo_app_secret"
 
@@ -40,9 +42,10 @@
 
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
-    //self.view.backgroundColor = [UIColor colorWithRed:84.0/255.0 green:154.0/255.0 blue:182.0/255.0 alpha:1.0];
+
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
+    
     [self setNavigationLeftButton:NSLS(@" 返回") 
                          fontSize:FONT_SIZE
                         imageName:@"back.png"

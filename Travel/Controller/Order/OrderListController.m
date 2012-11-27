@@ -57,10 +57,11 @@
 - (void)viewDidLoad
 {
     self.title = @"订单详情";
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
+    
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    // Set navigation bar buttons
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
+    
     [self setNavigationLeftButton:NSLS(@" 返回") 
                          fontSize:FONT_SIZE
                         imageName:@"back.png"

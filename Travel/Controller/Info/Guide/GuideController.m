@@ -15,6 +15,7 @@
 #import "CommonWebController.h"
 #import "PPNetworkRequest.h"
 #import "FontSize.h"
+#import "ImageManager.h"
 
 #define  TABLE_VIEW_CELL_HEIGHT 42
 #define SECTION_HEADER_HEIGHT 18
@@ -37,7 +38,7 @@
                            action:@selector(clickBack:)];
     [self.navigationItem setTitle:NSLS(@"游记攻略")];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     [[TravelTipsService defaultService] findTravelTipList:[[AppManager defaultManager] getCurrentCityId] type:TravelTipTypeGuide viewController:self];
     

@@ -66,6 +66,7 @@
     [connection release];
     [qqWeiBoAppKey release];
     [qqWeiBoAppSecret release];
+    [_shareBackgroundImageView release];
     [super dealloc];
 }
 
@@ -80,7 +81,6 @@
 
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     
     self.qqWeiBoAppKey = [MobClick getConfigParams:@"qq_weibo_app_key"];
@@ -123,6 +123,7 @@
 
 - (void)viewDidUnload
 {
+    [self setShareBackgroundImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

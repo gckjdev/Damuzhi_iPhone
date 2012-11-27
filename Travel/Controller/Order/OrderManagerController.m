@@ -50,7 +50,7 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
 
     [self updateNavButtons];
     self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机+酒订单管理"),nil];

@@ -16,6 +16,7 @@
 #import "RouteDetailController.h"
 #import "PPNetworkRequest.h"
 #import "FontSize.h"
+#import "ImageManager.h"
 
 #define TABLE_VIEW_CELL_HEIGHT 75
 @implementation RouteController
@@ -27,13 +28,14 @@
 
 - (void)viewDidLoad
 {
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     [self.navigationItem setTitle:NSLS(@"线路推荐")];
         
