@@ -10,6 +10,7 @@
 #import "PPViewController.h"
 
 @interface ShareToQQController : PPViewController<UIWebViewDelegate, UITextViewDelegate>
+@property (retain, nonatomic) IBOutlet UIImageView *shareBackgroundImageView;
 
 - (IBAction)backgroundTap:(id)sender;
 

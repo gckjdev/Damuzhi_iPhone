@@ -8,6 +8,7 @@
 
 #import "ImageManager.h"
 #import "UIImageUtil.h"
+#import "DeviceDetection.h"
 
 static ImageManager *_defaultManager = nil;
 
@@ -388,6 +389,15 @@ static ImageManager *_defaultManager = nil;
 - (UIImage *)accommodationBgImage:(BOOL)isLast
 {
     return [UIImage imageNamed:(isLast ? @"line_n_t4.png" : @"line_n_t7.png")];
+}
+
+- (UIImage *)allBackgroundImage
+{
+    if ([DeviceDetection isIPhone5]) {
+        return [UIImage imageNamed:@"all_page_bg2_i5.jpg"];
+    } else {
+        return [UIImage imageNamed:@"all_page_bg2.jpg"];
+    }
 }
 
 @end

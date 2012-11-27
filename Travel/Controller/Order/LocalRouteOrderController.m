@@ -101,7 +101,7 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickConsult:)];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     self.phoneList = [NSArray arrayWithObjects:_route.contactPhone, nil];
     [self.selectedAdultIdList addObject:[NSNumber numberWithInt:_adult]];
@@ -309,7 +309,7 @@
     //_route.currency;
     
     MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList currency:_route.currency] autorelease];
-    [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
     controller.aDelegate = self;
     

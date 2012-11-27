@@ -78,4 +78,6 @@
 - (UIImage *)placeTourBgImage;
 - (UIImage *)placeTourBtnBgImage;
 
+- (UIImage *)allBackgroundImage;
+
 @end

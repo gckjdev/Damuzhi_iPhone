@@ -13,6 +13,7 @@
 #import "StringUtil.h"
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
+#import "ImageManager.h"
 
 #import "UserManager.h"
 #import "FontSize.h"
@@ -29,10 +30,11 @@
 - (void)viewDidLoad
 {
     // This method must be called before super viewDidLoad.
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.navigationItem setTitle:FEEDBACK];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     // Set feekback text view delegate.
     self.feekbackTextView.delegate = self;
@@ -254,6 +256,10 @@
     PPDebug(@"moveDistance=%f", y);
     
     [self.view moveTtoCenter:newCenter needAnimation:YES animationDuration:0.5];
+    
+    if (self.view.frame.origin.y > 0) {
+        self.view.frame = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
+    }
 }
 
 - (CGFloat)getMoveDistance:(CGRect)frame keyboardHeight:(CGFloat)keyboardHeight
@@ -277,6 +283,7 @@
 {
     PPDebug(@"keyboardDidHide");
     [self.view moveTtoCenter:_viewCenter needAnimation:YES animationDuration:0.5];
+    self.view.frame = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 - (void)registerKeyboardNotification

@@ -14,6 +14,8 @@
 #import "TravelNetworkConstants.h"
 #import "OrderListController.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 #define TAG_TEXT_FIELD_CONTACT_PERSON 111
 #define TAG_TEXT_FIELD_TELEPHONE 112
 
@@ -118,7 +120,7 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     self.backGroundScrollView.contentSize = CGSizeMake(self.backGroundScrollView.frame.size.width, self.backGroundScrollView.frame.size.height + 1);
     

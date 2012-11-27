@@ -11,6 +11,8 @@
 #import "AppManager.h"
 #import "RouteSelectCell.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 #define SECTION_TITLE_PRICE_RANK NSLS(@"价格区间")
 #define SECTION_TITLE_DAYS_RANGE NSLS(@"出行天数")
 #define SECTION_TITLE_ROUTE_THEME NSLS(@"路线主题")
@@ -72,7 +74,7 @@
 - (void)viewDidLoad
 {
     self.title = NSLS(@"筛选");
-    [self setBackgroundImageName:@"all_page_bg2.jpg"];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
 
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

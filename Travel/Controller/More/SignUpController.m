@@ -11,6 +11,8 @@
 #import "PPNetworkRequest.h"
 #import "VerificationController.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 #define TITLE_SIGN_UP_ID                NSLS(@"用 户 名 :")
 #define TITLE_SIGN_UP_PASSWORD          NSLS(@"密     码 :")
 #define TITLE_SIGN_UP_PASSWORD_AGAIN    NSLS(@"确认密码:")
@@ -74,7 +76,7 @@
     
     [self setTitle:NSLS(@"注册账号")];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     self.titleDic = [NSMutableDictionary dictionary];
     self.placeHolderDic = [NSMutableDictionary dictionary];

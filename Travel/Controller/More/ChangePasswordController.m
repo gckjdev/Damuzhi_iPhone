@@ -11,7 +11,7 @@
 #import "PPViewController.h"
 #import "PPNetworkRequest.h"
 #import "FontSize.h"
-
+#import "ImageManager.h"
 
 #define TITLE_OLD_PASSWORD          NSLS(@"原  密  码:")
 #define TITLE_NEW_PASSWORD          NSLS(@"新  密  码:")
@@ -80,7 +80,7 @@
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickSubmit:)];
 
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     self.titleDic = [NSMutableDictionary dictionary];
     self.placeHolderDic = [NSMutableDictionary dictionary];
