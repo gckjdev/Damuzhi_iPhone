@@ -21,8 +21,6 @@
     [super viewDidLoad];
     
     self.navigationItem.title = NSLS(@"机+酒");
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
 }
 
 - (void)viewDidUnload
