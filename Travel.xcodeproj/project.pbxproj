@@ -277,7 +277,6 @@
 		A48E05571534058900B2695E /* topmenu_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04CC1534058900B2695E /* topmenu_bg@2x.png */; };
 		A48E05591534058900B2695E /* dmzlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04CF1534058900B2695E /* dmzlogo.png */; };
 		A48E055A1534058900B2695E /* dmzlogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04D01534058900B2695E /* dmzlogo@2x.png */; };
-		A48E055B1534058900B2695E /* index_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04D11534058900B2695E /* index_bg.png */; };
 		A48E055D1534058900B2695E /* locate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04D41534058900B2695E /* locate@2x.png */; };
 		A48E05601534058900B2695E /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04D71534058900B2695E /* pin@2x.png */; };
 		A48E05621534058900B2695E /* more_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A48E04DA1534058900B2695E /* more_icon@2x.png */; };
@@ -683,6 +682,7 @@
 		EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */; };
 		EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1BC555165B305C00699C77 /* AirHotel.pb.m */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
+		EA23821116647532001ECA2D /* all_page_bg2_i5@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EA23821016647532001ECA2D /* all_page_bg2_i5@2x.jpg */; };
 		EA25495116096CC10062E075 /* LocalRouteStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = EA25495016096CC10062E075 /* LocalRouteStorage.m */; };
 		EA254955160976690062E075 /* FollowLocalRouteController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA254953160976690062E075 /* FollowLocalRouteController.m */; };
 		EA254956160976690062E075 /* FollowLocalRouteController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA254954160976690062E075 /* FollowLocalRouteController.xib */; };
@@ -709,6 +709,8 @@
 		EAC88FA115A441510068C3C0 /* UserInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC88F9D15A441510068C3C0 /* UserInfoController.m */; };
 		EAC88FA215A441510068C3C0 /* UserInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9E15A441510068C3C0 /* UserInfoController.xib */; };
 		EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */ = {isa = PBXBuildFile; fileRef = EAE2B6F6165639480068BFFD /* AirHotel.proto */; };
+		EAE338C3166374B000E03D51 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE338C2166374B000E03D51 /* Default-568h@2x.png */; };
+		EAE338C51663770300E03D51 /* index_bg@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EAE338C41663770300E03D51 /* index_bg@2x.jpg */; };
 		EAE4F094154EAFEB00A656FF /* MapUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE4F093154EAFEB00A656FF /* MapUtils.m */; };
 		EAE5594E15158FBF004CEFED /* SpotDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */; };
 		EAE654DA153C398700AAE451 /* detail_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D8153C398700AAE451 /* detail_shadow@2x.png */; };
@@ -1111,7 +1113,6 @@
 		A48E04CC1534058900B2695E /* topmenu_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topmenu_bg@2x.png"; sourceTree = "<group>"; };
 		A48E04CF1534058900B2695E /* dmzlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dmzlogo.png; sourceTree = "<group>"; };
 		A48E04D01534058900B2695E /* dmzlogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dmzlogo@2x.png"; sourceTree = "<group>"; };
-		A48E04D11534058900B2695E /* index_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = index_bg.png; sourceTree = "<group>"; };
 		A48E04D41534058900B2695E /* locate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locate@2x.png"; sourceTree = "<group>"; };
 		A48E04D71534058900B2695E /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
 		A48E04DA1534058900B2695E /* more_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "more_icon@2x.png"; sourceTree = "<group>"; };
@@ -1770,6 +1771,7 @@
 		EA1BC555165B305C00699C77 /* AirHotel.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotel.pb.m; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
+		EA23821016647532001ECA2D /* all_page_bg2_i5@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "all_page_bg2_i5@2x.jpg"; sourceTree = "<group>"; };
 		EA25494F16096CC10062E075 /* LocalRouteStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteStorage.h; sourceTree = "<group>"; };
 		EA25495016096CC10062E075 /* LocalRouteStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteStorage.m; sourceTree = "<group>"; };
 		EA254952160976690062E075 /* FollowLocalRouteController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowLocalRouteController.h; sourceTree = "<group>"; };
@@ -1804,6 +1806,8 @@
 		EAC88F9D15A441510068C3C0 /* UserInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoController.m; sourceTree = "<group>"; };
 		EAC88F9E15A441510068C3C0 /* UserInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoController.xib; sourceTree = "<group>"; };
 		EAE2B6F6165639480068BFFD /* AirHotel.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AirHotel.proto; sourceTree = "<group>"; };
+		EAE338C2166374B000E03D51 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		EAE338C41663770300E03D51 /* index_bg@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "index_bg@2x.jpg"; sourceTree = "<group>"; };
 		EAE4F092154EAFEB00A656FF /* MapUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapUtils.h; sourceTree = "<group>"; };
 		EAE4F093154EAFEB00A656FF /* MapUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUtils.m; sourceTree = "<group>"; };
 		EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotDetailViewHandler.m; sourceTree = "<group>"; };
@@ -2486,20 +2490,21 @@
 				EA19E11C1606C1BC006A04A3 /* local_route */,
 				A3E2D4E715C24DD5006F99CA /* city_filter */,
 				A34BDD3415B94A3800CD16C7 /* Default@2x.png */,
+				EAE338C2166374B000E03D51 /* Default-568h@2x.png */,
 				A3C090D715B813070040053C /* djy_page_bg@2x.jpg */,
+				A48E04811534058800B2695E /* all_page_bg@2x.jpg */,
+				A36ADA1415F4734F00FCB701 /* all_page_bg2@2x.jpg */,
+				EA23821016647532001ECA2D /* all_page_bg2_i5@2x.jpg */,
 				A4D9F3111592FB3A00566B32 /* login */,
 				A455F85A1585A0F800CA5743 /* route_detail */,
 				A455F82415835A5A00CA5743 /* route_list */,
 				A455F81F15835A0B00CA5743 /* travel_guide */,
-				A48E04811534058800B2695E /* all_page_bg@2x.jpg */,
-				A36ADA1415F4734F00FCB701 /* all_page_bg2@2x.jpg */,
 				A48E04821534058800B2695E /* category_icons */,
 				A48E04891534058800B2695E /* city_manager */,
 				A48E049E1534058800B2695E /* favorite */,
 				A48E04A31534058800B2695E /* feedback */,
 				A48E04A81534058800B2695E /* home */,
 				A48E04CE1534058900B2695E /* icon */,
-				A48E04D11534058900B2695E /* index_bg.png */,
 				A48E04D21534058900B2695E /* map */,
 				A48E04D91534058900B2695E /* more */,
 				A48E04DB1534058900B2695E /* nearby */,
@@ -2573,6 +2578,7 @@
 		A48E04A81534058800B2695E /* home */ = {
 			isa = PBXGroup;
 			children = (
+				EAE338C41663770300E03D51 /* index_bg@2x.jpg */,
 				A3681299160475BB00F2B301 /* line_top_shadow@2x.png */,
 				A36812971604695B00F2B301 /* go_btn_local@2x.png */,
 				A36812951604685400F2B301 /* line_top_bg@2x.png */,
@@ -4480,7 +4486,6 @@
 				A48E05571534058900B2695E /* topmenu_bg@2x.png in Resources */,
 				A48E05591534058900B2695E /* dmzlogo.png in Resources */,
 				A48E055A1534058900B2695E /* dmzlogo@2x.png in Resources */,
-				A48E055B1534058900B2695E /* index_bg.png in Resources */,
 				A48E055D1534058900B2695E /* locate@2x.png in Resources */,
 				A48E05601534058900B2695E /* pin@2x.png in Resources */,
 				A48E05621534058900B2695E /* more_icon@2x.png in Resources */,
@@ -4757,6 +4762,9 @@
 				EA00B39316352AAA0081525F /* signup_bg2@2x.png in Resources */,
 				EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */,
 				EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */,
+				EAE338C3166374B000E03D51 /* Default-568h@2x.png in Resources */,
+				EAE338C51663770300E03D51 /* index_bg@2x.jpg in Resources */,
+				EA23821116647532001ECA2D /* all_page_bg2_i5@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
