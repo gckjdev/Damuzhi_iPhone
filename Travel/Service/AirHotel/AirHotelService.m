@@ -10,6 +10,7 @@
 #import "TravelNetworkRequest.h"
 #import "Package.pb.h"
 #import "LogUtil.h"
+#import "TimeUtils.h"
 
 static AirHotelService *_airHotelService = nil;
 
@@ -25,19 +26,22 @@ static AirHotelService *_airHotelService = nil;
 }
 
 - (void)findHotels:(int)cityId
-       checkInDate:(NSString *)checkInDate
-      checkOutDate:(NSString *)checkOutDate
+       checkInDate:(NSDate *)checkInDate
+      checkOutDate:(NSDate *)checkOutDate
              start:(int)start
              count:(int)count
           delegate:(id<AirHotelServiceDelegate>)delegate
 {
+    NSString *checkInDateStr = dateToStringByFormat(checkInDate, @"yyyyMMdd");
+    NSString *checkOutDateStr = dateToStringByFormat(checkOutDate, @"yyyyMMdd");
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CommonNetworkOutput* output = [TravelNetworkRequest queryList:OBJECT_LIST_CHECK_IN_HOTEL
                                                                cityId:cityId
-                                                          checkInDate:checkInDate
-                                                         checkOutDate:checkOutDate
+                                                          checkInDate:checkInDateStr
+                                                         checkOutDate:checkOutDateStr
                                                                 start:start
-                                                                count:start
+                                                                count:count
                                                                 lang:LanguageTypeZhHans];
         
         int totalCount = 0 ;

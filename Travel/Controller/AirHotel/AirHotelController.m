@@ -53,9 +53,8 @@ enum HOTEL_DATE_TAG{
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     self.navigationItem.title = NSLS(@"机+酒");
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
 }
 
 - (void)createHotelOrder
@@ -120,7 +119,33 @@ enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    if (section == SECTION_AIR) {
+        return [MakeHotelOrderHeader getHeaderViewHeight];
+    } else {
+        return [MakeHotelOrderHeader getHeaderViewHeight];
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == SECTION_AIR) {
+        MakeAirOrderHeader *header = [MakeAirOrderHeader createHeaderView];
+        return header;
+    } else {
+        MakeHotelOrderHeader *header = [MakeHotelOrderHeader createHeaderView];
+        return header;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 10;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    return footer;
 }
 
 #pragma mark -
@@ -193,7 +218,11 @@ enum {
 
 - (void)didClickHotelButton:(NSIndexPath *)indexPath
 {
-    SelectHotelController *controller =[[[SelectHotelController alloc] init] autorelease];
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
+    NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
+    NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate];
+    
+    SelectHotelController *controller =[[[SelectHotelController alloc] initWithCheckInDate:checkInDate checkOutDate:checkOutDate] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

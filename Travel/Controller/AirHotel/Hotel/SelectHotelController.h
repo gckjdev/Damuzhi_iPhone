@@ -9,7 +9,11 @@
 #import "PPTableViewController.h"
 #import "RoomCell.h"
 #import "HotelHeaderView.h"
+#import "AirHotelService.h"
 
-@interface SelectHotelController : PPTableViewController<HotelHeaderViewDelegate>
+@interface SelectHotelController : PPTableViewController<HotelHeaderViewDelegate, AirHotelServiceDelegate>
+
+- (id)initWithCheckInDate:(NSDate *)checkInDate
+             checkOutDate:(NSDate *)checkOutDate;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HJManagedImageV.h"
 
 @protocol  HotelHeaderViewDelegate <NSObject>
 
@@ -16,10 +17,10 @@
 
 
 @class Place;
-@interface HotelHeaderView : UIView
+@interface HotelHeaderView : UIView <HJManagedImageVDelegate>
 
 @property (retain, nonatomic) IBOutlet UIButton *selectButton;
-@property (retain, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (retain, nonatomic) IBOutlet HJManagedImageV *iconView;
 @property (retain, nonatomic) IBOutlet UILabel *nameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *starLabel;
 @property (retain, nonatomic) IBOutlet UIView *rankView;

@@ -10,6 +10,7 @@
 #import "Place.pb.h"
 #import "HotelHeaderView.h"
 #import "FontSize.h"
+#import "AppManager.h"
 
 @interface SelectHotelController ()
 
@@ -17,36 +18,80 @@
 @property (retain, nonatomic) NSMutableArray *viewsForSectionHeaders;
 @property (retain, nonatomic) NSMutableArray *sectionStatus;
 
-
+@property (retain, nonatomic) NSDate *checkInDate;
+@property (retain, nonatomic) NSDate *checkOutDate;
 
 @end
+
+
+#define EACH_COUNT  20
+
 
 @implementation SelectHotelController
 @synthesize hotelList = _hotelList;
 @synthesize viewsForSectionHeaders = _viewsForSectionHeaders;
 @synthesize sectionStatus = _sectionStatus;
+@synthesize checkInDate = _checkInDate;
+@synthesize checkOutDate = _checkOutDate;
 
 - (void)dealloc
 {
     [_hotelList release];
     [_viewsForSectionHeaders release];
     [_sectionStatus release];
+    [_checkInDate release];
+    [_checkOutDate release];
     [super dealloc];
+}
+
+- (id)initWithCheckInDate:(NSDate *)checkInDate
+             checkOutDate:(NSDate *)checkOutDate
+{
+    self = [super init];
+    if (self) {
+        self.checkInDate = checkInDate;
+        self.checkOutDate = checkOutDate;
+    }
+    return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = NSLS(@"酒店列表");
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
+    [self setNavigationRightButton:NSLS(@"确定")
+                          fontSize:FONT_SIZE
+                         imageName:@"topmenu_btn_right.png"
+                            action:@selector(clickFinish:)];
+    
+    [self findHotels];
+    
     //test data
-    [self testData];
-    [self createSectionStatus];
-    [dataTableView reloadData];
+//    [self testData];
+//    [self createSectionStatus];
+//    [dataTableView reloadData];
+}
+
+- (void)clickFinish:(id)sender
+{
+    //TO DO 
+}
+
+- (void)findHotels
+{
+    [[AirHotelService defaultService] findHotels:[[AppManager defaultManager] getCurrentCityId]
+                                     checkInDate:_checkInDate
+                                    checkOutDate:_checkOutDate
+                                           start:0
+                                           count:EACH_COUNT
+                                        delegate:self];
+    
 }
 
 - (void)createSectionStatus
@@ -177,5 +222,18 @@
     [self.dataTableView reloadData];
 }
 
+#pragma mark -
+#pragma AirHotelServiceDelegate method
+- (void)findHotelsDone:(int)resultCode
+                result:(int)result
+            resultInfo:(NSString *)resultInfo
+            totalCount:(int)totalCount
+             hotelList:(NSArray*)hotelList
+{
+    self.hotelList = [NSMutableArray arrayWithArray:hotelList];
+    
+    [self createSectionStatus];
+    [dataTableView reloadData];
+}
 
 @end

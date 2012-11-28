@@ -17,7 +17,7 @@
 
 + (CGFloat)getCellHeight
 {
-    return 143.0f;
+    return 200.0f;
 }
 
 - (IBAction)clickDepartCityButton:(id)sender {
