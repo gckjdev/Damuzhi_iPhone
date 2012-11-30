@@ -26,6 +26,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *checkOutButton;
 @property (retain, nonatomic) IBOutlet UIButton *hotelButton;
 
-- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilde;
+- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder indexPath:(NSIndexPath *)aIndexPath;
 
 @end

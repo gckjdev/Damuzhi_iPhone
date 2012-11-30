@@ -10,6 +10,7 @@
 #import "Place.pb.h"
 #import "PPApplication.h"
 #import "PlaceUtils.h"
+#import "ImageName.h"
 
 @interface HotelHeaderView ()
 
@@ -46,12 +47,16 @@
 
 + (CGFloat)getHeaderViewHeight
 {
-    return 50;
+    return 74;
 }
 
-- (void)setViewWith:(Place *)hotel section:(NSInteger)section
+- (void)setViewWith:(Place *)hotel
+            section:(NSInteger)section
+         isSelected:(BOOL)isSelected
 {
     self.section = section;
+    
+    self.selectButton.selected = isSelected;
     
     self.nameLabel.text = hotel.name;
     
@@ -67,9 +72,15 @@
     //set price
     self.priceLabel.text = [NSString stringWithFormat:@"参考价格:%@",[PlaceUtils getPrice:hotel]];
     
-    
-    for (int rank = 0 ; rank < 3; rank ++) {
+    //set rank
+    for (int tag = 1 ; tag <= 3; tag ++) {
+        UIImageView *imageView = (UIImageView *)[self.rankView viewWithTag:tag];
         
+        if (tag <= hotel.rank) {
+            imageView.image = [UIImage imageNamed:IMAGE_GOOD];
+        } else {
+            imageView.image = [UIImage imageNamed:IMAGE_GOOD2];
+        }
     }
     
 }
@@ -85,9 +96,6 @@
 }
 
 - (IBAction)clickSelectButton:(id)sender {
-    
-    _selectButton.selected = !_selectButton.selected;
-    
     if ([_delegate respondsToSelector:@selector(didClickSelectButton:)]) {
         [_delegate didClickSelectButton:_section];
     }

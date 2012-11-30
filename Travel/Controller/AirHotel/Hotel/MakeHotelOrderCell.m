@@ -36,10 +36,13 @@
     return dateString;
 }
 
-- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder
+- (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder indexPath:(NSIndexPath *)aIndexPath
 {
+    self.indexPath = indexPath;
+    
     [self.checkInButton setTitle:[self dateIntToString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
     [self.checkOutButton setTitle:[self dateIntToString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+    [self.hotelButton setTitle:[self dateIntToString:hotelOrderBuilder.hotel.name] forState:UIControlStateNormal];
 }
 
 - (IBAction)clickCheckInButton:(id)sender {

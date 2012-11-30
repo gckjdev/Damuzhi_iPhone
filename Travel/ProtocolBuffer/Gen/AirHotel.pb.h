@@ -2,6 +2,8 @@
 
 #import "ProtocolBuffers.h"
 
+#import "Place.pb.h"
+
 @class AirHotelOrder;
 @class AirHotelOrderList;
 @class AirHotelOrderList_Builder;
@@ -20,10 +22,20 @@
 @class HotelOrderRoomInfo;
 @class HotelOrderRoomInfo_Builder;
 @class HotelOrder_Builder;
+@class HotelRoom;
+@class HotelRoom_Builder;
 @class PaymentInfo;
 @class PaymentInfo_Builder;
 @class Person;
 @class Person_Builder;
+@class Place;
+@class PlaceList;
+@class PlaceList_Builder;
+@class PlaceStatistics;
+@class PlaceStatistics_Builder;
+@class Place_Builder;
+@class Statistics;
+@class Statistics_Builder;
 typedef enum {
   PersonAgeTypePersonAgeAdult = 1,
   PersonAgeTypePersonAgeChild = 2,
@@ -243,18 +255,22 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   BOOL hasCheckInDate_:1;
   BOOL hasCheckOutDate_:1;
   BOOL hasHotelId_:1;
+  BOOL hasHotel_:1;
   int32_t checkInDate;
   int32_t checkOutDate;
   int32_t hotelId;
+  Place* hotel;
   NSMutableArray* mutableRoomInfosList;
   NSMutableArray* mutableCheckInPersonsList;
 }
 - (BOOL) hasCheckInDate;
 - (BOOL) hasCheckOutDate;
 - (BOOL) hasHotelId;
+- (BOOL) hasHotel;
 @property (readonly) int32_t checkInDate;
 @property (readonly) int32_t checkOutDate;
 @property (readonly) int32_t hotelId;
+@property (readonly, retain) Place* hotel;
 - (NSArray*) roomInfosList;
 - (HotelOrderRoomInfo*) roomInfosAtIndex:(int32_t) index;
 - (NSArray*) checkInPersonsList;
@@ -322,6 +338,13 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (HotelOrder_Builder*) addCheckInPersons:(Person*) value;
 - (HotelOrder_Builder*) addAllCheckInPersons:(NSArray*) values;
 - (HotelOrder_Builder*) clearCheckInPersonsList;
+
+- (BOOL) hasHotel;
+- (Place*) hotel;
+- (HotelOrder_Builder*) setHotel:(Place*) value;
+- (HotelOrder_Builder*) setHotelBuilder:(Place_Builder*) builderForValue;
+- (HotelOrder_Builder*) mergeHotel:(Place*) value;
+- (HotelOrder_Builder*) clearHotel;
 @end
 
 @interface FlightSeat : PBGeneratedMessage {

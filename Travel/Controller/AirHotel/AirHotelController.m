@@ -187,13 +187,18 @@ enum {
         }
         
         HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
-        [cell setCellByHotelOrder:builder];
-        cell.indexPath = indexPath;
+        [cell setCellByHotelOrder:builder indexPath:indexPath];
         
         return cell;
     }
     
     return nil;
+}
+
+
+- (IBAction)clickMemberButton:(id)sender {
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark -
@@ -218,11 +223,13 @@ enum {
 
 - (void)didClickHotelButton:(NSIndexPath *)indexPath
 {
+    self.currentIndexPath = indexPath;
+    
     HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
     NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
     NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate];
     
-    SelectHotelController *controller =[[[SelectHotelController alloc] initWithCheckInDate:checkInDate checkOutDate:checkOutDate] autorelease];
+    SelectHotelController *controller =[[[SelectHotelController alloc] initWithCheckInDate:checkInDate checkOutDate:checkOutDate delegate:self] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -243,9 +250,16 @@ enum {
     }
 }
 
-- (IBAction)clickMemberButton:(id)sender {
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] init] autorelease];
-    [self.navigationController pushViewController:controller animated:YES];
+#pragma mark -
+#pragma SelectHotelControllerDelegate methods
+- (void)didClickFinish:(Place *)hotel roomInfos:(NSArray *)roomInfos
+{
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.row];
+    [builder setHotelId:hotel.placeId];
+    [builder setHotel:hotel];
+    [builder clearRoomInfosList];
+    [builder addAllRoomInfos:roomInfos];
+    [dataTableView reloadData];
 }
 
 @end

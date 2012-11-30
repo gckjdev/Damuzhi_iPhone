@@ -11,6 +11,7 @@
 #import "Package.pb.h"
 #import "LogUtil.h"
 #import "TimeUtils.h"
+#import "AirHotel.pb.h"
 
 static AirHotelService *_airHotelService = nil;
 
@@ -72,6 +73,33 @@ static AirHotelService *_airHotelService = nil;
             }
         });
         
+    });
+}
+
+
+- (void)order:(AirHotelOrder *)order
+     delegate:(id<AirHotelServiceDelegate>)delegate
+{
+    NSData *data = [order data];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput* output = [TravelNetworkRequest orderAirHotel:data];
+        
+        if (output.resultCode == ERROR_SUCCESS){
+            PPDebug(@"<AirHotelService> order succe");
+        } else {
+            PPDebug(@"<AirHotelService> order failed");
+        }
+        
+        NSString *reultInfo = [output.jsonDataDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(orderDone:resultInfo:)]) {
+                [delegate orderDone:output.resultCode resultInfo:reultInfo];
+            }
+        });
     });
 }
 

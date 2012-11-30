@@ -32,6 +32,8 @@
 
 + (CGFloat)getHeaderViewHeight;
 
-- (void)setViewWith:(Place *)hotel section:(NSInteger)section;
+- (void)setViewWith:(Place *)hotel
+            section:(NSInteger)section
+         isSelected:(BOOL)isSelected;
 
 @end

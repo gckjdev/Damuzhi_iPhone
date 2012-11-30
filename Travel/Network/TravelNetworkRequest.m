@@ -1318,4 +1318,27 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)orderAirHotel:(NSData *)data
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL) {
+        return baseURL;
+    };
+    
+    PPNetworkResponseBlock responseHandler = ^(NSDictionary *dict, CommonNetworkOutput *output) {
+        
+        output.resultCode = [[dict objectForKey:PARA_TRAVEL_RESULT] intValue];
+        
+        return;
+    };
+    
+    return [PPNetworkRequest sendPostRequest:URL_TRAVEL_AIR_HOTEL_ORDER
+                                        data:data
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
 @end

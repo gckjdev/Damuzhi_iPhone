@@ -11,9 +11,18 @@
 #import "HotelHeaderView.h"
 #import "AirHotelService.h"
 
-@interface SelectHotelController : PPTableViewController<HotelHeaderViewDelegate, AirHotelServiceDelegate>
+@protocol SelectHotelControllerDelegate <NSObject>
+
+@optional
+- (void)didClickFinish:(Place *)hotel roomInfos:(NSArray *)roomInfos;
+
+@end
+
+
+@interface SelectHotelController : PPTableViewController<AirHotelServiceDelegate,HotelHeaderViewDelegate,RoomCellDelegate>
 
 - (id)initWithCheckInDate:(NSDate *)checkInDate
-             checkOutDate:(NSDate *)checkOutDate;
+             checkOutDate:(NSDate *)checkOutDate
+                 delegate:(id<SelectHotelControllerDelegate>)delegate;
 
 @end

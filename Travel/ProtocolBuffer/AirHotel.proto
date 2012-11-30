@@ -1,3 +1,4 @@
+import "Place.proto";
 
 package damuzhi;
 
@@ -50,6 +51,8 @@ message HotelOrder {
     required int32 hotelId = 3;                 //酒店id(对应Place结构的placeId)
     repeated HotelOrderRoomInfo roomInfos = 4;  //房间预订信息
     repeated Person checkInPersons = 5;         //入住人信息
+    
+    optional Place hotel = 10;                  //酒店(用于订单查询)
 }
 
 //舱位

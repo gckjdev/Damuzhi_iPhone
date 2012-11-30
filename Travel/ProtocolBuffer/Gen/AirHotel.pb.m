@@ -12,6 +12,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
   if (self == [AirHotelRoot class]) {
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
+    [PlaceRoot registerAllExtensions:registry];
     extensionRegistry = [registry retain];
   }
 }
@@ -806,6 +807,7 @@ static HotelOrderRoomInfo* defaultHotelOrderRoomInfoInstance = nil;
 @property int32_t hotelId;
 @property (retain) NSMutableArray* mutableRoomInfosList;
 @property (retain) NSMutableArray* mutableCheckInPersonsList;
+@property (retain) Place* hotel;
 @end
 
 @implementation HotelOrder
@@ -833,9 +835,17 @@ static HotelOrderRoomInfo* defaultHotelOrderRoomInfoInstance = nil;
 @synthesize hotelId;
 @synthesize mutableRoomInfosList;
 @synthesize mutableCheckInPersonsList;
+- (BOOL) hasHotel {
+  return !!hasHotel_;
+}
+- (void) setHasHotel:(BOOL) value {
+  hasHotel_ = !!value;
+}
+@synthesize hotel;
 - (void) dealloc {
   self.mutableRoomInfosList = nil;
   self.mutableCheckInPersonsList = nil;
+  self.hotel = nil;
   [super dealloc];
 }
 - (id) init {
@@ -843,6 +853,7 @@ static HotelOrderRoomInfo* defaultHotelOrderRoomInfoInstance = nil;
     self.checkInDate = 0;
     self.checkOutDate = 0;
     self.hotelId = 0;
+    self.hotel = [Place defaultInstance];
   }
   return self;
 }
@@ -887,6 +898,11 @@ static HotelOrder* defaultHotelOrderInstance = nil;
       return NO;
     }
   }
+  if (self.hasHotel) {
+    if (!self.hotel.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -904,6 +920,9 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   }
   for (Person* element in self.checkInPersonsList) {
     [output writeMessage:5 value:element];
+  }
+  if (self.hasHotel) {
+    [output writeMessage:10 value:self.hotel];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -928,6 +947,9 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   }
   for (Person* element in self.checkInPersonsList) {
     size += computeMessageSize(5, element);
+  }
+  if (self.hasHotel) {
+    size += computeMessageSize(10, self.hotel);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1025,6 +1047,9 @@ static HotelOrder* defaultHotelOrderInstance = nil;
     }
     [result.mutableCheckInPersonsList addObjectsFromArray:other.mutableCheckInPersonsList];
   }
+  if (other.hasHotel) {
+    [self mergeHotel:other.hotel];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1068,6 +1093,15 @@ static HotelOrder* defaultHotelOrderInstance = nil;
         Person_Builder* subBuilder = [Person builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addCheckInPersons:[subBuilder buildPartial]];
+        break;
+      }
+      case 82: {
+        Place_Builder* subBuilder = [Place builder];
+        if (self.hasHotel) {
+          [subBuilder mergeFrom:self.hotel];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setHotel:[subBuilder buildPartial]];
         break;
       }
     }
@@ -1177,6 +1211,36 @@ static HotelOrder* defaultHotelOrderInstance = nil;
     result.mutableCheckInPersonsList = [NSMutableArray array];
   }
   [result.mutableCheckInPersonsList addObject:value];
+  return self;
+}
+- (BOOL) hasHotel {
+  return result.hasHotel;
+}
+- (Place*) hotel {
+  return result.hotel;
+}
+- (HotelOrder_Builder*) setHotel:(Place*) value {
+  result.hasHotel = YES;
+  result.hotel = value;
+  return self;
+}
+- (HotelOrder_Builder*) setHotelBuilder:(Place_Builder*) builderForValue {
+  return [self setHotel:[builderForValue build]];
+}
+- (HotelOrder_Builder*) mergeHotel:(Place*) value {
+  if (result.hasHotel &&
+      result.hotel != [Place defaultInstance]) {
+    result.hotel =
+      [[[Place builderWithPrototype:result.hotel] mergeFrom:value] buildPartial];
+  } else {
+    result.hotel = value;
+  }
+  result.hasHotel = YES;
+  return self;
+}
+- (HotelOrder_Builder*) clearHotel {
+  result.hasHotel = NO;
+  result.hotel = [Place defaultInstance];
   return self;
 }
 @end

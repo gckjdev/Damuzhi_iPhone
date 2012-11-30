@@ -18,11 +18,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLS(@"确认约定");
+    self.title = NSLS(@"确认预订");
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
 }
+
+- (IBAction)clickOrderButton:(id)sender {
+    
+}
+
 
 @end

@@ -11,46 +11,58 @@
 #import "HotelHeaderView.h"
 #import "FontSize.h"
 #import "AppManager.h"
+#import "AirHotel.pb.h"
 
 @interface SelectHotelController ()
 
+@property (assign, nonatomic) id<SelectHotelControllerDelegate> delegate;
 @property (retain, nonatomic) NSMutableArray *hotelList;
 @property (retain, nonatomic) NSMutableArray *viewsForSectionHeaders;
-@property (retain, nonatomic) NSMutableArray *sectionStatus;
-
 @property (retain, nonatomic) NSDate *checkInDate;
 @property (retain, nonatomic) NSDate *checkOutDate;
+
+@property (assign, nonatomic) NSInteger selectedSection;
+@property (retain, nonatomic) NSMutableDictionary *roomInfoDic;
 
 @end
 
 
 #define EACH_COUNT  20
 
+#define SELECTED_SECTION_NONE   -1
 
 @implementation SelectHotelController
+@synthesize delegate = _delegate;
 @synthesize hotelList = _hotelList;
 @synthesize viewsForSectionHeaders = _viewsForSectionHeaders;
-@synthesize sectionStatus = _sectionStatus;
 @synthesize checkInDate = _checkInDate;
 @synthesize checkOutDate = _checkOutDate;
+@synthesize selectedSection = _selectedSection;
+@synthesize roomInfoDic = _roomInfoDic;
 
 - (void)dealloc
 {
     [_hotelList release];
     [_viewsForSectionHeaders release];
-    [_sectionStatus release];
     [_checkInDate release];
     [_checkOutDate release];
+    [_roomInfoDic release];
     [super dealloc];
 }
 
+
 - (id)initWithCheckInDate:(NSDate *)checkInDate
              checkOutDate:(NSDate *)checkOutDate
+                 delegate:(id<SelectHotelControllerDelegate>)delegate;
 {
     self = [super init];
     if (self) {
         self.checkInDate = checkInDate;
         self.checkOutDate = checkOutDate;
+        self.delegate = delegate;
+        
+        self.viewsForSectionHeaders = [[[NSMutableArray alloc] init] autorelease];
+        self.roomInfoDic = [[[NSMutableDictionary alloc] init] autorelease];
     }
     return self;
 }
@@ -70,17 +82,43 @@
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickFinish:)];
     
-    [self findHotels];
+    _selectedSection = SELECTED_SECTION_NONE;
+    
+    //[self findHotels];
     
     //test data
-//    [self testData];
-//    [self createSectionStatus];
-//    [dataTableView reloadData];
+    [self testData];
+    [dataTableView reloadData];
 }
 
 - (void)clickFinish:(id)sender
 {
-    //TO DO 
+    //TO DO
+    if (_selectedSection == SELECTED_SECTION_NONE) {
+        [self popupMessage:NSLS(@"没有选择酒店") title:nil];
+        return;
+    }
+    
+    if ([[_roomInfoDic allKeys] count] == 0) {
+        return;
+    }
+    Place *hotel = [_hotelList objectAtIndex:_selectedSection];
+    
+    NSMutableArray *roomInfos = [[[NSMutableArray alloc] init] autorelease];
+    NSArray *roomIds = [_roomInfoDic allKeys];
+    for (NSString *roomId in roomIds) {
+        NSNumber *count = [_roomInfoDic objectForKey:roomId];
+        
+        HotelOrderRoomInfo_Builder *builder= [[[HotelOrderRoomInfo_Builder alloc] init] autorelease];
+        [builder setRoomId:[roomId intValue]];
+        [builder setCount:[count intValue]];
+        HotelOrderRoomInfo *roomInfo = [builder build];
+        [roomInfos addObject:roomInfo];
+    }
+    
+    if ([_delegate respondsToSelector:@selector(didClickFinish:roomInfos:)]) {
+        [_delegate didClickFinish:hotel roomInfos:roomInfos];
+    }
 }
 
 - (void)findHotels
@@ -94,27 +132,11 @@
     
 }
 
-- (void)createSectionStatus
-{
-    self.sectionStatus = [[[NSMutableArray alloc] init] autorelease];
-    for (int i = 0 ; i < [_hotelList count] ; i ++) {
-        [_sectionStatus addObject:[NSNumber numberWithBool:YES]];
-    }
-}
-
-- (void)setSection:(NSInteger)section Open:(BOOL)open
-{
-    if ([_sectionStatus count] > section) {
-        [_sectionStatus removeObjectAtIndex:section];
-        NSNumber *num = [NSNumber numberWithBool:open];
-        [_sectionStatus insertObject:num atIndex:section];
-    }
-}
 
 - (void)testData
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    for (int i =0 ; i < 5 ; i ++) {
+    for (int i =0 ; i < 30 ; i ++) {
         Place_Builder *builder = [[[Place_Builder alloc] init] autorelease];
         [builder setPlaceId:i];
         [builder setCategoryId:2];
@@ -148,18 +170,50 @@
     self.hotelList = mutableArray;
 }
 
-- (void)didReceiveMemoryWarning
+
+
+- (BOOL)isSelectedRoom:(int)roomId
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSString *roomIdStr = [NSString stringWithFormat:@"%d", roomId];
+    
+    if ([_roomInfoDic objectForKey:roomIdStr]) {
+        return YES;
+    } else {
+        return NO;
+    }
 }
 
+- (void)removeAllRooms
+{
+    [_roomInfoDic removeAllObjects];
+}
+
+- (void)removeRoomWith:(int)roomId
+{
+    NSString *roomIdStr = [NSString stringWithFormat:@"%d", roomId];
+    [_roomInfoDic removeObjectForKey:roomIdStr];
+}
+
+- (void)setRoomWith:(int)roomId count:(NSUInteger)count
+{
+    NSString *roomIdStr = [NSString stringWithFormat:@"%d", roomId];
+    NSNumber *countNumber = [NSNumber numberWithUnsignedInteger:count];
+    
+    [_roomInfoDic setValue:countNumber forKey:roomIdStr];
+}
+
+- (NSUInteger)getRoomCount:(int)roomId
+{
+    NSString *roomIdStr = [NSString stringWithFormat:@"%d", roomId];
+    NSNumber *countNumber = (NSNumber *)[_roomInfoDic objectForKey:roomIdStr];
+    return [countNumber unsignedIntegerValue];
+}
 
 #pragma mark - 
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[_sectionStatus objectAtIndex:section] boolValue]) {
+    if (_selectedSection == section) {
         Place *hotel = [_hotelList objectAtIndex:section];
         return [[hotel roomsList] count];
     } else {
@@ -174,6 +228,17 @@
     if (cell == nil) {
         cell = [RoomCell createCell:self];
     }
+    
+    Place *Hotel = [_hotelList objectAtIndex:indexPath.section];
+    HotelRoom *room = [[Hotel roomsList] objectAtIndex:indexPath.row];
+    
+    if ([self isSelectedRoom:room.roomId]) {
+        NSUInteger roomCount = [self getRoomCount:room.roomId];
+        [cell setCellWithRoom:room count:roomCount indexPath:indexPath isSelected:YES];
+    } else {
+        [cell setCellWithRoom:room count:1 indexPath:indexPath isSelected:NO];
+    }
+
     
     return cell;
 }
@@ -203,12 +268,12 @@
     } else {
         headerView = [HotelHeaderView createHeaderView];
         headerView.delegate = self;
-        
         [_viewsForSectionHeaders addObject:headerView];
     }
     
     Place *hotel = [_hotelList objectAtIndex:section];
-    [headerView setViewWith:hotel section:section];
+    BOOL isSelected = (section == _selectedSection ? YES : NO);
+    [headerView setViewWith:hotel section:section isSelected:isSelected];
     
     return headerView;
 }
@@ -217,10 +282,46 @@
 #pragma HotelHeaderViewDelegate method
 - (void)didClickSelectButton:(NSInteger)section
 {
-    BOOL isOpen = [[_sectionStatus objectAtIndex:section] boolValue];
-    [self setSection:section Open:!isOpen];
+    [self removeAllRooms];
+    
+    if (_selectedSection == section) {
+        _selectedSection = SELECTED_SECTION_NONE;
+    } else {
+        _selectedSection = section;
+    }
+    
     [self.dataTableView reloadData];
 }
+
+#pragma mark -
+#pragma RoomCellDelegate methods
+- (void)didClickSelectRoomButton:(int)roomId isSelected:(BOOL)isSelected  count:(NSUInteger)count indexPath:(NSIndexPath *)aIndexPath
+{
+    if (NO == isSelected) {
+        [self removeRoomWith:roomId];
+    } else {
+        [self setRoomWith:roomId count:count];
+    }
+    
+    [self.dataTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:aIndexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)didClickMinusButton:(int)roomId count:(NSUInteger)count indexPath:(NSIndexPath *)aIndexPath
+{
+    if ([self isSelectedRoom:roomId]) {
+        [self setRoomWith:roomId count:count];
+        [self.dataTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:aIndexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (void)didClickPlusButton:(int)roomId count:(NSUInteger)count indexPath:(NSIndexPath *)aIndexPath
+{
+    if ([self isSelectedRoom:roomId]) {
+        [self setRoomWith:roomId count:count];
+        [self.dataTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:aIndexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
 
 #pragma mark -
 #pragma AirHotelServiceDelegate method
@@ -230,9 +331,9 @@
             totalCount:(int)totalCount
              hotelList:(NSArray*)hotelList
 {
+    PPDebug(@"hotelList count:%d", [hotelList count]);
     self.hotelList = [NSMutableArray arrayWithArray:hotelList];
     
-    [self createSectionStatus];
     [dataTableView reloadData];
 }
 

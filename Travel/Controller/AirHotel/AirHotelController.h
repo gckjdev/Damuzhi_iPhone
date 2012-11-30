@@ -14,6 +14,6 @@
 #import "MakeAirOrderHeader.h"
 #import "MakeHotelOrderHeader.h"
 
-@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate>
+@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate>
 
 @end

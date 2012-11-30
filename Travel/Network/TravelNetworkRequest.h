@@ -207,4 +207,6 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                             count:(int)count
                              lang:(int)lang;
 
++ (CommonNetworkOutput*)orderAirHotel:(NSData *)data;
+
 @end

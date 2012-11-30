@@ -107,6 +107,28 @@
 										<reference key="IBUIFontDescription" ref="720821279"/>
 										<reference key="IBUIFont" ref="995449377"/>
 									</object>
+									<object class="IBUIButton" id="103740610">
+										<reference key="NSNextResponder" ref="260111246"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{193, 72}, {118, 27}}</string>
+										<reference key="NSSuperview" ref="260111246"/>
+										<reference key="NSWindow"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<int key="IBUIButtonType">1</int>
+										<string key="IBUINormalTitle">确认提交订单</string>
+										<reference key="IBUIHighlightedTitleColor" ref="763898941"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="351068579"/>
+										<reference key="IBUIFontDescription" ref="720821279"/>
+										<reference key="IBUIFont" ref="995449377"/>
+									</object>
 								</array>
 								<string key="NSFrame">{{0, 444}, {320, 104}}</string>
 								<reference key="NSSuperview" ref="376875396"/>
@@ -178,6 +200,15 @@
 					</object>
 					<int key="connectionID">3</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">clickOrderButton:</string>
+						<reference key="source" ref="103740610"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">10</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -220,6 +251,7 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="702315486"/>
 							<reference ref="383632039"/>
+							<reference ref="103740610"/>
 						</array>
 						<reference key="parent" ref="376875396"/>
 					</object>
@@ -231,6 +263,11 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
 						<reference key="object" ref="702315486"/>
+						<reference key="parent" ref="260111246"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">9</int>
+						<reference key="object" ref="103740610"/>
 						<reference key="parent" ref="260111246"/>
 					</object>
 				</array>
@@ -250,12 +287,13 @@
 					</object>
 				</object>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="9.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">8</int>
+			<int key="maxID">10</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

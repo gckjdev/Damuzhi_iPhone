@@ -51,6 +51,8 @@
 
 #define URL_TRAVEL_NEARBY               (URL_SERVICE@"nearby.aspx?")
 
+#define URL_TRAVEL_AIR_HOTEL_ORDER      (URL_SERVICE@"airHotelOrder.aspx")
+
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
 #define FORMAT_TRAVEL_PB            2   // protocol buffer

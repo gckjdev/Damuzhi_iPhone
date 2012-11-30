@@ -17,8 +17,13 @@
             totalCount:(int)totalCount
              hotelList:(NSArray*)hotelList;
 
+- (void)orderDone:(int)result
+       resultInfo:(NSString *)resultInfo;
+
 @end
 
+
+@class AirHotelOrder;
 
 @interface AirHotelService : CommonService
 
@@ -30,5 +35,8 @@
              start:(int)start
              count:(int)count
           delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)order:(AirHotelOrder *)order
+     delegate:(id<AirHotelServiceDelegate>)delegate;
 
 @end
