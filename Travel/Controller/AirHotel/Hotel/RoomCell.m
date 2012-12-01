@@ -24,6 +24,7 @@
 + (id)createCell:(id)delegate
 {
     RoomCell *roomCell = [super createCell:delegate];
+    
     return roomCell;
 }
 
@@ -33,13 +34,49 @@
     return @"RoomCell";
 }
 
-+ (CGFloat)getCellHeight
+#define HEIGH_TOP       42
+#define HEIGH_MIDDLE    33
+
++ (CGFloat)getCellHeight:(RoomCellSite)roomCellSite;
 {
-    return 42.0f;
+    if (roomCellSite == RoomCellMiddle) {
+        return HEIGH_MIDDLE;
+    } else {
+        return HEIGH_TOP;
+    }
 }
 
-- (void)setCellWithRoom:(HotelRoom *)room count:(NSUInteger)count indexPath:(NSIndexPath *)aIndexPath isSelected:(BOOL)isSelected
+- (void)updateSite:(RoomCellSite)roomCellSite
 {
+    UIImage *image = nil;
+    
+    switch (roomCellSite) {
+        case RoomCellTop:
+            image = [UIImage imageNamed:@"hotel_list_zk1.png"];
+            self.backgroundImageView.frame = CGRectMake(self.backgroundImageView.frame.origin.x, self.backgroundImageView.frame.origin.y, self.backgroundImageView.frame.size.width , HEIGH_TOP);
+            
+            break;
+        case RoomCellMiddle:
+            image = [UIImage imageNamed:@"hotel_list_zk2.png"];
+            break;
+        case RoomCellBottom:
+            image = [UIImage imageNamed:@"hotel_list_zk3.png"];
+            break;
+        default:
+            break;
+    }
+    
+    self.backgroundImageView.image = image;
+}
+
+- (void)setCellWithRoom:(HotelRoom *)room
+                  count:(NSUInteger)count
+              indexPath:(NSIndexPath *)aIndexPath
+             isSelected:(BOOL)isSelected
+           roomCellSite:(RoomCellSite)roomCellSite
+{
+    self.contentView.backgroundColor = [UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1];
+    
     self.roomId = room.roomId;
     self.roomCount = count;
     self.indexPath = aIndexPath;
@@ -49,6 +86,7 @@
     self.selectRoomButton.selected = isSelected;
     
     [self updateCountLabel];
+    [self updateSite:roomCellSite];
 }
 
 - (void)updateCountLabel
@@ -101,6 +139,7 @@
     [_breakfastLabel release];
     [_countLabel release];
     [_selectRoomButton release];
+    [_backgroundImageView release];
     [super dealloc];
 }
 

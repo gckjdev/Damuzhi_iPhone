@@ -760,6 +760,23 @@
 		EAE5594E15158FBF004CEFED /* SpotDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */; };
 		EAE654DA153C398700AAE451 /* detail_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D8153C398700AAE451 /* detail_shadow@2x.png */; };
 		EAE654DB153C398700AAE451 /* topmenu_bg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */; };
+		EAFAAE1D1669F45A00250123 /* ConfirmHotelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFAAE1C1669F45900250123 /* ConfirmHotelCell.m */; };
+		EAFAAE1F1669F46F00250123 /* ConfirmHotelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE1E1669F46F00250123 /* ConfirmHotelCell.xib */; };
+		EAFAAE2B1669F95F00250123 /* hotel_list_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE221669F95F00250123 /* hotel_list_bg@2x.png */; };
+		EAFAAE2C1669F95F00250123 /* hotel_list_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE231669F95F00250123 /* hotel_list_line@2x.png */; };
+		EAFAAE2D1669F95F00250123 /* hotel_list_no_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE241669F95F00250123 /* hotel_list_no_bg@2x.png */; };
+		EAFAAE2E1669F95F00250123 /* hotel_list_p1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE251669F95F00250123 /* hotel_list_p1@2x.png */; };
+		EAFAAE2F1669F95F00250123 /* hotel_list_p2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE261669F95F00250123 /* hotel_list_p2@2x.png */; };
+		EAFAAE301669F95F00250123 /* hotel_list_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE271669F95F00250123 /* hotel_list_shadow@2x.png */; };
+		EAFAAE311669F95F00250123 /* hotel_list_zk1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE281669F95F00250123 /* hotel_list_zk1@2x.png */; };
+		EAFAAE321669F95F00250123 /* hotel_list_zk2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE291669F95F00250123 /* hotel_list_zk2@2x.png */; };
+		EAFAAE331669F95F00250123 /* hotel_list_zk3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE2A1669F95F00250123 /* hotel_list_zk3@2x.png */; };
+		EAFAAE3A1669F9A700250123 /* reserve_btn1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE341669F9A700250123 /* reserve_btn1@2x.png */; };
+		EAFAAE3B1669F9A700250123 /* reserve_btn2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE351669F9A700250123 /* reserve_btn2@2x.png */; };
+		EAFAAE3C1669F9A700250123 /* reserve_btn3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE361669F9A700250123 /* reserve_btn3@2x.png */; };
+		EAFAAE3D1669F9A700250123 /* reserve_btn4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE371669F9A700250123 /* reserve_btn4@2x.png */; };
+		EAFAAE3E1669F9A700250123 /* reserve_btn5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE381669F9A700250123 /* reserve_btn5@2x.png */; };
+		EAFAAE3F1669F9A700250123 /* reserve_dotted_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE391669F9A700250123 /* reserve_dotted_line@2x.png */; };
 		EAFE21E4152855DB0013D040 /* TravelUtilityDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE21E3152855DB0013D040 /* TravelUtilityDataSource.m */; };
 		EAFE21EB152861480013D040 /* NearByRecommendController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE21E9152861480013D040 /* NearByRecommendController.m */; };
 		EAFE21EC152861480013D040 /* NearByRecommendController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFE21EA152861480013D040 /* NearByRecommendController.xib */; };
@@ -1915,6 +1932,24 @@
 		EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotDetailViewHandler.m; sourceTree = "<group>"; };
 		EAE654D8153C398700AAE451 /* detail_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_shadow@2x.png"; sourceTree = "<group>"; };
 		EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topmenu_bg2@2x.png"; sourceTree = "<group>"; };
+		EAFAAE1B1669F45900250123 /* ConfirmHotelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmHotelCell.h; sourceTree = "<group>"; };
+		EAFAAE1C1669F45900250123 /* ConfirmHotelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmHotelCell.m; sourceTree = "<group>"; };
+		EAFAAE1E1669F46F00250123 /* ConfirmHotelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmHotelCell.xib; sourceTree = "<group>"; };
+		EAFAAE221669F95F00250123 /* hotel_list_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_bg@2x.png"; sourceTree = "<group>"; };
+		EAFAAE231669F95F00250123 /* hotel_list_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_line@2x.png"; sourceTree = "<group>"; };
+		EAFAAE241669F95F00250123 /* hotel_list_no_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_no_bg@2x.png"; sourceTree = "<group>"; };
+		EAFAAE251669F95F00250123 /* hotel_list_p1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_p1@2x.png"; sourceTree = "<group>"; };
+		EAFAAE261669F95F00250123 /* hotel_list_p2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_p2@2x.png"; sourceTree = "<group>"; };
+		EAFAAE271669F95F00250123 /* hotel_list_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_shadow@2x.png"; sourceTree = "<group>"; };
+		EAFAAE281669F95F00250123 /* hotel_list_zk1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_zk1@2x.png"; sourceTree = "<group>"; };
+		EAFAAE291669F95F00250123 /* hotel_list_zk2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_zk2@2x.png"; sourceTree = "<group>"; };
+		EAFAAE2A1669F95F00250123 /* hotel_list_zk3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hotel_list_zk3@2x.png"; sourceTree = "<group>"; };
+		EAFAAE341669F9A700250123 /* reserve_btn1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_btn1@2x.png"; sourceTree = "<group>"; };
+		EAFAAE351669F9A700250123 /* reserve_btn2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_btn2@2x.png"; sourceTree = "<group>"; };
+		EAFAAE361669F9A700250123 /* reserve_btn3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_btn3@2x.png"; sourceTree = "<group>"; };
+		EAFAAE371669F9A700250123 /* reserve_btn4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_btn4@2x.png"; sourceTree = "<group>"; };
+		EAFAAE381669F9A700250123 /* reserve_btn5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_btn5@2x.png"; sourceTree = "<group>"; };
+		EAFAAE391669F9A700250123 /* reserve_dotted_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reserve_dotted_line@2x.png"; sourceTree = "<group>"; };
 		EAFE21E2152855DB0013D040 /* TravelUtilityDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelUtilityDataSource.h; sourceTree = "<group>"; };
 		EAFE21E3152855DB0013D040 /* TravelUtilityDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelUtilityDataSource.m; sourceTree = "<group>"; };
 		EAFE21E8152861480013D040 /* NearByRecommendController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByRecommendController.h; sourceTree = "<group>"; };
@@ -4378,6 +4413,8 @@
 		EA2382A81664C05B001ECA2D /* air_hotel */ = {
 			isa = PBXGroup;
 			children = (
+				EAFAAE201669F95D00250123 /* confirm_order */,
+				EAFAAE211669F95E00250123 /* hotel_list */,
 				EA2382A91664C05C001ECA2D /* fly_p3@2x.png */,
 				EA2382AA1664C05C001ECA2D /* fly_p4@2x.png */,
 				EA2382AB1664C05C001ECA2D /* hotel_add_bg@2x.png */,
@@ -4477,8 +4514,40 @@
 				EAE33899166361C100E03D51 /* RoomCell.h */,
 				EAE3389A166361C100E03D51 /* RoomCell.m */,
 				EAE3389B166361C100E03D51 /* RoomCell.xib */,
+				EAFAAE1B1669F45900250123 /* ConfirmHotelCell.h */,
+				EAFAAE1C1669F45900250123 /* ConfirmHotelCell.m */,
+				EAFAAE1E1669F46F00250123 /* ConfirmHotelCell.xib */,
 			);
 			path = Hotel;
+			sourceTree = "<group>";
+		};
+		EAFAAE201669F95D00250123 /* confirm_order */ = {
+			isa = PBXGroup;
+			children = (
+				EAFAAE341669F9A700250123 /* reserve_btn1@2x.png */,
+				EAFAAE351669F9A700250123 /* reserve_btn2@2x.png */,
+				EAFAAE361669F9A700250123 /* reserve_btn3@2x.png */,
+				EAFAAE371669F9A700250123 /* reserve_btn4@2x.png */,
+				EAFAAE381669F9A700250123 /* reserve_btn5@2x.png */,
+				EAFAAE391669F9A700250123 /* reserve_dotted_line@2x.png */,
+			);
+			path = confirm_order;
+			sourceTree = "<group>";
+		};
+		EAFAAE211669F95E00250123 /* hotel_list */ = {
+			isa = PBXGroup;
+			children = (
+				EAFAAE221669F95F00250123 /* hotel_list_bg@2x.png */,
+				EAFAAE231669F95F00250123 /* hotel_list_line@2x.png */,
+				EAFAAE241669F95F00250123 /* hotel_list_no_bg@2x.png */,
+				EAFAAE251669F95F00250123 /* hotel_list_p1@2x.png */,
+				EAFAAE261669F95F00250123 /* hotel_list_p2@2x.png */,
+				EAFAAE271669F95F00250123 /* hotel_list_shadow@2x.png */,
+				EAFAAE281669F95F00250123 /* hotel_list_zk1@2x.png */,
+				EAFAAE291669F95F00250123 /* hotel_list_zk2@2x.png */,
+				EAFAAE2A1669F95F00250123 /* hotel_list_zk3@2x.png */,
+			);
+			path = hotel_list;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4989,6 +5058,22 @@
 				EA2382DE1664C185001ECA2D /* reserve_n@2x.png in Resources */,
 				EAE047DB1665B5E100D2EF0B /* MakeHotelOrderHeader.xib in Resources */,
 				EAE047E01665BBAE00D2EF0B /* MakeAirOrderHeader.xib in Resources */,
+				EAFAAE1F1669F46F00250123 /* ConfirmHotelCell.xib in Resources */,
+				EAFAAE2B1669F95F00250123 /* hotel_list_bg@2x.png in Resources */,
+				EAFAAE2C1669F95F00250123 /* hotel_list_line@2x.png in Resources */,
+				EAFAAE2D1669F95F00250123 /* hotel_list_no_bg@2x.png in Resources */,
+				EAFAAE2E1669F95F00250123 /* hotel_list_p1@2x.png in Resources */,
+				EAFAAE2F1669F95F00250123 /* hotel_list_p2@2x.png in Resources */,
+				EAFAAE301669F95F00250123 /* hotel_list_shadow@2x.png in Resources */,
+				EAFAAE311669F95F00250123 /* hotel_list_zk1@2x.png in Resources */,
+				EAFAAE321669F95F00250123 /* hotel_list_zk2@2x.png in Resources */,
+				EAFAAE331669F95F00250123 /* hotel_list_zk3@2x.png in Resources */,
+				EAFAAE3A1669F9A700250123 /* reserve_btn1@2x.png in Resources */,
+				EAFAAE3B1669F9A700250123 /* reserve_btn2@2x.png in Resources */,
+				EAFAAE3C1669F9A700250123 /* reserve_btn3@2x.png in Resources */,
+				EAFAAE3D1669F9A700250123 /* reserve_btn4@2x.png in Resources */,
+				EAFAAE3E1669F9A700250123 /* reserve_btn5@2x.png in Resources */,
+				EAFAAE3F1669F9A700250123 /* reserve_dotted_line@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5325,6 +5410,7 @@
 				EAE338AE1663683800E03D51 /* ConfirmOrderController.m in Sources */,
 				EAE047D91665B5C600D2EF0B /* MakeHotelOrderHeader.m in Sources */,
 				EAE047DE1665BB9300D2EF0B /* MakeAirOrderHeader.m in Sources */,
+				EAFAAE1D1669F45A00250123 /* ConfirmHotelCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

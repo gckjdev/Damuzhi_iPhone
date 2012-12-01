@@ -197,7 +197,11 @@ enum {
 
 
 - (IBAction)clickMemberButton:(id)sender {
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] init] autorelease];
+    AirHotelOrder_Builder *builder = [[[AirHotelOrder_Builder alloc] init] autorelease];
+    for (HotelOrder_Builder *hotelOrderBuilder in _hotelOrderBuilderList) {
+        [builder addHotelOrders:[hotelOrderBuilder build]];
+    }
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:builder] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

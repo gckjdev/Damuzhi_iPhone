@@ -2620,7 +2620,7 @@ static FlightList* defaultFlightListInstance = nil;
 
 @interface AirOrder ()
 @property (retain) NSString* flightNumber;
-@property int32_t flightSeatCode;
+@property (retain) NSString* flightSeatCode;
 @property int32_t flightType;
 @property int32_t flightDate;
 @property BOOL insurance;
@@ -2717,6 +2717,7 @@ static FlightList* defaultFlightListInstance = nil;
 @synthesize flightSeat;
 - (void) dealloc {
   self.flightNumber = nil;
+  self.flightSeatCode = nil;
   self.insuranceFee = nil;
   self.sendTicketFee = nil;
   self.mutablePassengerList = nil;
@@ -2727,7 +2728,7 @@ static FlightList* defaultFlightListInstance = nil;
 - (id) init {
   if ((self = [super init])) {
     self.flightNumber = @"";
-    self.flightSeatCode = 0;
+    self.flightSeatCode = @"";
     self.flightType = 0;
     self.flightDate = 0;
     self.insurance = NO;
@@ -2782,7 +2783,7 @@ static AirOrder* defaultAirOrderInstance = nil;
     [output writeString:1 value:self.flightNumber];
   }
   if (self.hasFlightSeatCode) {
-    [output writeInt32:2 value:self.flightSeatCode];
+    [output writeString:2 value:self.flightSeatCode];
   }
   if (self.hasFlightType) {
     [output writeInt32:3 value:self.flightType];
@@ -2824,7 +2825,7 @@ static AirOrder* defaultAirOrderInstance = nil;
     size += computeStringSize(1, self.flightNumber);
   }
   if (self.hasFlightSeatCode) {
-    size += computeInt32Size(2, self.flightSeatCode);
+    size += computeStringSize(2, self.flightSeatCode);
   }
   if (self.hasFlightType) {
     size += computeInt32Size(3, self.flightType);
@@ -2989,8 +2990,8 @@ static AirOrder* defaultAirOrderInstance = nil;
         [self setFlightNumber:[input readString]];
         break;
       }
-      case 16: {
-        [self setFlightSeatCode:[input readInt32]];
+      case 18: {
+        [self setFlightSeatCode:[input readString]];
         break;
       }
       case 24: {
@@ -3063,17 +3064,17 @@ static AirOrder* defaultAirOrderInstance = nil;
 - (BOOL) hasFlightSeatCode {
   return result.hasFlightSeatCode;
 }
-- (int32_t) flightSeatCode {
+- (NSString*) flightSeatCode {
   return result.flightSeatCode;
 }
-- (AirOrder_Builder*) setFlightSeatCode:(int32_t) value {
+- (AirOrder_Builder*) setFlightSeatCode:(NSString*) value {
   result.hasFlightSeatCode = YES;
   result.flightSeatCode = value;
   return self;
 }
 - (AirOrder_Builder*) clearFlightSeatCode {
   result.hasFlightSeatCode = NO;
-  result.flightSeatCode = 0;
+  result.flightSeatCode = @"";
   return self;
 }
 - (BOOL) hasFlightType {

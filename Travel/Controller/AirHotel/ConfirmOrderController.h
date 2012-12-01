@@ -7,9 +7,12 @@
 //
 
 #import "PPViewController.h"
+#import "AirHotelService.h"
 
-@interface ConfirmOrderController : PPViewController
+@class AirHotelOrder_Builder;
 
+@interface ConfirmOrderController : PPViewController<AirHotelServiceDelegate>
 
+- (id)initWithOrderBuilder:(AirHotelOrder_Builder *)builder;
 
 @end

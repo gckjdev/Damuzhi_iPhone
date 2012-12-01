@@ -42,7 +42,7 @@
     
     [self.checkInButton setTitle:[self dateIntToString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
     [self.checkOutButton setTitle:[self dateIntToString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
-    [self.hotelButton setTitle:[self dateIntToString:hotelOrderBuilder.hotel.name] forState:UIControlStateNormal];
+    [self.hotelButton setTitle:hotelOrderBuilder.hotel.name forState:UIControlStateNormal];
 }
 
 - (IBAction)clickCheckInButton:(id)sender {

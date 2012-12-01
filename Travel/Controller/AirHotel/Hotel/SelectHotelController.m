@@ -119,6 +119,8 @@
     if ([_delegate respondsToSelector:@selector(didClickFinish:roomInfos:)]) {
         [_delegate didClickFinish:hotel roomInfos:roomInfos];
     }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)findHotels
@@ -232,13 +234,29 @@
     Place *Hotel = [_hotelList objectAtIndex:indexPath.section];
     HotelRoom *room = [[Hotel roomsList] objectAtIndex:indexPath.row];
     
+    RoomCellSite site;
+    if (indexPath.row == 0) {
+        site = RoomCellTop;
+    } else if (indexPath.row == [[Hotel roomsList] count] - 1) {
+        site = RoomCellBottom;
+    } else {
+        site = RoomCellMiddle;
+    }
+    
     if ([self isSelectedRoom:room.roomId]) {
         NSUInteger roomCount = [self getRoomCount:room.roomId];
-        [cell setCellWithRoom:room count:roomCount indexPath:indexPath isSelected:YES];
+        [cell setCellWithRoom:room
+                        count:roomCount
+                    indexPath:indexPath
+                   isSelected:YES
+                 roomCellSite:site];
     } else {
-        [cell setCellWithRoom:room count:1 indexPath:indexPath isSelected:NO];
+        [cell setCellWithRoom:room
+                        count:1
+                    indexPath:indexPath
+                   isSelected:NO
+                 roomCellSite:site];
     }
-
     
     return cell;
 }
@@ -252,7 +270,19 @@
 #pragma UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [RoomCell getCellHeight];
+    Place *Hotel = [_hotelList objectAtIndex:indexPath.section];
+    NSArray *roomsList = [Hotel roomsList];
+    
+    RoomCellSite site;
+    if (indexPath.row == 0) {
+        site = RoomCellTop;
+    } else if (indexPath.row == [roomsList count] - 1) {
+        site = RoomCellBottom;
+    } else {
+        site = RoomCellMiddle;
+    }
+    
+    return [RoomCell getCellHeight:site];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
