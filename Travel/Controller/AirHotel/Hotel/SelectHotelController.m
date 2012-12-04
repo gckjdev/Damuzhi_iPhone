@@ -84,11 +84,11 @@
     
     _selectedSection = SELECTED_SECTION_NONE;
     
-    //[self findHotels];
+    [self findHotels];
     
     //test data
-    [self testData];
-    [dataTableView reloadData];
+//    [self testData];
+//    [dataTableView reloadData];
 }
 
 - (void)clickFinish:(id)sender

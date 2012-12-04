@@ -10,7 +10,14 @@
 
 @implementation ConfirmHotelCell
 
++(NSString *)getCellIdentifier
+{
+    return @"ConfirmHotelCell";
+}
 
-
++ (CGFloat)getCellHeight
+{
+    return 160;
+}
 
 @end

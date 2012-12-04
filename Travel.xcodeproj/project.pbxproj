@@ -654,6 +654,7 @@
 		CA585FBD14F73C4900471880 /* NearbyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA585FBB14F73C4900471880 /* NearbyController.m */; };
 		CA585FBE14F73C4900471880 /* NearbyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA585FBC14F73C4900471880 /* NearbyController.xib */; };
 		EA00B39316352AAA0081525F /* signup_bg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA00B39216352AAA0081525F /* signup_bg2@2x.png */; };
+		EA05F19C166DD572008685DA /* AirHotelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA05F19B166DD572008685DA /* AirHotelManager.m */; };
 		EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC5E160C10A40057E36C /* HappyTourController.m */; };
 		EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC5F160C10A40057E36C /* HappyTourController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
@@ -733,12 +734,14 @@
 		EAC88FA015A441510068C3C0 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9B15A441510068C3C0 /* UserInfoCell.xib */; };
 		EAC88FA115A441510068C3C0 /* UserInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC88F9D15A441510068C3C0 /* UserInfoController.m */; };
 		EAC88FA215A441510068C3C0 /* UserInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9E15A441510068C3C0 /* UserInfoController.xib */; };
+		EAD83398166C859F003DE6B2 /* ConfirmAirCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */; };
+		EAD8339A166C85B1003DE6B2 /* ConfirmAirCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */; };
 		EAD88349165CBCA4006947E4 /* NSDate+TKCategory.strings in Resources */ = {isa = PBXBuildFile; fileRef = EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */; };
 		EAD9A806165B713A00049BA8 /* AirHotelService.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD9A805165B713A00049BA8 /* AirHotelService.m */; };
 		EAE047D91665B5C600D2EF0B /* MakeHotelOrderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE047D81665B5C600D2EF0B /* MakeHotelOrderHeader.m */; };
 		EAE047DB1665B5E100D2EF0B /* MakeHotelOrderHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE047DA1665B5E100D2EF0B /* MakeHotelOrderHeader.xib */; };
-		EAE047DE1665BB9300D2EF0B /* MakeAirOrderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE047DD1665BB9300D2EF0B /* MakeAirOrderHeader.m */; };
-		EAE047E01665BBAE00D2EF0B /* MakeAirOrderHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE047DF1665BBAE00D2EF0B /* MakeAirOrderHeader.xib */; };
+		EAE047DE1665BB9300D2EF0B /* MakeOrderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */; };
+		EAE047E01665BBAE00D2EF0B /* MakeOrderHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */; };
 		EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */ = {isa = PBXBuildFile; fileRef = EAE2B6F6165639480068BFFD /* AirHotel.proto */; };
 		EAE3387B1663611900E03D51 /* AirHotelController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE338671663611900E03D51 /* AirHotelController.m */; };
 		EAE3387C1663611900E03D51 /* AirHotelController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE338681663611900E03D51 /* AirHotelController.xib */; };
@@ -1789,6 +1792,8 @@
 		CA585FBB14F73C4900471880 /* NearbyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyController.m; sourceTree = "<group>"; };
 		CA585FBC14F73C4900471880 /* NearbyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearbyController.xib; sourceTree = "<group>"; };
 		EA00B39216352AAA0081525F /* signup_bg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signup_bg2@2x.png"; sourceTree = "<group>"; };
+		EA05F19A166DD572008685DA /* AirHotelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelManager.h; sourceTree = "<group>"; };
+		EA05F19B166DD572008685DA /* AirHotelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelManager.m; sourceTree = "<group>"; };
 		EA0EFC5D160C10A40057E36C /* HappyTourController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HappyTourController.h; sourceTree = "<group>"; };
 		EA0EFC5E160C10A40057E36C /* HappyTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HappyTourController.m; sourceTree = "<group>"; };
 		EA0EFC5F160C10A40057E36C /* HappyTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HappyTourController.xib; sourceTree = "<group>"; };
@@ -1892,6 +1897,9 @@
 		EAC88F9C15A441510068C3C0 /* UserInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoController.h; sourceTree = "<group>"; };
 		EAC88F9D15A441510068C3C0 /* UserInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoController.m; sourceTree = "<group>"; };
 		EAC88F9E15A441510068C3C0 /* UserInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoController.xib; sourceTree = "<group>"; };
+		EAD83396166C859E003DE6B2 /* ConfirmAirCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmAirCell.h; sourceTree = "<group>"; };
+		EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmAirCell.m; sourceTree = "<group>"; };
+		EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmAirCell.xib; sourceTree = "<group>"; };
 		EAD8834A165CBCA4006947E4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/NSDate+TKCategory.strings"; sourceTree = "<group>"; };
 		EAD8834C165CBCA7006947E4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/NSDate+TKCategory.strings"; sourceTree = "<group>"; };
 		EAD9A804165B713A00049BA8 /* AirHotelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelService.h; sourceTree = "<group>"; };
@@ -1899,9 +1907,9 @@
 		EAE047D71665B5C600D2EF0B /* MakeHotelOrderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeHotelOrderHeader.h; sourceTree = "<group>"; };
 		EAE047D81665B5C600D2EF0B /* MakeHotelOrderHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeHotelOrderHeader.m; sourceTree = "<group>"; };
 		EAE047DA1665B5E100D2EF0B /* MakeHotelOrderHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeHotelOrderHeader.xib; sourceTree = "<group>"; };
-		EAE047DC1665BB9300D2EF0B /* MakeAirOrderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeAirOrderHeader.h; sourceTree = "<group>"; };
-		EAE047DD1665BB9300D2EF0B /* MakeAirOrderHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeAirOrderHeader.m; sourceTree = "<group>"; };
-		EAE047DF1665BBAE00D2EF0B /* MakeAirOrderHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeAirOrderHeader.xib; sourceTree = "<group>"; };
+		EAE047DC1665BB9300D2EF0B /* MakeOrderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeOrderHeader.h; sourceTree = "<group>"; };
+		EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeOrderHeader.m; sourceTree = "<group>"; };
+		EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeOrderHeader.xib; sourceTree = "<group>"; };
 		EAE2B6F6165639480068BFFD /* AirHotel.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AirHotel.proto; sourceTree = "<group>"; };
 		EAE338661663611900E03D51 /* AirHotelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelController.h; sourceTree = "<group>"; };
 		EAE338671663611900E03D51 /* AirHotelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelController.m; sourceTree = "<group>"; };
@@ -4251,6 +4259,7 @@
 		CA585F9114F7376300471880 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EA05F199166DD559008685DA /* AirHotel */,
 				EA140196164A4794009DF6DC /* Share */,
 				EA1A348C160829AA000E325B /* Constants */,
 				A4BAD17E15B404DD00596460 /* PlaceItemList */,
@@ -4323,6 +4332,15 @@
 				CA585FBC14F73C4900471880 /* NearbyController.xib */,
 			);
 			path = Nearby;
+			sourceTree = "<group>";
+		};
+		EA05F199166DD559008685DA /* AirHotel */ = {
+			isa = PBXGroup;
+			children = (
+				EA05F19A166DD572008685DA /* AirHotelManager.h */,
+				EA05F19B166DD572008685DA /* AirHotelManager.m */,
+			);
+			path = AirHotel;
 			sourceTree = "<group>";
 		};
 		EA0EFC5C160C10890057E36C /* HappyTour */ = {
@@ -4483,15 +4501,18 @@
 		EAE3388B166361C100E03D51 /* Air */ = {
 			isa = PBXGroup;
 			children = (
-				EAE047DC1665BB9300D2EF0B /* MakeAirOrderHeader.h */,
-				EAE047DD1665BB9300D2EF0B /* MakeAirOrderHeader.m */,
-				EAE047DF1665BBAE00D2EF0B /* MakeAirOrderHeader.xib */,
+				EAE047DC1665BB9300D2EF0B /* MakeOrderHeader.h */,
+				EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */,
+				EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */,
 				EAE3388C166361C100E03D51 /* MakeAirOrderOneCell.h */,
 				EAE3388D166361C100E03D51 /* MakeAirOrderOneCell.m */,
 				EAE3388E166361C100E03D51 /* MakeAirOrderOneCell.xib */,
 				EAE3388F166361C100E03D51 /* MakeAirOrderTwoCell.h */,
 				EAE33890166361C100E03D51 /* MakeAirOrderTwoCell.m */,
 				EAE33891166361C100E03D51 /* MakeAirOrderTwoCell.xib */,
+				EAD83396166C859E003DE6B2 /* ConfirmAirCell.h */,
+				EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */,
+				EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */,
 			);
 			path = Air;
 			sourceTree = "<group>";
@@ -5057,7 +5078,7 @@
 				EA2382DD1664C185001ECA2D /* reserve_m@2x.png in Resources */,
 				EA2382DE1664C185001ECA2D /* reserve_n@2x.png in Resources */,
 				EAE047DB1665B5E100D2EF0B /* MakeHotelOrderHeader.xib in Resources */,
-				EAE047E01665BBAE00D2EF0B /* MakeAirOrderHeader.xib in Resources */,
+				EAE047E01665BBAE00D2EF0B /* MakeOrderHeader.xib in Resources */,
 				EAFAAE1F1669F46F00250123 /* ConfirmHotelCell.xib in Resources */,
 				EAFAAE2B1669F95F00250123 /* hotel_list_bg@2x.png in Resources */,
 				EAFAAE2C1669F95F00250123 /* hotel_list_line@2x.png in Resources */,
@@ -5074,6 +5095,7 @@
 				EAFAAE3D1669F9A700250123 /* reserve_btn4@2x.png in Resources */,
 				EAFAAE3E1669F9A700250123 /* reserve_btn5@2x.png in Resources */,
 				EAFAAE3F1669F9A700250123 /* reserve_dotted_line@2x.png in Resources */,
+				EAD8339A166C85B1003DE6B2 /* ConfirmAirCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5409,8 +5431,10 @@
 				EAE338A9166361C100E03D51 /* SelectHotelController.m in Sources */,
 				EAE338AE1663683800E03D51 /* ConfirmOrderController.m in Sources */,
 				EAE047D91665B5C600D2EF0B /* MakeHotelOrderHeader.m in Sources */,
-				EAE047DE1665BB9300D2EF0B /* MakeAirOrderHeader.m in Sources */,
+				EAE047DE1665BB9300D2EF0B /* MakeOrderHeader.m in Sources */,
 				EAFAAE1D1669F45A00250123 /* ConfirmHotelCell.m in Sources */,
+				EAD83398166C859F003DE6B2 /* ConfirmAirCell.m in Sources */,
+				EA05F19C166DD572008685DA /* AirHotelManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5488,8 +5512,8 @@
 					armv7,
 					armv6,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5504,8 +5528,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				PROVISIONING_PROFILE = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 			};
@@ -5519,8 +5543,8 @@
 					armv7,
 					armv6,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -5529,8 +5553,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				PROVISIONING_PROFILE = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS";
 				VALIDATE_PRODUCT = YES;
@@ -5540,8 +5564,8 @@
 		CA49071314F5F05B00228C37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -5552,8 +5576,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				PROVISIONING_PROFILE = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
@@ -5563,8 +5587,8 @@
 		CA49071414F5F05B00228C37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -5575,8 +5599,8 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				PROVISIONING_PROFILE = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8232FBD7-E789-4344-8220-F2180AC0ECD9";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;

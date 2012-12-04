@@ -9,7 +9,8 @@
 #import "ConfirmOrderController.h"
 #import "FontSize.h"
 #import "AirHotel.pb.h"
-
+#import "MakeHotelOrderHeader.h"
+#import "MakeOrderHeader.h"
 
 @interface ConfirmOrderController ()
 
@@ -34,7 +35,6 @@
     }
     return self;
 }
-
 
 - (void)viewDidLoad
 {
@@ -64,6 +64,86 @@
         [self popupMessage:NSLS(@"预订成功") title:nil];
     }
 }
+
+#pragma mark -
+#pragma UITableViewDelegate methods
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //if (indexPath.section < [[_builder airOrdersList] count]) {
+    if (indexPath.section == 0) {
+        return [ConfirmAirCell getCellHeight];
+    } else {
+        return [ConfirmHotelCell getCellHeight];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section < [[_builder airOrdersList] count]) {
+        return [MakeHotelOrderHeader getHeaderViewHeight];
+    } else {
+        return [MakeHotelOrderHeader getHeaderViewHeight];
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section < [[_builder airOrdersList] count]) {
+        MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
+        return header;
+    } else {
+        MakeHotelOrderHeader *header = [MakeHotelOrderHeader createHeaderView];
+        return header;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 10;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    return footer;
+}
+
+#pragma mark -
+#pragma UITableViewDataSource methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+    
+    //return [[_builder airOrdersList] count] + [[_builder hotelOrdersList] count];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        NSString *identifier = [ConfirmAirCell getCellIdentifier];
+        ConfirmAirCell *cell = (ConfirmAirCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (cell == nil) {
+            cell = [ConfirmAirCell createCell:self];
+        }
+        return cell;
+    } else{
+        NSString *identifier = [ConfirmHotelCell getCellIdentifier];
+        ConfirmHotelCell *cell = (ConfirmHotelCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        
+        if (cell == nil) {
+            cell = [ConfirmHotelCell createCell:self];
+        }
+        
+        return cell;
+    }
+}
+
 
 
 @end

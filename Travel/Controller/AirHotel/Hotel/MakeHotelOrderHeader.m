@@ -27,4 +27,17 @@
     return 44;
 }
 
+- (IBAction)clickCloseButton:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
+    if ([_delegate respondsToSelector:@selector(didClickCloseButton:)]) {
+        [_delegate didClickCloseButton:_section];
+    }
+}
+
+- (void)dealloc {
+    [_closeButton release];
+    [super dealloc];
+}
 @end

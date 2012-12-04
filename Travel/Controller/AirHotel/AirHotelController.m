@@ -10,19 +10,7 @@
 #import "AppDelegate.h"
 #import "AirHotel.pb.h"
 #import "ConfirmOrderController.h"
-
-@interface AirHotelController ()
-
-@property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
-@property (retain, nonatomic) NSIndexPath *currentIndexPath;
-@property (assign, nonatomic) int currentDateTag;
-
-@end
-
-@implementation AirHotelController
-@synthesize hotelOrderBuilderList = _hotelOrderBuilderList;
-@synthesize currentIndexPath = _currentIndexPath;
-@synthesize currentDateTag = _currentDateTag;
+#import "AirHotelManager.h"
 
 enum FLIGHT_DATE_TAG{
     DEPART_DATE = 0,
@@ -33,10 +21,32 @@ enum HOTEL_DATE_TAG{
     CHECK_OUT_DATE = 1,
 };
 
+@interface AirHotelController ()
+
+@property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
+@property (retain, nonatomic) NSMutableArray *hotelOrderList;
+@property (retain, nonatomic) NSIndexPath *currentIndexPath;
+@property (assign, nonatomic) int currentDateTag;
+@property (retain, nonatomic) NSMutableArray *sectionStat;
+@property (assign, nonatomic) AirType airType;
+@property (retain, nonatomic) AirHotelManager *manager;
+
+@end
+
+@implementation AirHotelController
+@synthesize hotelOrderBuilderList = _hotelOrderBuilderList;
+@synthesize hotelOrderList = _hotelOrderList;
+@synthesize currentIndexPath = _currentIndexPath;
+@synthesize currentDateTag = _currentDateTag;
+@synthesize airType = _airType;
+@synthesize manager = _manager;
 
 - (void)dealloc {
     [_hotelOrderBuilderList release];
+    [_hotelOrderList release];
     [_currentIndexPath release];
+    [_sectionStat release];
+    [_manager release];
     [super dealloc];
 }
 
@@ -44,8 +54,11 @@ enum HOTEL_DATE_TAG{
 {
     self = [super init];
     if (self) {
+        self.manager = [AirHotelManager defaultManager];
         self.hotelOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
-        [self createHotelOrder];
+        [self createDefaultHotelOrderBuilder];
+        self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
+        self.airType = AirGoAndBack;
     }
     return self;
 }
@@ -55,14 +68,42 @@ enum HOTEL_DATE_TAG{
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     self.navigationItem.title = NSLS(@"机+酒");
+    
+    [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
 }
 
-- (void)createHotelOrder
+- (void)createDefaultHotelOrderBuilder
 {
-    HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-    [builder setCheckInDate:[[NSDate date] timeIntervalSince1970]];
-    [builder setCheckOutDate:[[NSDate date] timeIntervalSince1970] + 60*60*24];
+    HotelOrder_Builder *builder = [_manager createDefaultHotelOrderBuilder];
     [_hotelOrderBuilderList addObject:builder];
+}
+
+- (void)updateSectionStatWithSectionCount:(int)sectionCount
+{
+    [_sectionStat removeAllObjects];
+    for (int i = 0; i < sectionCount; i++) {
+        [_sectionStat addObject:[NSNumber numberWithBool:YES]];
+    }
+}
+
+- (BOOL)isSectionOpen:(NSInteger)section
+{
+    if ([_sectionStat count] > section) {
+        return [[_sectionStat objectAtIndex:section] boolValue];
+    }
+    
+    return NO;
+}
+
+- (void)setSection:(NSInteger)section Open:(BOOL)open
+{
+    if ([_sectionStat count] > section) {
+        [_sectionStat removeObjectAtIndex:section];
+        NSNumber *num = [NSNumber numberWithBool:open];
+        [_sectionStat insertObject:num atIndex:section];
+        
+        [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (void)viewDidUnload
@@ -81,6 +122,10 @@ enum HOTEL_DATE_TAG{
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
+    
+    if (_hotelOrderList) {
+        self.hotelOrderBuilderList = [NSMutableArray arrayWithArray: [_manager hotelOrderBuilderListFromOrderList:_hotelOrderList]] ;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -98,43 +143,56 @@ enum HOTEL_DATE_TAG{
 }
 
 
-enum {
-    SECTION_AIR = 0,
-    SECTION_HOTEL = 1,
-    SECTION_COUNT = 2
-};
+
+#define SECTION_AIR     0
+
 
 #pragma mark -
 #pragma UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SECTION_AIR) {
-        return [MakeAirOrderTwoCell getCellHeight];
-    }  else if (indexPath.section == SECTION_HOTEL) {
+        if (_airType == AirGoAndBack) {
+            return [MakeAirOrderTwoCell getCellHeight];
+        } else {
+            return [MakeAirOrderOneCell getCellHeight];
+        }
+    }  else {
         return [MakeHotelOrderCell getCellHeight];
     }
-    
-    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == SECTION_AIR) {
-        return [MakeHotelOrderHeader getHeaderViewHeight];
+        return [MakeOrderHeader getHeaderViewHeight];
     } else {
-        return [MakeHotelOrderHeader getHeaderViewHeight];
+        return [MakeOrderHeader getHeaderViewHeight];
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];;
     if (section == SECTION_AIR) {
-        MakeAirOrderHeader *header = [MakeAirOrderHeader createHeaderView];
-        return header;
+        [header setViewWithDelegate:self
+                            section:section
+                 airHotelHeaderType:AirHeader
+                 isHideFilterButton:NO
+                selectedButtonIndex:_airType
+                  isHideCloseButton:NO
+                            isClose:![self isSectionOpen:section]];
     } else {
-        MakeHotelOrderHeader *header = [MakeHotelOrderHeader createHeaderView];
-        return header;
+        [header setViewWithDelegate:self
+                            section:section
+                 airHotelHeaderType:HotelHeader
+                 isHideFilterButton:YES
+                selectedButtonIndex:AirNone
+                  isHideCloseButton:NO
+                            isClose:![self isSectionOpen:section]];
     }
+    
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -152,33 +210,38 @@ enum {
 #pragma UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return SECTION_COUNT;
+    return 1 + [_hotelOrderBuilderList count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SECTION_AIR) {
-        return 1;
-    } else if (section == SECTION_HOTEL) {
-        return [_hotelOrderBuilderList count];
-    }
-    
-    return 0;
+    return 1 * [[_sectionStat objectAtIndex:section] boolValue];;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SECTION_AIR) {
-        NSString *identifier = [MakeAirOrderTwoCell getCellIdentifier];
-        MakeAirOrderTwoCell *cell = (MakeAirOrderTwoCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
-        if (cell == nil) {
-            cell = [MakeAirOrderTwoCell createCell:self];
+        if (_airType == AirGoAndBack) {
+            NSString *identifier = [MakeAirOrderTwoCell getCellIdentifier];
+            MakeAirOrderTwoCell *cell = (MakeAirOrderTwoCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+            if (cell == nil) {
+                cell = [MakeAirOrderTwoCell createCell:self];
+            }
+            return cell;
+        } else {
+            NSString *identifier = [MakeAirOrderOneCell getCellIdentifier];
+            MakeAirOrderOneCell *cell = (MakeAirOrderOneCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+            if (cell == nil) {
+                cell = [MakeAirOrderOneCell createCell:self];
+            }
+            [cell setCellWithType:_airType];
+            
+            return cell;
         }
+
         
-        return cell;
-        
-    }  else if (indexPath.section == SECTION_HOTEL) {
+    }  else {
         NSString *identifier = [MakeHotelOrderCell getCellIdentifier];
         MakeHotelOrderCell *cell = (MakeHotelOrderCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -191,16 +254,13 @@ enum {
         
         return cell;
     }
-    
-    return nil;
 }
-
 
 - (IBAction)clickMemberButton:(id)sender {
     AirHotelOrder_Builder *builder = [[[AirHotelOrder_Builder alloc] init] autorelease];
-    for (HotelOrder_Builder *hotelOrderBuilder in _hotelOrderBuilderList) {
-        [builder addHotelOrders:[hotelOrderBuilder build]];
-    }
+    self.hotelOrderList = [NSMutableArray arrayWithArray: [_manager hotelOrderListFromBuilderList:_hotelOrderBuilderList]] ;
+    [builder addAllAirOrders:_hotelOrderList];
+    
     ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:builder] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -241,7 +301,7 @@ enum {
 #pragma CommonMonthControllerDelegate methods
 - (void)didSelectDate:(NSDate *)date
 {
-    if (_currentIndexPath.section == SECTION_HOTEL) {
+    if (_currentIndexPath.section > SECTION_AIR) {
         HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.row];
         
         if (_currentDateTag == CHECK_IN_DATE) {
@@ -263,7 +323,36 @@ enum {
     [builder setHotel:hotel];
     [builder clearRoomInfosList];
     [builder addAllRoomInfos:roomInfos];
+    
+    
     [dataTableView reloadData];
 }
+
+#pragma mark -
+#pragma MakeOrderHeaderDelegate methods
+- (void)didClickCloseButton:(NSInteger)section
+{
+    BOOL isOpen = [self isSectionOpen:section];
+    [self setSection:section Open:!isOpen];
+}
+
+- (void)didClickGoButton
+{
+    _airType = AirGo;
+    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)didClickGoAndBackButton
+{
+    _airType = AirGoAndBack;
+    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)didClickBackButton
+{
+    _airType = AirBack;
+    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 @end

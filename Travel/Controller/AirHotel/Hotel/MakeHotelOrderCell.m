@@ -26,7 +26,7 @@
 
 + (CGFloat)getCellHeight
 {
-    return 110.0f;
+    return 120.0f;
 }
 
 - (NSString *)dateIntToString:(int)dateInt
@@ -38,7 +38,7 @@
 
 - (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder indexPath:(NSIndexPath *)aIndexPath
 {
-    self.indexPath = indexPath;
+    self.indexPath = aIndexPath;
     
     [self.checkInButton setTitle:[self dateIntToString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
     [self.checkOutButton setTitle:[self dateIntToString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
