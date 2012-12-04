@@ -9,7 +9,6 @@
 #import "ConfirmOrderController.h"
 #import "FontSize.h"
 #import "AirHotel.pb.h"
-#import "MakeHotelOrderHeader.h"
 #import "MakeOrderHeader.h"
 
 @interface ConfirmOrderController ()
@@ -47,6 +46,12 @@
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 - (IBAction)clickOrderButton:(id)sender {
     AirHotelOrder *order = [_builder build];
     [[AirHotelService defaultService] order:order delegate:self];
@@ -80,9 +85,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section < [[_builder airOrdersList] count]) {
-        return [MakeHotelOrderHeader getHeaderViewHeight];
+        return [MakeOrderHeader getHeaderViewHeight];
     } else {
-        return [MakeHotelOrderHeader getHeaderViewHeight];
+        return [MakeOrderHeader getHeaderViewHeight];
     }
 }
 
@@ -92,7 +97,7 @@
         MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
         return header;
     } else {
-        MakeHotelOrderHeader *header = [MakeHotelOrderHeader createHeaderView];
+        MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
         return header;
     }
 }
@@ -145,5 +150,9 @@
 }
 
 
+- (IBAction)clickPaymentButton:(id)sender {
+    SelectPersonController *controller = [[[SelectPersonController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 @end

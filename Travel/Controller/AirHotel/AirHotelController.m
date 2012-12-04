@@ -25,6 +25,8 @@ enum HOTEL_DATE_TAG{
 
 @property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
 @property (retain, nonatomic) NSMutableArray *hotelOrderList;
+
+
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) int currentDateTag;
 @property (retain, nonatomic) NSMutableArray *sectionStat;
@@ -257,11 +259,13 @@ enum HOTEL_DATE_TAG{
 }
 
 - (IBAction)clickMemberButton:(id)sender {
-    AirHotelOrder_Builder *builder = [[[AirHotelOrder_Builder alloc] init] autorelease];
-    self.hotelOrderList = [NSMutableArray arrayWithArray: [_manager hotelOrderListFromBuilderList:_hotelOrderBuilderList]] ;
-    [builder addAllAirOrders:_hotelOrderList];
+//    AirHotelOrder_Builder *builder = [[[AirHotelOrder_Builder alloc] init] autorelease];
+//    self.hotelOrderList = [NSMutableArray arrayWithArray: [_manager hotelOrderListFromBuilderList:_hotelOrderBuilderList]] ;
+//    [builder addAllAirOrders:_hotelOrderList];
+//    
+//    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:builder] autorelease];
     
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:builder] autorelease];
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:nil] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
