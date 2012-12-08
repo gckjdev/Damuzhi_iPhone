@@ -40,16 +40,12 @@
 					<object class="IBUIImageView" id="153093660">
 						<reference key="NSNextResponder" ref="1048962008"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrameSize">{320160, 74}</string>
+						<string key="NSFrameSize">{320, 74}</string>
 						<reference key="NSSuperview" ref="1048962008"/>
 						<reference key="NSNextKeyView" ref="126695816"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">li_bg@2x.png</string>
-						</object>
 					</object>
 					<object class="IBUIImageView" id="314739237">
 						<reference key="NSNextResponder" ref="1048962008"/>
@@ -320,6 +316,14 @@
 					<int key="connectionID">30</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">hotelListBgImageView</string>
+						<reference key="source" ref="1048962008"/>
+						<reference key="destination" ref="153093660"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">clickSelectButton:</string>
 						<reference key="source" ref="480703303"/>
@@ -449,7 +453,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">33</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
@@ -458,7 +462,6 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="hotel_list_line@2x.png">{1, 114}</string>
-			<string key="li_bg@2x.png">{1, 152}</string>
 			<string key="no_s@2x.png">{53, 70}</string>
 			<string key="yes_s@2x.png">{53, 70}</string>
 		</dictionary>

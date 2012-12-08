@@ -80,4 +80,8 @@
 
 - (UIImage *)allBackgroundImage;
 
+- (UIImage *)hotelListBgImage;
+- (UIImage *)flightListTopBgImage;
+- (UIImage *)flightListBottomBgImage;
+
 @end

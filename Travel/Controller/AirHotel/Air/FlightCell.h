@@ -10,4 +10,6 @@
 
 @interface FlightCell : PPTableViewCell
 
+@property (retain, nonatomic) IBOutlet UIImageView *flightCellBackgroundImageView;
+
 @end

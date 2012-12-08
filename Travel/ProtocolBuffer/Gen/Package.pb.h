@@ -13,6 +13,8 @@
 @class Accommodation_Builder;
 @class Agency;
 @class Agency_Builder;
+@class AirCity;
+@class AirCity_Builder;
 @class AirHotelOrder;
 @class AirHotelOrderList;
 @class AirHotelOrderList_Builder;

@@ -400,4 +400,19 @@ static ImageManager *_defaultManager = nil;
     }
 }
 
+- (UIImage *)hotelListBgImage
+{
+    return [UIImage strectchableImageName:@"hotel_list_bg.png"];
+}
+
+- (UIImage *)flightListTopBgImage
+{
+    return [UIImage strectchableImageName:@"flight_top_bg.png"];
+}
+
+- (UIImage *)flightListBottomBgImage
+{
+    return [UIImage strectchableImageName:@"flight_bottom_bg.png"];
+}
+
 @end

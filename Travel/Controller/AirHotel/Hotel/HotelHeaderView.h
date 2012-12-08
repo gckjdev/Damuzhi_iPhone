@@ -25,8 +25,12 @@
 @property (retain, nonatomic) IBOutlet UILabel *starLabel;
 @property (retain, nonatomic) IBOutlet UIView *rankView;
 @property (retain, nonatomic) IBOutlet UILabel *priceLabel;
+@property (retain, nonatomic) IBOutlet UIImageView *hotelListBgImageView;
+
 
 @property (assign, nonatomic) id<HotelHeaderViewDelegate> delegate;
+
+
 
 + (id)createHeaderView;
 

@@ -14,6 +14,7 @@
 #import "SelectHotelController.h"
 #import "MakeOrderHeader.h"
 #import "SelectFlightController.h"
+#import "SelectAirCityController.h"
 
 @interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate>
 

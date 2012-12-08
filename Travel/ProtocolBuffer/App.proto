@@ -108,6 +108,12 @@ message CityGroup {
   required string name = 2;
 }
 
+//机票的出发/到达城市
+message AirCity {
+  required int32 cityId = 1;            //城市id
+  required string cityName = 2;         //城市名
+}
+
 // 应用相关的基础数据，和城市无关
 message App {
   required string dataVersion = 1;                  // 数据的版本，如1.0
@@ -133,6 +139,9 @@ message App {
   repeated NameIdPair nationalitys = 112;           //国籍
   repeated NameIdPair cards = 113;                  //证件类型
   repeated NameIdPair banks = 114;                  //银行
+  
+  repeated AirCity airDepartCities = 120;           //机票的出发城市
+  
 
 //  repeated NameIdPair flightClass = 111;            //舱位类型
 

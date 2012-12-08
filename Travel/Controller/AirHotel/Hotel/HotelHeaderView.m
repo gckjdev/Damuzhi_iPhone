@@ -11,6 +11,7 @@
 #import "PPApplication.h"
 #import "PlaceUtils.h"
 #import "ImageName.h"
+#import "ImageManager.h"
 
 @interface HotelHeaderView ()
 
@@ -30,6 +31,7 @@
     [_priceLabel release];
     [_selectButton release];
     [_iconView release];
+    [_hotelListBgImageView release];
     [super dealloc];
 }
 
@@ -42,7 +44,10 @@
         return nil;
     }
     
-    return [topLevelObjects objectAtIndex:0];
+    HotelHeaderView *view = (HotelHeaderView *)[topLevelObjects objectAtIndex:0];
+    view.hotelListBgImageView.image = [[ImageManager defaultManager] hotelListBgImage];
+    
+    return view;
 }
 
 + (CGFloat)getHeaderViewHeight

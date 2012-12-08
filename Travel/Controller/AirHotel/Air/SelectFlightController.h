@@ -7,8 +7,13 @@
 //
 
 #import "PPTableViewController.h"
+#import "AirHotelService.h"
 
 @interface SelectFlightController : PPTableViewController
+
+@property (retain, nonatomic) IBOutlet UIImageView *topImageView;
+
+@property (retain, nonatomic) IBOutlet UIImageView *buttomImageView;
 
 - (id)initWithTitle:(NSString *)title;
 

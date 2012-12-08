@@ -10,6 +10,7 @@
 #import "FlightCell.h"
 #import "AirHotel.pb.h"
 #import "FontSize.h"
+#import "ImageManager.h"
 
 @interface SelectFlightController ()
 @end
@@ -18,6 +19,8 @@
 
 - (void)dealloc
 {
+    [_topImageView release];
+    [_buttomImageView release];
     [super dealloc];
 }
 
@@ -38,14 +41,22 @@
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
+    self.topImageView.image = [[ImageManager defaultManager] flightListTopBgImage];
+    self.buttomImageView.image = [[ImageManager defaultManager] flightListBottomBgImage];
     
     [self testData];
+    
+//    [[AirHotelService  defaultService] findFlightsWithDepartCityId:<#(int)#>
+//                                                 destinationCityId:<#(int)#>
+//                                                        departDate:<#(NSDate *)#>
+//                                                        flightType:<#(int)#>
+//                                                      flightNumber:<#(NSString *)#>];
 }
 
 - (void)testData
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    for (int i = 0 ; i < 10; i++) {
+    for (int i = 0 ; i < 20; i++) {
         Flight_Builder *builder = [[[Flight_Builder alloc] init] autorelease];
         [builder setFlightNumber:@"CA1893"];
         [builder setAirlineId:1];
@@ -86,4 +97,9 @@
 }
 
 
+- (void)viewDidUnload {
+    [self setTopImageView:nil];
+    [self setButtomImageView:nil];
+    [super viewDidUnload];
+}
 @end

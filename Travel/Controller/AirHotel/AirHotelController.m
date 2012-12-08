@@ -11,6 +11,8 @@
 #import "AirHotel.pb.h"
 #import "ConfirmOrderController.h"
 #import "AirHotelManager.h"
+#import "SelectCityController.h"
+#import "AppManager.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
     GO_DATE = 0,
@@ -371,7 +373,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma MakeAirOrderCellDelegate methods
 - (void)didClickDepartCityButton
 {
-
+    SelectAirCityController *controller = [[[SelectAirCityController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didClickGoDateButton

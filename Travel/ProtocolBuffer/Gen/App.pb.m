@@ -3704,6 +3704,228 @@ static CityGroup* defaultCityGroupInstance = nil;
 }
 @end
 
+@interface AirCity ()
+@property int32_t cityId;
+@property (retain) NSString* cityName;
+@end
+
+@implementation AirCity
+
+- (BOOL) hasCityId {
+  return !!hasCityId_;
+}
+- (void) setHasCityId:(BOOL) value {
+  hasCityId_ = !!value;
+}
+@synthesize cityId;
+- (BOOL) hasCityName {
+  return !!hasCityName_;
+}
+- (void) setHasCityName:(BOOL) value {
+  hasCityName_ = !!value;
+}
+@synthesize cityName;
+- (void) dealloc {
+  self.cityName = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.cityId = 0;
+    self.cityName = @"";
+  }
+  return self;
+}
+static AirCity* defaultAirCityInstance = nil;
++ (void) initialize {
+  if (self == [AirCity class]) {
+    defaultAirCityInstance = [[AirCity alloc] init];
+  }
+}
++ (AirCity*) defaultInstance {
+  return defaultAirCityInstance;
+}
+- (AirCity*) defaultInstance {
+  return defaultAirCityInstance;
+}
+- (BOOL) isInitialized {
+  if (!self.hasCityId) {
+    return NO;
+  }
+  if (!self.hasCityName) {
+    return NO;
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasCityId) {
+    [output writeInt32:1 value:self.cityId];
+  }
+  if (self.hasCityName) {
+    [output writeString:2 value:self.cityName];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  if (self.hasCityId) {
+    size += computeInt32Size(1, self.cityId);
+  }
+  if (self.hasCityName) {
+    size += computeStringSize(2, self.cityName);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (AirCity*) parseFromData:(NSData*) data {
+  return (AirCity*)[[[AirCity builder] mergeFromData:data] build];
+}
++ (AirCity*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (AirCity*)[[[AirCity builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (AirCity*) parseFromInputStream:(NSInputStream*) input {
+  return (AirCity*)[[[AirCity builder] mergeFromInputStream:input] build];
+}
++ (AirCity*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (AirCity*)[[[AirCity builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (AirCity*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (AirCity*)[[[AirCity builder] mergeFromCodedInputStream:input] build];
+}
++ (AirCity*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (AirCity*)[[[AirCity builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (AirCity_Builder*) builder {
+  return [[[AirCity_Builder alloc] init] autorelease];
+}
++ (AirCity_Builder*) builderWithPrototype:(AirCity*) prototype {
+  return [[AirCity builder] mergeFrom:prototype];
+}
+- (AirCity_Builder*) builder {
+  return [AirCity builder];
+}
+@end
+
+@interface AirCity_Builder()
+@property (retain) AirCity* result;
+@end
+
+@implementation AirCity_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[AirCity alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (AirCity_Builder*) clear {
+  self.result = [[[AirCity alloc] init] autorelease];
+  return self;
+}
+- (AirCity_Builder*) clone {
+  return [AirCity builderWithPrototype:result];
+}
+- (AirCity*) defaultInstance {
+  return [AirCity defaultInstance];
+}
+- (AirCity*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (AirCity*) buildPartial {
+  AirCity* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (AirCity_Builder*) mergeFrom:(AirCity*) other {
+  if (other == [AirCity defaultInstance]) {
+    return self;
+  }
+  if (other.hasCityId) {
+    [self setCityId:other.cityId];
+  }
+  if (other.hasCityName) {
+    [self setCityName:other.cityName];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (AirCity_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (AirCity_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        [self setCityId:[input readInt32]];
+        break;
+      }
+      case 18: {
+        [self setCityName:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasCityId {
+  return result.hasCityId;
+}
+- (int32_t) cityId {
+  return result.cityId;
+}
+- (AirCity_Builder*) setCityId:(int32_t) value {
+  result.hasCityId = YES;
+  result.cityId = value;
+  return self;
+}
+- (AirCity_Builder*) clearCityId {
+  result.hasCityId = NO;
+  result.cityId = 0;
+  return self;
+}
+- (BOOL) hasCityName {
+  return result.hasCityName;
+}
+- (NSString*) cityName {
+  return result.cityName;
+}
+- (AirCity_Builder*) setCityName:(NSString*) value {
+  result.hasCityName = YES;
+  result.cityName = value;
+  return self;
+}
+- (AirCity_Builder*) clearCityName {
+  result.hasCityName = NO;
+  result.cityName = @"";
+  return self;
+}
+@end
+
 @interface App ()
 @property (retain) NSString* dataVersion;
 @property (retain) NSMutableArray* mutableCitiesList;
@@ -3722,6 +3944,7 @@ static CityGroup* defaultCityGroupInstance = nil;
 @property (retain) NSMutableArray* mutableNationalitysList;
 @property (retain) NSMutableArray* mutableCardsList;
 @property (retain) NSMutableArray* mutableBanksList;
+@property (retain) NSMutableArray* mutableAirDepartCitiesList;
 @end
 
 @implementation App
@@ -3755,6 +3978,7 @@ static CityGroup* defaultCityGroupInstance = nil;
 @synthesize mutableNationalitysList;
 @synthesize mutableCardsList;
 @synthesize mutableBanksList;
+@synthesize mutableAirDepartCitiesList;
 - (void) dealloc {
   self.dataVersion = nil;
   self.mutableCitiesList = nil;
@@ -3773,6 +3997,7 @@ static CityGroup* defaultCityGroupInstance = nil;
   self.mutableNationalitysList = nil;
   self.mutableCardsList = nil;
   self.mutableBanksList = nil;
+  self.mutableAirDepartCitiesList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3899,6 +4124,13 @@ static App* defaultAppInstance = nil;
   id value = [mutableBanksList objectAtIndex:index];
   return value;
 }
+- (NSArray*) airDepartCitiesList {
+  return mutableAirDepartCitiesList;
+}
+- (AirCity*) airDepartCitiesAtIndex:(int32_t) index {
+  id value = [mutableAirDepartCitiesList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
   if (!self.hasDataVersion) {
     return NO;
@@ -3978,6 +4210,11 @@ static App* defaultAppInstance = nil;
       return NO;
     }
   }
+  for (AirCity* element in self.airDepartCitiesList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -4031,6 +4268,9 @@ static App* defaultAppInstance = nil;
   }
   for (NameIdPair* element in self.banksList) {
     [output writeMessage:114 value:element];
+  }
+  for (AirCity* element in self.airDepartCitiesList) {
+    [output writeMessage:120 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4091,6 +4331,9 @@ static App* defaultAppInstance = nil;
   }
   for (NameIdPair* element in self.banksList) {
     size += computeMessageSize(114, element);
+  }
+  for (AirCity* element in self.airDepartCitiesList) {
+    size += computeMessageSize(120, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4263,6 +4506,12 @@ static App* defaultAppInstance = nil;
     }
     [result.mutableBanksList addObjectsFromArray:other.mutableBanksList];
   }
+  if (other.mutableAirDepartCitiesList.count > 0) {
+    if (result.mutableAirDepartCitiesList == nil) {
+      result.mutableAirDepartCitiesList = [NSMutableArray array];
+    }
+    [result.mutableAirDepartCitiesList addObjectsFromArray:other.mutableAirDepartCitiesList];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4380,6 +4629,12 @@ static App* defaultAppInstance = nil;
         NameIdPair_Builder* subBuilder = [NameIdPair builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addBanks:[subBuilder buildPartial]];
+        break;
+      }
+      case 962: {
+        AirCity_Builder* subBuilder = [AirCity builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addAirDepartCities:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4850,6 +5105,35 @@ static App* defaultAppInstance = nil;
     result.mutableBanksList = [NSMutableArray array];
   }
   [result.mutableBanksList addObject:value];
+  return self;
+}
+- (NSArray*) airDepartCitiesList {
+  if (result.mutableAirDepartCitiesList == nil) { return [NSArray array]; }
+  return result.mutableAirDepartCitiesList;
+}
+- (AirCity*) airDepartCitiesAtIndex:(int32_t) index {
+  return [result airDepartCitiesAtIndex:index];
+}
+- (App_Builder*) replaceAirDepartCitiesAtIndex:(int32_t) index with:(AirCity*) value {
+  [result.mutableAirDepartCitiesList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (App_Builder*) addAllAirDepartCities:(NSArray*) values {
+  if (result.mutableAirDepartCitiesList == nil) {
+    result.mutableAirDepartCitiesList = [NSMutableArray array];
+  }
+  [result.mutableAirDepartCitiesList addObjectsFromArray:values];
+  return self;
+}
+- (App_Builder*) clearAirDepartCitiesList {
+  result.mutableAirDepartCitiesList = nil;
+  return self;
+}
+- (App_Builder*) addAirDepartCities:(AirCity*) value {
+  if (result.mutableAirDepartCitiesList == nil) {
+    result.mutableAirDepartCitiesList = [NSMutableArray array];
+  }
+  [result.mutableAirDepartCitiesList addObject:value];
   return self;
 }
 @end

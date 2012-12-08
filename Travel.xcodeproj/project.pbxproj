@@ -699,6 +699,13 @@
 		EA05F229166E01CC008685DA /* ticket_t2_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA05F201166E01CC008685DA /* ticket_t2_on@2x.png */; };
 		EA05F22A166E01CC008685DA /* ticket_t3_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA05F202166E01CC008685DA /* ticket_t3_off@2x.png */; };
 		EA05F22B166E01CC008685DA /* ticket_t3_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA05F203166E01CC008685DA /* ticket_t3_on@2x.png */; };
+		EA07398B1672E5EB00BF6FBF /* flight_bottom_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0739861672E5EB00BF6FBF /* flight_bottom_bg@2x.png */; };
+		EA07398C1672E5EB00BF6FBF /* flight_btn1_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0739871672E5EB00BF6FBF /* flight_btn1_on@2x.png */; };
+		EA07398D1672E5EB00BF6FBF /* flight_btn2_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0739881672E5EB00BF6FBF /* flight_btn2_on@2x.png */; };
+		EA07398E1672E5EB00BF6FBF /* flight_btn3_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA0739891672E5EB00BF6FBF /* flight_btn3_on@2x.png */; };
+		EA07398F1672E5EB00BF6FBF /* flight_top_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA07398A1672E5EB00BF6FBF /* flight_top_bg@2x.png */; };
+		EA07399316732F2900BF6FBF /* SelectAirCityController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA07399116732F2700BF6FBF /* SelectAirCityController.m */; };
+		EA07399416732F2900BF6FBF /* SelectAirCityController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA07399216732F2800BF6FBF /* SelectAirCityController.xib */; };
 		EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC5E160C10A40057E36C /* HappyTourController.m */; };
 		EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC5F160C10A40057E36C /* HappyTourController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
@@ -1851,6 +1858,14 @@
 		EA05F201166E01CC008685DA /* ticket_t2_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ticket_t2_on@2x.png"; sourceTree = "<group>"; };
 		EA05F202166E01CC008685DA /* ticket_t3_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ticket_t3_off@2x.png"; sourceTree = "<group>"; };
 		EA05F203166E01CC008685DA /* ticket_t3_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ticket_t3_on@2x.png"; sourceTree = "<group>"; };
+		EA0739861672E5EB00BF6FBF /* flight_bottom_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_bottom_bg@2x.png"; sourceTree = "<group>"; };
+		EA0739871672E5EB00BF6FBF /* flight_btn1_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_btn1_on@2x.png"; sourceTree = "<group>"; };
+		EA0739881672E5EB00BF6FBF /* flight_btn2_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_btn2_on@2x.png"; sourceTree = "<group>"; };
+		EA0739891672E5EB00BF6FBF /* flight_btn3_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_btn3_on@2x.png"; sourceTree = "<group>"; };
+		EA07398A1672E5EB00BF6FBF /* flight_top_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_top_bg@2x.png"; sourceTree = "<group>"; };
+		EA07399016732F2700BF6FBF /* SelectAirCityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAirCityController.h; sourceTree = "<group>"; };
+		EA07399116732F2700BF6FBF /* SelectAirCityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectAirCityController.m; sourceTree = "<group>"; };
+		EA07399216732F2800BF6FBF /* SelectAirCityController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectAirCityController.xib; sourceTree = "<group>"; };
 		EA0EFC5D160C10A40057E36C /* HappyTourController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HappyTourController.h; sourceTree = "<group>"; };
 		EA0EFC5E160C10A40057E36C /* HappyTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HappyTourController.m; sourceTree = "<group>"; };
 		EA0EFC5F160C10A40057E36C /* HappyTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HappyTourController.xib; sourceTree = "<group>"; };
@@ -4386,6 +4401,7 @@
 		EA05F1D9166E01CC008685DA /* air_hotel */ = {
 			isa = PBXGroup;
 			children = (
+				EA0739851672E5EB00BF6FBF /* flight */,
 				EA27F71A166E0418006FB717 /* person */,
 				EA05F1DA166E01CC008685DA /* confirm_order */,
 				EA05F1E5166E01CC008685DA /* hotel_list */,
@@ -4445,6 +4461,18 @@
 				EA05F1EE166E01CC008685DA /* hotel_list_zk3@2x.png */,
 			);
 			path = hotel_list;
+			sourceTree = "<group>";
+		};
+		EA0739851672E5EB00BF6FBF /* flight */ = {
+			isa = PBXGroup;
+			children = (
+				EA0739861672E5EB00BF6FBF /* flight_bottom_bg@2x.png */,
+				EA0739871672E5EB00BF6FBF /* flight_btn1_on@2x.png */,
+				EA0739881672E5EB00BF6FBF /* flight_btn2_on@2x.png */,
+				EA0739891672E5EB00BF6FBF /* flight_btn3_on@2x.png */,
+				EA07398A1672E5EB00BF6FBF /* flight_top_bg@2x.png */,
+			);
+			path = flight;
 			sourceTree = "<group>";
 		};
 		EA0EFC5C160C10890057E36C /* HappyTour */ = {
@@ -4601,6 +4629,9 @@
 				EAF5B20A1671A3EF00DF8570 /* FlightCell.h */,
 				EAF5B20B1671A3EF00DF8570 /* FlightCell.m */,
 				EAF5B20D1671A40700DF8570 /* FlightCell.xib */,
+				EA07399016732F2700BF6FBF /* SelectAirCityController.h */,
+				EA07399116732F2700BF6FBF /* SelectAirCityController.m */,
+				EA07399216732F2800BF6FBF /* SelectAirCityController.xib */,
 			);
 			path = Air;
 			sourceTree = "<group>";
@@ -5168,6 +5199,12 @@
 				EA27F722166E0418006FB717 /* select_radio_on@2x.png in Resources */,
 				EAF5B20916719FA300DF8570 /* SelectFlightController.xib in Resources */,
 				EAF5B20E1671A40700DF8570 /* FlightCell.xib in Resources */,
+				EA07398B1672E5EB00BF6FBF /* flight_bottom_bg@2x.png in Resources */,
+				EA07398C1672E5EB00BF6FBF /* flight_btn1_on@2x.png in Resources */,
+				EA07398D1672E5EB00BF6FBF /* flight_btn2_on@2x.png in Resources */,
+				EA07398E1672E5EB00BF6FBF /* flight_btn3_on@2x.png in Resources */,
+				EA07398F1672E5EB00BF6FBF /* flight_top_bg@2x.png in Resources */,
+				EA07399416732F2900BF6FBF /* SelectAirCityController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5511,6 +5548,7 @@
 				EAE4B38616707E23006BE2C6 /* PersonManager.m in Sources */,
 				EAF5B20816719FA300DF8570 /* SelectFlightController.m in Sources */,
 				EAF5B20C1671A3EF00DF8570 /* FlightCell.m in Sources */,
+				EA07399316732F2900BF6FBF /* SelectAirCityController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
