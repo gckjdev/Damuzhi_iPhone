@@ -26,12 +26,13 @@ static AirHotelService *_airHotelService = nil;
     return _airHotelService;
 }
 
-- (void)findHotels:(int)cityId
-       checkInDate:(NSDate *)checkInDate
-      checkOutDate:(NSDate *)checkOutDate
-             start:(int)start
-             count:(int)count
-          delegate:(id<AirHotelServiceDelegate>)delegate
+
+- (void)findHotelsWithCityId:(int)cityId
+                 checkInDate:(NSDate *)checkInDate
+                checkOutDate:(NSDate *)checkOutDate
+                       start:(int)start
+                       count:(int)count
+                    delegate:(id<AirHotelServiceDelegate>)delegate
 {
     NSString *checkInDateStr = dateToStringByFormat(checkInDate, @"yyyyMMdd");
     NSString *checkOutDateStr = dateToStringByFormat(checkOutDate, @"yyyyMMdd");
@@ -59,7 +60,7 @@ static AirHotelService *_airHotelService = nil;
                 totalCount = [travelResponse totalCount];
             }
             @catch (NSException *exception){
-                PPDebug(@"<Catch Exception in findRoutesWithType>");
+                PPDebug(@"<Catch Exception in findHotels>");
             }
         }
         
@@ -100,6 +101,57 @@ static AirHotelService *_airHotelService = nil;
                 [delegate orderDone:output.resultCode resultInfo:reultInfo];
             }
         });
+    });
+}
+
+- (void)findFlightsWithDepartCityId:(int)departCityId
+                  destinationCityId:(int)destinationCityId
+                         departDate:(NSDate *)departDate
+                         flightType:(int)flightType
+                       flightNumber:(NSString *)flightNumber
+                           delegate:(id<AirHotelServiceDelegate>)delegate
+
+{
+    NSString *departDateStr = dateToStringByFormat(departDate, @"yyyyMMdd");
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        CommonNetworkOutput *output = [TravelNetworkRequest queryList:OBJECT_LIST_FLIGHT
+                                                         departCityId:departCityId
+                                                    destinationCityId:destinationCityId
+                                                           departDate:departDateStr
+                                                           flightType:flightType
+                                                         flightNumber:flightNumber
+                                                                 lang:LanguageTypeZhHans];
+        
+        int totalCount = 0 ;
+        int result = 0;
+        NSString *resultInfo = nil;
+        NSArray *flightList = nil;
+        
+        if (output.resultCode == ERROR_SUCCESS){
+            @try{
+                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                flightList = [[travelResponse flightList] flightsList];
+                result = [travelResponse resultCode];
+                resultInfo = [travelResponse resultInfo];
+                totalCount = [travelResponse totalCount];
+            }
+            @catch (NSException *exception){
+                PPDebug(@"<Catch Exception in findFlights>");
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findFlightsDone:result:resultInfo:flightList:)]) {
+                [delegate findFlightsDone:output.resultCode
+                                   result:result
+                               resultInfo:resultInfo
+                               flightList:flightList];
+                
+                }
+        });
+        
     });
 }
 

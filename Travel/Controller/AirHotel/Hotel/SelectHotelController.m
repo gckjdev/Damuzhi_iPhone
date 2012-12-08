@@ -125,13 +125,12 @@
 
 - (void)findHotels
 {
-    [[AirHotelService defaultService] findHotels:[[AppManager defaultManager] getCurrentCityId]
-                                     checkInDate:_checkInDate
-                                    checkOutDate:_checkOutDate
-                                           start:0
-                                           count:EACH_COUNT
-                                        delegate:self];
-    
+    [[AirHotelService defaultService] findHotelsWithCityId:[[AppManager defaultManager] getCurrentCityId]
+                                               checkInDate:_checkInDate
+                                              checkOutDate:_checkOutDate
+                                                     start:0
+                                                     count:EACH_COUNT
+                                                  delegate:self];
 }
 
 

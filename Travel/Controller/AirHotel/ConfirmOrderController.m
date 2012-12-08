@@ -151,8 +151,17 @@
 
 
 - (IBAction)clickPaymentButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] init] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:YES delegate:self] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
+
+
+#pragma mark -
+#pragma SelectPersonControllerDelegate method
+- (void)finishSelectPerson:(PersonType)personType objectList:(NSArray *)objectList
+{
+    
+}
+
 
 @end

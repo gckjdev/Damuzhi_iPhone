@@ -13,7 +13,8 @@
 #import "CommonMonthController.h"
 #import "SelectHotelController.h"
 #import "MakeOrderHeader.h"
+#import "SelectFlightController.h"
 
-@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate>
+@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate>
 
 @end

@@ -54,4 +54,5 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
+
 @end

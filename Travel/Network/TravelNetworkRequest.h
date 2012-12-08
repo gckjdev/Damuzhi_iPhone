@@ -209,4 +209,12 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
 
 + (CommonNetworkOutput*)orderAirHotel:(NSData *)data;
 
++ (CommonNetworkOutput*)queryList:(int)type
+                     departCityId:(int)departCityId
+                destinationCityId:(int)destinationCityId
+                       departDate:(NSString *)departDate
+                       flightType:(int)flightType
+                     flightNumber:(NSString *)flightNumber
+                             lang:(int)lang;
+
 @end

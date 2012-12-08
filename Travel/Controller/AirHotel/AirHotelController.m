@@ -12,20 +12,19 @@
 #import "ConfirmOrderController.h"
 #import "AirHotelManager.h"
 
-enum FLIGHT_DATE_TAG{
-    DEPART_DATE = 0,
-};
-
-enum HOTEL_DATE_TAG{
-    CHECK_IN_DATE = 0,
-    CHECK_OUT_DATE = 1,
+enum HOTEL_FLIGHT_DATE_TAG{
+    GO_DATE = 0,
+    BACK_DATE = 1,
+    CHECK_IN_DATE = 2,
+    CHECK_OUT_DATE = 3,
 };
 
 @interface AirHotelController ()
 
 @property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
 @property (retain, nonatomic) NSMutableArray *hotelOrderList;
-
+@property (retain, nonatomic) AirOrder_Builder *goAirOrderBuiler;
+@property (retain, nonatomic) AirOrder_Builder *backAirOrderBuiler;
 
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) int currentDateTag;
@@ -38,6 +37,9 @@ enum HOTEL_DATE_TAG{
 @implementation AirHotelController
 @synthesize hotelOrderBuilderList = _hotelOrderBuilderList;
 @synthesize hotelOrderList = _hotelOrderList;
+@synthesize goAirOrderBuiler = _goAirOrderBuiler;
+@synthesize backAirOrderBuiler = _backAirOrderBuiler;
+
 @synthesize currentIndexPath = _currentIndexPath;
 @synthesize currentDateTag = _currentDateTag;
 @synthesize airType = _airType;
@@ -46,6 +48,9 @@ enum HOTEL_DATE_TAG{
 - (void)dealloc {
     [_hotelOrderBuilderList release];
     [_hotelOrderList release];
+    [_goAirOrderBuiler release];
+    [_backAirOrderBuiler release];
+    
     [_currentIndexPath release];
     [_sectionStat release];
     [_manager release];
@@ -56,9 +61,14 @@ enum HOTEL_DATE_TAG{
 {
     self = [super init];
     if (self) {
+        self.goAirOrderBuiler = [[[AirOrder_Builder alloc] init] autorelease];
+        self.backAirOrderBuiler = [[[AirOrder_Builder alloc] init] autorelease];
+        
         self.manager = [AirHotelManager defaultManager];
         self.hotelOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
-        [self createDefaultHotelOrderBuilder];
+        HotelOrder_Builder *builder = [_manager createDefaultHotelOrderBuilder];
+        [_hotelOrderBuilderList addObject:builder];
+        
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
         self.airType = AirGoAndBack;
     }
@@ -72,12 +82,6 @@ enum HOTEL_DATE_TAG{
     self.navigationItem.title = NSLS(@"机+酒");
     
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
-}
-
-- (void)createDefaultHotelOrderBuilder
-{
-    HotelOrder_Builder *builder = [_manager createDefaultHotelOrderBuilder];
-    [_hotelOrderBuilderList addObject:builder];
 }
 
 - (void)updateSectionStatWithSectionCount:(int)sectionCount
@@ -305,6 +309,10 @@ enum HOTEL_DATE_TAG{
 #pragma CommonMonthControllerDelegate methods
 - (void)didSelectDate:(NSDate *)date
 {
+    if (_currentDateTag == GO_DATE) {
+
+    }
+    
     if (_currentIndexPath.section > SECTION_AIR) {
         HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.row];
         
@@ -356,6 +364,41 @@ enum HOTEL_DATE_TAG{
 {
     _airType = AirBack;
     [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+
+#pragma mark -
+#pragma MakeAirOrderCellDelegate methods
+- (void)didClickDepartCityButton
+{
+
+}
+
+- (void)didClickGoDateButton
+{
+    self.currentDateTag = GO_DATE;
+    
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickBackDateButton
+{
+    self.currentDateTag = BACK_DATE;
+    
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickGoFlightButton
+{
+    SelectFlightController *controller = [[[SelectFlightController alloc] initWithTitle:NSLS(@"去程航班")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickBackFlightButton
+{
+    
 }
 
 

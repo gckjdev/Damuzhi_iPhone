@@ -138,6 +138,11 @@
 #define PARA_TRAVEL_CHECK_IN_DATE           @"checkInDate"
 #define PARA_TRAVEL_CHECK_OUT_DATE          @"checkOutDate"
 
+#define PARA_TRAVEL_FLIGHT_TYPE             @"flightType"
+#define PARA_TRAVEL_FLIGHT_NUMBER           @"flightNumber"
+
+
+
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
 #define OBJECT_LIST_TYPE_SPOT            21
@@ -185,7 +190,7 @@
 
 #define OBJECT_LIST_LOCAL_ROUTE                     90
 
-
+#define OBJECT_LIST_FLIGHT                          100
 #define OBJECT_LIST_CHECK_IN_HOTEL                  101
 
 // For object type

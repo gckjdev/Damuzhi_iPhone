@@ -14,9 +14,9 @@
 + (AirHotelManager *)defaultManager;
 
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder;
-
 - (NSArray *)hotelOrderListFromBuilderList:(NSArray *)builderList;
-
 - (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
+
+
 
 @end

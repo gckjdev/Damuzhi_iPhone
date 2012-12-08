@@ -1341,4 +1341,41 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)queryList:(int)type
+                     departCityId:(int)departCityId
+                destinationCityId:(int)destinationCityId
+                       departDate:(NSString *)departDate
+                       flightType:(int)flightType
+                     flightNumber:(NSString *)flightNumber
+                             lang:(int)lang
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        
+        //set input parameters
+        NSString* str = [NSString stringWithString:baseURL];
+        
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_CITY_ID intValue:departCityId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DESTINATION_CITY_ID intValue:destinationCityId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_FLIGHT_TYPE intValue:flightType];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_FLIGHT_NUMBER intValue:flightType];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
+        
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_LIST
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_PB
+                                      output:output];
+}
+
 @end

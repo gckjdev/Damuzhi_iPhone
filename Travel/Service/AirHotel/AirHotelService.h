@@ -20,6 +20,11 @@
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo;
 
+- (void)findFlightsDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+             flightList:(NSArray *)flightList;
+
 @end
 
 
@@ -29,14 +34,20 @@
 
 + (AirHotelService*)defaultService;
 
-- (void)findHotels:(int)cityId
-       checkInDate:(NSDate *)checkInDate
-      checkOutDate:(NSDate *)checkOutDate
-             start:(int)start
-             count:(int)count
-          delegate:(id<AirHotelServiceDelegate>)delegate;
+- (void)findHotelsWithCityId:(int)cityId
+                 checkInDate:(NSDate *)checkInDate
+                checkOutDate:(NSDate *)checkOutDate
+                       start:(int)start
+                       count:(int)count
+                    delegate:(id<AirHotelServiceDelegate>)delegate;
 
 - (void)order:(AirHotelOrder *)order
      delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findFlightsWithDepartCityId:(int)departCityId
+                  destinationCityId:(int)destinationCityId
+                         departDate:(NSDate *)departDate
+                         flightType:(int)flightType
+                       flightNumber:(NSString *)flightNumber;
 
 @end

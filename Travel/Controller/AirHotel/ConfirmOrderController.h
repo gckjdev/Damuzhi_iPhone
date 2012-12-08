@@ -14,7 +14,7 @@
 
 @class AirHotelOrder_Builder;
 
-@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate>
+@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate>
 
 - (id)initWithOrderBuilder:(AirHotelOrder_Builder *)builder;
 

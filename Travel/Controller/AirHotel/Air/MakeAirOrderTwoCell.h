@@ -8,6 +8,17 @@
 
 #import "PPTableViewCell.h"
 
+@protocol MakeAirOrderCellDelegate <NSObject>
+
+@optional
+- (void)didClickDepartCityButton;
+- (void)didClickGoDateButton;
+- (void)didClickBackDateButton;
+- (void)didClickGoFlightButton;
+- (void)didClickBackFlightButton;
+
+@end
+
 @interface MakeAirOrderTwoCell : PPTableViewCell
 
 @end
