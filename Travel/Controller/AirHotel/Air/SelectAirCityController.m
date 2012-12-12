@@ -9,19 +9,34 @@
 #import "SelectAirCityController.h"
 #import "FontSize.h"
 #import "ImageName.h"
+#import "StringUtil.h"
+#import "App.pb.h"
 
 @interface SelectAirCityController ()
+@property (retain, nonatomic) NSMutableArray *searchResultList;
+@property (assign, nonatomic) id<SelectAirCityControllerDelegate> delegate;
 
 @end
 
 @implementation SelectAirCityController
 
 - (void)dealloc {
-    [_searchBar release];
+    [_searchResultList release];
     [super dealloc];
 }
+
+- (id)initWithCityList:(NSArray *)cityList delegate:(id<SelectAirCityControllerDelegate>)delegate
+{
+    self = [super init];
+    if (self) {
+        self.dataList = cityList;
+        self.delegate = delegate;
+        self.searchResultList = [[[NSMutableArray alloc] init] autorelease];
+    }
+    return self;
+}
+
 - (void)viewDidUnload {
-    [self setSearchBar:nil];
     [super viewDidUnload];
 }
 
@@ -35,14 +50,18 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    self.dataList = [NSArray arrayWithObjects:@"北京", @"上海", @"广州", @"深圳", @"成都", @"厦门", @"昆明", @"杭州", @"西安", nil];
+    //self.dataList = [NSArray arrayWithObjects:@"北京", @"上海", @"广州", @"深圳", @"成都", @"厦门", @"昆明", @"杭州", @"西安", nil];
 }
 
 #pragma mark -
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataList count];
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        return [_searchResultList count];
+    } else {
+        return [dataList count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -59,8 +78,15 @@
         cell.textLabel.font = [UIFont systemFontOfSize:16];
     }
    
+    cell.textLabel.backgroundColor = [UIColor clearColor];
     
-    cell.textLabel.text = [dataList objectAtIndex:indexPath.row];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        AirCity *city = [_searchResultList objectAtIndex:indexPath.row];
+        cell.textLabel.text = city.cityName;
+    } else {
+        AirCity *city = [dataList objectAtIndex:indexPath.row];
+        cell.textLabel.text = city.cityName;
+    }
     
     return cell;
 }
@@ -72,49 +98,49 @@
     return 44;
 }
 
-
-#pragma mark - UIScrollViewDelegate methods
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.searchBar resignFirstResponder];
-}
-
-
-#pragma mark - searchbar delegate
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar;
-{
-    [self.searchBar setShowsCancelButton:YES animated:YES];
-    //[self updateHideKeyboardButton];
-}
-
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    //[self update:searchBar.text];
-    [self.searchBar resignFirstResponder];
-}
-
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    //[self updateHideKeyboardButton];
-    //[self update:searchBar.text];
+    AirCity *city = nil;
     
-    //[self showNoSelectRegion];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        city = [_searchResultList objectAtIndex:indexPath.row];
+    } else {
+        city = [dataList objectAtIndex:indexPath.row];
+    }
+    
+    if ([_delegate respondsToSelector:@selector(didSelectCity:)]) {
+        [_delegate didSelectCity:city];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+#pragma mark -
+#pragma mark Content Filtering
+- (void)filterContentForSearchText:(NSString*)searchText
 {
-    [self.searchBar setShowsCancelButton:NO animated:YES];
+	[self.searchResultList removeAllObjects];
+    
+    for (AirCity *city in dataList) {
+        
+        if ([searchText isEqualToString:@"x"] && [city.cityName isEqualToString:@"厦门"])
+        {
+            [self.searchResultList addObject:city.cityName];
+            continue;
+        }
+        
+        int cityLocation = [city.cityName rangeOfString:searchText].location;
+        if (cityLocation < [city.cityName length] || [searchText isEqualToString:city.cityName.pinyinFirstLetter]) {
+            [self.searchResultList addObject:city];
+        }
+    }
 }
 
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    //[self clickHideKeyboardButton:nil];
+    [self filterContentForSearchText:searchString];
+    return YES;
 }
-
-
-
 
 @end

@@ -7,9 +7,17 @@
 //
 
 #import "PPTableViewController.h"
+#import "App.pb.h"
 
-@interface SelectAirCityController : PPTableViewController
+@protocol SelectAirCityControllerDelegate <NSObject>
 
-@property (retain, nonatomic) IBOutlet UISearchBar *searchBar;
+@optional
+- (void)didSelectCity:(AirCity *)city;
+
+@end
+
+@interface SelectAirCityController : PPTableViewController<UISearchBarDelegate, UISearchDisplayDelegate>
+
+- (id)initWithCityList:(NSArray *)cityList delegate:(id<SelectAirCityControllerDelegate>)delegate;
 
 @end

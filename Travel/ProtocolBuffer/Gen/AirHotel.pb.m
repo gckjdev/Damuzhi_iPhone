@@ -1668,6 +1668,7 @@ static FlightSeat* defaultFlightSeatInstance = nil;
 @property int32_t airlineId;
 @property (retain) NSString* planeType;
 @property (retain) NSString* price;
+@property (retain) NSString* discount;
 @property (retain) NSString* departAirport;
 @property (retain) NSString* arriveAirport;
 @property int32_t departDate;
@@ -1711,6 +1712,13 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   hasPrice_ = !!value;
 }
 @synthesize price;
+- (BOOL) hasDiscount {
+  return !!hasDiscount_;
+}
+- (void) setHasDiscount:(BOOL) value {
+  hasDiscount_ = !!value;
+}
+@synthesize discount;
 - (BOOL) hasDepartAirport {
   return !!hasDepartAirport_;
 }
@@ -1791,6 +1799,7 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   self.flightNumber = nil;
   self.planeType = nil;
   self.price = nil;
+  self.discount = nil;
   self.departAirport = nil;
   self.arriveAirport = nil;
   self.transitInfo = nil;
@@ -1807,6 +1816,7 @@ static FlightSeat* defaultFlightSeatInstance = nil;
     self.airlineId = 0;
     self.planeType = @"";
     self.price = @"";
+    self.discount = @"";
     self.departAirport = @"";
     self.arriveAirport = @"";
     self.departDate = 0;
@@ -1866,23 +1876,26 @@ static Flight* defaultFlightInstance = nil;
   if (self.hasPrice) {
     [output writeString:4 value:self.price];
   }
+  if (self.hasDiscount) {
+    [output writeString:5 value:self.discount];
+  }
   if (self.hasDepartAirport) {
-    [output writeString:5 value:self.departAirport];
+    [output writeString:6 value:self.departAirport];
   }
   if (self.hasArriveAirport) {
-    [output writeString:6 value:self.arriveAirport];
+    [output writeString:7 value:self.arriveAirport];
   }
   if (self.hasDepartDate) {
-    [output writeInt32:7 value:self.departDate];
+    [output writeInt32:8 value:self.departDate];
   }
   if (self.hasArriveDate) {
-    [output writeInt32:8 value:self.arriveDate];
+    [output writeInt32:9 value:self.arriveDate];
   }
   if (self.hasTransit) {
-    [output writeBool:9 value:self.transit];
+    [output writeBool:10 value:self.transit];
   }
   if (self.hasTransitInfo) {
-    [output writeString:10 value:self.transitInfo];
+    [output writeString:11 value:self.transitInfo];
   }
   if (self.hasAdultAirportTax) {
     [output writeString:20 value:self.adultAirportTax];
@@ -1920,23 +1933,26 @@ static Flight* defaultFlightInstance = nil;
   if (self.hasPrice) {
     size += computeStringSize(4, self.price);
   }
+  if (self.hasDiscount) {
+    size += computeStringSize(5, self.discount);
+  }
   if (self.hasDepartAirport) {
-    size += computeStringSize(5, self.departAirport);
+    size += computeStringSize(6, self.departAirport);
   }
   if (self.hasArriveAirport) {
-    size += computeStringSize(6, self.arriveAirport);
+    size += computeStringSize(7, self.arriveAirport);
   }
   if (self.hasDepartDate) {
-    size += computeInt32Size(7, self.departDate);
+    size += computeInt32Size(8, self.departDate);
   }
   if (self.hasArriveDate) {
-    size += computeInt32Size(8, self.arriveDate);
+    size += computeInt32Size(9, self.arriveDate);
   }
   if (self.hasTransit) {
-    size += computeBoolSize(9, self.transit);
+    size += computeBoolSize(10, self.transit);
   }
   if (self.hasTransitInfo) {
-    size += computeStringSize(10, self.transitInfo);
+    size += computeStringSize(11, self.transitInfo);
   }
   if (self.hasAdultAirportTax) {
     size += computeStringSize(20, self.adultAirportTax);
@@ -2040,6 +2056,9 @@ static Flight* defaultFlightInstance = nil;
   if (other.hasPrice) {
     [self setPrice:other.price];
   }
+  if (other.hasDiscount) {
+    [self setDiscount:other.discount];
+  }
   if (other.hasDepartAirport) {
     [self setDepartAirport:other.departAirport];
   }
@@ -2114,26 +2133,30 @@ static Flight* defaultFlightInstance = nil;
         break;
       }
       case 42: {
-        [self setDepartAirport:[input readString]];
+        [self setDiscount:[input readString]];
         break;
       }
       case 50: {
+        [self setDepartAirport:[input readString]];
+        break;
+      }
+      case 58: {
         [self setArriveAirport:[input readString]];
         break;
       }
-      case 56: {
+      case 64: {
         [self setDepartDate:[input readInt32]];
         break;
       }
-      case 64: {
+      case 72: {
         [self setArriveDate:[input readInt32]];
         break;
       }
-      case 72: {
+      case 80: {
         [self setTransit:[input readBool]];
         break;
       }
-      case 82: {
+      case 90: {
         [self setTransitInfo:[input readString]];
         break;
       }
@@ -2224,6 +2247,22 @@ static Flight* defaultFlightInstance = nil;
 - (Flight_Builder*) clearPrice {
   result.hasPrice = NO;
   result.price = @"";
+  return self;
+}
+- (BOOL) hasDiscount {
+  return result.hasDiscount;
+}
+- (NSString*) discount {
+  return result.discount;
+}
+- (Flight_Builder*) setDiscount:(NSString*) value {
+  result.hasDiscount = YES;
+  result.discount = value;
+  return self;
+}
+- (Flight_Builder*) clearDiscount {
+  result.hasDiscount = NO;
+  result.discount = @"";
   return self;
 }
 - (BOOL) hasDepartAirport {

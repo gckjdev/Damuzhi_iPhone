@@ -709,6 +709,14 @@
 		EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC5E160C10A40057E36C /* HappyTourController.m */; };
 		EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC5F160C10A40057E36C /* HappyTourController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
+		EA13A8FA1675EB9E0057EEDB /* FlightDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA13A8F81675EB9D0057EEDB /* FlightDetailController.m */; };
+		EA13A8FB1675EB9E0057EEDB /* FlightDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA13A8F91675EB9D0057EEDB /* FlightDetailController.xib */; };
+		EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA13A90B1676E2D10057EEDB /* FlightSeatView.m */; };
+		EA13A90E1676E4590057EEDB /* FlightSeatView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA13A90D1676E4580057EEDB /* FlightSeatView.xib */; };
+		EA13A917167728630057EEDB /* flight_p1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA13A913167728600057EEDB /* flight_p1@2x.png */; };
+		EA13A918167728630057EEDB /* flight_p2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA13A914167728600057EEDB /* flight_p2@2x.png */; };
+		EA13A919167728630057EEDB /* flight_point_off@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA13A915167728610057EEDB /* flight_point_off@2x.png */; };
+		EA13A91A167728630057EEDB /* flight_point_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA13A916167728620057EEDB /* flight_point_on@2x.png */; };
 		EA140191164A4315009DF6DC /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140188164A4315009DF6DC /* JSONKit.m */; };
 		EA140192164A4315009DF6DC /* SinaWeibo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EA140189164A4315009DF6DC /* SinaWeibo.bundle */; };
 		EA140193164A4315009DF6DC /* SinaWeibo.m in Sources */ = {isa = PBXBuildFile; fileRef = EA14018B164A4315009DF6DC /* SinaWeibo.m */; };
@@ -1870,6 +1878,16 @@
 		EA0EFC5E160C10A40057E36C /* HappyTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HappyTourController.m; sourceTree = "<group>"; };
 		EA0EFC5F160C10A40057E36C /* HappyTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HappyTourController.xib; sourceTree = "<group>"; };
 		EA1007B915550E1600E299D1 /* pin_yl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_yl@2x.png"; sourceTree = "<group>"; };
+		EA13A8F71675EB9C0057EEDB /* FlightDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightDetailController.h; sourceTree = "<group>"; };
+		EA13A8F81675EB9D0057EEDB /* FlightDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightDetailController.m; sourceTree = "<group>"; };
+		EA13A8F91675EB9D0057EEDB /* FlightDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlightDetailController.xib; sourceTree = "<group>"; };
+		EA13A90A1676E2D00057EEDB /* FlightSeatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightSeatView.h; sourceTree = "<group>"; };
+		EA13A90B1676E2D10057EEDB /* FlightSeatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightSeatView.m; sourceTree = "<group>"; };
+		EA13A90D1676E4580057EEDB /* FlightSeatView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlightSeatView.xib; sourceTree = "<group>"; };
+		EA13A913167728600057EEDB /* flight_p1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_p1@2x.png"; sourceTree = "<group>"; };
+		EA13A914167728600057EEDB /* flight_p2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_p2@2x.png"; sourceTree = "<group>"; };
+		EA13A915167728610057EEDB /* flight_point_off@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_point_off@2x.png"; sourceTree = "<group>"; };
+		EA13A916167728620057EEDB /* flight_point_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flight_point_on@2x.png"; sourceTree = "<group>"; };
 		EA140187164A4315009DF6DC /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		EA140188164A4315009DF6DC /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		EA140189164A4315009DF6DC /* SinaWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SinaWeibo.bundle; sourceTree = "<group>"; };
@@ -4466,6 +4484,10 @@
 		EA0739851672E5EB00BF6FBF /* flight */ = {
 			isa = PBXGroup;
 			children = (
+				EA13A913167728600057EEDB /* flight_p1@2x.png */,
+				EA13A914167728600057EEDB /* flight_p2@2x.png */,
+				EA13A915167728610057EEDB /* flight_point_off@2x.png */,
+				EA13A916167728620057EEDB /* flight_point_on@2x.png */,
 				EA0739861672E5EB00BF6FBF /* flight_bottom_bg@2x.png */,
 				EA0739871672E5EB00BF6FBF /* flight_btn1_on@2x.png */,
 				EA0739881672E5EB00BF6FBF /* flight_btn2_on@2x.png */,
@@ -4632,6 +4654,12 @@
 				EA07399016732F2700BF6FBF /* SelectAirCityController.h */,
 				EA07399116732F2700BF6FBF /* SelectAirCityController.m */,
 				EA07399216732F2800BF6FBF /* SelectAirCityController.xib */,
+				EA13A8F71675EB9C0057EEDB /* FlightDetailController.h */,
+				EA13A8F81675EB9D0057EEDB /* FlightDetailController.m */,
+				EA13A8F91675EB9D0057EEDB /* FlightDetailController.xib */,
+				EA13A90A1676E2D00057EEDB /* FlightSeatView.h */,
+				EA13A90B1676E2D10057EEDB /* FlightSeatView.m */,
+				EA13A90D1676E4580057EEDB /* FlightSeatView.xib */,
 			);
 			path = Air;
 			sourceTree = "<group>";
@@ -5205,6 +5233,12 @@
 				EA07398E1672E5EB00BF6FBF /* flight_btn3_on@2x.png in Resources */,
 				EA07398F1672E5EB00BF6FBF /* flight_top_bg@2x.png in Resources */,
 				EA07399416732F2900BF6FBF /* SelectAirCityController.xib in Resources */,
+				EA13A8FB1675EB9E0057EEDB /* FlightDetailController.xib in Resources */,
+				EA13A90E1676E4590057EEDB /* FlightSeatView.xib in Resources */,
+				EA13A917167728630057EEDB /* flight_p1@2x.png in Resources */,
+				EA13A918167728630057EEDB /* flight_p2@2x.png in Resources */,
+				EA13A919167728630057EEDB /* flight_point_off@2x.png in Resources */,
+				EA13A91A167728630057EEDB /* flight_point_on@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5549,6 +5583,8 @@
 				EAF5B20816719FA300DF8570 /* SelectFlightController.m in Sources */,
 				EAF5B20C1671A3EF00DF8570 /* FlightCell.m in Sources */,
 				EA07399316732F2900BF6FBF /* SelectAirCityController.m in Sources */,
+				EA13A8FA1675EB9E0057EEDB /* FlightDetailController.m in Sources */,
+				EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

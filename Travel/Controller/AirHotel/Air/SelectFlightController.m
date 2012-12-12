@@ -11,6 +11,7 @@
 #import "AirHotel.pb.h"
 #import "FontSize.h"
 #import "ImageManager.h"
+#import "FlightDetailController.h"
 
 @interface SelectFlightController ()
 @end
@@ -32,6 +33,13 @@
     }
     return self;
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [super viewDidAppear:animated];
+}
+
 
 - (void)viewDidLoad
 {
@@ -94,6 +102,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [FlightCell getCellHeight];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FlightDetailController *controller = [[FlightDetailController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 

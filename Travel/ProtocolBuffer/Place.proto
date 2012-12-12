@@ -9,6 +9,7 @@ message HotelRoom {
     required string name = 2;               //房间名称
     optional string breakfast = 3;          //早餐信息
     optional string price = 4;              //价格
+    optional string bed = 5;                //床位信息
 }
 
 message Place {

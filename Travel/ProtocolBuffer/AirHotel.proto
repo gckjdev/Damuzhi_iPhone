@@ -75,14 +75,15 @@ message Flight {
     required int32 airlineId = 2;               //航空公司id，参见App基础数据定义
     optional string planeType = 3;              //机型
     optional string price = 4;                  //参考价格（用于列表显示，一般是所有舱位的最低价格？）
+    optional string discount = 5;               //打折信息（用于列表显示）
     
-    optional string departAirport = 5;          //出发机场
-    optional string arriveAirport = 6;          //达到机场
-    optional int32 departDate = 7;              //出发时间
-    optional int32 arriveDate = 8;              //到达时间
+    optional string departAirport = 6;          //出发机场
+    optional string arriveAirport = 7;          //达到机场
+    optional int32 departDate = 8;              //出发时间
+    optional int32 arriveDate = 9;              //到达时间
     
-    optional bool transit = 9 [default=false];  //是否中转
-    optional string transitInfo = 10;           //中转信息
+    optional bool transit = 10 [default=false]; //是否中转
+    optional string transitInfo = 11;           //中转信息
     
     optional string adultAirportTax = 20;       //成人机建费
     optional string childAirportTax = 21;       //儿童机建费

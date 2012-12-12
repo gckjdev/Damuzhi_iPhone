@@ -8,7 +8,7 @@
 
 #import "MakeHotelOrderCell.h"
 #import "AirHotel.pb.h"
-#import "TimeUtils.h"
+#import "AirHotelManager.h"
 
 @implementation MakeHotelOrderCell
 
@@ -29,19 +29,15 @@
     return 120.0f;
 }
 
-- (NSString *)dateIntToString:(int)dateInt
-{
-    NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
-    NSString *dateString  = dateToStringByFormat(date, @"yyyy年MM月dd日");
-    return dateString;
-}
-
 - (void)setCellByHotelOrder:(HotelOrder_Builder *)hotelOrderBuilder indexPath:(NSIndexPath *)aIndexPath
 {
     self.indexPath = aIndexPath;
+    AirHotelManager *_manager = [AirHotelManager defaultManager];
     
-    [self.checkInButton setTitle:[self dateIntToString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
-    [self.checkOutButton setTitle:[self dateIntToString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+    [self.checkInButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
+    
+    [self.checkOutButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+    
     [self.hotelButton setTitle:hotelOrderBuilder.hotel.name forState:UIControlStateNormal];
 }
 

@@ -24,6 +24,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @property (retain) NSString* name;
 @property (retain) NSString* breakfast;
 @property (retain) NSString* price;
+@property (retain) NSString* bed;
 @end
 
 @implementation HotelRoom
@@ -56,10 +57,18 @@ static PBExtensionRegistry* extensionRegistry = nil;
   hasPrice_ = !!value;
 }
 @synthesize price;
+- (BOOL) hasBed {
+  return !!hasBed_;
+}
+- (void) setHasBed:(BOOL) value {
+  hasBed_ = !!value;
+}
+@synthesize bed;
 - (void) dealloc {
   self.name = nil;
   self.breakfast = nil;
   self.price = nil;
+  self.bed = nil;
   [super dealloc];
 }
 - (id) init {
@@ -68,6 +77,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     self.name = @"";
     self.breakfast = @"";
     self.price = @"";
+    self.bed = @"";
   }
   return self;
 }
@@ -105,6 +115,9 @@ static HotelRoom* defaultHotelRoomInstance = nil;
   if (self.hasPrice) {
     [output writeString:4 value:self.price];
   }
+  if (self.hasBed) {
+    [output writeString:5 value:self.bed];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -125,6 +138,9 @@ static HotelRoom* defaultHotelRoomInstance = nil;
   }
   if (self.hasPrice) {
     size += computeStringSize(4, self.price);
+  }
+  if (self.hasBed) {
+    size += computeStringSize(5, self.bed);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -213,6 +229,9 @@ static HotelRoom* defaultHotelRoomInstance = nil;
   if (other.hasPrice) {
     [self setPrice:other.price];
   }
+  if (other.hasBed) {
+    [self setBed:other.bed];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -248,6 +267,10 @@ static HotelRoom* defaultHotelRoomInstance = nil;
       }
       case 34: {
         [self setPrice:[input readString]];
+        break;
+      }
+      case 42: {
+        [self setBed:[input readString]];
         break;
       }
     }
@@ -315,6 +338,22 @@ static HotelRoom* defaultHotelRoomInstance = nil;
 - (HotelRoom_Builder*) clearPrice {
   result.hasPrice = NO;
   result.price = @"";
+  return self;
+}
+- (BOOL) hasBed {
+  return result.hasBed;
+}
+- (NSString*) bed {
+  return result.bed;
+}
+- (HotelRoom_Builder*) setBed:(NSString*) value {
+  result.hasBed = YES;
+  result.bed = value;
+  return self;
+}
+- (HotelRoom_Builder*) clearBed {
+  result.hasBed = NO;
+  result.bed = @"";
   return self;
 }
 @end

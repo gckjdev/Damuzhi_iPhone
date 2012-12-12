@@ -8,8 +8,27 @@
 
 #import "MakeAirOrderOneCell.h"
 #import "LocaleUtils.h"
+#import "AirHotel.pb.h"
+#import "AirHotelManager.h"
+
+@interface MakeAirOrderOneCell()
+@property (assign, nonatomic) AirType airType;
+
+@end
+
 
 @implementation MakeAirOrderOneCell
+
+- (void)dealloc {
+    [_dateLabel release];
+    [_flightLabel release];
+    [_dateIconViewImage release];
+    [_flightIconImageView release];
+    [_departCityButton release];
+    [_flightButton release];
+    [_flightDateButton release];
+    [super dealloc];
+}
 
 + (NSString*)getCellIdentifier
 {
@@ -22,7 +41,13 @@
 }
 
 - (void)setCellWithType:(AirType)airType
+         departCityName:(NSString *)departCityName
+                builder:(AirOrder_Builder *)builder
 {
+    self.airType = airType;
+    AirHotelManager *_manager = [AirHotelManager defaultManager];
+    NSString *defaultTips = NSLS(@"请选择");
+    
     if (airType == AirGo) {
         self.dateIconViewImage.image = [UIImage imageNamed:@"ticket_p2.png"];
         self.dateLabel.text = NSLS(@"回程日期");
@@ -34,13 +59,50 @@
         self.flightIconImageView.image = [UIImage imageNamed:@"ticket_p6.png"];
         self.flightLabel.text = NSLS(@"回程");
     }
+    
+    
+    if (departCityName) {
+        [self.departCityButton setTitle:departCityName forState:UIControlStateNormal];
+    } else {
+        [self.departCityButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
+    
+    
+    if (builder.flightDate) {
+        [self.flightDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:builder.flightDate] forState:UIControlStateNormal];
+    } else {
+        [self.flightDateButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
+}
+- (IBAction)clickDepartCityButton:(id)sender {
+    if ([delegate respondsToSelector:@selector(didClickDepartCityButton)]) {
+        [delegate didClickDepartCityButton];
+    }
 }
 
-- (void)dealloc {
-    [_dateLabel release];
-    [_flightLabel release];
-    [_dateIconViewImage release];
-    [_flightIconImageView release];
-    [super dealloc];
+- (IBAction)clickFlightDateButton:(id)sender {
+    if (_airType == AirGo) {
+        if ([delegate respondsToSelector:@selector(didClickGoDateButton)]) {
+            [delegate didClickGoDateButton];
+        }
+    } else if (_airType == AirBack) {
+        if ([delegate respondsToSelector:@selector(didClickBackDateButton)]) {
+            [delegate didClickBackDateButton];
+        }
+    }
 }
+
+- (IBAction)clickFlightButton:(id)sender {
+    if (_airType == AirGo) {
+        if ([delegate respondsToSelector:@selector(didClickGoFlightButton)]) {
+            [delegate didClickGoFlightButton];
+        }
+
+    } else if (_airType == AirBack) {
+        if ([delegate respondsToSelector:@selector(didClickBackFlightButton)]) {
+            [delegate didClickBackFlightButton];
+        }
+    }
+}
+
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AirHotelManager.h"
+#import "TimeUtils.h"
 
 static AirHotelManager *_airHotelManager = nil;
 
@@ -54,5 +55,15 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
+
+- (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt
+{
+    NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
+    NSString *dateString  = dateToStringByFormat(date, @"yyyy年MM月dd日");
+    NSString *week = chineseWeekDayFromDate(date);
+    
+    NSString *resultStr = [NSString stringWithFormat:@"%@ %@", dateString, week];
+    return resultStr;
+}
 
 @end

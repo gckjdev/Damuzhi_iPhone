@@ -25,19 +25,23 @@
   BOOL hasName_:1;
   BOOL hasBreakfast_:1;
   BOOL hasPrice_:1;
+  BOOL hasBed_:1;
   int32_t roomId;
   NSString* name;
   NSString* breakfast;
   NSString* price;
+  NSString* bed;
 }
 - (BOOL) hasRoomId;
 - (BOOL) hasName;
 - (BOOL) hasBreakfast;
 - (BOOL) hasPrice;
+- (BOOL) hasBed;
 @property (readonly) int32_t roomId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* breakfast;
 @property (readonly, retain) NSString* price;
+@property (readonly, retain) NSString* bed;
 
 + (HotelRoom*) defaultInstance;
 - (HotelRoom*) defaultInstance;
@@ -92,6 +96,11 @@
 - (NSString*) price;
 - (HotelRoom_Builder*) setPrice:(NSString*) value;
 - (HotelRoom_Builder*) clearPrice;
+
+- (BOOL) hasBed;
+- (NSString*) bed;
+- (HotelRoom_Builder*) setBed:(NSString*) value;
+- (HotelRoom_Builder*) clearBed;
 @end
 
 @interface Place : PBGeneratedMessage {

@@ -1253,4 +1253,14 @@ static AppManager* _defaultAppManager = nil;
     return items;
 }
 
+- (NSString *)getAirDepartCityName:(int)cityId
+{
+    for (AirCity *city in  _app.airDepartCitiesList) {
+        if (city.cityId == cityId) {
+            return city.cityName;
+        }
+    }
+    return nil;
+}
+
 @end

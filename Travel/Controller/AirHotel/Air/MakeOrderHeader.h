@@ -8,15 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MakeOrderHeaderDelegate <NSObject>
-
-@optional
-- (void)didClickCloseButton:(NSInteger)section;
-- (void)didClickGoButton;
-- (void)didClickGoAndBackButton;
-- (void)didClickBackButton;
-@end
-
 
 typedef enum{
     AirHeader = 0,
@@ -29,6 +20,32 @@ typedef enum{
     AirGoAndBack = 2,
     AirBack = 3,
 } AirType;
+
+
+
+
+/***************************************************/
+@protocol MakeAirOrderCellDelegate <NSObject>
+@optional
+- (void)didClickDepartCityButton;
+- (void)didClickGoDateButton;
+- (void)didClickBackDateButton;
+- (void)didClickGoFlightButton;
+- (void)didClickBackFlightButton;
+@end
+
+
+
+/***************************************************/
+@protocol MakeOrderHeaderDelegate <NSObject>
+
+@optional
+- (void)didClickCloseButton:(NSInteger)section;
+- (void)didClickGoButton;
+- (void)didClickGoAndBackButton;
+- (void)didClickBackButton;
+@end
+
 
 @interface MakeOrderHeader : UIView
 

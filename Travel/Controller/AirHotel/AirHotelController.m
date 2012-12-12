@@ -34,6 +34,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 @property (assign, nonatomic) AirType airType;
 @property (retain, nonatomic) AirHotelManager *manager;
 
+@property (retain, nonatomic) AirCity *departCity;
+
 @end
 
 @implementation AirHotelController
@@ -56,6 +58,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [_currentIndexPath release];
     [_sectionStat release];
     [_manager release];
+    
+    [_departCity release];
     [super dealloc];
 }
 
@@ -150,7 +154,18 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewDidDisappear:animated];
 }
 
-
+- (void)changeAirType:(AirType)airType
+{
+    if (_airType != airType) {
+        _airType = airType;
+        
+        self.departCity = nil;
+        [_goAirOrderBuiler clear];
+        [_backAirOrderBuiler clear];
+        
+        [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
 
 #define SECTION_AIR     0
 
@@ -236,6 +251,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
             if (cell == nil) {
                 cell = [MakeAirOrderTwoCell createCell:self];
             }
+            [cell setCellByDepartCityName:_departCity.cityName goBuilder:_goAirOrderBuiler backBuilder:_backAirOrderBuiler];
+            
             return cell;
         } else {
             NSString *identifier = [MakeAirOrderOneCell getCellIdentifier];
@@ -243,11 +260,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
             if (cell == nil) {
                 cell = [MakeAirOrderOneCell createCell:self];
             }
-            [cell setCellWithType:_airType];
+            
+            
+            if (_airType == AirGo) {
+                [cell setCellWithType:_airType departCityName:_departCity.cityName builder:_goAirOrderBuiler];
+            } else if (_airType == AirBack) {
+                [cell setCellWithType:_airType departCityName:_departCity.cityName builder:_backAirOrderBuiler];
+            }
+            
             
             return cell;
         }
-
         
     }  else {
         NSString *identifier = [MakeHotelOrderCell getCellIdentifier];
@@ -312,7 +335,12 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didSelectDate:(NSDate *)date
 {
     if (_currentDateTag == GO_DATE) {
-
+        [_goAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
+        return;
+        
+    } else if (_currentDateTag == BACK_DATE) {
+        [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
+        return;
     }
     
     if (_currentIndexPath.section > SECTION_AIR) {
@@ -352,20 +380,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (void)didClickGoButton
 {
-    _airType = AirGo;
-    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    [self changeAirType:AirGo];
 }
 
 - (void)didClickGoAndBackButton
 {
-    _airType = AirGoAndBack;
-    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    [self changeAirType:AirGoAndBack];
 }
 
 - (void)didClickBackButton
 {
-    _airType = AirBack;
-    [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    [self changeAirType:AirBack];
 }
 
 
@@ -373,8 +398,24 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma MakeAirOrderCellDelegate methods
 - (void)didClickDepartCityButton
 {
-    SelectAirCityController *controller = [[[SelectAirCityController alloc] init] autorelease];
+    //TO DO
+    //NSArray *cityList = [[[AppManager defaultManager] app] airDepartCitiesList];
+    
+    NSMutableArray *testCityList = [[[NSMutableArray alloc] init] autorelease];
+    NSArray *testNameArray = [NSArray arrayWithObjects:@"北京", @"上海", @"广州", @"深圳", @"成都", @"厦门", @"昆明", @"杭州", @"西安", nil];
+    
+    for (int i = 0; i < 9; i++) {
+        AirCity_Builder *builder = [[[AirCity_Builder alloc] init] autorelease];
+        
+        [builder setCityId:i];
+        [builder setCityName:[testNameArray objectAtIndex:i]];
+        AirCity *city = [builder build];
+        [testCityList addObject:city];
+    }
+    
+    SelectAirCityController *controller = [[SelectAirCityController alloc] initWithCityList:testCityList delegate:self];
     [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 - (void)didClickGoDateButton
@@ -401,6 +442,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (void)didClickBackFlightButton
 {
+    
+}
+
+#pragma mark -
+#pragma SelectAirCityControllerDelegate methods
+- (void)didSelectCity:(AirCity *)city
+{
+    self.departCity = city;
     
 }
 

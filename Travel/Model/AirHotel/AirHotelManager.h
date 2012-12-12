@@ -17,6 +17,6 @@
 - (NSArray *)hotelOrderListFromBuilderList:(NSArray *)builderList;
 - (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
 
-
+- (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt;
 
 @end
