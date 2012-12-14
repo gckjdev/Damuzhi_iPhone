@@ -11,10 +11,13 @@
 #import "ImageName.h"
 #import "StringUtil.h"
 #import "App.pb.h"
+#import "AppManager.h"
 
 @interface SelectAirCityController ()
 @property (retain, nonatomic) NSMutableArray *searchResultList;
 @property (assign, nonatomic) id<SelectAirCityControllerDelegate> delegate;
+@property (retain, nonatomic) NSArray *sectionTitleList;
+@property (retain, nonatomic) NSMutableDictionary *sectionTitleAndCitys;
 
 @end
 
@@ -22,14 +25,15 @@
 
 - (void)dealloc {
     [_searchResultList release];
+    [_sectionTitleList release];
+    [_sectionTitleAndCitys release];
     [super dealloc];
 }
 
-- (id)initWithCityList:(NSArray *)cityList delegate:(id<SelectAirCityControllerDelegate>)delegate
+- (id)initWithDelegate:(id<SelectAirCityControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
-        self.dataList = cityList;
         self.delegate = delegate;
         self.searchResultList = [[[NSMutableArray alloc] init] autorelease];
     }
@@ -50,17 +54,50 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    //self.dataList = [NSArray arrayWithObjects:@"北京", @"上海", @"广州", @"深圳", @"成都", @"厦门", @"昆明", @"杭州", @"西安", nil];
+    [self createDataSorce];
 }
+
+- (void)createDataSorce
+{
+    //create citys
+    self.sectionTitleList = [[AppManager defaultManager] getAirDepartCitySectionTitles];
+    
+    self.sectionTitleAndCitys  = [[[NSMutableDictionary alloc] init] autorelease];
+    for (NSString *letter in self.sectionTitleList) {
+        NSArray *citys = [[AppManager defaultManager] getAirDepartCitys:letter];
+        [_sectionTitleAndCitys setObject:citys forKey:letter];
+    }
+}
+
 
 #pragma mark -
 #pragma UITableViewDataSource methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        return 1;
+    } else {
+        return [_sectionTitleList count];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        return nil;
+    } else {
+        return [_sectionTitleList objectAtIndex:section];
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView == self.searchDisplayController.searchResultsTableView){
         return [_searchResultList count];
     } else {
-        return [dataList count];
+        NSString *pinyin = [_sectionTitleList objectAtIndex:section];
+        NSArray *citys = [_sectionTitleAndCitys objectForKey:pinyin];
+        return [citys count];
     }
 }
 
@@ -77,19 +114,22 @@
         
         cell.textLabel.font = [UIFont systemFontOfSize:16];
     }
-   
+    
     cell.textLabel.backgroundColor = [UIColor clearColor];
     
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         AirCity *city = [_searchResultList objectAtIndex:indexPath.row];
         cell.textLabel.text = city.cityName;
     } else {
-        AirCity *city = [dataList objectAtIndex:indexPath.row];
+        NSString *pinyin = [_sectionTitleList objectAtIndex:indexPath.section];
+        NSArray *citys = [_sectionTitleAndCitys objectForKey:pinyin];
+        AirCity *city = [citys objectAtIndex:indexPath.row];
         cell.textLabel.text = city.cityName;
     }
     
     return cell;
 }
+
 
 #pragma mark -
 #pragma UITableViewDelegate methods
@@ -105,7 +145,9 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         city = [_searchResultList objectAtIndex:indexPath.row];
     } else {
-        city = [dataList objectAtIndex:indexPath.row];
+        NSString *pinyin = [_sectionTitleList objectAtIndex:indexPath.section];
+        NSArray *citys = [_sectionTitleAndCitys objectForKey:pinyin];
+        city = [citys objectAtIndex:indexPath.row];
     }
     
     if ([_delegate respondsToSelector:@selector(didSelectCity:)]) {
@@ -114,23 +156,36 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if (tableView == self.dataTableView) {
+        return _sectionTitleList;
+    }else {
+        return nil;
+    }
+}
+
+
 #pragma mark -
 #pragma mark Content Filtering
 - (void)filterContentForSearchText:(NSString*)searchText
 {
 	[self.searchResultList removeAllObjects];
     
-    for (AirCity *city in dataList) {
-        
-        if ([searchText isEqualToString:@"x"] && [city.cityName isEqualToString:@"厦门"])
-        {
-            [self.searchResultList addObject:city.cityName];
-            continue;
-        }
-        
-        int cityLocation = [city.cityName rangeOfString:searchText].location;
-        if (cityLocation < [city.cityName length] || [searchText isEqualToString:city.cityName.pinyinFirstLetter]) {
-            [self.searchResultList addObject:city];
+    for (NSString *letter in _sectionTitleList) {
+        NSArray *citys = [_sectionTitleAndCitys objectForKey:letter];
+        for (AirCity *city in citys) {
+            
+            if ([searchText isEqualToString:@"x"] && [city.cityName isEqualToString:@"厦门"])
+            {
+                [self.searchResultList addObject:city.cityName];
+                continue;
+            }
+            
+            int cityLocation = [city.cityName rangeOfString:searchText].location;
+            if (cityLocation < [city.cityName length] || [searchText isEqualToString:city.cityName.pinyinFirstLetter]) {
+                [self.searchResultList addObject:city];
+            }
         }
     }
 }

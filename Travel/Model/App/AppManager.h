@@ -113,6 +113,9 @@
 
 - (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList;
 
-- (NSString *)getAirDepartCityName:(int)cityId;
+- (NSArray *)getAirDepartCitySectionTitles;
+- (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter;
+- (NSString *)getAirCityName:(int)cityId;
+- (NSString *)getAirlineName:(int)airlineId;
 
 @end

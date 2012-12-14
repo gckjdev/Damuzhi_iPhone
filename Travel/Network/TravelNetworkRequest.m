@@ -1361,7 +1361,7 @@
         str = [str stringByAddQueryParameter:PARA_TRAVEL_DESTINATION_CITY_ID intValue:destinationCityId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_DEPART_DATE value:departDate];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_FLIGHT_TYPE intValue:flightType];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_FLIGHT_NUMBER intValue:flightType];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_FLIGHT_NUMBER value:flightNumber];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
         
         return str;

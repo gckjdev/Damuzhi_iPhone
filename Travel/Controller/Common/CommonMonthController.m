@@ -71,7 +71,7 @@
     if (_monthCount == 0) {
         _monthCount = 12; //default value
     }
-    [self.monthView selectDate:[NSDate date]];
+    //[self.monthView selectDate:[NSDate date]];
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.monthView hideLeftArrow:YES];

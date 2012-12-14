@@ -9,12 +9,30 @@
 #import "PPTableViewController.h"
 #import "AirHotelService.h"
 
-@interface SelectFlightController : PPTableViewController
+typedef enum{
+    FlightTypeGo = 1,
+    FlightTypeBack = 2,
+    FlightTypeGoOfDouble = 3,
+    FlightTypeBackOfDouble = 4
+} FlightType;
+
+@interface SelectFlightController : PPTableViewController <AirHotelServiceDelegate>
 
 @property (retain, nonatomic) IBOutlet UIImageView *topImageView;
 
 @property (retain, nonatomic) IBOutlet UIImageView *buttomImageView;
+@property (retain, nonatomic) IBOutlet UIButton *timeFilterButton;
+@property (retain, nonatomic) IBOutlet UIButton *priceFilterButton;
 
-- (id)initWithTitle:(NSString *)title;
+@property (retain, nonatomic) IBOutlet UILabel *flightDateLabel;
+@property (retain, nonatomic) IBOutlet UILabel *cityLabel;
+@property (retain, nonatomic) IBOutlet UILabel *countLabel;
+
+
+- (id)initWithDepartCityId:(int)departCityId
+         destinationCityId:(int)destinationCityId
+                flightDate:(NSDate *)flightDate
+                flightType:(FlightType)flightType
+              flightNumber:(NSString *)flightNumber;
 
 @end

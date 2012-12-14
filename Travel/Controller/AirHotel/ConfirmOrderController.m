@@ -93,13 +93,25 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
     if (section < [[_builder airOrdersList] count]) {
-        MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
-        return header;
+        [header setViewWithDelegate:nil
+                            section:section
+                 airHotelHeaderType:AirHeader
+                 isHideFilterButton:YES
+                selectedButtonIndex:0
+                  isHideCloseButton:YES
+                            isClose:YES];
     } else {
-        MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
-        return header;
+        [header setViewWithDelegate:nil
+                            section:section
+                 airHotelHeaderType:HotelHeader
+                 isHideFilterButton:YES
+                selectedButtonIndex:0
+                  isHideCloseButton:YES
+                            isClose:YES];
     }
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

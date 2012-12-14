@@ -13,6 +13,7 @@
 #import "NearbyController.h"
 #import "UserService.h"
 #import "CommonDialog.h"
+#import "UIViewController+Travel.h"
 
 @interface MainController : PPViewController<UIActionSheetDelegate, UserServiceDelegate, CommonDialogDelegate, AppManagerProtocol>
 @property (retain, nonatomic) IBOutlet UIImageView *mainBackgroundImageView;
@@ -41,6 +42,6 @@
 - (IBAction)clickTravelTransportButton:(id)sender;
 - (IBAction)clickTraveGuideButton:(id)sender;
 - (IBAction)clickNearbyButton:(id)sender;
-- (void) clickTitle:(id)sender;
+
 
 @end

@@ -48,6 +48,7 @@
                   destinationCityId:(int)destinationCityId
                          departDate:(NSDate *)departDate
                          flightType:(int)flightType
-                       flightNumber:(NSString *)flightNumber;
+                       flightNumber:(NSString *)flightNumber
+                           delegate:(id<AirHotelServiceDelegate>)delegate;
 
 @end

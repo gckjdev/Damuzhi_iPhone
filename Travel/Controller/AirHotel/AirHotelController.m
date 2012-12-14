@@ -138,6 +138,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     if (_hotelOrderList) {
         self.hotelOrderBuilderList = [NSMutableArray arrayWithArray: [_manager hotelOrderBuilderListFromOrderList:_hotelOrderList]] ;
     }
+    
+    [self createTitleView:NSLS(@"机+酒")];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -397,23 +399,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma mark -
 #pragma MakeAirOrderCellDelegate methods
 - (void)didClickDepartCityButton
-{
-    //TO DO
-    //NSArray *cityList = [[[AppManager defaultManager] app] airDepartCitiesList];
-    
-    NSMutableArray *testCityList = [[[NSMutableArray alloc] init] autorelease];
-    NSArray *testNameArray = [NSArray arrayWithObjects:@"北京", @"上海", @"广州", @"深圳", @"成都", @"厦门", @"昆明", @"杭州", @"西安", nil];
-    
-    for (int i = 0; i < 9; i++) {
-        AirCity_Builder *builder = [[[AirCity_Builder alloc] init] autorelease];
-        
-        [builder setCityId:i];
-        [builder setCityName:[testNameArray objectAtIndex:i]];
-        AirCity *city = [builder build];
-        [testCityList addObject:city];
-    }
-    
-    SelectAirCityController *controller = [[SelectAirCityController alloc] initWithCityList:testCityList delegate:self];
+{    
+    SelectAirCityController *controller = [[SelectAirCityController alloc] initWithDelegate:self];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -422,7 +409,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentDateTag = GO_DATE;
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"出发日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -430,19 +417,74 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentDateTag = BACK_DATE;
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"回程日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didClickGoFlightButton
 {
-    SelectFlightController *controller = [[[SelectFlightController alloc] initWithTitle:NSLS(@"去程航班")] autorelease];
+    if (_departCity == nil) {
+        [self popupHappyMessage:NSLS(@"请选择出发城市") title:nil];
+        return;
+    }
+    
+    if (_goAirOrderBuiler.flightDate == 0) {
+        [self popupHappyMessage:NSLS(@"请选择出发日期") title:nil];
+        return;
+    }
+    
+    NSDate *flightDate = [NSDate dateWithTimeIntervalSince1970:_goAirOrderBuiler.flightDate];
+    FlightType flightType;
+    if (_airType == AirGoAndBack) {
+        flightType = FlightTypeGoOfDouble;
+    } else {
+        flightType = FlightTypeGo;
+    }
+    
+    int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
+    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil];
     [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 - (void)didClickBackFlightButton
 {
+    if (_departCity == nil) {
+        [self popupHappyMessage:NSLS(@"请选择出发城市") title:nil];
+        return;
+    }
     
+    if (_backAirOrderBuiler.flightDate == 0) {
+        [self popupHappyMessage:NSLS(@"请选择回程日期") title:nil];
+        return;
+    }
+    
+    if (_airType == AirGoAndBack ) {
+        
+        PPDebug(@"%@", _goAirOrderBuiler.flightNumber);
+        
+        if (_goAirOrderBuiler.flightNumber == nil)
+        {
+            PPDebug(@"请选择去程航班");
+            [self popupHappyMessage:NSLS(@"请选择去程航班") title:nil];
+            return;
+        }
+    }
+    
+    NSDate *flightDate = [NSDate dateWithTimeIntervalSince1970:_backAirOrderBuiler.flightDate];
+    FlightType flightType;
+    if (_airType == AirGoAndBack) {
+        flightType = FlightTypeBackOfDouble;
+    } else {
+        flightType = FlightTypeBack;
+    }
+    
+    
+    int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
+    
+    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil];
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 #pragma mark -

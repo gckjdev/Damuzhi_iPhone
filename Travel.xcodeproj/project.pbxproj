@@ -800,6 +800,7 @@
 		EAE5594E15158FBF004CEFED /* SpotDetailViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */; };
 		EAE654DA153C398700AAE451 /* detail_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D8153C398700AAE451 /* detail_shadow@2x.png */; };
 		EAE654DB153C398700AAE451 /* topmenu_bg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */; };
+		EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEADCC816785FDF00E70748 /* UIViewController+Travel.m */; };
 		EAF5B20816719FA300DF8570 /* SelectFlightController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF5B20616719FA200DF8570 /* SelectFlightController.m */; };
 		EAF5B20916719FA300DF8570 /* SelectFlightController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAF5B20716719FA300DF8570 /* SelectFlightController.xib */; };
 		EAF5B20C1671A3EF00DF8570 /* FlightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF5B20B1671A3EF00DF8570 /* FlightCell.m */; };
@@ -2008,6 +2009,8 @@
 		EAE5594D15158FBF004CEFED /* SpotDetailViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotDetailViewHandler.m; sourceTree = "<group>"; };
 		EAE654D8153C398700AAE451 /* detail_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_shadow@2x.png"; sourceTree = "<group>"; };
 		EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topmenu_bg2@2x.png"; sourceTree = "<group>"; };
+		EAEADCC716785FDF00E70748 /* UIViewController+Travel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Travel.h"; sourceTree = "<group>"; };
+		EAEADCC816785FDF00E70748 /* UIViewController+Travel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Travel.m"; sourceTree = "<group>"; };
 		EAF5B20516719FA200DF8570 /* SelectFlightController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFlightController.h; sourceTree = "<group>"; };
 		EAF5B20616719FA200DF8570 /* SelectFlightController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFlightController.m; sourceTree = "<group>"; };
 		EAF5B20716719FA300DF8570 /* SelectFlightController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFlightController.xib; sourceTree = "<group>"; };
@@ -3317,6 +3320,8 @@
 				CA103AF6150467B200F60C03 /* PlaceMapViewController.xib */,
 				EA1B6E89165CAD5400C00EEC /* CommonMonthController.h */,
 				EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */,
+				EAEADCC716785FDF00E70748 /* UIViewController+Travel.h */,
+				EAEADCC816785FDF00E70748 /* UIViewController+Travel.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -5585,6 +5590,7 @@
 				EA07399316732F2900BF6FBF /* SelectAirCityController.m in Sources */,
 				EA13A8FA1675EB9E0057EEDB /* FlightDetailController.m in Sources */,
 				EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */,
+				EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

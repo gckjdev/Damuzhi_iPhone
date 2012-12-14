@@ -46,6 +46,7 @@
 								<string key="NSFrameSize">{320, 63}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="1002639247"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -56,6 +57,7 @@
 								<string key="NSFrame">{{60, 7}, {1, 50}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="397258843"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -70,6 +72,7 @@
 								<string key="NSFrame">{{0, 11}, {61, 21}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="938953877"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="149367252">
 									<int key="NSColorSpace">3</int>
@@ -105,9 +108,10 @@
 							<object class="IBUILabel" id="938953877">
 								<reference key="NSNextResponder" ref="707600195"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{0, 31}, {61, 21}}</string>
+								<string key="NSFrame">{{0, 30}, {61, 21}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="707285966"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="149367252"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -140,6 +144,7 @@
 								<string key="NSFrame">{{65, 16}, {42, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="61267427"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="149367252"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -172,6 +177,7 @@
 								<string key="NSFrame">{{65, 30}, {42, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="795255947"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="149367252"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -204,6 +210,7 @@
 								<string key="NSFrame">{{113, 16}, {91, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="696148390"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -228,6 +235,7 @@
 								<string key="NSFrame">{{113, 30}, {91, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="1001497784"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -248,6 +256,7 @@
 								<string key="NSFrame">{{225, 16}, {67, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="1022952604"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -268,6 +277,7 @@
 								<string key="NSFrame">{{224, 30}, {67, 18}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="97544048"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -288,6 +298,7 @@
 								<string key="NSFrame">{{206, 23}, {15, 15}}</string>
 								<reference key="NSSuperview" ref="707600195"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="230033847"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -310,6 +321,7 @@
 						<string key="NSFrameSize">{320, 62}</string>
 						<reference key="NSSuperview" ref="1038964987"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="933390223"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<reference key="IBUIBackgroundColor" ref="149367252"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -339,6 +351,70 @@
 					</object>
 					<int key="connectionID">10</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">priceLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="1002639247"/>
+					</object>
+					<int key="connectionID">21</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">discountLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="938953877"/>
+					</object>
+					<int key="connectionID">22</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">departDateLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="397258843"/>
+					</object>
+					<int key="connectionID">23</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">arriveDateLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="61267427"/>
+					</object>
+					<int key="connectionID">24</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">departAirportLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="795255947"/>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">arriveAirportLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="696148390"/>
+					</object>
+					<int key="connectionID">26</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">airlineNameLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="97544048"/>
+					</object>
+					<int key="connectionID">27</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">flightNumberLabel</string>
+						<reference key="source" ref="1038964987"/>
+						<reference key="destination" ref="230033847"/>
+					</object>
+					<int key="connectionID">28</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -364,7 +440,6 @@
 						<reference key="object" ref="1038964987"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="1002639247"/>
-							<reference ref="938953877"/>
 							<reference ref="933390223"/>
 							<reference ref="61267427"/>
 							<reference ref="707285966"/>
@@ -375,6 +450,7 @@
 							<reference ref="1022952604"/>
 							<reference ref="97544048"/>
 							<reference ref="397258843"/>
+							<reference ref="938953877"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -463,24 +539,62 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">20</int>
+			<int key="maxID">28</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">FlightCell</string>
 					<string key="superclassName">PPTableViewCell</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">flightCellBackgroundImageView</string>
-						<string key="NS.object.0">UIImageView</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">flightCellBackgroundImageView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="airlineNameLabel">UILabel</string>
+						<string key="arriveAirportLabel">UILabel</string>
+						<string key="arriveDateLabel">UILabel</string>
+						<string key="departAirportLabel">UILabel</string>
+						<string key="departDateLabel">UILabel</string>
+						<string key="discountLabel">UILabel</string>
+						<string key="flightCellBackgroundImageView">UIImageView</string>
+						<string key="flightNumberLabel">UILabel</string>
+						<string key="priceLabel">UILabel</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="airlineNameLabel">
+							<string key="name">airlineNameLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="arriveAirportLabel">
+							<string key="name">arriveAirportLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="arriveDateLabel">
+							<string key="name">arriveDateLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="departAirportLabel">
+							<string key="name">departAirportLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="departDateLabel">
+							<string key="name">departDateLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="discountLabel">
+							<string key="name">discountLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="flightCellBackgroundImageView">
 							<string key="name">flightCellBackgroundImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
-					</object>
+						<object class="IBToOneOutletInfo" key="flightNumberLabel">
+							<string key="name">flightNumberLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="priceLabel">
+							<string key="name">priceLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/FlightCell.h</string>
