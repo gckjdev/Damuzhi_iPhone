@@ -64,6 +64,8 @@
     
     self.airlineNameLabel.text = [[AppManager defaultManager] getAirlineName:flight.airlineId];
     self.flightNumberLabel.text = flight.flightNumber;
+    
+    
 }
 
 - (void)clearContent

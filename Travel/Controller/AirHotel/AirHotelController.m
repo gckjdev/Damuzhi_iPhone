@@ -442,7 +442,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil];
+    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil delegate:self];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -482,7 +482,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
     
-    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil];
+    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil delegate:self];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -495,5 +495,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
 }
 
+#pragma mark -
+#pragma FlightDetailControllerDelegate method
+- (void)didClickSelect:(Flight *)flight
+       flightSeatIndex:(int)flightSeatIndex
+            flightType:(FlightType)flightType
+{
+    if (flightType == FlightTypeGo || flightType == FlightTypeGoOfDouble) {
+        [_goAirOrderBuiler setFlight:flight];
+    } else {
+        [_backAirOrderBuiler setFlight:flight];
+    }
+}
 
 @end

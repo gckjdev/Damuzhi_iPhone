@@ -27,6 +27,7 @@
     [_departCityButton release];
     [_flightButton release];
     [_flightDateButton release];
+    [_flightView release];
     [super dealloc];
 }
 
@@ -72,6 +73,16 @@
         [self.flightDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:builder.flightDate] forState:UIControlStateNormal];
     } else {
         [self.flightDateButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
+    
+    if ([builder hasFlight]) {
+        [self.flightButton setTitle:@"" forState:UIControlStateNormal];
+        self.flightView.hidden = NO;
+        
+        
+    } else {
+        [self.flightButton setTitle:@"请选择" forState:UIControlStateNormal];
+        self.flightView.hidden = YES;
     }
 }
 - (IBAction)clickDepartCityButton:(id)sender {

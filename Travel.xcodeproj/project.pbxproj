@@ -778,6 +778,8 @@
 		EAD9A806165B713A00049BA8 /* AirHotelService.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD9A805165B713A00049BA8 /* AirHotelService.m */; };
 		EAE047DE1665BB9300D2EF0B /* MakeOrderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */; };
 		EAE047E01665BBAE00D2EF0B /* MakeOrderHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */; };
+		EAE2832D167C7B1D00C22A56 /* FlightSimpleView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2832C167C7B1900C22A56 /* FlightSimpleView.m */; };
+		EAE2832F167C7E9D00C22A56 /* FlightSimpleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE2832E167C7E9C00C22A56 /* FlightSimpleView.xib */; };
 		EAE2B6F7165639490068BFFD /* AirHotel.proto in Resources */ = {isa = PBXBuildFile; fileRef = EAE2B6F6165639480068BFFD /* AirHotel.proto */; };
 		EAE3387B1663611900E03D51 /* AirHotelController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE338671663611900E03D51 /* AirHotelController.m */; };
 		EAE3387C1663611900E03D51 /* AirHotelController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE338681663611900E03D51 /* AirHotelController.xib */; };
@@ -1977,6 +1979,9 @@
 		EAE047DC1665BB9300D2EF0B /* MakeOrderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeOrderHeader.h; sourceTree = "<group>"; };
 		EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeOrderHeader.m; sourceTree = "<group>"; };
 		EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeOrderHeader.xib; sourceTree = "<group>"; };
+		EAE2832B167C7B1800C22A56 /* FlightSimpleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightSimpleView.h; sourceTree = "<group>"; };
+		EAE2832C167C7B1900C22A56 /* FlightSimpleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightSimpleView.m; sourceTree = "<group>"; };
+		EAE2832E167C7E9C00C22A56 /* FlightSimpleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlightSimpleView.xib; sourceTree = "<group>"; };
 		EAE2B6F6165639480068BFFD /* AirHotel.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AirHotel.proto; sourceTree = "<group>"; };
 		EAE338661663611900E03D51 /* AirHotelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelController.h; sourceTree = "<group>"; };
 		EAE338671663611900E03D51 /* AirHotelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelController.m; sourceTree = "<group>"; };
@@ -4647,6 +4652,9 @@
 				EAE3388F166361C100E03D51 /* MakeAirOrderTwoCell.h */,
 				EAE33890166361C100E03D51 /* MakeAirOrderTwoCell.m */,
 				EAE33891166361C100E03D51 /* MakeAirOrderTwoCell.xib */,
+				EAE2832B167C7B1800C22A56 /* FlightSimpleView.h */,
+				EAE2832C167C7B1900C22A56 /* FlightSimpleView.m */,
+				EAE2832E167C7E9C00C22A56 /* FlightSimpleView.xib */,
 				EAD83396166C859E003DE6B2 /* ConfirmAirCell.h */,
 				EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */,
 				EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */,
@@ -5244,6 +5252,7 @@
 				EA13A918167728630057EEDB /* flight_p2@2x.png in Resources */,
 				EA13A919167728630057EEDB /* flight_point_off@2x.png in Resources */,
 				EA13A91A167728630057EEDB /* flight_point_on@2x.png in Resources */,
+				EAE2832F167C7E9D00C22A56 /* FlightSimpleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5591,6 +5600,7 @@
 				EA13A8FA1675EB9E0057EEDB /* FlightDetailController.m in Sources */,
 				EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */,
 				EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */,
+				EAE2832D167C7B1D00C22A56 /* FlightSimpleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

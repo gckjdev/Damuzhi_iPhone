@@ -7,7 +7,6 @@
 //
 
 #import "FlightDetailController.h"
-#import "FlightSeatView.h"
 #import "FontSize.h"
 #import "AirHotel.pb.h"
 #import "TimeUtils.h"
@@ -19,6 +18,7 @@
 @property (assign, nonatomic) FlightType flightType;
 @property (retain, nonatomic) NSString *departCityName;
 @property (retain, nonatomic) NSString *arriveCityName;
+@property (assign, nonatomic) id<FlightDetailControllerDelegate> delegate;
 
 @end
 
@@ -47,6 +47,7 @@
           flightType:(FlightType)flightType
       departCityName:(NSString *)departCityName
       arriveCityName:(NSString *)arriveCityName
+            delegate:(id<FlightDetailControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
@@ -54,6 +55,7 @@
         self.flightType = flightType;
         self.departCityName = departCityName;
         self.arriveCityName= arriveCityName;
+        self.delegate = delegate;
     }
     return self;
 }
@@ -126,22 +128,34 @@
 {
     //test data
     for (int i = 0 ; i < [_flight.flightSeatsList count]; i++) {
-        FlightSeatView *flightSeatView = [FlightSeatView createFlightSeatView];
-        FlightSeat *flightSeat = [_flight.flightSeatsList objectAtIndex:i];
-        //flightSeatView
+        FlightSeatView *flightSeatView = [FlightSeatView createFlightSeatView:self];
         
+        [flightSeatView setViewWithFlight:_flight index:i];
         flightSeatView.frame = CGRectMake(flightSeatView.frame.size.width * i, 0, flightSeatView.frame.size.width, flightSeatView.frame.size.height);
         [self.flightSeatScrollView addSubview:flightSeatView];
     }
     
-    self.flightSeatScrollView.contentSize = CGSizeMake(320 * 5, self.flightSeatScrollView.contentSize.height);
-    self.flightSeatPageControl.numberOfPages = 5;
+    self.flightSeatScrollView.contentSize = CGSizeMake(320 * [_flight.flightSeatsList count], self.flightSeatScrollView.contentSize.height);
+    self.flightSeatPageControl.numberOfPages = [_flight.flightSeatsList count];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     CGPoint offset = scrollView.contentOffset;
     [_flightSeatPageControl setCurrentPage:offset.x / scrollView.frame.size.width];
+}
+
+#pragma mark - 
+#pragma FlightSeatViewDelegate methods
+- (void)didClickSelectFlightSeatButton:(int)index
+{
+    if ([_delegate respondsToSelector:@selector(didClickSelect:flightSeatIndex:flightType:)]) {
+        [_delegate didClickSelect:_flight flightSeatIndex:index flightType:_flightType];
+        
+        UIViewController *controller = (UIViewController *)_delegate;
+        [self.navigationController popToViewController:controller animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

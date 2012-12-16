@@ -9,6 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "AirHotel.pb.h"
 
+typedef enum{
+    FlightTypeGo = 1,
+    FlightTypeBack = 2,
+    FlightTypeGoOfDouble = 3,
+    FlightTypeBackOfDouble = 4
+} FlightType;
+
 @interface AirHotelManager : NSObject
 
 + (AirHotelManager *)defaultManager;

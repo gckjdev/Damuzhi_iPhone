@@ -20,6 +20,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *departCityButton;
 @property (retain, nonatomic) IBOutlet UIButton *flightDateButton;
 @property (retain, nonatomic) IBOutlet UIButton *flightButton;
+@property (retain, nonatomic) IBOutlet UIView *flightView;
 
 
 

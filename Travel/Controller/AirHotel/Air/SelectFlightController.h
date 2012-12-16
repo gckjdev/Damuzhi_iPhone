@@ -8,13 +8,8 @@
 
 #import "PPTableViewController.h"
 #import "AirHotelService.h"
-
-typedef enum{
-    FlightTypeGo = 1,
-    FlightTypeBack = 2,
-    FlightTypeGoOfDouble = 3,
-    FlightTypeBackOfDouble = 4
-} FlightType;
+#import "AirHotelManager.h"
+#import "FlightDetailController.h"
 
 @interface SelectFlightController : PPTableViewController <AirHotelServiceDelegate>
 
@@ -33,6 +28,7 @@ typedef enum{
          destinationCityId:(int)destinationCityId
                 flightDate:(NSDate *)flightDate
                 flightType:(FlightType)flightType
-              flightNumber:(NSString *)flightNumber;
+              flightNumber:(NSString *)flightNumber
+                  delegate:(id<FlightDetailControllerDelegate>)delegate;
 
 @end

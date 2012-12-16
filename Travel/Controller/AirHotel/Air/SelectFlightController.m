@@ -11,7 +11,6 @@
 #import "AirHotel.pb.h"
 #import "FontSize.h"
 #import "ImageManager.h"
-#import "FlightDetailController.h"
 #import "AppManager.h"
 #import "TimeUtils.h"
 
@@ -21,9 +20,10 @@
 @property (retain, nonatomic) NSDate *flightDate;
 @property (assign, nonatomic) FlightType flightType;
 @property (retain, nonatomic) NSString *flightNumber;
-
 @property (retain, nonatomic) NSString *leftName;
 @property (retain, nonatomic) NSString *rightName;
+@property (assign, nonatomic) id<FlightDetailControllerDelegate> delegate;
+
 @end
 
 @implementation SelectFlightController
@@ -56,6 +56,7 @@
                 flightDate:(NSDate *)flightDate
                 flightType:(FlightType)flightType
               flightNumber:(NSString *)flightNumber
+                  delegate:(id<FlightDetailControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
@@ -64,6 +65,7 @@
         self.flightDate = flightDate;
         self.flightType = flightType;
         self.flightNumber = flightNumber;
+        self.delegate = delegate;
         
         if (_flightType == FlightTypeGo || _flightType == FlightTypeGoOfDouble) {
             self.leftName = [[AppManager defaultManager] getAirCityName:_departCityId];
@@ -203,7 +205,11 @@
     FlightDetailController *controller;
     
     Flight *flight = [dataList objectAtIndex:indexPath.row];
-    controller = [[FlightDetailController alloc] initWithFlight:flight flightType:_flightType departCityName:_leftName arriveCityName:_rightName];
+    controller = [[FlightDetailController alloc] initWithFlight:flight
+                                                     flightType:_flightType
+                                                 departCityName:_leftName
+                                                 arriveCityName:_rightName
+                                                       delegate:_delegate];
 
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
@@ -227,5 +233,6 @@
 - (IBAction)clickPriceFilterButton:(id)sender {
     
 }
+
 
 @end
