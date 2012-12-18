@@ -10,6 +10,7 @@
 #import "LocaleUtils.h"
 #import "AirHotel.pb.h"
 #import "AirHotelManager.h"
+#import "FlightSimpleView.h"
 
 @interface MakeAirOrderOneCell()
 @property (assign, nonatomic) AirType airType;
@@ -27,7 +28,7 @@
     [_departCityButton release];
     [_flightButton release];
     [_flightDateButton release];
-    [_flightView release];
+    [_flightHolderView release];
     [super dealloc];
 }
 
@@ -40,6 +41,8 @@
 {
     return 120.0f;
 }
+
+#define TAG_FLIGHT_SIMPLE   2012121701
 
 - (void)setCellWithType:(AirType)airType
          departCityName:(NSString *)departCityName
@@ -77,12 +80,19 @@
     
     if ([builder hasFlight]) {
         [self.flightButton setTitle:@"" forState:UIControlStateNormal];
-        self.flightView.hidden = NO;
+        self.flightHolderView.hidden = NO;
         
         
+        FlightSimpleView *simpleView = (FlightSimpleView *)[self.flightHolderView viewWithTag:TAG_FLIGHT_SIMPLE];
+        if (simpleView == nil) {
+            simpleView = [FlightSimpleView createFlightSimpleView];
+            simpleView.tag  = TAG_FLIGHT_SIMPLE;
+            [self.flightHolderView addSubview:simpleView];
+        }
+        [simpleView setViewWith:builder.flight flightSeatCode:builder.flightSeatCode];
     } else {
         [self.flightButton setTitle:@"请选择" forState:UIControlStateNormal];
-        self.flightView.hidden = YES;
+        self.flightHolderView.hidden = YES;
     }
 }
 - (IBAction)clickDepartCityButton:(id)sender {

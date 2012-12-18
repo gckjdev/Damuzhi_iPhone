@@ -101,8 +101,8 @@
     self.cityLabel.text = [NSString stringWithFormat:@"%@ - %@",_leftName,_rightName];
     self.countLabel.text = nil;
     
-    [self testData];
-    //[self findFlights];
+    //[self testData];
+    [self findFlights];
 }
 
 - (void)findFlights
@@ -226,12 +226,52 @@
     [super viewDidUnload];
 }
 
-- (IBAction)clickTimeFilterButton:(id)sender {
+- (void)sortByTime:(BOOL)isAsc
+{
+    NSArray *sortedList =  [dataList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Flight *flight1 = (Flight *)obj1;
+        Flight *flight2 = (Flight *)obj2;
+        
+        if (isAsc) {
+            return [flight1.price compare:flight2.price options:NSCaseInsensitiveSearch];
+        } else {
+            return [flight1.price compare:flight2.price options:NSCaseInsensitiveSearch];
+        }
+    }];
     
+    self.dataList = sortedList;
+}
+
+- (void)sortByPrice:(BOOL)isAsc
+{
+    NSArray *sortedList =  [dataList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Flight *flight1 = (Flight *)obj1;
+        Flight *flight2 = (Flight *)obj2;
+        
+        if (flight1.departDate >= flight2.departDate){
+            return (isAsc ? NSOrderedAscending : NSOrderedDescending);
+        } else {
+            return (isAsc ? NSOrderedDescending : NSOrderedAscending);
+        }
+    }];
+    
+    self.dataList = sortedList;
+}
+
+- (IBAction)clickTimeFilterButton:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
+    [self sortByTime:button.selected];
+    [dataTableView reloadData];
 }
 
 - (IBAction)clickPriceFilterButton:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
     
+    [self sortByPrice:button.selected];
+    [dataTableView reloadData];
 }
 
 

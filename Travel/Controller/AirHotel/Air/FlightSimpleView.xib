@@ -250,14 +250,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">departTimeLabel</string>
-						<reference key="source" ref="883525092"/>
-						<reference key="destination" ref="637941807"/>
-					</object>
-					<int key="connectionID">31</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">departDateLabel</string>
 						<reference key="source" ref="883525092"/>
 						<reference key="destination" ref="637941807"/>
@@ -413,6 +405,7 @@
 						<string key="departAirportLabel">UILabel</string>
 						<string key="departDateLabel">UILabel</string>
 						<string key="flightNumberLabel">UILabel</string>
+						<string key="flightSeatLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="airlineNameLabel">
@@ -437,6 +430,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="flightNumberLabel">
 							<string key="name">flightNumberLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="flightSeatLabel">
+							<string key="name">flightSeatLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 					</dictionary>

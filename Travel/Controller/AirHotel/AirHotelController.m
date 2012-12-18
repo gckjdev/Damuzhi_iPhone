@@ -501,11 +501,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
        flightSeatIndex:(int)flightSeatIndex
             flightType:(FlightType)flightType
 {
+    FlightSeat *seat = [flight.flightSeatsList objectAtIndex:flightSeatIndex];
+    
     if (flightType == FlightTypeGo || flightType == FlightTypeGoOfDouble) {
         [_goAirOrderBuiler setFlight:flight];
+        [_goAirOrderBuiler setFlightNumber:seat.code];
     } else {
         [_backAirOrderBuiler setFlight:flight];
+        [_backAirOrderBuiler setFlightNumber:seat.code];
     }
+    
+    [dataTableView reloadData];
 }
 
 @end

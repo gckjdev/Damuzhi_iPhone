@@ -19,6 +19,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *arriveAirportLabel;
 @property (retain, nonatomic) IBOutlet UILabel *flightSeatLabel;
 
+
 + (id)createFlightSimpleView;
 
 - (void)setViewWith:(Flight *)flight flightSeatCode:(NSString *)flightSeatCode;
