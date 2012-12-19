@@ -14,8 +14,13 @@
 
 @class AirHotelOrder_Builder;
 
-@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate>
+@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmHotelCellDelegate>
 
-- (id)initWithOrderBuilder:(AirHotelOrder_Builder *)builder;
+@property (retain, nonatomic) IBOutlet UIButton *contactPersonButton;
+@property (retain, nonatomic) IBOutlet UIButton *paymentButton;
+
+
+- (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
+            hotelOrderBuilders:(NSArray *)hotelOrderBuilders;
 
 @end

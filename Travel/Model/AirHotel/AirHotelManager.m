@@ -32,25 +32,39 @@ static AirHotelManager *_airHotelManager = nil;
 {
     NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
     for (HotelOrder_Builder *builder in builderList) {
-        HotelOrder *order = [builder build];
-        [reArray addObject:order];
+        if ([builder hasCheckInDate] && [builder hasCheckOutDate] && [builder hasHotelId]) {
+            HotelOrder *order = [builder build];
+            [reArray addObject:order];
+        }
     }
     return reArray;
 }
 
-- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList
+//- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList
+//{
+//    NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (HotelOrder *order in orderList) {
+//        HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
+//        builder.checkInDate = order.checkInDate;
+//        builder.checkOutDate = order.checkOutDate;
+//        builder.hotelId = order.hotelId;
+//        [builder addAllRoomInfos:order.roomInfosList];
+//        [builder addAllCheckInPersons:order.checkInPersonsList];
+//        builder.hotel = order.hotel;
+//        
+//        [reArray addObject:builder];
+//    }
+//    return reArray;
+//}
+
+- (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList
 {
     NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
-    for (HotelOrder *order in orderList) {
-        HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-        builder.checkInDate = order.checkInDate;
-        builder.checkOutDate = order.checkOutDate;
-        builder.hotelId = order.hotelId;
-        [builder addAllRoomInfos:order.roomInfosList];
-        [builder addAllCheckInPersons:order.checkInPersonsList];
-        builder.hotel = order.hotel;
-        
-        [reArray addObject:builder];
+    for (AirOrder_Builder *builder in builderList) {
+        if ([builder hasFlightNumber] && [builder hasFlightSeatCode]) {
+            AirOrder *order = [builder build];
+            [reArray addObject:order];
+        }
     }
     return reArray;
 }

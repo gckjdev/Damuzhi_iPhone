@@ -10,27 +10,39 @@
 #import "FontSize.h"
 #import "AirHotel.pb.h"
 #import "MakeOrderHeader.h"
+#import "AirHotelManager.h"
+#import "UserManager.h"
 
 @interface ConfirmOrderController ()
 
-@property (retain, nonatomic) AirHotelOrder_Builder *builder;
+@property (retain, nonatomic) AirHotelOrder_Builder *airHotelOrderBuilder;
+@property (retain, nonatomic) NSArray *airOrderBuilders;
+@property (retain, nonatomic) NSArray *hotelOrderBuilders;
+@property (retain, nonatomic) NSIndexPath *currentIndexPath;
 
 @end
 
 @implementation ConfirmOrderController
-@synthesize builder = _builder;
 
 - (void)dealloc
 {
-    [_builder release];
+    [_airHotelOrderBuilder release];
+    [_airOrderBuilders release];
+    [_hotelOrderBuilders release];
+    [_currentIndexPath release];
+    [_contactPersonButton release];
+    [_paymentButton release];
     [super dealloc];
 }
 
-- (id)initWithOrderBuilder:(AirHotelOrder_Builder *)builder
+- (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
+            hotelOrderBuilders:(NSArray *)hotelOrderBuilders
 {
     self = [super init];
     if (self) {
-        self.builder = builder;
+        self.airHotelOrderBuilder = [[[AirHotelOrder_Builder alloc] init] autorelease];
+        self.airOrderBuilders = airOrderBuilders;
+        self.hotelOrderBuilders = hotelOrderBuilders;
     }
     return self;
 }
@@ -53,9 +65,15 @@
 }
 
 - (IBAction)clickOrderButton:(id)sender {
-    AirHotelOrder *order = [_builder build];
+    NSArray *airOrderList = [[AirHotelManager defaultManager] airOrderListFromBuilderList:_airOrderBuilders];
+    NSArray *hotelOrderList = [[AirHotelManager defaultManager] hotelOrderListFromBuilderList:_hotelOrderBuilders];
+    
+    [_airHotelOrderBuilder addAllAirOrders:airOrderList];
+    [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
+    [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
+    
+    AirHotelOrder *order = [_airHotelOrderBuilder build];
     [[AirHotelService defaultService] order:order delegate:self];
-
 }
 
 #pragma mark - 
@@ -75,7 +93,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //if (indexPath.section < [[_builder airOrdersList] count]) {
-    if (indexPath.section == 0) {
+    if (indexPath.section < [_airOrderBuilders count]) {
         return [ConfirmAirCell getCellHeight];
     } else {
         return [ConfirmHotelCell getCellHeight];
@@ -84,17 +102,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section < [[_builder airOrdersList] count]) {
-        return [MakeOrderHeader getHeaderViewHeight];
-    } else {
-        return [MakeOrderHeader getHeaderViewHeight];
-    }
+    return [MakeOrderHeader getHeaderViewHeight];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
-    if (section < [[_builder airOrdersList] count]) {
+    if (section < [_airOrderBuilders count]) {
         [header setViewWithDelegate:nil
                             section:section
                  airHotelHeaderType:AirHeader
@@ -129,9 +143,7 @@
 #pragma UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
-    
-    //return [[_builder airOrdersList] count] + [[_builder hotelOrdersList] count];
+    return [_airOrderBuilders count] + [_hotelOrderBuilders count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -141,7 +153,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.section < [_airOrderBuilders count]) {
         NSString *identifier = [ConfirmAirCell getCellIdentifier];
         ConfirmAirCell *cell = (ConfirmAirCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
@@ -157,23 +169,60 @@
             cell = [ConfirmHotelCell createCell:self];
         }
         
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+        [cell setCellWith:builder indexPath:indexPath];
         return cell;
     }
 }
 
-
-- (IBAction)clickPaymentButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:YES delegate:self] autorelease];
+- (IBAction)clickContactPersonButton:(id)sender {
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeContact isMultipleChoice:YES delegate:self title:NSLS(@"联系人选择")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (IBAction)clickPaymentButton:(id)sender {
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:YES delegate:self title:NSLS(@"信用卡支付")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark -
+#pragma ConfirmHotelCellDelegate method
+- (void)didClickCheckInPersonButton:(NSIndexPath *)indexPath
+{
+    self.currentIndexPath = indexPath;
+    
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCheckIn isMultipleChoice:YES delegate:self title:NSLS(@"入住人选择")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 #pragma mark -
 #pragma SelectPersonControllerDelegate method
 - (void)finishSelectPerson:(PersonType)personType objectList:(NSArray *)objectList
 {
-    
+    if (personType == PersonTypeContact) {
+        Person *person = (Person *)[objectList objectAtIndex:0];
+        [_airHotelOrderBuilder setContactPerson:person];
+        
+        [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
+    } else if (personType == PersonTypeCreditCard) {
+        CreditCard *creditCard = (CreditCard *)[objectList objectAtIndex:0];
+        
+        PaymentInfo_Builder *pib = [[[PaymentInfo_Builder alloc] init] autorelease];
+        [pib setPaymentType:PaymentTypeCreditCard];
+        [pib setCreditCard:creditCard];
+        PaymentInfo *paymentInfo = [pib build];
+        [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
+        
+        [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
+    } else if (PersonTypeCheckIn) {
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];
+        [builder addAllCheckInPersons:objectList];
+    }
 }
 
-
+- (void)viewDidUnload {
+    [self setContactPersonButton:nil];
+    [self setPaymentButton:nil];
+    [super viewDidUnload];
+}
 @end

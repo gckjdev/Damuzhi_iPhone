@@ -22,6 +22,7 @@
 
 - (id)initWithType:(PersonType)personType
   isMultipleChoice:(BOOL)isMultipleChoice
-          delegate:(id<SelectPersonControllerDelegate>)delegate;
+          delegate:(id<SelectPersonControllerDelegate>)delegate
+             title:(NSString *)title;
 
 @end

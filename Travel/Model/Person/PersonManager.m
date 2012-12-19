@@ -32,7 +32,7 @@ static PersonManager *_personManager = nil;
         for (int i= 0; i < 5; i ++) {
             Person_Builder *builder = [[[Person_Builder alloc] init] autorelease];
             [builder setName:[nameArray objectAtIndex:i]];
-            [builder setNameEnglish:@"Yi Lee"];
+            [builder setNameEnglish:@"Yi/Lee"];
             [builder setAgeType:PersonAgeTypePersonAgeAdult];
             [builder setGender:PersonGenderPersonGenderMale];
             [builder setNationalityId:1];
