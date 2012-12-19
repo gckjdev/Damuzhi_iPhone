@@ -12,6 +12,7 @@
 #import "MakeOrderHeader.h"
 #import "AirHotelManager.h"
 #import "UserManager.h"
+#import "RescheduleInfoController.h"
 
 @interface ConfirmOrderController ()
 
@@ -19,6 +20,7 @@
 @property (retain, nonatomic) NSArray *airOrderBuilders;
 @property (retain, nonatomic) NSArray *hotelOrderBuilders;
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
+@property (assign, nonatomic) BOOL isMember;
 
 @end
 
@@ -37,12 +39,14 @@
 
 - (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
             hotelOrderBuilders:(NSArray *)hotelOrderBuilders
+                      isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.airHotelOrderBuilder = [[[AirHotelOrder_Builder alloc] init] autorelease];
         self.airOrderBuilders = airOrderBuilders;
         self.hotelOrderBuilders = hotelOrderBuilders;
+        self.isMember = isMember;
     }
     return self;
 }
@@ -70,7 +74,13 @@
     
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
-    [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
+    
+    if (_isMember) {
+        [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
+        [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
+    } else {
+        [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
+    }
     
     AirHotelOrder *order = [_airHotelOrderBuilder build];
     [[AirHotelService defaultService] order:order delegate:self];
@@ -94,9 +104,15 @@
 {
     //if (indexPath.section < [[_builder airOrdersList] count]) {
     if (indexPath.section < [_airOrderBuilders count]) {
-        return [ConfirmAirCell getCellHeight];
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+        
+        CGFloat height = [ConfirmAirCell getCellHeight:[builder.passengerList count]];
+        return  height;
     } else {
-        return [ConfirmHotelCell getCellHeight];
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+        
+        CGFloat height = [ConfirmHotelCell getCellHeight:[builder.roomInfosList count] personCount:[builder.checkInPersonsList count]];
+        return height;
     }
 }
 
@@ -160,6 +176,9 @@
         if (cell == nil) {
             cell = [ConfirmAirCell createCell:self];
         }
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+        [cell setCellWithAirOrderBuilder:builder indexPath:indexPath];
+        
         return cell;
     } else{
         NSString *identifier = [ConfirmHotelCell getCellIdentifier];
@@ -176,13 +195,52 @@
 }
 
 - (IBAction)clickContactPersonButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeContact isMultipleChoice:YES delegate:self title:NSLS(@"联系人选择")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeContact isMultipleChoice:NO delegate:self title:NSLS(@"联系人选择")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)clickPaymentButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:YES delegate:self title:NSLS(@"信用卡支付")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:NO delegate:self title:NSLS(@"信用卡支付")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+#pragma mark -
+#pragma ConfirmAirCellDelegate method
+- (void)didClickInsuranceButton:(NSIndexPath *)indexPath isSelected:(BOOL)isSelected
+{
+    if (indexPath.section < [_airOrderBuilders count]) {
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+        [builder setInsurance:isSelected];
+        [dataTableView reloadData];
+    }
+}
+
+- (void)didClickSendTicketButton:(NSIndexPath *)indexPath isSelected:(BOOL)isSelected
+{
+    if (indexPath.section < [_airOrderBuilders count]) {
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+        [builder setSendTicket:isSelected];
+        [dataTableView reloadData];
+    }
+}
+
+- (void)didClickPassengerButton:(NSIndexPath *)indexPath
+{
+    self.currentIndexPath = indexPath;
+    
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypePassenger isMultipleChoice:YES delegate:self title:NSLS(@"选择登机人")] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickRescheduleButton:(NSIndexPath *)indexPath
+{
+    if (indexPath.section < [_airOrderBuilders count]) {
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+        
+        RescheduleInfoController *controller = [[[RescheduleInfoController alloc] initWithAirOrderBuilder:builder] autorelease];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 #pragma mark -
@@ -214,9 +272,14 @@
         [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
         
         [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
-    } else if (PersonTypeCheckIn) {
+    } else if (personType == PersonTypeCheckIn) {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];
+        [builder clearCheckInPersonsList];
         [builder addAllCheckInPersons:objectList];
+    } else if (personType == PersonTypePassenger) {
+        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:_currentIndexPath.section];
+        [builder clearPassengerList];
+        [builder addAllPassenger:objectList];
     }
 }
 

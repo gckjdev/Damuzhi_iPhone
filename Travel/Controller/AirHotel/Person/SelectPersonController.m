@@ -30,6 +30,7 @@
 - (void)dealloc
 {
     [_selectedIndexList release];
+    [_headeTitleLabel release];
     [super dealloc];
 }
 
@@ -50,9 +51,33 @@
     return self;
 }
 
+//typedef enum{
+//    PersonTypePassenger = 1,
+//    PersonTypeCheckIn = 2,
+//    PersonTypeContact = 3,
+//    PersonTypeCreditCard = 4
+//} PersonType;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    switch (_personType) {
+        case PersonTypePassenger:
+            self.headeTitleLabel.text = NSLS(@"添加国际航班登机人");
+            break;
+        case PersonTypeCheckIn:
+            self.headeTitleLabel.text = NSLS(@"添加入住人");
+            break;
+        case PersonTypeContact:
+            self.headeTitleLabel.text = NSLS(@"添加联系人");
+            break;
+        case PersonTypeCreditCard:
+            self.headeTitleLabel.text = NSLS(@"添加常用信用卡");
+            break;
+        default:
+            break;
+    }
     
     self.dataList = [[PersonManager defaultManager] personList:_personType];
     
@@ -147,10 +172,18 @@
     }
     
     if (isSelect) {
+        if (!self.isMultipleChoice) {
+            [_selectedIndexList removeAllObjects];
+        }
+        
         [_selectedIndexList addObject:indexPath];
     }
     
 }
 
 
+- (void)viewDidUnload {
+    [self setHeadeTitleLabel:nil];
+    [super viewDidUnload];
+}
 @end

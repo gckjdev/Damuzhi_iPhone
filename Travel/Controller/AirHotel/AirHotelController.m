@@ -13,6 +13,9 @@
 #import "AirHotelManager.h"
 #import "SelectCityController.h"
 #import "AppManager.h"
+#import "AirHotelManager.h"
+#import "UserManager.h"
+#import "LoginController.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
     GO_DATE = 0,
@@ -73,7 +76,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_hotelOrderBuilderList addObject:builder];
         
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
-        self.airType = AirGoAndBack;
+        //self.airType = AirGoAndBack;
     }
     return self;
 }
@@ -83,6 +86,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     self.navigationItem.title = NSLS(@"机+酒");
+    
+    [self changeAirType:AirGoAndBack];
     
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
 }
@@ -159,6 +164,15 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_backAirOrderBuiler clear];
         
         [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
+    if (airType == AirGo) {
+        [_goAirOrderBuiler setFlightType:FlightTypeGo];
+    } else if (airType == AirGoAndBack) {
+        [_goAirOrderBuiler setFlightType:FlightTypeGoOfDouble];
+        [_backAirOrderBuiler setFlightType:FlightTypeBackOfDouble];
+    } else if (airType == AirBack) {
+        [_goAirOrderBuiler setFlightType:FlightTypeBack];
     }
 }
 
@@ -283,26 +297,40 @@ enum HOTEL_FLIGHT_DATE_TAG{
 }
 
 
-- (IBAction)clickNonMemberButton:(id)sender {
-    
+- (void)order:(BOOL)isMember
+{
+    AirHotelManager *manager = [AirHotelManager defaultManager];
     NSArray *airOrderBuilderList = nil;
     
-    if (_airType == AirGoAndBack) {
+    if (_airType == AirGoAndBack && [manager isValidAirOrderBuilder:_goAirOrderBuiler] && [manager isValidAirOrderBuilder:_backAirOrderBuiler]) {
         airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, _backAirOrderBuiler, nil];
-    } else if (_airType == AirGo) {
+    } else if (_airType == AirGo && [manager isValidAirOrderBuilder:_goAirOrderBuiler]) {
         airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, nil];
-    } else if (_airType == AirBack) {
+    } else if (_airType == AirBack && [manager isValidAirOrderBuilder:_backAirOrderBuiler]) {
         airOrderBuilderList = [NSArray arrayWithObjects:_backAirOrderBuiler, nil];
     }
     
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList] autorelease];
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
     
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 
+- (IBAction)clickNonMemberButton:(id)sender {
+    [self order:NO];
+}
+
+
 - (IBAction)clickMemberButton:(id)sender {
-    [self popupMessage:NSLS(@"待实现") title:nil];
+    
+    if (![[UserManager defaultManager] isLogin]) {
+        LoginController *controller = [[LoginController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+        return;
+    }
+    
+    [self order:YES];
 }
 
 #pragma mark -
