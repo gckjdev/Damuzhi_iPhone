@@ -13,6 +13,7 @@
 #import "ImageManager.h"
 #import "AppManager.h"
 #import "TimeUtils.h"
+#import "SelectController.h"
 
 @interface SelectFlightController ()
 @property (assign, nonatomic) int departCityId;
@@ -274,5 +275,10 @@
     [dataTableView reloadData];
 }
 
+- (IBAction)clickFliterButton:(id)sender {
+//    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:dataList];
+//    
+//    SelectController *controller = [SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:<#(NSArray *)#> selectedItemIds:<#(NSMutableArray *)#> multiOptions:YES needConfirm:YES needShowCount:NO;
+}
 
 @end

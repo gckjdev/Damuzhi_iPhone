@@ -363,6 +363,10 @@
     PPDebug(@"hotelList count:%d", [hotelList count]);
     self.hotelList = [NSMutableArray arrayWithArray:hotelList];
     
+    for (Place *hotel in hotelList) {
+        PPDebug(@"<findHotelsDone> id:%d name:%@", hotel.placeId, hotel.name);
+    }
+    
     [dataTableView reloadData];
 }
 

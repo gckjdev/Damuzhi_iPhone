@@ -81,6 +81,10 @@ static AirHotelService *_airHotelService = nil;
 - (void)order:(AirHotelOrder *)order
      delegate:(id<AirHotelServiceDelegate>)delegate
 {
+    //PPDebug(@"<AirHotelService> %@ %@", [order airOrdersAtIndex:0].flightNumber, [order airOrdersAtIndex:0].flightSeatCode );
+    
+    //PPDebug(@"<AirHotelService> %d", [order hotelOrdersAtIndex:0].hotelId);
+    
     NSData *data = [order data];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

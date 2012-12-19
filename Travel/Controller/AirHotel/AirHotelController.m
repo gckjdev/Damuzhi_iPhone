@@ -24,7 +24,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 @interface AirHotelController ()
 
 @property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
-@property (retain, nonatomic) NSMutableArray *hotelOrderList;
 @property (retain, nonatomic) AirOrder_Builder *goAirOrderBuiler;
 @property (retain, nonatomic) AirOrder_Builder *backAirOrderBuiler;
 
@@ -40,7 +39,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 @implementation AirHotelController
 @synthesize hotelOrderBuilderList = _hotelOrderBuilderList;
-@synthesize hotelOrderList = _hotelOrderList;
 @synthesize goAirOrderBuiler = _goAirOrderBuiler;
 @synthesize backAirOrderBuiler = _backAirOrderBuiler;
 
@@ -51,7 +49,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (void)dealloc {
     [_hotelOrderBuilderList release];
-    [_hotelOrderList release];
     [_goAirOrderBuiler release];
     [_backAirOrderBuiler release];
     
@@ -134,10 +131,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
-    
-    if (_hotelOrderList) {
-        self.hotelOrderBuilderList = [NSMutableArray arrayWithArray: [_manager hotelOrderBuilderListFromOrderList:_hotelOrderList]] ;
-    }
     
     [self createTitleView:NSLS(@"机+酒")];
 }
@@ -289,15 +282,27 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
-- (IBAction)clickMemberButton:(id)sender {
-//    AirHotelOrder_Builder *builder = [[[AirHotelOrder_Builder alloc] init] autorelease];
-//    self.hotelOrderList = [NSMutableArray arrayWithArray: [_manager hotelOrderListFromBuilderList:_hotelOrderBuilderList]] ;
-//    [builder addAllAirOrders:_hotelOrderList];
-//    
-//    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:builder] autorelease];
+
+- (IBAction)clickNonMemberButton:(id)sender {
     
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithOrderBuilder:nil] autorelease];
+    NSArray *airOrderBuilderList = nil;
+    
+    if (_airType == AirGoAndBack) {
+        airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, _backAirOrderBuiler, nil];
+    } else if (_airType == AirGo) {
+        airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, nil];
+    } else if (_airType == AirBack) {
+        airOrderBuilderList = [NSArray arrayWithObjects:_backAirOrderBuiler, nil];
+    }
+    
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList] autorelease];
+    
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+- (IBAction)clickMemberButton:(id)sender {
+    [self popupMessage:NSLS(@"待实现") title:nil];
 }
 
 #pragma mark -
@@ -505,10 +510,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     if (flightType == FlightTypeGo || flightType == FlightTypeGoOfDouble) {
         [_goAirOrderBuiler setFlight:flight];
-        [_goAirOrderBuiler setFlightNumber:seat.code];
+        
+        [_goAirOrderBuiler setFlightNumber:flight.flightNumber];
+        [_goAirOrderBuiler setFlightSeatCode:seat.code];
     } else {
         [_backAirOrderBuiler setFlight:flight];
-        [_backAirOrderBuiler setFlightNumber:seat.code];
+        
+        [_backAirOrderBuiler setFlightNumber:flight.flightNumber];
+        [_goAirOrderBuiler setFlightSeatCode:seat.code];
     }
     
     [dataTableView reloadData];

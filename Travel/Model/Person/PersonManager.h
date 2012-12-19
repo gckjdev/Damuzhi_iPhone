@@ -15,6 +15,11 @@ typedef enum{
     PersonTypeCreditCard = 4
 } PersonType;
 
+
+enum{
+    PaymentTypeCreditCard = 1
+};
+
 @interface PersonManager : NSObject
 
 + (PersonManager *)defaultManager;

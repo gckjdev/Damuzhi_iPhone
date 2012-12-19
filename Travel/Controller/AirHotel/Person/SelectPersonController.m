@@ -36,12 +36,14 @@
 - (id)initWithType:(PersonType)personType
   isMultipleChoice:(BOOL)isMultipleChoice
           delegate:(id<SelectPersonControllerDelegate>)delegate
+             title:(NSString *)title
 {
     self = [super init];
     if (self) {
         self.personType = personType;
         self.isMultipleChoice = isMultipleChoice;
         self.delegate = delegate;
+        self.title = title;
         
         self.selectedIndexList = [[[NSMutableArray alloc] init] autorelease];
     }
@@ -54,7 +56,6 @@
     
     self.dataList = [[PersonManager defaultManager] personList:_personType];
     
-    self.title = NSLS(@"信用卡支付");
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
@@ -76,7 +77,7 @@
         [resultArray addObject:[dataList objectAtIndex:indexPath.row]];
     }
     
-    if ([_delegate respondsToSelector:@selector(finishSelectPerson:object:)]) {
+    if ([_delegate respondsToSelector:@selector(finishSelectPerson:objectList:)]) {
         [_delegate finishSelectPerson:_personType objectList:resultArray];
     }
 }

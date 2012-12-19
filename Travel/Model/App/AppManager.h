@@ -117,5 +117,6 @@
 - (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter;
 - (NSString *)getAirCityName:(int)cityId;
 - (NSString *)getAirlineName:(int)airlineId;
+- (NSArray *)getAirlineItemList:(NSArray *)flightList;
 
 @end

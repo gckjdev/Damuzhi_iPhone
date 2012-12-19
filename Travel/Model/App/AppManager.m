@@ -1319,4 +1319,20 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+- (NSArray *)getAirlineItemList:(NSArray *)flightList
+{
+    NSMutableArray *airlineList = [[[NSMutableArray alloc] init] autorelease];
+    
+    [airlineList addObject:[Item itemWithId:ALL_CATEGORY
+                                 itemName:NSLS(@"全部")
+                                    count:0]];
+    
+    for (Flight * flight in flightList) {
+        NSString *airlineName = [self getAirlineName:flight.airlineId];
+        [airlineList addObject:[Item itemWithId:flight.airlineId itemName:airlineName count:0]];
+    }
+    
+    return airlineList;
+}
+
 @end
