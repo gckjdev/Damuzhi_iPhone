@@ -12,11 +12,11 @@
 #define OS_IOS 1
 
 // for test service
-//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 
 // for formal service
-#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
 // URL
 #define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
@@ -50,6 +50,8 @@
 #define URL_TRAVE_FOLLOW_ROUTE          (URL_SERVICE@"followRoute.aspx?")
 
 #define URL_TRAVEL_NEARBY               (URL_SERVICE@"nearby.aspx?")
+
+#define URL_TRAVEL_AIR_HOTEL_ORDER      (URL_SERVICE@"airHotelOrder.aspx?")
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -133,6 +135,14 @@
 #define PARA_TRAVEL_ORDER_ID                @"orderId"
 #define PARA_TRAVEL_DEPART_PLACE_ID         @"departPlaceId"
 
+#define PARA_TRAVEL_CHECK_IN_DATE           @"checkInDate"
+#define PARA_TRAVEL_CHECK_OUT_DATE          @"checkOutDate"
+
+#define PARA_TRAVEL_FLIGHT_TYPE             @"flightType"
+#define PARA_TRAVEL_FLIGHT_NUMBER           @"flightNumber"
+
+
+
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
 #define OBJECT_LIST_TYPE_SPOT            21
@@ -180,6 +190,9 @@
 
 #define OBJECT_LIST_LOCAL_ROUTE                     90
 
+#define OBJECT_LIST_FLIGHT                          100
+#define OBJECT_LIST_CHECK_IN_HOTEL                  101
+
 // For object type
 #define OBJECT_TYPE_PLACE                       1
 #define OBJECT_TYPE_CITY_BASIC                  2
@@ -193,5 +206,6 @@
 
 
 #define STRING_SEPARATOR    @","
+
 
 #endif

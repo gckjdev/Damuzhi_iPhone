@@ -12,6 +12,8 @@
 #import "StringUtil.h"
 #import "PPNetworkRequest.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 @interface RetrievePasswordController ()
 @property (copy, nonatomic) NSString *loginId;
 @end
@@ -58,7 +60,7 @@
                             action:@selector(clickOk:)];
     
     backgroundScrollView.contentSize = CGSizeMake(backgroundScrollView.frame.size.width, backgroundScrollView.frame.size.height + 1);
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
 
 }
 

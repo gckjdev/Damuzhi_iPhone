@@ -21,7 +21,7 @@
     
     self.navigationItem.title = NSLS(@"乐游");
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
+    //[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"djy_page_bg.jpg"]]];
 }
 
 - (void)viewDidUnload

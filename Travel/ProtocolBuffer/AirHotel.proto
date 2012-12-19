@@ -1,0 +1,164 @@
+import "Place.proto";
+
+package damuzhi;
+
+option java_package = "com.damuzhi.travel";
+option java_outer_classname = "AirHotelProtos";
+
+enum PersonAgeType {
+    PERSON_AGE_ADULT = 1;       //成人
+    PERSON_AGE_CHILD = 2;       //小孩
+}
+
+//性别
+enum PersonGender {
+    PERSON_GENDER_MALE = 1;     //男
+    PERSON_GENDER_FEMALE = 2;   //女
+}
+
+//机票支付状态（注：可能还有更多状态）
+enum AirPaymentStatus {
+    AIR_PAYMENT_NOT_PAID = 1;        //未支付
+    AIR_PAYMENT_FINISH =2;           //已支付
+}
+
+//入住人 / 联系人 / 登机人
+message Person {
+    optional string name = 1;               //姓名（含中文名字）
+    optional string nameEnglish = 2;        //英文名字
+    
+    optional PersonAgeType ageType = 3;     //成人或小孩
+    optional PersonGender gender = 4;       //性别
+    optional int32 nationalityId = 5;       //国籍id，参见App基础数据定义
+    optional int32 cardTypeId = 6;          //证件类型，参见App基础数据定义
+    optional string cardNumber = 7;         //证件号码
+    optional int32 cardValidDate = 8;       //证件有效日期
+    optional int32 birthday = 9;           //出生日期
+
+    optional string phone = 10;             //电话
+}
+
+//预订房间信息
+message HotelOrderRoomInfo {
+    required int32 roomId = 1;                  //房间类型id
+    required int32 count = 2;                   //预订房间数
+}
+
+//酒店订单
+message HotelOrder {
+    required int32 checkInDate = 1;             //入住日期
+    required int32 checkOutDate = 2;            //退房日期
+    required int32 hotelId = 3;                 //酒店id(对应Place结构的placeId)
+    repeated HotelOrderRoomInfo roomInfos = 4;  //房间预订信息
+    repeated Person checkInPersons = 5;         //入住人信息
+    
+    optional Place hotel = 10;                  //酒店(用于订单查询)
+}
+
+//舱位
+message FlightSeat {
+    required string code = 1;                   //舱位类型
+    required string name = 2;                   //舱位名称
+    optional string remainingCount  = 3;        //剩余票数信息
+    
+    optional string ticketPrice = 10;           //机票价格
+    optional string price = 11;                 //总价(怎么生成？)
+    
+    optional string refundNote = 20;            //退票规则
+    optional string changeNote = 21;            //改签规则
+}
+
+//航班
+message Flight {
+    //基本数据
+    required string flightNumber = 1;           //航班编号
+    required int32 airlineId = 2;               //航空公司id，参见App基础数据定义
+    optional string planeType = 3;              //机型
+    optional string price = 4;                  //参考价格（用于列表显示，一般是所有舱位的最低价格？）
+    optional string discount = 5;               //打折信息（用于列表显示）
+    
+    optional string departAirport = 6;          //出发机场
+    optional string arriveAirport = 7;          //达到机场
+    optional int32 departDate = 8;              //出发时间
+    optional int32 arriveDate = 9;              //到达时间
+    
+    optional bool transit = 10 [default=false]; //是否中转
+    optional string transitInfo = 11;           //中转信息
+    
+    optional string adultAirportTax = 20;       //成人机建费
+    optional string childAirportTax = 21;       //儿童机建费
+    optional string adultFuelTax = 22;          //成人燃油费用
+    optional string childFuelTax = 23;          //儿童燃油费用
+    
+    //详情数据
+    repeated FlightSeat flightSeats = 30;     //舱位
+}
+
+message FlightList{
+  repeated Flight flights = 1;
+}
+
+//机票订单
+message AirOrder {
+    required string flightNumber = 1;           //航班编号
+    required string flightSeatCode = 2;         //舱位类型
+    optional int32 flightType = 3;              //1: 去程 2: 返程
+    optional int32 flightDate = 4;              //航班日期
+    optional bool insurance = 5;                //是否购买保险
+    optional bool sendTicket = 6;               //是否快递机票
+    optional string insuranceFee = 10;          //保险费用
+    optional string sendTicketFee = 11;         //快递费用
+
+    repeated Person passenger = 20;             //登机人
+
+    // 以下信息仅用于订单查询时返回
+    optional Flight flight = 30;                //航班信息(仅用于订单查询)
+    optional FlightSeat flightSeat = 31;      //舱位信息(仅用于订单查询)
+}
+
+//信用卡
+message CreditCard {
+    required int32 bankId = 1;                  //发卡银行，参见App基础数据定义
+    required string number = 2;                 //卡号
+    optional string name = 3;                   //持卡人姓名
+    optional string ccv = 4;                    //卡背面的数字
+    optional int32 validDateYear = 5;           //有效日期：年份
+    optional int32 validDateMonth = 6;          //有效日期：月份
+
+    optional int32 idCardTypeId = 7;            //证件类型id，参见App基础数据定义
+    optional string idCardNumber = 8;           //证件号码
+}
+
+//支付信息
+message PaymentInfo {
+    required int32 paymentType = 1;             //支付类型(1代表信用卡，暂时只有信用卡)
+    optional CreditCard creditCard = 2;         //信用卡
+}
+
+//机+酒订单
+message AirHotelOrder {
+    optional string userId = 1;                 //用户id (用于非会员下订)
+    optional string loginId = 2;                //登陆id (用于会员下订)
+    optional string token = 3;                  //登陆token (用于会员下订)
+
+    optional int32 departCityId = 4;            //出发城市id
+    optional int32 arriveCityId = 5;            //目的城市id
+    repeated AirOrder airOrders = 6;            //机票订单
+    repeated HotelOrder hotelOrders = 7;        //酒店订单
+    optional PaymentInfo paymentInfo = 8;       //支付信息
+    optional Person contactPerson = 9;          //联系人
+
+    optional int32 orderId = 20;                //订单编号 (仅用于订单查询)
+    optional int32 orderDate = 21;              //订单日期 (仅用于订单查询)
+    optional int32 orderStatus = 22;            //订单状态 (仅用于订单查询),取值参见本地游？
+
+    optional string hotelPrice = 30;            //酒店总价格 (仅用于订单查询)
+    optional string airPrice = 31;              //机票总价格 (仅用于订单查询)
+    optional AirPaymentStatus airPaymentStatus = 33;   //机票支付状态 (仅用于订单查询)
+}
+
+// 用于查询订单列表
+message AirHotelOrderList {
+    repeated AirHotelOrder airHotelOrders = 1;
+}
+

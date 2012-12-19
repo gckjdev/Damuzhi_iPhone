@@ -211,10 +211,10 @@
 - (void)finishAddFavourite:(NSNumber*)resultCode count:(NSNumber*)count
 {
     [self updateAddFavoriteButton];
+    UIView *favoriteView = [dataScrollView viewWithTag:TAG_FAVORITE_VIEW];
     
     if (count != nil) {
-        UILabel *favoriteCountLabel = (UILabel*)[[dataScrollView viewWithTag:TAG_FAVORITE_VIEW] viewWithTag:TAG_FAVORITE_COUNT_LABEL];
-        
+        UILabel *favoriteCountLabel = (UILabel*)[favoriteView viewWithTag:TAG_FAVORITE_COUNT_LABEL];
         favoriteCountLabel.text = [NSString stringWithFormat:NSLS(@"已有%d人收藏"), count.intValue];
     }
     
@@ -228,10 +228,10 @@
     button.tag = FAVORITES_OK_VIEW;
     [button setTitleEdgeInsets:UIEdgeInsetsMake(-8, 20, 0, 0)];
     
-    CGPoint fromPosition = CGPointMake(320/2, 345);
-    CGPoint toPosition = CGPointMake(320/2, 345);
+    CGPoint fromPosition = CGPointMake(320/2, -18);
+    CGPoint toPosition = CGPointMake(320/2, -18);
     
-    [self.view addSubview:button];
+    [favoriteView addSubview:button];
     [button release];
     
     [AnimationManager alertView:button fromPosition:fromPosition toPosition:toPosition interval:2 delegate:self];

@@ -84,7 +84,7 @@ enum{
                          imageName:@"topmenu_btn_right.png" 
                             action:@selector(clickOk:)];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     
     self.titleDic = [NSMutableDictionary dictionary];
@@ -116,6 +116,7 @@ enum{
     [self.inputTextDic setObject:section1InputTextDic forKey:[NSNumber numberWithInt:1]];
     
     viewCenter = self.view.center;
+    PPDebug(@"center :%f %f",viewCenter.x, viewCenter.y);
     
     // Add a single tap Recognizer
     UITapGestureRecognizer* singleTapRecognizer;
@@ -333,7 +334,9 @@ enum{
     }
     
     [_currentInputTextField resignFirstResponder];
-    [self.view moveTtoCenter:viewCenter needAnimation:YES animationDuration:0.5];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, 0, self.view.frame.size.width, self.view.frame.size.height);
+    //[self.view moveTtoCenter:viewCenter needAnimation:YES animationDuration:0.5];
 }
 
 

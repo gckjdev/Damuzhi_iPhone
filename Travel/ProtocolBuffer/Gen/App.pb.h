@@ -8,6 +8,8 @@
 @class Accommodation_Builder;
 @class Agency;
 @class Agency_Builder;
+@class AirCity;
+@class AirCity_Builder;
 @class App;
 @class App_Builder;
 @class Booking;
@@ -19,13 +21,13 @@
 @class CityGroup_Builder;
 @class CityList;
 @class CityList_Builder;
+@class CityLocationInfo;
+@class CityLocationInfo_Builder;
 @class City_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
 @class DepartPlace;
 @class DepartPlace_Builder;
-@class Flight;
-@class Flight_Builder;
 @class HelpInfo;
 @class HelpInfo_Builder;
 @class LocalRoute;
@@ -272,6 +274,72 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (CityArea_Builder*) clearAreaName;
 @end
 
+@interface CityLocationInfo : PBGeneratedMessage {
+@private
+  BOOL hasLongitude_:1;
+  BOOL hasLatitude_:1;
+  BOOL hasCityName_:1;
+  Float64 longitude;
+  Float64 latitude;
+  NSString* cityName;
+}
+- (BOOL) hasCityName;
+- (BOOL) hasLongitude;
+- (BOOL) hasLatitude;
+@property (readonly, retain) NSString* cityName;
+@property (readonly) Float64 longitude;
+@property (readonly) Float64 latitude;
+
++ (CityLocationInfo*) defaultInstance;
+- (CityLocationInfo*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (CityLocationInfo_Builder*) builder;
++ (CityLocationInfo_Builder*) builder;
++ (CityLocationInfo_Builder*) builderWithPrototype:(CityLocationInfo*) prototype;
+
++ (CityLocationInfo*) parseFromData:(NSData*) data;
++ (CityLocationInfo*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityLocationInfo*) parseFromInputStream:(NSInputStream*) input;
++ (CityLocationInfo*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CityLocationInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (CityLocationInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface CityLocationInfo_Builder : PBGeneratedMessage_Builder {
+@private
+  CityLocationInfo* result;
+}
+
+- (CityLocationInfo*) defaultInstance;
+
+- (CityLocationInfo_Builder*) clear;
+- (CityLocationInfo_Builder*) clone;
+
+- (CityLocationInfo*) build;
+- (CityLocationInfo*) buildPartial;
+
+- (CityLocationInfo_Builder*) mergeFrom:(CityLocationInfo*) other;
+- (CityLocationInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (CityLocationInfo_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCityName;
+- (NSString*) cityName;
+- (CityLocationInfo_Builder*) setCityName:(NSString*) value;
+- (CityLocationInfo_Builder*) clearCityName;
+
+- (BOOL) hasLongitude;
+- (Float64) longitude;
+- (CityLocationInfo_Builder*) setLongitude:(Float64) value;
+- (CityLocationInfo_Builder*) clearLongitude;
+
+- (BOOL) hasLatitude;
+- (Float64) latitude;
+- (CityLocationInfo_Builder*) setLatitude:(Float64) value;
+- (CityLocationInfo_Builder*) clearLatitude;
+@end
+
 @interface City : PBGeneratedMessage {
 @private
   BOOL hasHotCity_:1;
@@ -299,6 +367,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   NSString* currencyId;
   NSString* currencyName;
   NSMutableArray* mutableAreaListList;
+  NSMutableArray* mutableLocationInfoList;
 }
 - (BOOL) hasCityId;
 - (BOOL) hasCityName;
@@ -326,6 +395,8 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hotCity;
 - (NSArray*) areaListList;
 - (CityArea*) areaListAtIndex:(int32_t) index;
+- (NSArray*) locationInfoList;
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index;
 
 + (City*) defaultInstance;
 - (City*) defaultInstance;
@@ -427,6 +498,13 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hotCity;
 - (City_Builder*) setHotCity:(BOOL) value;
 - (City_Builder*) clearHotCity;
+
+- (NSArray*) locationInfoList;
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index;
+- (City_Builder*) replaceLocationInfoAtIndex:(int32_t) index with:(CityLocationInfo*) value;
+- (City_Builder*) addLocationInfo:(CityLocationInfo*) value;
+- (City_Builder*) addAllLocationInfo:(NSArray*) values;
+- (City_Builder*) clearLocationInfoList;
 @end
 
 @interface CityList : PBGeneratedMessage {
@@ -892,23 +970,85 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (CityGroup_Builder*) clearName;
 @end
 
+@interface AirCity : PBGeneratedMessage {
+@private
+  BOOL hasCityId_:1;
+  BOOL hasCityName_:1;
+  int32_t cityId;
+  NSString* cityName;
+}
+- (BOOL) hasCityId;
+- (BOOL) hasCityName;
+@property (readonly) int32_t cityId;
+@property (readonly, retain) NSString* cityName;
+
++ (AirCity*) defaultInstance;
+- (AirCity*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (AirCity_Builder*) builder;
++ (AirCity_Builder*) builder;
++ (AirCity_Builder*) builderWithPrototype:(AirCity*) prototype;
+
++ (AirCity*) parseFromData:(NSData*) data;
++ (AirCity*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (AirCity*) parseFromInputStream:(NSInputStream*) input;
++ (AirCity*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (AirCity*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (AirCity*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface AirCity_Builder : PBGeneratedMessage_Builder {
+@private
+  AirCity* result;
+}
+
+- (AirCity*) defaultInstance;
+
+- (AirCity_Builder*) clear;
+- (AirCity_Builder*) clone;
+
+- (AirCity*) build;
+- (AirCity*) buildPartial;
+
+- (AirCity_Builder*) mergeFrom:(AirCity*) other;
+- (AirCity_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (AirCity_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCityId;
+- (int32_t) cityId;
+- (AirCity_Builder*) setCityId:(int32_t) value;
+- (AirCity_Builder*) clearCityId;
+
+- (BOOL) hasCityName;
+- (NSString*) cityName;
+- (AirCity_Builder*) setCityName:(NSString*) value;
+- (AirCity_Builder*) clearCityName;
+@end
+
 @interface App : PBGeneratedMessage {
 @private
   BOOL hasDataVersion_:1;
   BOOL hasServiceTelephone_:1;
   NSString* dataVersion;
   NSString* serviceTelephone;
-  NSMutableArray* mutableCitiesList;
-  NSMutableArray* mutableTestCitiesList;
-  NSMutableArray* mutablePlaceMetaDataListList;
-  NSMutableArray* mutableRecommendedAppsList;
-  NSMutableArray* mutableRegionsList;
-  NSMutableArray* mutableDepartCitiesList;
-  NSMutableArray* mutableDestinationCitiesList;
-  NSMutableArray* mutableRouteThemesList;
-  NSMutableArray* mutableRouteCategorysList;
-  NSMutableArray* mutableAgenciesList;
+  NSMutableArray* mutableAirDepartCitiesList;
+  NSMutableArray* mutableBanksList;
+  NSMutableArray* mutableCardsList;
+  NSMutableArray* mutableNationalitysList;
+  NSMutableArray* mutableAirlinesList;
   NSMutableArray* mutableCityGroupsList;
+  NSMutableArray* mutableAgenciesList;
+  NSMutableArray* mutableRouteCategorysList;
+  NSMutableArray* mutableRouteThemesList;
+  NSMutableArray* mutableDestinationCitiesList;
+  NSMutableArray* mutableDepartCitiesList;
+  NSMutableArray* mutableRegionsList;
+  NSMutableArray* mutableRecommendedAppsList;
+  NSMutableArray* mutablePlaceMetaDataListList;
+  NSMutableArray* mutableTestCitiesList;
+  NSMutableArray* mutableCitiesList;
 }
 - (BOOL) hasDataVersion;
 - (BOOL) hasServiceTelephone;
@@ -936,6 +1076,16 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (Agency*) agenciesAtIndex:(int32_t) index;
 - (NSArray*) cityGroupsList;
 - (CityGroup*) cityGroupsAtIndex:(int32_t) index;
+- (NSArray*) airlinesList;
+- (NameIdPair*) airlinesAtIndex:(int32_t) index;
+- (NSArray*) nationalitysList;
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index;
+- (NSArray*) cardsList;
+- (NameIdPair*) cardsAtIndex:(int32_t) index;
+- (NSArray*) banksList;
+- (NameIdPair*) banksAtIndex:(int32_t) index;
+- (NSArray*) airDepartCitiesList;
+- (AirCity*) airDepartCitiesAtIndex:(int32_t) index;
 
 + (App*) defaultInstance;
 - (App*) defaultInstance;
@@ -1057,5 +1207,40 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (App_Builder*) addCityGroups:(CityGroup*) value;
 - (App_Builder*) addAllCityGroups:(NSArray*) values;
 - (App_Builder*) clearCityGroupsList;
+
+- (NSArray*) airlinesList;
+- (NameIdPair*) airlinesAtIndex:(int32_t) index;
+- (App_Builder*) replaceAirlinesAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addAirlines:(NameIdPair*) value;
+- (App_Builder*) addAllAirlines:(NSArray*) values;
+- (App_Builder*) clearAirlinesList;
+
+- (NSArray*) nationalitysList;
+- (NameIdPair*) nationalitysAtIndex:(int32_t) index;
+- (App_Builder*) replaceNationalitysAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addNationalitys:(NameIdPair*) value;
+- (App_Builder*) addAllNationalitys:(NSArray*) values;
+- (App_Builder*) clearNationalitysList;
+
+- (NSArray*) cardsList;
+- (NameIdPair*) cardsAtIndex:(int32_t) index;
+- (App_Builder*) replaceCardsAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addCards:(NameIdPair*) value;
+- (App_Builder*) addAllCards:(NSArray*) values;
+- (App_Builder*) clearCardsList;
+
+- (NSArray*) banksList;
+- (NameIdPair*) banksAtIndex:(int32_t) index;
+- (App_Builder*) replaceBanksAtIndex:(int32_t) index with:(NameIdPair*) value;
+- (App_Builder*) addBanks:(NameIdPair*) value;
+- (App_Builder*) addAllBanks:(NSArray*) values;
+- (App_Builder*) clearBanksList;
+
+- (NSArray*) airDepartCitiesList;
+- (AirCity*) airDepartCitiesAtIndex:(int32_t) index;
+- (App_Builder*) replaceAirDepartCitiesAtIndex:(int32_t) index with:(AirCity*) value;
+- (App_Builder*) addAirDepartCities:(AirCity*) value;
+- (App_Builder*) addAllAirDepartCities:(NSArray*) values;
+- (App_Builder*) clearAirDepartCitiesList;
 @end
 

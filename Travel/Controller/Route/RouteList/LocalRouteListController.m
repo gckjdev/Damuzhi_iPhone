@@ -83,7 +83,7 @@
     
     dataTableView.backgroundColor = [UIColor colorWithRed:215/255.0 green:220/255.0 blue:226/255.0 alpha:1.0];
     
-    [self createButtonView];
+    [self createTitleView:NSLS(@"本地游")];
     
     _start = 0;
     _cityId = [_appManager getCurrentCityId];
@@ -105,7 +105,7 @@
     
     if (_cityId != [_appManager getCurrentCityId]) {
         _cityId = [_appManager getCurrentCityId];
-        [self createButtonView];
+        [self createTitleView:NSLS(@"本地游")];
         
         self.start = 0;
         [self findLocalRoutes];
@@ -134,40 +134,6 @@
     [appDelegate hideTabBar:isHide];
 }
 
-- (void)createButtonView
-{
-    UIFont *font = [UIFont systemFontOfSize:17];
-    CGSize withinSize = CGSizeMake(320, CGFLOAT_MAX);
-    
-    NSString *title = [NSString stringWithFormat:@"本地游 — %@", [[AppManager defaultManager] getCurrentCityName]];
-    CGSize titleSize = [title sizeWithFont:font constrainedToSize:withinSize lineBreakMode:UILineBreakModeTailTruncation];
-    
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, titleSize.width+WIDTH_TOP_ARRAW+WIDTH_BLANK_OF_TITLE, titleSize.height)];
-    [button setTitle:title forState:UIControlStateNormal];
-    button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    
-    [button setImage:[UIImage imageNamed:@"top_arrow.png"] forState:UIControlStateNormal];
-    
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width+WIDTH_BLANK_OF_TITLE, 0, 0);
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -WIDTH_TOP_ARRAW-WIDTH_BLANK_OF_TITLE, 0, 0);
-    
-    //    button.titleLabel.shadowOffset = CGSizeMake(-1, -2);
-    
-    button.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    [button addTarget:self action:@selector(clickTitle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.navigationItem.titleView = button;
-    
-    [button release];
-}
-
-
-- (void)clickTitle:(id)sender
-{
-    CityManagementController *controller = [CityManagementController getInstance];
-    controller.delegate = self;
-    [self.navigationController pushViewController:controller animated:YES];
-}
 
 #define TAG_BOTTOM 12101101
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{	

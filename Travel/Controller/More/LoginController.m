@@ -12,6 +12,7 @@
 #import "PPNetworkRequest.h"
 #import "UIImageUtil.h"
 #import "OrderManagerController.h"
+#import "ImageManager.h"
 
 #import "StringUtil.h"
 #import "RetrievePasswordController.h"
@@ -75,7 +76,7 @@
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickLogin:)];
    [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     UIImage *buttonImageBackground = [UIImage strectchableImageName:@"line_btn1.png"leftCapWidth:20];
     [checkOrdersButton setBackgroundImage:buttonImageBackground forState:UIControlStateNormal];

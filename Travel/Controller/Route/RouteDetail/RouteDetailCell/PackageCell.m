@@ -57,47 +57,47 @@
 #define TAG_LIGHTLABEL  12080301
 - (void)createLightLabel
 {
-    NSString *departTitle = NSLS(@"出发:");
-    NSString *departInfo = [NSString stringWithFormat:@"%@%@",_package.departFlight.company, _package.departFlight.flightId];
-    NSString *returnTitle = NSLS(@"回程:");
-    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",_package.returnFlight.company, _package.returnFlight.flightId];
-    NSString *flightInfo = [NSString stringWithFormat:@"%@%@  %@%@",departTitle, departInfo, returnTitle, returnInfo];
-    
-    NSMutableAttributedString *aString = [NSMutableAttributedString attributedStringWithString:flightInfo];
-    NSRange range1 = [flightInfo rangeOfString:departTitle];
-    NSRange range2 = [flightInfo rangeOfString:departInfo];
-    NSRange range3 = [flightInfo rangeOfString:returnTitle];
-    NSRange range4 = [flightInfo rangeOfString:returnInfo];
-    [aString setTextColor:COLOR_DURATION_TITLE range:range1];
-    [aString setTextColor:COLOR_DURATION_TITLE range:range3];
-    [aString setTextColor:COLOR_DURATION_CONTENT range:range2];
-    [aString setTextColor:COLOR_DURATION_CONTENT range:range4];
-    [aString setFont:FONT_DURATION_LABEL];
-    [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
-    [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
-    
-    OHAttributedLabel *flightLabel = (OHAttributedLabel*)[_flightButton viewWithTag:TAG_LIGHTLABEL];
-    [flightLabel removeFromSuperview];
-    flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
-    flightLabel.backgroundColor = [UIColor clearColor];
-    flightLabel.tag = TAG_LIGHTLABEL;
-    if (_package.returnFlight.flightId == 0 && _package.departFlight.flightId == 0) {
-        aString =  [NSMutableAttributedString attributedStringWithString:@"                               暂没有信息"];
-        _flightButton.userInteractionEnabled = NO;
-        [aString setFont:FONT_DURATION_LABEL];// do not delete
-        flightLabel.attributedText = aString;
-        [_flightButton addSubview:flightLabel];
-        flightLabel.textColor = COLOR_DURATION_CONTENT;
-
-    }
-    else
-    {
-        flightLabel.attributedText = aString;
-        [_flightButton addSubview:flightLabel];
-        UIImageView *accessoryImage = [self createAccessoryImage];
-        [_flightButton addSubview:accessoryImage];
-    }
-  
+//    NSString *departTitle = NSLS(@"出发:");
+//    NSString *departInfo = [NSString stringWithFormat:@"%@%@",_package.departFlight.company, _package.departFlight.flightId];
+//    NSString *returnTitle = NSLS(@"回程:");
+//    NSString *returnInfo = [NSString stringWithFormat:@"%@%@",_package.returnFlight.company, _package.returnFlight.flightId];
+//    NSString *flightInfo = [NSString stringWithFormat:@"%@%@  %@%@",departTitle, departInfo, returnTitle, returnInfo];
+//    
+//    NSMutableAttributedString *aString = [NSMutableAttributedString attributedStringWithString:flightInfo];
+//    NSRange range1 = [flightInfo rangeOfString:departTitle];
+//    NSRange range2 = [flightInfo rangeOfString:departInfo];
+//    NSRange range3 = [flightInfo rangeOfString:returnTitle];
+//    NSRange range4 = [flightInfo rangeOfString:returnInfo];
+//    [aString setTextColor:COLOR_DURATION_TITLE range:range1];
+//    [aString setTextColor:COLOR_DURATION_TITLE range:range3];
+//    [aString setTextColor:COLOR_DURATION_CONTENT range:range2];
+//    [aString setTextColor:COLOR_DURATION_CONTENT range:range4];
+//    [aString setFont:FONT_DURATION_LABEL];
+//    [aString setTextBold:NO range:NSMakeRange(0,[aString length]-1)];
+//    [aString setTextAlignment:kCTJustifiedTextAlignment lineBreakMode:kCTLineBreakByTruncatingTail];
+//    
+//    OHAttributedLabel *flightLabel = (OHAttributedLabel*)[_flightButton viewWithTag:TAG_LIGHTLABEL];
+//    [flightLabel removeFromSuperview];
+//    flightLabel = [[[OHAttributedLabel alloc] initWithFrame:CGRectMake(8, 6, _flightButton.frame.size.width - 20, _flightButton.frame.size.height)] autorelease];
+//    flightLabel.backgroundColor = [UIColor clearColor];
+//    flightLabel.tag = TAG_LIGHTLABEL;
+//    if (_package.returnFlight.flightId == 0 && _package.departFlight.flightId == 0) {
+//        aString =  [NSMutableAttributedString attributedStringWithString:@"                               暂没有信息"];
+//        _flightButton.userInteractionEnabled = NO;
+//        [aString setFont:FONT_DURATION_LABEL];// do not delete
+//        flightLabel.attributedText = aString;
+//        [_flightButton addSubview:flightLabel];
+//        flightLabel.textColor = COLOR_DURATION_CONTENT;
+//
+//    }
+//    else
+//    {
+//        flightLabel.attributedText = aString;
+//        [_flightButton addSubview:flightLabel];
+//        UIImageView *accessoryImage = [self createAccessoryImage];
+//        [_flightButton addSubview:accessoryImage];
+//    }
+//  
 }
 
 

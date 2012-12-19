@@ -10,8 +10,6 @@
 @class DailySchedule_Builder;
 @class DepartPlace;
 @class DepartPlace_Builder;
-@class Flight;
-@class Flight_Builder;
 @class LocalRoute;
 @class LocalRouteList;
 @class LocalRouteList_Builder;
@@ -814,32 +812,24 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
   BOOL hasPrice_:1;
   BOOL hasFlightNote_:1;
   BOOL hasAccommodationNote_:1;
-  BOOL hasDepartFlight_:1;
-  BOOL hasReturnFlight_:1;
   int32_t packageId;
   NSString* name;
   NSString* note;
   NSString* price;
   NSString* flightNote;
   NSString* accommodationNote;
-  Flight* departFlight;
-  Flight* returnFlight;
   NSMutableArray* mutableAccommodationsList;
 }
 - (BOOL) hasPackageId;
 - (BOOL) hasName;
 - (BOOL) hasNote;
 - (BOOL) hasPrice;
-- (BOOL) hasDepartFlight;
-- (BOOL) hasReturnFlight;
 - (BOOL) hasFlightNote;
 - (BOOL) hasAccommodationNote;
 @property (readonly) int32_t packageId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* note;
 @property (readonly, retain) NSString* price;
-@property (readonly, retain) Flight* departFlight;
-@property (readonly, retain) Flight* returnFlight;
 @property (readonly, retain) NSString* flightNote;
 @property (readonly, retain) NSString* accommodationNote;
 - (NSArray*) accommodationsList;
@@ -898,20 +888,6 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (NSString*) price;
 - (TravelPackage_Builder*) setPrice:(NSString*) value;
 - (TravelPackage_Builder*) clearPrice;
-
-- (BOOL) hasDepartFlight;
-- (Flight*) departFlight;
-- (TravelPackage_Builder*) setDepartFlight:(Flight*) value;
-- (TravelPackage_Builder*) setDepartFlightBuilder:(Flight_Builder*) builderForValue;
-- (TravelPackage_Builder*) mergeDepartFlight:(Flight*) value;
-- (TravelPackage_Builder*) clearDepartFlight;
-
-- (BOOL) hasReturnFlight;
-- (Flight*) returnFlight;
-- (TravelPackage_Builder*) setReturnFlight:(Flight*) value;
-- (TravelPackage_Builder*) setReturnFlightBuilder:(Flight_Builder*) builderForValue;
-- (TravelPackage_Builder*) mergeReturnFlight:(Flight*) value;
-- (TravelPackage_Builder*) clearReturnFlight;
 
 - (NSArray*) accommodationsList;
 - (Accommodation*) accommodationsAtIndex:(int32_t) index;
@@ -1013,135 +989,6 @@ BOOL BookingStatusIsValidValue(BookingStatus value);
 - (int32_t) childrenPrice;
 - (Booking_Builder*) setChildrenPrice:(int32_t) value;
 - (Booking_Builder*) clearChildrenPrice;
-@end
-
-@interface Flight : PBGeneratedMessage {
-@private
-  BOOL hasFlightId_:1;
-  BOOL hasCompany_:1;
-  BOOL hasMode_:1;
-  BOOL hasDepartCityName_:1;
-  BOOL hasDepartTime_:1;
-  BOOL hasDepartAirport_:1;
-  BOOL hasArriveCityName_:1;
-  BOOL hasArriveTime_:1;
-  BOOL hasArriveAirport_:1;
-  BOOL hasNote_:1;
-  NSString* flightId;
-  NSString* company;
-  NSString* mode;
-  NSString* departCityName;
-  NSString* departTime;
-  NSString* departAirport;
-  NSString* arriveCityName;
-  NSString* arriveTime;
-  NSString* arriveAirport;
-  NSString* note;
-}
-- (BOOL) hasFlightId;
-- (BOOL) hasCompany;
-- (BOOL) hasMode;
-- (BOOL) hasDepartCityName;
-- (BOOL) hasDepartTime;
-- (BOOL) hasDepartAirport;
-- (BOOL) hasArriveCityName;
-- (BOOL) hasArriveTime;
-- (BOOL) hasArriveAirport;
-- (BOOL) hasNote;
-@property (readonly, retain) NSString* flightId;
-@property (readonly, retain) NSString* company;
-@property (readonly, retain) NSString* mode;
-@property (readonly, retain) NSString* departCityName;
-@property (readonly, retain) NSString* departTime;
-@property (readonly, retain) NSString* departAirport;
-@property (readonly, retain) NSString* arriveCityName;
-@property (readonly, retain) NSString* arriveTime;
-@property (readonly, retain) NSString* arriveAirport;
-@property (readonly, retain) NSString* note;
-
-+ (Flight*) defaultInstance;
-- (Flight*) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (Flight_Builder*) builder;
-+ (Flight_Builder*) builder;
-+ (Flight_Builder*) builderWithPrototype:(Flight*) prototype;
-
-+ (Flight*) parseFromData:(NSData*) data;
-+ (Flight*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (Flight*) parseFromInputStream:(NSInputStream*) input;
-+ (Flight*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (Flight*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (Flight*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface Flight_Builder : PBGeneratedMessage_Builder {
-@private
-  Flight* result;
-}
-
-- (Flight*) defaultInstance;
-
-- (Flight_Builder*) clear;
-- (Flight_Builder*) clone;
-
-- (Flight*) build;
-- (Flight*) buildPartial;
-
-- (Flight_Builder*) mergeFrom:(Flight*) other;
-- (Flight_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (Flight_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasFlightId;
-- (NSString*) flightId;
-- (Flight_Builder*) setFlightId:(NSString*) value;
-- (Flight_Builder*) clearFlightId;
-
-- (BOOL) hasCompany;
-- (NSString*) company;
-- (Flight_Builder*) setCompany:(NSString*) value;
-- (Flight_Builder*) clearCompany;
-
-- (BOOL) hasMode;
-- (NSString*) mode;
-- (Flight_Builder*) setMode:(NSString*) value;
-- (Flight_Builder*) clearMode;
-
-- (BOOL) hasDepartCityName;
-- (NSString*) departCityName;
-- (Flight_Builder*) setDepartCityName:(NSString*) value;
-- (Flight_Builder*) clearDepartCityName;
-
-- (BOOL) hasDepartTime;
-- (NSString*) departTime;
-- (Flight_Builder*) setDepartTime:(NSString*) value;
-- (Flight_Builder*) clearDepartTime;
-
-- (BOOL) hasDepartAirport;
-- (NSString*) departAirport;
-- (Flight_Builder*) setDepartAirport:(NSString*) value;
-- (Flight_Builder*) clearDepartAirport;
-
-- (BOOL) hasArriveCityName;
-- (NSString*) arriveCityName;
-- (Flight_Builder*) setArriveCityName:(NSString*) value;
-- (Flight_Builder*) clearArriveCityName;
-
-- (BOOL) hasArriveTime;
-- (NSString*) arriveTime;
-- (Flight_Builder*) setArriveTime:(NSString*) value;
-- (Flight_Builder*) clearArriveTime;
-
-- (BOOL) hasArriveAirport;
-- (NSString*) arriveAirport;
-- (Flight_Builder*) setArriveAirport:(NSString*) value;
-- (Flight_Builder*) clearArriveAirport;
-
-- (BOOL) hasNote;
-- (NSString*) note;
-- (Flight_Builder*) setNote:(NSString*) value;
-- (Flight_Builder*) clearNote;
 @end
 
 @interface PlaceTour : PBGeneratedMessage {

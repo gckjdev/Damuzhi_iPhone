@@ -2,6 +2,8 @@
 
 #import "ProtocolBuffers.h"
 
+@class HotelRoom;
+@class HotelRoom_Builder;
 @class Place;
 @class PlaceList;
 @class PlaceList_Builder;
@@ -17,60 +19,145 @@
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;
 @end
 
+@interface HotelRoom : PBGeneratedMessage {
+@private
+  BOOL hasRoomId_:1;
+  BOOL hasName_:1;
+  BOOL hasBreakfast_:1;
+  BOOL hasPrice_:1;
+  BOOL hasBed_:1;
+  int32_t roomId;
+  NSString* name;
+  NSString* breakfast;
+  NSString* price;
+  NSString* bed;
+}
+- (BOOL) hasRoomId;
+- (BOOL) hasName;
+- (BOOL) hasBreakfast;
+- (BOOL) hasPrice;
+- (BOOL) hasBed;
+@property (readonly) int32_t roomId;
+@property (readonly, retain) NSString* name;
+@property (readonly, retain) NSString* breakfast;
+@property (readonly, retain) NSString* price;
+@property (readonly, retain) NSString* bed;
+
++ (HotelRoom*) defaultInstance;
+- (HotelRoom*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (HotelRoom_Builder*) builder;
++ (HotelRoom_Builder*) builder;
++ (HotelRoom_Builder*) builderWithPrototype:(HotelRoom*) prototype;
+
++ (HotelRoom*) parseFromData:(NSData*) data;
++ (HotelRoom*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (HotelRoom*) parseFromInputStream:(NSInputStream*) input;
++ (HotelRoom*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (HotelRoom*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (HotelRoom*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface HotelRoom_Builder : PBGeneratedMessage_Builder {
+@private
+  HotelRoom* result;
+}
+
+- (HotelRoom*) defaultInstance;
+
+- (HotelRoom_Builder*) clear;
+- (HotelRoom_Builder*) clone;
+
+- (HotelRoom*) build;
+- (HotelRoom*) buildPartial;
+
+- (HotelRoom_Builder*) mergeFrom:(HotelRoom*) other;
+- (HotelRoom_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (HotelRoom_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasRoomId;
+- (int32_t) roomId;
+- (HotelRoom_Builder*) setRoomId:(int32_t) value;
+- (HotelRoom_Builder*) clearRoomId;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (HotelRoom_Builder*) setName:(NSString*) value;
+- (HotelRoom_Builder*) clearName;
+
+- (BOOL) hasBreakfast;
+- (NSString*) breakfast;
+- (HotelRoom_Builder*) setBreakfast:(NSString*) value;
+- (HotelRoom_Builder*) clearBreakfast;
+
+- (BOOL) hasPrice;
+- (NSString*) price;
+- (HotelRoom_Builder*) setPrice:(NSString*) value;
+- (HotelRoom_Builder*) clearPrice;
+
+- (BOOL) hasBed;
+- (NSString*) bed;
+- (HotelRoom_Builder*) setBed:(NSString*) value;
+- (HotelRoom_Builder*) clearBed;
+@end
+
 @interface Place : PBGeneratedMessage {
 @private
   BOOL hasLatitude_:1;
   BOOL hasLongitude_:1;
-  BOOL hasHasDiscount_:1;
-  BOOL hasPlaceFavoriteCount_:1;
-  BOOL hasHotelStar_:1;
   BOOL hasPriceRank_:1;
+  BOOL hasHotelStar_:1;
   BOOL hasAreaId_:1;
-  BOOL hasPlaceId_:1;
+  BOOL hasPlaceFavoriteCount_:1;
   BOOL hasRank_:1;
+  BOOL hasHasDiscount_:1;
   BOOL hasSubCategoryId_:1;
-  BOOL hasCityId_:1;
   BOOL hasCategoryId_:1;
-  BOOL hasName_:1;
-  BOOL hasPrice_:1;
-  BOOL hasAvgPrice_:1;
-  BOOL hasIcon_:1;
-  BOOL hasIntroduction_:1;
-  BOOL hasTransportation_:1;
+  BOOL hasCityId_:1;
+  BOOL hasPlaceId_:1;
   BOOL hasParkingGuide_:1;
-  BOOL hasWebsite_:1;
-  BOOL hasPriceDescription_:1;
-  BOOL hasOpenTime_:1;
   BOOL hasTips_:1;
+  BOOL hasOpenTime_:1;
+  BOOL hasPriceDescription_:1;
+  BOOL hasWebsite_:1;
+  BOOL hasTransportation_:1;
+  BOOL hasIntroduction_:1;
+  BOOL hasIcon_:1;
+  BOOL hasAvgPrice_:1;
+  BOOL hasPrice_:1;
+  BOOL hasName_:1;
   Float64 latitude;
   Float64 longitude;
-  int32_t hasDiscount;
-  int32_t placeFavoriteCount;
-  int32_t hotelStar;
   int32_t priceRank;
+  int32_t hotelStar;
   int32_t areaId;
-  int32_t placeId;
+  int32_t placeFavoriteCount;
   int32_t rank;
+  int32_t hasDiscount;
   int32_t subCategoryId;
-  int32_t cityId;
   int32_t categoryId;
-  NSString* name;
-  NSString* price;
-  NSString* avgPrice;
-  NSString* icon;
-  NSString* introduction;
-  NSString* transportation;
+  int32_t cityId;
+  int32_t placeId;
   NSString* parkingGuide;
-  NSString* website;
-  NSString* priceDescription;
-  NSString* openTime;
   NSString* tips;
+  NSString* openTime;
+  NSString* priceDescription;
+  NSString* website;
+  NSString* transportation;
+  NSString* introduction;
+  NSString* icon;
+  NSString* avgPrice;
+  NSString* price;
+  NSString* name;
   NSMutableArray* mutableProvidedServiceIdList;
+  NSMutableArray* mutableTelephoneList;
+  NSMutableArray* mutableAddressList;
+  NSMutableArray* mutableImagesList;
   NSMutableArray* mutableKeywordsList;
   NSMutableArray* mutableTypicalDishesList;
-  NSMutableArray* mutableAddressList;
-  NSMutableArray* mutableTelephoneList;
-  NSMutableArray* mutableImagesList;
+  NSMutableArray* mutableRoomsList;
 }
 - (BOOL) hasPlaceId;
 - (BOOL) hasCityId;
@@ -130,6 +217,8 @@
 - (NSString*) keywordsAtIndex:(int32_t) index;
 - (NSArray*) typicalDishesList;
 - (NSString*) typicalDishesAtIndex:(int32_t) index;
+- (NSArray*) roomsList;
+- (HotelRoom*) roomsAtIndex:(int32_t) index;
 
 + (Place*) defaultInstance;
 - (Place*) defaultInstance;
@@ -321,6 +410,13 @@
 - (int32_t) hasDiscount;
 - (Place_Builder*) setHasDiscount:(int32_t) value;
 - (Place_Builder*) clearHasDiscount;
+
+- (NSArray*) roomsList;
+- (HotelRoom*) roomsAtIndex:(int32_t) index;
+- (Place_Builder*) replaceRoomsAtIndex:(int32_t) index with:(HotelRoom*) value;
+- (Place_Builder*) addRooms:(HotelRoom*) value;
+- (Place_Builder*) addAllRooms:(NSArray*) values;
+- (Place_Builder*) clearRoomsList;
 @end
 
 @interface PlaceList : PBGeneratedMessage {

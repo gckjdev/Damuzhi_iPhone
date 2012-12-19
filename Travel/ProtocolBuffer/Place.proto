@@ -4,6 +4,13 @@ package damuzhi;
 option java_package = "com.damuzhi.travel";
 option java_outer_classname = "PlaceListProtos";
 
+message HotelRoom {
+    required int32 roomId = 1;              //房间id
+    required string name = 2;               //房间名称
+    optional string breakfast = 3;          //早餐信息
+    optional string price = 4;              //价格
+    optional string bed = 5;                //床位信息
+}
 
 message Place {
 
@@ -44,6 +51,8 @@ message Place {
 
   optional int32 placeFavoriteCount = 60;       // 地点收藏人数，仅用于在线查询  
   optional int32 hasDiscount = 61;              // 是否有优惠，第二阶段
+  
+  repeated HotelRoom rooms = 70;                // 房间列表，仅用于酒店
 }
 
 message PlaceList {
@@ -62,4 +71,5 @@ message PlaceStatistics{
   repeated Statistics areaStatics = 2;          // 区域分类统计项
   repeated Statistics serviceStatics = 3;       // 服务分类统计项
 }
+
 

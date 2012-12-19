@@ -12,6 +12,8 @@
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 #define MAX_LENGTH_OF_FEEKBACK 160
 
 @interface RouteFeekbackController ()
@@ -76,7 +78,9 @@
                             action:@selector(clickSubmit:)];
     
     self.backgroundScrollView.contentSize = CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height + 1);
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
+    
     // Set feekback text view delegate.
     self.feekbackTextView.text = _order.feedback;
     self.feekbackTextView.delegate = self;

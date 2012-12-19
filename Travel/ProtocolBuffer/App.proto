@@ -34,6 +34,13 @@ message CityArea{                                      // 城市区域，用于�
   required string areaName = 2;
 }
 
+message CityLocationInfo
+{
+   optional string cityName = 1;
+   optional double longitude = 2;
+   optional double latitude = 3; 
+}
+
 message City {
   required int32 cityId = 1;            // 城市ID
   required string cityName = 2;         // 城市显示名称，如香港
@@ -53,6 +60,8 @@ message City {
   optional int32 groupId = 50;                  // 分组Id
   
   optional bool hotCity = 51 [default = false];         // 是否是热门城市
+  
+  repeated CityLocationInfo locationInfo = 55;       // 城市定位信息
 }
 
 message CityList {
@@ -99,6 +108,12 @@ message CityGroup {
   required string name = 2;
 }
 
+//机票的出发/到达城市
+message AirCity {
+  required int32 cityId = 1;            //城市id
+  required string cityName = 2;         //城市名
+}
+
 // 应用相关的基础数据，和城市无关
 message App {
   required string dataVersion = 1;                  // 数据的版本，如1.0
@@ -119,5 +134,16 @@ message App {
   optional string serviceTelephone = 100;           // 客服电话
   
   repeated CityGroup cityGroups = 80;                // 城市分组
+  
+  repeated NameIdPair airlines = 110;               //航空公司
+  repeated NameIdPair nationalitys = 112;           //国籍
+  repeated NameIdPair cards = 113;                  //证件类型
+  repeated NameIdPair banks = 114;                  //银行
+  
+  repeated AirCity airDepartCities = 120;           //机票的出发城市
+  
+
+//  repeated NameIdPair flightClass = 111;            //舱位类型
+
 }
 

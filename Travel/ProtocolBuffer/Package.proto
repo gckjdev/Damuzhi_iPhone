@@ -4,6 +4,7 @@ import "CityOverview.proto";
 import "TravelTips.proto";
 import "App.proto";
 import "TouristRoute.proto";
+import "AirHotel.proto";
 
 package damuzhi;
 
@@ -109,4 +110,12 @@ message TravelResponse{
   optional OrderList orderList = 35;                    // 订单列表
   
   optional CityImageList cityImageList = 40;            // 城市美图列表
+  
+  optional FlightList flightList = 50;                  //航班列表
+  optional AirHotelOrderList airHotelOrderList = 55;    //机+酒订单列表
+}
+
+// 目前用于下订单请求
+message TravelRequest{
+  optional AirHotelOrder airHotelOrder = 10;            // 下机+酒订单
 }

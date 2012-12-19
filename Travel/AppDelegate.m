@@ -26,7 +26,7 @@
 #import "PackageTourListFilter.h"
 #import "MoreController.h"
 #import "HappyTourController.h"
-#import "TicketHotelController.h"
+#import "AirHotelController.h"
 #import "LocalRouteListController.h"
 #import "UserManager.h"
 
@@ -106,7 +106,7 @@ typedef enum{
 //                   viewControllers:controllers];
     
     
-    [UIUtils addViewController:[TicketHotelController alloc]
+    [UIUtils addViewController:[AirHotelController alloc]
                      viewTitle:nil
                      viewImage:@"menu_btn3_off.png"
               hasNavController:YES
@@ -159,12 +159,15 @@ typedef enum{
 {
     PPDebug(@"didFinishLaunchingWithOptions :%@",launchOptions);
     
-    
     application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
-//    [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
+    
     [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
-
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"PP"];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"TongBu"];
+    
+    
     [MobClick updateOnlineConfig];
     
     if ([DeviceDetection isOS5]){
@@ -222,7 +225,14 @@ typedef enum{
 
     
     [self.window makeKeyAndVisible];
-    UIView* splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
+    
+    UIImage *startImage = nil;
+    if ([DeviceDetection isIPhone5]) {
+        startImage = [UIImage imageNamed:@"Default-568h.png"];
+    } else {
+        startImage = [UIImage imageNamed:@"Default.png"];
+    }
+    UIView* splashView = [[UIImageView alloc] initWithImage:startImage];
     splashView.frame = [self.window bounds];
     splashView.tag = SPLASH_VIEW_TAG;
     [self.window addSubview:splashView];

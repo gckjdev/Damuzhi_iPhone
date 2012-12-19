@@ -78,4 +78,10 @@
 - (UIImage *)placeTourBgImage;
 - (UIImage *)placeTourBtnBgImage;
 
+- (UIImage *)allBackgroundImage;
+
+- (UIImage *)hotelListBgImage;
+- (UIImage *)flightListTopBgImage;
+- (UIImage *)flightListBottomBgImage;
+
 @end

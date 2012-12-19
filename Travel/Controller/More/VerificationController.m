@@ -12,6 +12,8 @@
 #import "StringUtil.h"
 #import "UIImageUtil.h"
 #import "FontSize.h"
+#import "ImageManager.h"
+
 @interface VerificationController ()
 
 @property (copy, nonatomic) NSString *telephone;
@@ -71,7 +73,7 @@
     
     [self.backgroundScrollView setContentSize:CGSizeMake(self.backgroundScrollView.frame.size.width, self.backgroundScrollView.frame.size.height+1)];
     
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"all_page_bg2.jpg"]]];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     
     [retrieveCodeButton setBackgroundImage:[UIImage strectchableImageName:@"order_btn_1.png" leftCapWidth:20] forState:(UIControlStateNormal)];
         

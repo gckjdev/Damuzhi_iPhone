@@ -14,7 +14,6 @@
 #import "PlaceOrderController.h"
 #import "CommonWebController.h"
 #import "CommonPlaceDetailController.h"
-#import "FlightController.h"
 #import "RouteUtils.h"
 #import "PPDebug.h"
 #import "UIUtils.h"
@@ -310,15 +309,15 @@
 
 - (void)didClickFlight:(int)packageId
 {
-    PPDebug(@"packageId is %d", packageId);
-    
-    TravelPackage *package = [RouteUtils findPackageByPackageId:packageId fromPackageList:_route.packagesList];
-    
-    FlightController *controller = [[FlightController alloc] initWithDepartReturnFlight:package.departFlight returnFlight:package.returnFlight];
-    
-    
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+//    PPDebug(@"packageId is %d", packageId);
+//    
+//    TravelPackage *package = [RouteUtils findPackageByPackageId:packageId fromPackageList:_route.packagesList];
+//    
+//    FlightController *controller = [[FlightController alloc] initWithDepartReturnFlight:package.departFlight returnFlight:package.returnFlight];
+//    
+//    
+//    [self.navigationController pushViewController:controller animated:YES];
+//    [controller release];
 }
 
 @end
