@@ -25,5 +25,9 @@ typedef enum{
 //- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList;
 - (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt;
+- (NSString *)dateIntToYearMonthDayWeekString2:(int)dateInt;
+
+- (BOOL)isValidAirOrderBuilder:(AirOrder_Builder *)builder;
+- (BOOL)isValidHotelOrderBuilder:(HotelOrder_Builder *)builder;
 
 @end

@@ -19,6 +19,7 @@
 
 
 @interface SelectPersonController : PPTableViewController <SelectPersonCellDelegate>
+@property (retain, nonatomic) IBOutlet UILabel *headeTitleLabel;
 
 - (id)initWithType:(PersonType)personType
   isMultipleChoice:(BOOL)isMultipleChoice

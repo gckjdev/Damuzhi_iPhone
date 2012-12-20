@@ -80,4 +80,32 @@ static AirHotelManager *_airHotelManager = nil;
     return resultStr;
 }
 
+- (NSString *)dateIntToYearMonthDayWeekString2:(int)dateInt
+{
+    NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
+    NSString *dateString  = dateToStringByFormat(date, @"yyyy-MM-dd");
+    NSString *week = chineseWeekDayFromDate(date);
+    
+    NSString *resultStr = [NSString stringWithFormat:@"%@ %@", dateString, week];
+    return resultStr;
+}
+
+- (BOOL)isValidAirOrderBuilder:(AirOrder_Builder *)builder
+{
+    if ([builder hasFlightNumber] && [builder hasFlightSeatCode]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isValidHotelOrderBuilder:(HotelOrder_Builder *)builder
+{
+    if ([builder hasCheckInDate] && [builder hasCheckOutDate] && [builder hasHotelId]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 @end

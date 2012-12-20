@@ -8,6 +8,8 @@
 
 #import "CommonService.h"
 
+#define ERROR_NO_FLIGHT_DATA            10001
+
 @protocol AirHotelServiceDelegate <NSObject>
 
 @optional
