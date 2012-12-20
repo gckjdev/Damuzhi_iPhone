@@ -133,7 +133,8 @@ static AirHotelService *_airHotelService = nil;
         NSString *resultInfo = nil;
         NSArray *flightList = nil;
 
-        if (output.responseData == nil){
+        if (output.responseData == nil || [output.responseData length] == 0){
+            PPDebug(@"<findFlights> but response data is empty");
             output.resultCode = ERROR_NO_FLIGHT_DATA;
         }
         
@@ -147,7 +148,7 @@ static AirHotelService *_airHotelService = nil;
                 totalCount = [travelResponse totalCount];
             }
             @catch (NSException *exception){
-                PPDebug(@"<Catch Exception in findFlights>");
+                PPDebug(@"<Catch Exception in findFlights> exception=%@", [exception description]);
                 output.resultCode = ERROR_CLIENT_PARSE_DATA;
             }
         }
