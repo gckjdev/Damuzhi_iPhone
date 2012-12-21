@@ -110,21 +110,12 @@
 {
     [self showActivityWithText:NSLS(@"数据加载中......")];
     
-    if (_flightType == FlightTypeGo || _flightType == FlightTypeGoOfDouble) {
-        [[AirHotelService  defaultService] findFlightsWithDepartCityId:_departCityId
+    [[AirHotelService  defaultService] findFlightsWithDepartCityId:_departCityId
                                                      destinationCityId:_destinationCityId
                                                             departDate:_flightDate
                                                             flightType:_flightType
                                                           flightNumber:_flightNumber
                                                               delegate:self];
-    } else {
-        [[AirHotelService  defaultService] findFlightsWithDepartCityId:_destinationCityId
-                                                     destinationCityId:_departCityId
-                                                            departDate:_flightDate
-                                                            flightType:_flightType
-                                                          flightNumber:_flightNumber
-                                                              delegate:self];
-    }
 }
 
 - (void)testData

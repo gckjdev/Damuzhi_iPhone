@@ -21,13 +21,20 @@ typedef enum{
 + (AirHotelManager *)defaultManager;
 
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder;
+
 - (NSArray *)hotelOrderListFromBuilderList:(NSArray *)builderList;
-//- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
+- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
+
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList;
+- (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList;
+
 - (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt;
 - (NSString *)dateIntToYearMonthDayWeekString2:(int)dateInt;
 
 - (BOOL)isValidAirOrderBuilder:(AirOrder_Builder *)builder;
 - (BOOL)isValidHotelOrderBuilder:(HotelOrder_Builder *)builder;
+
+- (NSArray *)validAirOrderBuilders:(NSArray *)builders;
+- (NSArray *)validHotelOrderBuilders:(NSArray *)builders;
 
 @end

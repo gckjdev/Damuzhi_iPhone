@@ -131,9 +131,11 @@ message App {
   
   repeated Agency agencies = 30;                    // 旅行社
   
+  repeated CityGroup cityGroups = 80;                // 城市分组
+
   optional string serviceTelephone = 100;           // 客服电话
   
-  repeated CityGroup cityGroups = 80;                // 城市分组
+  optional string airHotelBookingNotice = 101;      //机+酒的预订说明,返回html的绝对url
   
   repeated NameIdPair airlines = 110;               //航空公司
   repeated NameIdPair nationalitys = 112;           //国籍

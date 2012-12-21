@@ -3938,8 +3938,9 @@ static AirCity* defaultAirCityInstance = nil;
 @property (retain) NSMutableArray* mutableRouteThemesList;
 @property (retain) NSMutableArray* mutableRouteCategorysList;
 @property (retain) NSMutableArray* mutableAgenciesList;
-@property (retain) NSString* serviceTelephone;
 @property (retain) NSMutableArray* mutableCityGroupsList;
+@property (retain) NSString* serviceTelephone;
+@property (retain) NSString* airHotelBookingNotice;
 @property (retain) NSMutableArray* mutableAirlinesList;
 @property (retain) NSMutableArray* mutableNationalitysList;
 @property (retain) NSMutableArray* mutableCardsList;
@@ -3966,6 +3967,7 @@ static AirCity* defaultAirCityInstance = nil;
 @synthesize mutableRouteThemesList;
 @synthesize mutableRouteCategorysList;
 @synthesize mutableAgenciesList;
+@synthesize mutableCityGroupsList;
 - (BOOL) hasServiceTelephone {
   return !!hasServiceTelephone_;
 }
@@ -3973,7 +3975,13 @@ static AirCity* defaultAirCityInstance = nil;
   hasServiceTelephone_ = !!value;
 }
 @synthesize serviceTelephone;
-@synthesize mutableCityGroupsList;
+- (BOOL) hasAirHotelBookingNotice {
+  return !!hasAirHotelBookingNotice_;
+}
+- (void) setHasAirHotelBookingNotice:(BOOL) value {
+  hasAirHotelBookingNotice_ = !!value;
+}
+@synthesize airHotelBookingNotice;
 @synthesize mutableAirlinesList;
 @synthesize mutableNationalitysList;
 @synthesize mutableCardsList;
@@ -3991,8 +3999,9 @@ static AirCity* defaultAirCityInstance = nil;
   self.mutableRouteThemesList = nil;
   self.mutableRouteCategorysList = nil;
   self.mutableAgenciesList = nil;
-  self.serviceTelephone = nil;
   self.mutableCityGroupsList = nil;
+  self.serviceTelephone = nil;
+  self.airHotelBookingNotice = nil;
   self.mutableAirlinesList = nil;
   self.mutableNationalitysList = nil;
   self.mutableCardsList = nil;
@@ -4004,6 +4013,7 @@ static AirCity* defaultAirCityInstance = nil;
   if ((self = [super init])) {
     self.dataVersion = @"";
     self.serviceTelephone = @"";
+    self.airHotelBookingNotice = @"";
   }
   return self;
 }
@@ -4257,6 +4267,9 @@ static App* defaultAppInstance = nil;
   if (self.hasServiceTelephone) {
     [output writeString:100 value:self.serviceTelephone];
   }
+  if (self.hasAirHotelBookingNotice) {
+    [output writeString:101 value:self.airHotelBookingNotice];
+  }
   for (NameIdPair* element in self.airlinesList) {
     [output writeMessage:110 value:element];
   }
@@ -4319,6 +4332,9 @@ static App* defaultAppInstance = nil;
   }
   if (self.hasServiceTelephone) {
     size += computeStringSize(100, self.serviceTelephone);
+  }
+  if (self.hasAirHotelBookingNotice) {
+    size += computeStringSize(101, self.airHotelBookingNotice);
   }
   for (NameIdPair* element in self.airlinesList) {
     size += computeMessageSize(110, element);
@@ -4473,14 +4489,17 @@ static App* defaultAppInstance = nil;
     }
     [result.mutableAgenciesList addObjectsFromArray:other.mutableAgenciesList];
   }
-  if (other.hasServiceTelephone) {
-    [self setServiceTelephone:other.serviceTelephone];
-  }
   if (other.mutableCityGroupsList.count > 0) {
     if (result.mutableCityGroupsList == nil) {
       result.mutableCityGroupsList = [NSMutableArray array];
     }
     [result.mutableCityGroupsList addObjectsFromArray:other.mutableCityGroupsList];
+  }
+  if (other.hasServiceTelephone) {
+    [self setServiceTelephone:other.serviceTelephone];
+  }
+  if (other.hasAirHotelBookingNotice) {
+    [self setAirHotelBookingNotice:other.airHotelBookingNotice];
   }
   if (other.mutableAirlinesList.count > 0) {
     if (result.mutableAirlinesList == nil) {
@@ -4605,6 +4624,10 @@ static App* defaultAppInstance = nil;
       }
       case 802: {
         [self setServiceTelephone:[input readString]];
+        break;
+      }
+      case 810: {
+        [self setAirHotelBookingNotice:[input readString]];
         break;
       }
       case 882: {
@@ -4946,22 +4969,6 @@ static App* defaultAppInstance = nil;
   [result.mutableAgenciesList addObject:value];
   return self;
 }
-- (BOOL) hasServiceTelephone {
-  return result.hasServiceTelephone;
-}
-- (NSString*) serviceTelephone {
-  return result.serviceTelephone;
-}
-- (App_Builder*) setServiceTelephone:(NSString*) value {
-  result.hasServiceTelephone = YES;
-  result.serviceTelephone = value;
-  return self;
-}
-- (App_Builder*) clearServiceTelephone {
-  result.hasServiceTelephone = NO;
-  result.serviceTelephone = @"";
-  return self;
-}
 - (NSArray*) cityGroupsList {
   if (result.mutableCityGroupsList == nil) { return [NSArray array]; }
   return result.mutableCityGroupsList;
@@ -4989,6 +4996,38 @@ static App* defaultAppInstance = nil;
     result.mutableCityGroupsList = [NSMutableArray array];
   }
   [result.mutableCityGroupsList addObject:value];
+  return self;
+}
+- (BOOL) hasServiceTelephone {
+  return result.hasServiceTelephone;
+}
+- (NSString*) serviceTelephone {
+  return result.serviceTelephone;
+}
+- (App_Builder*) setServiceTelephone:(NSString*) value {
+  result.hasServiceTelephone = YES;
+  result.serviceTelephone = value;
+  return self;
+}
+- (App_Builder*) clearServiceTelephone {
+  result.hasServiceTelephone = NO;
+  result.serviceTelephone = @"";
+  return self;
+}
+- (BOOL) hasAirHotelBookingNotice {
+  return result.hasAirHotelBookingNotice;
+}
+- (NSString*) airHotelBookingNotice {
+  return result.airHotelBookingNotice;
+}
+- (App_Builder*) setAirHotelBookingNotice:(NSString*) value {
+  result.hasAirHotelBookingNotice = YES;
+  result.airHotelBookingNotice = value;
+  return self;
+}
+- (App_Builder*) clearAirHotelBookingNotice {
+  result.hasAirHotelBookingNotice = NO;
+  result.airHotelBookingNotice = @"";
   return self;
 }
 - (NSArray*) airlinesList {

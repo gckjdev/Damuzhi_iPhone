@@ -1030,8 +1030,10 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 @interface App : PBGeneratedMessage {
 @private
   BOOL hasDataVersion_:1;
+  BOOL hasAirHotelBookingNotice_:1;
   BOOL hasServiceTelephone_:1;
   NSString* dataVersion;
+  NSString* airHotelBookingNotice;
   NSString* serviceTelephone;
   NSMutableArray* mutableAirDepartCitiesList;
   NSMutableArray* mutableBanksList;
@@ -1052,8 +1054,10 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 }
 - (BOOL) hasDataVersion;
 - (BOOL) hasServiceTelephone;
+- (BOOL) hasAirHotelBookingNotice;
 @property (readonly, retain) NSString* dataVersion;
 @property (readonly, retain) NSString* serviceTelephone;
+@property (readonly, retain) NSString* airHotelBookingNotice;
 - (NSArray*) citiesList;
 - (City*) citiesAtIndex:(int32_t) index;
 - (NSArray*) testCitiesList;
@@ -1196,17 +1200,22 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (App_Builder*) addAllAgencies:(NSArray*) values;
 - (App_Builder*) clearAgenciesList;
 
-- (BOOL) hasServiceTelephone;
-- (NSString*) serviceTelephone;
-- (App_Builder*) setServiceTelephone:(NSString*) value;
-- (App_Builder*) clearServiceTelephone;
-
 - (NSArray*) cityGroupsList;
 - (CityGroup*) cityGroupsAtIndex:(int32_t) index;
 - (App_Builder*) replaceCityGroupsAtIndex:(int32_t) index with:(CityGroup*) value;
 - (App_Builder*) addCityGroups:(CityGroup*) value;
 - (App_Builder*) addAllCityGroups:(NSArray*) values;
 - (App_Builder*) clearCityGroupsList;
+
+- (BOOL) hasServiceTelephone;
+- (NSString*) serviceTelephone;
+- (App_Builder*) setServiceTelephone:(NSString*) value;
+- (App_Builder*) clearServiceTelephone;
+
+- (BOOL) hasAirHotelBookingNotice;
+- (NSString*) airHotelBookingNotice;
+- (App_Builder*) setAirHotelBookingNotice:(NSString*) value;
+- (App_Builder*) clearAirHotelBookingNotice;
 
 - (NSArray*) airlinesList;
 - (NameIdPair*) airlinesAtIndex:(int32_t) index;

@@ -1253,6 +1253,7 @@ static HotelOrder* defaultHotelOrderInstance = nil;
 @property (retain) NSString* price;
 @property (retain) NSString* refundNote;
 @property (retain) NSString* changeNote;
+@property (retain) NSString* reschedule;
 @end
 
 @implementation FlightSeat
@@ -1306,6 +1307,13 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   hasChangeNote_ = !!value;
 }
 @synthesize changeNote;
+- (BOOL) hasReschedule {
+  return !!hasReschedule_;
+}
+- (void) setHasReschedule:(BOOL) value {
+  hasReschedule_ = !!value;
+}
+@synthesize reschedule;
 - (void) dealloc {
   self.code = nil;
   self.name = nil;
@@ -1314,6 +1322,7 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   self.price = nil;
   self.refundNote = nil;
   self.changeNote = nil;
+  self.reschedule = nil;
   [super dealloc];
 }
 - (id) init {
@@ -1325,6 +1334,7 @@ static HotelOrder* defaultHotelOrderInstance = nil;
     self.price = @"";
     self.refundNote = @"";
     self.changeNote = @"";
+    self.reschedule = @"";
   }
   return self;
 }
@@ -1371,6 +1381,9 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   if (self.hasChangeNote) {
     [output writeString:21 value:self.changeNote];
   }
+  if (self.hasReschedule) {
+    [output writeString:22 value:self.reschedule];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -1400,6 +1413,9 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   }
   if (self.hasChangeNote) {
     size += computeStringSize(21, self.changeNote);
+  }
+  if (self.hasReschedule) {
+    size += computeStringSize(22, self.reschedule);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1497,6 +1513,9 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   if (other.hasChangeNote) {
     [self setChangeNote:other.changeNote];
   }
+  if (other.hasReschedule) {
+    [self setReschedule:other.reschedule];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1544,6 +1563,10 @@ static FlightSeat* defaultFlightSeatInstance = nil;
       }
       case 170: {
         [self setChangeNote:[input readString]];
+        break;
+      }
+      case 178: {
+        [self setReschedule:[input readString]];
         break;
       }
     }
@@ -1659,6 +1682,22 @@ static FlightSeat* defaultFlightSeatInstance = nil;
 - (FlightSeat_Builder*) clearChangeNote {
   result.hasChangeNote = NO;
   result.changeNote = @"";
+  return self;
+}
+- (BOOL) hasReschedule {
+  return result.hasReschedule;
+}
+- (NSString*) reschedule {
+  return result.reschedule;
+}
+- (FlightSeat_Builder*) setReschedule:(NSString*) value {
+  result.hasReschedule = YES;
+  result.reschedule = value;
+  return self;
+}
+- (FlightSeat_Builder*) clearReschedule {
+  result.hasReschedule = NO;
+  result.reschedule = @"";
   return self;
 }
 @end

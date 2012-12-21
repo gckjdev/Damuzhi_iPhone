@@ -66,6 +66,8 @@ message FlightSeat {
     
     optional string refundNote = 20;            //退票规则
     optional string changeNote = 21;            //改签规则
+    
+    optional string reschedule = 22;            //退改签，返回html的绝对url
 }
 
 //航班
@@ -141,8 +143,8 @@ message AirHotelOrder {
     optional string loginId = 2;                //登陆id (用于会员下订)
     optional string token = 3;                  //登陆token (用于会员下订)
 
-    optional int32 departCityId = 4;            //出发城市id
-    optional int32 arriveCityId = 5;            //目的城市id
+    optional int32 departCityId = 4;            //出发城市id（是指旅行的出发城市，如果是去程航班则是出发城市，如果是回程航班则是目的城市；数据来源是跟基础数据中的AirCity一致）
+    optional int32 arriveCityId = 5;            //目的城市id（是指旅行的目的城市，如果是去程航班则是目的城市，如果是回程航班则是出发城市；数据来源是跟基础数据中City的一致）
     repeated AirOrder airOrders = 6;            //机票订单
     repeated HotelOrder hotelOrders = 7;        //酒店订单
     optional PaymentInfo paymentInfo = 8;       //支付信息

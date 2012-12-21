@@ -41,9 +41,11 @@ typedef enum{
 
 @optional
 - (void)didClickCloseButton:(NSInteger)section;
+- (void)didClickDeleteButton:(NSInteger)section;
 - (void)didClickGoButton;
 - (void)didClickGoAndBackButton;
 - (void)didClickBackButton;
+
 @end
 
 
@@ -53,6 +55,7 @@ typedef enum{
 @property (retain, nonatomic) IBOutlet UIButton *closeButton;
 @property (retain, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
+@property (retain, nonatomic) IBOutlet UIButton *deleteButton;
 
 + (id)createHeaderView;
 + (CGFloat)getHeaderViewHeight;
@@ -63,6 +66,7 @@ typedef enum{
          isHideFilterButton:(BOOL)isHideFilterButton
         selectedButtonIndex:(int)index
           isHideCloseButton:(BOOL)isHideCloseButton
-                    isClose:(BOOL)isClose;
+                    isClose:(BOOL)isClose
+         isHideDeleteButton:(BOOL)isHideDeleteButton;
 
 @end

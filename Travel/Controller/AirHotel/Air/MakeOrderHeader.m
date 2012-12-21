@@ -24,6 +24,7 @@
     [_closeButton release];
     [_iconImageView release];
     [_titleLabel release];
+    [_deleteButton release];
     [super dealloc];
 }
 
@@ -51,6 +52,7 @@
         selectedButtonIndex:(int)index
           isHideCloseButton:(BOOL)isHideCloseButton
                     isClose:(BOOL)isClose
+         isHideDeleteButton:(BOOL)isHideDeleteButton
 {
     self.delegate = delegate;
     self.section = section;
@@ -63,19 +65,15 @@
         self.iconImageView.image = [UIImage imageNamed:@"hotel_p1.png"];
     }
     
-    if (isHideFilterButton) {
-        self.buttonHolderView.hidden = YES;
-    } else {
-        self.buttonHolderView.hidden = NO;
+    self.buttonHolderView.hidden = isHideFilterButton;
+    if (isHideFilterButton == NO) {
         [self updateSelectedButton:index];
     }
     
-    if (isHideCloseButton) {
-        self.closeButton.hidden = YES;
-    } else {
-        self.closeButton.hidden = NO;
-        self.closeButton.selected = isClose;
-    }
+    self.closeButton.hidden = isHideCloseButton;
+    self.closeButton.selected = isClose;
+
+    self.deleteButton.hidden = isHideDeleteButton;
 }
 
 - (void)updateSelectedButton:(int)index
@@ -96,6 +94,12 @@
     
     if ([_delegate respondsToSelector:@selector(didClickCloseButton:)]) {
         [_delegate didClickCloseButton:_section];
+    }
+}
+
+- (IBAction)clickDeleteButton:(id)sender {
+    if ([_delegate respondsToSelector:@selector(didClickDeleteButton:)]) {
+        [_delegate didClickDeleteButton:_section];
     }
 }
 

@@ -49,12 +49,14 @@
 - (void)updateSite:(RoomCellSite)roomCellSite
 {
     UIImage *image = nil;
+    self.backgroundImageView.frame = CGRectMake(self.backgroundImageView.frame.origin.x, self.backgroundImageView.frame.origin.y, self.backgroundImageView.frame.size.width , HEIGH_MIDDLE);
+    self.holderView.frame = CGRectMake(self.holderView.frame.origin.x, 0, self.holderView.frame.size.width, self.holderView.frame.size.height);
     
     switch (roomCellSite) {
         case RoomCellTop:
             image = [UIImage imageNamed:@"hotel_list_zk1.png"];
             self.backgroundImageView.frame = CGRectMake(self.backgroundImageView.frame.origin.x, self.backgroundImageView.frame.origin.y, self.backgroundImageView.frame.size.width , HEIGH_TOP);
-            
+            self.holderView.frame = CGRectMake(self.holderView.frame.origin.x, 8, self.holderView.frame.size.width, self.holderView.frame.size.height);
             break;
         case RoomCellMiddle:
             image = [UIImage imageNamed:@"hotel_list_zk2.png"];
@@ -140,6 +142,7 @@
     [_countLabel release];
     [_selectRoomButton release];
     [_backgroundImageView release];
+    [_holderView release];
     [super dealloc];
 }
 

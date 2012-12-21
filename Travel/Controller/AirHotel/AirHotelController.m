@@ -213,15 +213,19 @@ enum HOTEL_FLIGHT_DATE_TAG{
                  isHideFilterButton:NO
                 selectedButtonIndex:_airType
                   isHideCloseButton:NO
-                            isClose:![self isSectionOpen:section]];
+                            isClose:![self isSectionOpen:section]
+                 isHideDeleteButton:YES];
     } else {
+        BOOL isHideDelete = ([_hotelOrderBuilderList count] > 1 ? NO : YES );
+        
         [header setViewWithDelegate:self
                             section:section
                  airHotelHeaderType:HotelHeader
                  isHideFilterButton:YES
                 selectedButtonIndex:AirNone
-                  isHideCloseButton:NO
-                            isClose:![self isSectionOpen:section]];
+                  isHideCloseButton:!isHideDelete
+                            isClose:![self isSectionOpen:section]
+                 isHideDeleteButton:isHideDelete];
     }
     
     return header;
@@ -289,7 +293,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
             cell = [MakeHotelOrderCell createCell:self];
         }
         
-        HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
+        HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
         [cell setCellByHotelOrder:builder indexPath:indexPath];
         
         return cell;
@@ -300,15 +304,11 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)order:(BOOL)isMember
 {
     AirHotelManager *manager = [AirHotelManager defaultManager];
-    NSArray *airOrderBuilderList = nil;
-    
-    if (_airType == AirGoAndBack && [manager isValidAirOrderBuilder:_goAirOrderBuiler] && [manager isValidAirOrderBuilder:_backAirOrderBuiler]) {
-        airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, _backAirOrderBuiler, nil];
-    } else if (_airType == AirGo && [manager isValidAirOrderBuilder:_goAirOrderBuiler]) {
-        airOrderBuilderList = [NSArray arrayWithObjects:_goAirOrderBuiler, nil];
-    } else if (_airType == AirBack && [manager isValidAirOrderBuilder:_backAirOrderBuiler]) {
-        airOrderBuilderList = [NSArray arrayWithObjects:_backAirOrderBuiler, nil];
-    }
+    NSMutableArray *airOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
+    [airOrderBuilderList addObject:_goAirOrderBuiler];
+    [airOrderBuilderList addObject:_backAirOrderBuiler];
+    airOrderBuilderList = [NSMutableArray arrayWithArray:[manager validAirOrderBuilders:airOrderBuilderList]];
+    self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:[manager validHotelOrderBuilders:_hotelOrderBuilderList]];
     
     ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
     
@@ -320,7 +320,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self order:NO];
 }
 
-
 - (IBAction)clickMemberButton:(id)sender {
     
     if (![[UserManager defaultManager] isLogin]) {
@@ -331,6 +330,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     [self order:YES];
+}
+
+- (IBAction)clickAddHotelButton:(id)sender {
+    HotelOrder_Builder *builder = [_manager createDefaultHotelOrderBuilder];
+    [_hotelOrderBuilderList addObject:builder];
+    [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
+    
+    [dataTableView reloadData];
 }
 
 #pragma mark -
@@ -383,6 +390,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         
         if (_currentDateTag == CHECK_IN_DATE) {
             [builder setCheckInDate:[date timeIntervalSince1970]];
+            PPDebug(@"didSelectDate:%d", builder.checkInDate);
         } else if (_currentDateTag == CHECK_OUT_DATE) {
             [builder setCheckOutDate:[date timeIntervalSince1970]];
         }
@@ -428,6 +436,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self changeAirType:AirBack];
 }
 
+- (void)didClickDeleteButton:(NSInteger)section
+{
+    if (section > 0 ) {
+        [_hotelOrderBuilderList removeObjectAtIndex:section - 1];
+        [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
+        [dataTableView reloadData];
+    }
+}
 
 #pragma mark -
 #pragma MakeAirOrderCellDelegate methods
@@ -493,9 +509,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     if (_airType == AirGoAndBack ) {
-        
-        PPDebug(@"%@", _goAirOrderBuiler.flightNumber);
-        
         if (_goAirOrderBuiler.flightNumber == nil)
         {
             PPDebug(@"请选择去程航班");
@@ -515,7 +528,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
     
-    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil delegate:self];
+    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:_goAirOrderBuiler.flightNumber delegate:self];
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }
@@ -525,7 +538,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didSelectCity:(AirCity *)city
 {
     self.departCity = city;
-    
 }
 
 #pragma mark -
@@ -545,7 +557,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_backAirOrderBuiler setFlight:flight];
         
         [_backAirOrderBuiler setFlightNumber:flight.flightNumber];
-        [_goAirOrderBuiler setFlightSeatCode:seat.code];
+        [_backAirOrderBuiler setFlightSeatCode:seat.code];
     }
     
     [dataTableView reloadData];

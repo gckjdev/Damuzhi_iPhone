@@ -34,6 +34,7 @@ typedef enum
 @property (retain, nonatomic) IBOutlet UILabel *breakfastLabel;
 @property (retain, nonatomic) IBOutlet UILabel *countLabel;
 @property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (retain, nonatomic) IBOutlet UIView *holderView;
 
 + (CGFloat)getCellHeight:(RoomCellSite)roomCellSite;
 

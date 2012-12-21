@@ -356,6 +356,7 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   BOOL hasPrice_:1;
   BOOL hasRefundNote_:1;
   BOOL hasChangeNote_:1;
+  BOOL hasReschedule_:1;
   NSString* code;
   NSString* name;
   NSString* remainingCount;
@@ -363,6 +364,7 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   NSString* price;
   NSString* refundNote;
   NSString* changeNote;
+  NSString* reschedule;
 }
 - (BOOL) hasCode;
 - (BOOL) hasName;
@@ -371,6 +373,7 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (BOOL) hasPrice;
 - (BOOL) hasRefundNote;
 - (BOOL) hasChangeNote;
+- (BOOL) hasReschedule;
 @property (readonly, retain) NSString* code;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* remainingCount;
@@ -378,6 +381,7 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @property (readonly, retain) NSString* price;
 @property (readonly, retain) NSString* refundNote;
 @property (readonly, retain) NSString* changeNote;
+@property (readonly, retain) NSString* reschedule;
 
 + (FlightSeat*) defaultInstance;
 - (FlightSeat*) defaultInstance;
@@ -447,6 +451,11 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (NSString*) changeNote;
 - (FlightSeat_Builder*) setChangeNote:(NSString*) value;
 - (FlightSeat_Builder*) clearChangeNote;
+
+- (BOOL) hasReschedule;
+- (NSString*) reschedule;
+- (FlightSeat_Builder*) setReschedule:(NSString*) value;
+- (FlightSeat_Builder*) clearReschedule;
 @end
 
 @interface Flight : PBGeneratedMessage {

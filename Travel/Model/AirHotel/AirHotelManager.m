@@ -37,25 +37,26 @@ static AirHotelManager *_airHotelManager = nil;
             [reArray addObject:order];
         }
     }
+    
     return reArray;
 }
 
-//- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList
-//{
-//    NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
-//    for (HotelOrder *order in orderList) {
-//        HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-//        builder.checkInDate = order.checkInDate;
-//        builder.checkOutDate = order.checkOutDate;
-//        builder.hotelId = order.hotelId;
-//        [builder addAllRoomInfos:order.roomInfosList];
-//        [builder addAllCheckInPersons:order.checkInPersonsList];
-//        builder.hotel = order.hotel;
-//        
-//        [reArray addObject:builder];
-//    }
-//    return reArray;
-//}
+- (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList
+{
+    NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
+    for (HotelOrder *order in orderList) {
+        HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
+        builder.checkInDate = order.checkInDate;
+        builder.checkOutDate = order.checkOutDate;
+        builder.hotelId = order.hotelId;
+        [builder addAllRoomInfos:order.roomInfosList];
+        [builder addAllCheckInPersons:order.checkInPersonsList];
+        builder.hotel = order.hotel;
+        
+        [reArray addObject:builder];
+    }
+    return reArray;
+}
 
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList
 {
@@ -65,6 +66,30 @@ static AirHotelManager *_airHotelManager = nil;
             AirOrder *order = [builder build];
             [reArray addObject:order];
         }
+    }
+    
+    return reArray;
+}
+
+
+- (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList
+{
+    NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
+    for (AirOrder *order in orderList) {
+        AirOrder_Builder *builder = [[[AirOrder_Builder alloc] init] autorelease];
+        builder.flightNumber = order.flightNumber;
+        builder.flightSeatCode = order.flightSeatCode;
+        builder.flightType = order.flightType;
+        builder.flightDate = order.flightDate;
+        builder.insurance = order.insurance;
+        builder.sendTicket = order.sendTicket;
+        builder.insuranceFee = order.insuranceFee;
+        builder.sendTicketFee = order.sendTicketFee;
+        [builder addAllPassenger:order.passengerList];
+        builder.flight = order.flight;
+        builder.flightSeat = order.flightSeat;
+        
+        [reArray addObject:builder];
     }
     return reArray;
 }
@@ -106,6 +131,30 @@ static AirHotelManager *_airHotelManager = nil;
     }
     
     return NO;
+}
+
+- (NSArray *)validAirOrderBuilders:(NSArray *)builders
+{
+    NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
+    for (AirOrder_Builder *builder in builders) {
+        if ([self isValidAirOrderBuilder:builder]) {
+            [resultArray addObject:builder];
+        }
+    }
+    
+    return resultArray;
+}
+
+- (NSArray *)validHotelOrderBuilders:(NSArray *)builders
+{
+    NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
+    for (HotelOrder_Builder *builder in builders) {
+        if ([self isValidHotelOrderBuilder:builder]) {
+            [resultArray addObject:builder];
+        }
+    }
+    
+    return resultArray;
 }
 
 @end

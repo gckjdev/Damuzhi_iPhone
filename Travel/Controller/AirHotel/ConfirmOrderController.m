@@ -17,8 +17,8 @@
 @interface ConfirmOrderController ()
 
 @property (retain, nonatomic) AirHotelOrder_Builder *airHotelOrderBuilder;
-@property (retain, nonatomic) NSArray *airOrderBuilders;
-@property (retain, nonatomic) NSArray *hotelOrderBuilders;
+@property (retain, nonatomic) NSMutableArray *airOrderBuilders;
+@property (retain, nonatomic) NSMutableArray *hotelOrderBuilders;
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) BOOL isMember;
 
@@ -37,8 +37,8 @@
     [super dealloc];
 }
 
-- (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
-            hotelOrderBuilders:(NSArray *)hotelOrderBuilders
+- (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
+            hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders
                       isMember:(BOOL)isMember
 {
     self = [super init];
@@ -69,8 +69,15 @@
 }
 
 - (IBAction)clickOrderButton:(id)sender {
-    NSArray *airOrderList = [[AirHotelManager defaultManager] airOrderListFromBuilderList:_airOrderBuilders];
-    NSArray *hotelOrderList = [[AirHotelManager defaultManager] hotelOrderListFromBuilderList:_hotelOrderBuilders];
+    AirHotelManager *manager = [AirHotelManager defaultManager];
+    
+    NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
+    NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
+    
+    [self.airOrderBuilders removeAllObjects];
+    [self.airOrderBuilders addObjectsFromArray:[manager airOrderBuilderListFromOrderList:airOrderList]];
+    [self.hotelOrderBuilders removeAllObjects];
+    [self.hotelOrderBuilders addObjectsFromArray:[manager hotelOrderBuilderListFromOrderList:hotelOrderList]];
     
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
@@ -131,7 +138,8 @@
                  isHideFilterButton:YES
                 selectedButtonIndex:0
                   isHideCloseButton:YES
-                            isClose:YES];
+                            isClose:YES
+                 isHideDeleteButton:YES];
     } else {
         [header setViewWithDelegate:nil
                             section:section
@@ -139,7 +147,8 @@
                  isHideFilterButton:YES
                 selectedButtonIndex:0
                   isHideCloseButton:YES
-                            isClose:YES];
+                            isClose:YES
+                 isHideDeleteButton:YES];
     }
     return header;
 }
