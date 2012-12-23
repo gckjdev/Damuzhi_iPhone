@@ -11,6 +11,7 @@
 #import "NSDate+TKCategory.h"
 #import "LogUtil.h"
 #import "FontSize.h"
+#import "TimeUtils.h"
 
 @interface CommonMonthController ()
 
@@ -110,6 +111,13 @@
 
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
 {
+    NSDate *nowStartDate = getDateStart([NSDate date]);
+    NSTimeInterval diffTimeInterval = [date timeIntervalSinceDate:nowStartDate];
+    if (diffTimeInterval < 0 ) {
+        [self popupMessage:NSLS(@"不能预订今天之前的日期") title:nil];
+        return;
+    }
+    
     PPDebug(@"calendarMonthView:didSelectDate%@", date);
     if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
         [_delegate didSelectDate:date];

@@ -10,6 +10,7 @@
 #import "FontSize.h"
 #import "ImageManager.h"
 #import "AirHotel.pb.h"
+#import "AddCheckInPersonController.h"
 
 @interface SelectPersonController ()
 
@@ -181,6 +182,28 @@
     
 }
 
+- (IBAction)clickAddPersonButton:(id)sender {
+    
+    switch (_personType) {
+        case PersonTypePassenger:
+            
+            break;
+        case PersonTypeCheckIn:
+            break;
+            
+        case PersonTypeContact:
+            
+            break;
+        case PersonTypeCreditCard:
+            
+            break;
+        default:
+            break;
+    }
+    
+    AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] init] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 - (void)viewDidUnload {
     [self setHeadeTitleLabel:nil];

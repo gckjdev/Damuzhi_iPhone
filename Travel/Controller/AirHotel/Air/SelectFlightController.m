@@ -13,7 +13,8 @@
 #import "ImageManager.h"
 #import "AppManager.h"
 #import "TimeUtils.h"
-#import "SelectController.h"
+#import "Item.h"
+#import "AppConstants.h"
 
 @interface SelectFlightController ()
 @property (assign, nonatomic) int departCityId;
@@ -24,6 +25,8 @@
 @property (retain, nonatomic) NSString *leftName;
 @property (retain, nonatomic) NSString *rightName;
 @property (assign, nonatomic) id<FlightDetailControllerDelegate> delegate;
+@property (retain, nonatomic) NSMutableArray *selectedItemList;
+@property (retain, nonatomic) NSArray *allDataList;
 
 @end
 
@@ -42,6 +45,8 @@
     [_countLabel release];
     [_leftName release];
     [_rightName release];
+    [_selectedItemList release];
+    [_allDataList release];
     [super dealloc];
 }
 
@@ -75,6 +80,9 @@
             self.leftName = [[AppManager defaultManager] getAirCityName:_destinationCityId];
             self.rightName = [[AppManager defaultManager] getAirCityName:_departCityId];
         }
+        
+        self.selectedItemList = [[[NSMutableArray alloc] init] autorelease];
+        [_selectedItemList addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
     }
     return self;
 }
@@ -158,6 +166,7 @@
 - (void)findFlightsDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo flightList:(NSArray *)flightList
 {
     [self hideActivity];
+    self.allDataList = flightList;
     self.dataList = flightList;
     self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
     [dataTableView reloadData];
@@ -267,9 +276,46 @@
 }
 
 - (IBAction)clickFliterButton:(id)sender {
-//    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:dataList];
-//    
-//    SelectController *controller = [SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:<#(NSArray *)#> selectedItemIds:<#(NSMutableArray *)#> multiOptions:YES needConfirm:YES needShowCount:NO;
+    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:dataList];
+    
+    SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:itemList selectedItemIds:_selectedItemList multiOptions:YES needConfirm:YES needShowCount:NO];
+    controller.delegate = self;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+#pragma mark -
+#pragma SelectControllerDelegate
+- (void)didSelectFinish:(NSArray*)selectedItems
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    BOOL isAll = NO;
+    
+    for (Flight *flight in _allDataList) {
+        for (NSNumber *number in _selectedItemList) {
+            if (number.intValue == ALL_CATEGORY) {
+                isAll = YES;
+                break;
+            }
+            
+            if (flight.airlineId == number.intValue) {
+                [mutableArray addObject:flight];
+                break;
+            }
+        }
+        
+        if (isAll) {
+            break;
+        }
+    }
+    
+    if (isAll) {
+        self.dataList = _allDataList;
+    } else {
+        self.dataList = mutableArray;
+    }
+    
+    [dataTableView reloadData];
 }
 
 @end

@@ -72,7 +72,7 @@
     }
     
     
-    if (builder.flightDate) {
+    if ([builder hasFlightDate]) {
         [self.flightDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:builder.flightDate] forState:UIControlStateNormal];
     } else {
         [self.flightDateButton setTitle:defaultTips forState:UIControlStateNormal];

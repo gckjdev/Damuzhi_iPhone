@@ -23,8 +23,8 @@ static AirHotelManager *_airHotelManager = nil;
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder
 {
     HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-    [builder setCheckInDate:[[NSDate date] timeIntervalSince1970]];
-    [builder setCheckOutDate:[[NSDate date] timeIntervalSince1970] + 60*60*24];
+//    [builder setCheckInDate:[[NSDate date] timeIntervalSince1970]];
+//    [builder setCheckOutDate:[[NSDate date] timeIntervalSince1970] + 60*60*24];
     return builder;
 }
 

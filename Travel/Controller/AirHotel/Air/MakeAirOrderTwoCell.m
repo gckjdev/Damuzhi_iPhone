@@ -51,14 +51,14 @@
         [self.departCityButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
-    if (goBuilder.flightDate) {
+    if ([goBuilder hasFlightDate]) {
         [self.goDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:goBuilder.flightDate] forState:UIControlStateNormal];
     } else {
         [self.goDateButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     
-    if (backBuilder.flightDate) {
+    if ([backBuilder hasFlightDate]) {
         [self.backDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:backBuilder.flightDate] forState:UIControlStateNormal];
     } else {
         [self.backDateButton setTitle:defaultTips forState:UIControlStateNormal];

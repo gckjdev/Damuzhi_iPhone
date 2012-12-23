@@ -767,6 +767,8 @@
 		EA37A8F0168209D900879094 /* RescheduleInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA37A8EE168209D900879094 /* RescheduleInfoController.xib */; };
 		EA5C766A1534575B0025AFB2 /* TravelPreparationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */; };
 		EA5C766D1534579A0025AFB2 /* TravelTransportDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C766C1534579A0025AFB2 /* TravelTransportDataSource.m */; };
+		EA627979168776FB00F92630 /* AddCheckInPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA627977168776FA00F92630 /* AddCheckInPersonController.m */; };
+		EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA627978168776FA00F92630 /* AddCheckInPersonController.xib */; };
 		EAA6A16715CA73ED0094B122 /* line_n_t4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */; };
 		EAA6A16815CA73ED0094B122 /* line_n_t5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */; };
 		EAA6A16915CA73ED0094B122 /* line_n_t7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */; };
@@ -1965,6 +1967,9 @@
 		EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelPreparationDataSource.m; path = Common/TravelPreparationDataSource.m; sourceTree = "<group>"; };
 		EA5C766B1534579A0025AFB2 /* TravelTransportDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTransportDataSource.h; sourceTree = "<group>"; };
 		EA5C766C1534579A0025AFB2 /* TravelTransportDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelTransportDataSource.m; sourceTree = "<group>"; };
+		EA627976168776FA00F92630 /* AddCheckInPersonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCheckInPersonController.h; sourceTree = "<group>"; };
+		EA627977168776FA00F92630 /* AddCheckInPersonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCheckInPersonController.m; sourceTree = "<group>"; };
+		EA627978168776FA00F92630 /* AddCheckInPersonController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCheckInPersonController.xib; sourceTree = "<group>"; };
 		EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t4@2x.png"; sourceTree = "<group>"; };
 		EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t5@2x.png"; sourceTree = "<group>"; };
 		EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t7@2x.png"; sourceTree = "<group>"; };
@@ -4427,6 +4432,9 @@
 				EA05F1D4166DFC7A008685DA /* SelectPersonCell.h */,
 				EA05F1D5166DFC7A008685DA /* SelectPersonCell.m */,
 				EA05F1D7166DFC8D008685DA /* SelectPersonCell.xib */,
+				EA627976168776FA00F92630 /* AddCheckInPersonController.h */,
+				EA627977168776FA00F92630 /* AddCheckInPersonController.m */,
+				EA627978168776FA00F92630 /* AddCheckInPersonController.xib */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -5262,6 +5270,7 @@
 				EA13A91A167728630057EEDB /* flight_point_on@2x.png in Resources */,
 				EAE2832F167C7E9D00C22A56 /* FlightSimpleView.xib in Resources */,
 				EA37A8F0168209D900879094 /* RescheduleInfoController.xib in Resources */,
+				EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5611,6 +5620,7 @@
 				EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */,
 				EAE2832D167C7B1D00C22A56 /* FlightSimpleView.m in Sources */,
 				EA37A8EF168209D900879094 /* RescheduleInfoController.m in Sources */,
+				EA627979168776FB00F92630 /* AddCheckInPersonController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

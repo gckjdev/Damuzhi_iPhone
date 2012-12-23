@@ -9,6 +9,7 @@
 #import "MakeHotelOrderCell.h"
 #import "AirHotel.pb.h"
 #import "AirHotelManager.h"
+#import "LocaleUtils.h"
 
 @implementation MakeHotelOrderCell
 
@@ -34,11 +35,25 @@
     self.indexPath = aIndexPath;
     AirHotelManager *_manager = [AirHotelManager defaultManager];
     
-    [self.checkInButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
+    NSString *defaultTips = NSLS(@"请选择");
     
-    [self.checkOutButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+    if ([hotelOrderBuilder hasCheckInDate]) {
+        [self.checkInButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
+    } else {
+        [self.checkInButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
     
-    [self.hotelButton setTitle:hotelOrderBuilder.hotel.name forState:UIControlStateNormal];
+    if ([hotelOrderBuilder hasCheckOutDate]) {
+        [self.checkOutButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
+    } else {
+         [self.checkOutButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
+    
+    if ([hotelOrderBuilder hasHotel]) {
+        [self.hotelButton setTitle:hotelOrderBuilder.hotel.name forState:UIControlStateNormal];
+    } else {
+        [self.hotelButton setTitle:defaultTips forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)clickCheckInButton:(id)sender {

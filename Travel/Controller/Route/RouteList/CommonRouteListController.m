@@ -475,6 +475,7 @@
     controller.delegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 - (void)loadMoreTableViewDataSource
