@@ -138,6 +138,11 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewWillAppear:animated];
     
     [self createTitleView:NSLS(@"机+酒")];
+    
+    if ([_hotelOrderBuilderList count] == 0) {
+        HotelOrder_Builder *builder = [_manager createDefaultHotelOrderBuilder];
+        [_hotelOrderBuilderList addObject:builder];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
