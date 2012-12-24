@@ -276,7 +276,7 @@
 }
 
 - (IBAction)clickFliterButton:(id)sender {
-    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:dataList];
+    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:_allDataList];
     
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:itemList selectedItemIds:_selectedItemList multiOptions:YES needConfirm:YES needShowCount:NO];
     controller.delegate = self;

@@ -1319,6 +1319,17 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+
+- (BOOL)isHasItem:(NSArray *)itemList airlineId:(int)airlineId
+{
+    for (Item *item in itemList) {
+        if (item.itemId == airlineId) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (NSArray *)getAirlineItemList:(NSArray *)flightList
 {
     NSMutableArray *airlineList = [[[NSMutableArray alloc] init] autorelease];
@@ -1328,8 +1339,10 @@ static AppManager* _defaultAppManager = nil;
                                     count:0]];
     
     for (Flight * flight in flightList) {
-        NSString *airlineName = [self getAirlineName:flight.airlineId];
-        [airlineList addObject:[Item itemWithId:flight.airlineId itemName:airlineName count:0]];
+        if ([self isHasItem:airlineList airlineId:flight.airlineId] == NO) {
+            NSString *airlineName = [self getAirlineName:flight.airlineId];
+            [airlineList addObject:[Item itemWithId:flight.airlineId itemName:airlineName count:0]];
+        }
     }
     
     return airlineList;
