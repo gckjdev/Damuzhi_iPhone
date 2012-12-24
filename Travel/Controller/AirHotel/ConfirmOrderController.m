@@ -13,6 +13,7 @@
 #import "AirHotelManager.h"
 #import "UserManager.h"
 #import "RescheduleInfoController.h"
+#import "CommonWebController.h"
 
 @interface ConfirmOrderController ()
 
@@ -34,6 +35,8 @@
     [_currentIndexPath release];
     [_contactPersonButton release];
     [_paymentButton release];
+    [_airPirceLabel release];
+    [_hotelPriceLabel release];
     [super dealloc];
 }
 
@@ -69,18 +72,49 @@
 }
 
 - (IBAction)clickOrderButton:(id)sender {
-    AirHotelManager *manager = [AirHotelManager defaultManager];
+    if ([_airOrderBuilders count] == 0 && [_hotelOrderBuilders count] == 0) {
+        [self popupMessage:NSLS(@"没有制定任何订单") title:nil];
+        return;
+    }
     
+    for (AirOrder_Builder *builder in _airOrderBuilders) {
+        if ([[builder passengerList] count] == 0 ) {
+            [self popupMessage:NSLS(@"没有添加登机人") title:nil];
+            return;
+        }
+    }
+    
+    for (HotelOrder_Builder *builder in _hotelOrderBuilders) {
+        if ([[builder checkInPersonsList] count] == 0) {
+            [self popupMessage:NSLS(@"没有添加入住人") title:nil];
+            return;
+        }
+    }
+    
+    if ([_airHotelOrderBuilder hasContactPerson] == NO) {
+        [self popupMessage:NSLS(@"没有选择联系人") title:nil];
+        return;
+    }
+    
+    if ([_airHotelOrderBuilder hasPaymentInfo] == NO) {
+        [self popupMessage:NSLS(@"没有选择支付方式") title:nil];
+        return;
+    }
+    
+    
+    AirHotelManager *manager = [AirHotelManager defaultManager];
     NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
     NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
     
     [self.airOrderBuilders removeAllObjects];
     [self.airOrderBuilders addObjectsFromArray:[manager airOrderBuilderListFromOrderList:airOrderList]];
+    
     [self.hotelOrderBuilders removeAllObjects];
     [self.hotelOrderBuilders addObjectsFromArray:[manager hotelOrderBuilderListFromOrderList:hotelOrderList]];
     
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
+    
     
     if (_isMember) {
         [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
@@ -213,6 +247,16 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)updatePrice
+{
+//    double airPirce;
+//    for (AirOrder_Builder *builder in _airOrderBuilders) {
+//        int personCount = [[builder passengerList] count];
+//        
+//        //double eachPrice = builder.flightSeat.ticketPrice + builder.flightSeat.
+//    }
+}
+
 
 #pragma mark -
 #pragma ConfirmAirCellDelegate method
@@ -247,8 +291,18 @@
     if (indexPath.section < [_airOrderBuilders count]) {
         AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
         
-        RescheduleInfoController *controller = [[[RescheduleInfoController alloc] initWithAirOrderBuilder:builder] autorelease];
+        NSString *url = nil;
+        for (FlightSeat *seat in builder.flight.flightSeatsList) {
+            if ([seat.code isEqualToString:builder.flightSeatCode]) {
+                url = seat.reschedule;
+                break;
+            }
+        }
+        
+        CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:url];
+        controller.navigationItem.title = NSLS(@"退改签详情");
         [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
     }
 }
 
@@ -295,6 +349,8 @@
 - (void)viewDidUnload {
     [self setContactPersonButton:nil];
     [self setPaymentButton:nil];
+    [self setAirPirceLabel:nil];
+    [self setHotelPriceLabel:nil];
     [super viewDidUnload];
 }
 @end

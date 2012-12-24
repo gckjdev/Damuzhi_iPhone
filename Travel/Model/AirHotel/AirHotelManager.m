@@ -20,11 +20,15 @@ static AirHotelManager *_airHotelManager = nil;
     return _airHotelManager;
 }
 
+- (AirOrder_Builder *)createDefaultAirOrderBuilder
+{
+    AirOrder_Builder *builder = [[[AirOrder_Builder alloc] init] autorelease];
+    return builder;
+}
+
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder
 {
     HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-//    [builder setCheckInDate:[[NSDate date] timeIntervalSince1970]];
-//    [builder setCheckOutDate:[[NSDate date] timeIntervalSince1970] + 60*60*24];
     return builder;
 }
 
@@ -83,8 +87,6 @@ static AirHotelManager *_airHotelManager = nil;
         builder.flightDate = order.flightDate;
         builder.insurance = order.insurance;
         builder.sendTicket = order.sendTicket;
-        builder.insuranceFee = order.insuranceFee;
-        builder.sendTicketFee = order.sendTicketFee;
         [builder addAllPassenger:order.passengerList];
         builder.flight = order.flight;
         builder.flightSeat = order.flightSeat;

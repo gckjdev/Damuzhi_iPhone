@@ -149,7 +149,10 @@
             break;
             
         case SORT_BY_PRICE_FROM_EXPENSIVE_TO_CHEAP:
-            array = [placeList sortedArrayUsingComparator:^NSComparisonResult(id place1, id place2){
+            array = [placeList sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+                Place *place1 = (Place *)obj1;
+                Place *place2 = (Place *)obj2;
+                
                 float price1 = [[place1 price] floatValue];
                 float price2 = [[place2 price] floatValue] ;
                 
@@ -162,7 +165,10 @@
             break;
             
         case SORT_BY_PRICE_FROM_CHEAP_TO_EXPENSIVE:
-            array = [placeList sortedArrayUsingComparator:^NSComparisonResult(id place1, id place2){
+            array = [placeList sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+                Place *place1 = (Place *)obj1;
+                Place *place2 = (Place *)obj2;
+                
                 float price1 = [[place1 price] floatValue];
                 float price2 = [[place2 price] floatValue] ;
                 

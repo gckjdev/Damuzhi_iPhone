@@ -101,7 +101,7 @@
                 roomName = room.name;
                 breakfast = room.breakfast;
                 bed = room.bed;
-                price = room.price;
+                price = [NSString stringWithFormat:@"%lf", room.price];
             }
         }
         

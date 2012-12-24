@@ -18,6 +18,7 @@
 @property (assign, nonatomic) id<SelectAirCityControllerDelegate> delegate;
 @property (retain, nonatomic) NSArray *sectionTitleList;
 @property (retain, nonatomic) NSMutableDictionary *sectionTitleAndCitys;
+@property (assign, nonatomic) int selectedCityId;
 
 @end
 
@@ -31,11 +32,16 @@
 }
 
 - (id)initWithDelegate:(id<SelectAirCityControllerDelegate>)delegate
+           hasSelected:(BOOL)hasSelected
+        selectedCityId:(int)selectedCityId
 {
     self = [super init];
     if (self) {
         self.delegate = delegate;
         self.searchResultList = [[[NSMutableArray alloc] init] autorelease];
+        if (hasSelected) {
+            self.selectedCityId = selectedCityId;
+        }
     }
     return self;
 }
@@ -117,14 +123,27 @@
     
     cell.textLabel.backgroundColor = [UIColor clearColor];
     
+    AirCity *city = nil;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        AirCity *city = [_searchResultList objectAtIndex:indexPath.row];
+        city = [_searchResultList objectAtIndex:indexPath.row];
         cell.textLabel.text = city.cityName;
     } else {
         NSString *pinyin = [_sectionTitleList objectAtIndex:indexPath.section];
         NSArray *citys = [_sectionTitleAndCitys objectForKey:pinyin];
-        AirCity *city = [citys objectAtIndex:indexPath.row];
+        city = [citys objectAtIndex:indexPath.row];
         cell.textLabel.text = city.cityName;
+    }
+    
+//    typedef NS_ENUM(NSInteger, UITableViewCellAccessoryType) {
+//        UITableViewCellAccessoryNone,                   // don't show any accessory view
+//        UITableViewCellAccessoryDisclosureIndicator,    // regular chevron. doesn't track
+//        UITableViewCellAccessoryDetailDisclosureButton, // blue button w/ chevron. tracks
+//        UITableViewCellAccessoryCheckmark
+    
+    if (city.cityId == _selectedCityId) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     return cell;

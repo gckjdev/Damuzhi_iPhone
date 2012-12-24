@@ -21,15 +21,15 @@
 
 @interface HotelRoom : PBGeneratedMessage {
 @private
+  BOOL hasPrice_:1;
   BOOL hasRoomId_:1;
   BOOL hasName_:1;
   BOOL hasBreakfast_:1;
-  BOOL hasPrice_:1;
   BOOL hasBed_:1;
+  Float64 price;
   int32_t roomId;
   NSString* name;
   NSString* breakfast;
-  NSString* price;
   NSString* bed;
 }
 - (BOOL) hasRoomId;
@@ -40,7 +40,7 @@
 @property (readonly) int32_t roomId;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* breakfast;
-@property (readonly, retain) NSString* price;
+@property (readonly) Float64 price;
 @property (readonly, retain) NSString* bed;
 
 + (HotelRoom*) defaultInstance;
@@ -93,8 +93,8 @@
 - (HotelRoom_Builder*) clearBreakfast;
 
 - (BOOL) hasPrice;
-- (NSString*) price;
-- (HotelRoom_Builder*) setPrice:(NSString*) value;
+- (Float64) price;
+- (HotelRoom_Builder*) setPrice:(Float64) value;
 - (HotelRoom_Builder*) clearPrice;
 
 - (BOOL) hasBed;

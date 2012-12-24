@@ -8,6 +8,8 @@
 
 #import "FlightSeatView.h"
 #import "AirHotel.pb.h"
+#import "PriceUtils.h"
+#import "LogUtil.h"
 
 @interface FlightSeatView()
 @property (assign, nonatomic) int index;
@@ -49,9 +51,12 @@
     self.flightSeatNameLabel.text = flightSeat.name;
     self.planeTypeLabel.text = flight.planeType;
     self.remainingCountLabel.text = flightSeat.remainingCount;
-    self.ticketPriceLabel.text = flightSeat.ticketPrice;
-    self.airportAndFuelTax.text = [NSString stringWithFormat:@"%@/%@",flight.adultAirportTax, flight.adultFuelTax];
-    self.priceLabel.text = flightSeat.price;
+    self.ticketPriceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.ticketPrice]];
+    self.airportAndFuelTax.text = [NSString stringWithFormat:@"%@/%@",[PriceUtils priceToString:flight.adultAirportTax], [PriceUtils priceToString:flight.adultFuelTax]];
+    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.price]];
+    
+    PPDebug(@"price:%lf", flightSeat.price);
+    
     self.refundNoteTextView.text = [NSString stringWithFormat:@"                 %@", flightSeat.refundNote];
     self.changeNoteTextView.text = [NSString stringWithFormat:@"                 %@", flightSeat.changeNote];
 }

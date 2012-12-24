@@ -134,42 +134,42 @@
 }
 
 
-- (void)testData
-{
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    for (int i =0 ; i < 30 ; i ++) {
-        Place_Builder *builder = [[[Place_Builder alloc] init] autorelease];
-        [builder setPlaceId:i];
-        [builder setCategoryId:2];
-        [builder setSubCategoryId:2];
-        [builder setName:@"中国大酒店"];
-        [builder setRank:3];
-        [builder setLatitude:34.5];
-        [builder setLongitude:113.7];
-        [builder setIcon:@"http://"];
-        [builder setIntroduction:@"Introduction"];
-        
-        NSMutableArray *roomArray = [[[NSMutableArray alloc] init] autorelease];
-        for (int j = 0 ; j < 3; j ++) {
-            HotelRoom_Builder *rBuilder = [[[HotelRoom_Builder alloc] init] autorelease];
-            
-            [rBuilder setRoomId:j];
-            [rBuilder setName:@"标准间"];
-            [rBuilder setBreakfast:@"有早餐"];
-            [rBuilder setPrice:@"168"];
-            
-            HotelRoom *room = [rBuilder build];
-            [roomArray addObject:room];
-        }
-        
-        [builder addAllRooms:roomArray];
-        
-        Place *hotel = [builder build];
-        [mutableArray addObject:hotel];
-    }
-    
-    self.hotelList = mutableArray;
-}
+//- (void)testData
+//{
+//    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (int i =0 ; i < 30 ; i ++) {
+//        Place_Builder *builder = [[[Place_Builder alloc] init] autorelease];
+//        [builder setPlaceId:i];
+//        [builder setCategoryId:2];
+//        [builder setSubCategoryId:2];
+//        [builder setName:@"中国大酒店"];
+//        [builder setRank:3];
+//        [builder setLatitude:34.5];
+//        [builder setLongitude:113.7];
+//        [builder setIcon:@"http://"];
+//        [builder setIntroduction:@"Introduction"];
+//        
+//        NSMutableArray *roomArray = [[[NSMutableArray alloc] init] autorelease];
+//        for (int j = 0 ; j < 3; j ++) {
+//            HotelRoom_Builder *rBuilder = [[[HotelRoom_Builder alloc] init] autorelease];
+//            
+//            [rBuilder setRoomId:j];
+//            [rBuilder setName:@"标准间"];
+//            [rBuilder setBreakfast:@"有早餐"];
+//            [rBuilder setPrice:@"168"];
+//            
+//            HotelRoom *room = [rBuilder build];
+//            [roomArray addObject:room];
+//        }
+//        
+//        [builder addAllRooms:roomArray];
+//        
+//        Place *hotel = [builder build];
+//        [mutableArray addObject:hotel];
+//    }
+//    
+//    self.hotelList = mutableArray;
+//}
 
 
 
