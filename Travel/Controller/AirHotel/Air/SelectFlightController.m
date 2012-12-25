@@ -126,40 +126,40 @@
                                                               delegate:self];
 }
 
-- (void)testData
-{
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    for (int i = 0 ; i < 20; i++) {
-        Flight_Builder *builder = [[[Flight_Builder alloc] init] autorelease];
-        [builder setFlightNumber:@"CA1893"];
-        [builder setAirlineId:1];
-        [builder setPlaneType:@"大型机"];
-        [builder setPrice:@"1189"];
-        [builder setDepartAirport:@"新白云机场"];
-        [builder setArriveAirport:@"首都机场"];
-        
-        
-        NSMutableArray *seats = [[[NSMutableArray alloc] init] autorelease];
-        for (int j = 0 ; j < 3; j++) {
-            FlightSeat_Builder *seatBuilder = [[[FlightSeat_Builder alloc] init] autorelease];
-            [seatBuilder setCode:[NSString stringWithFormat:@"%d",j]];
-            [seatBuilder setName:@"经济舱"];
-            [seatBuilder setRemainingCount:@"10"];
-            [seatBuilder setTicketPrice:@"200"];
-            [seatBuilder setPrice:@"800"];
-            [seatBuilder setRefundNote:@"退票规则"];
-            [seatBuilder setChangeNote:@"改签规则"];
-            
-            FlightSeat *seat = [seatBuilder build];
-            [seats addObject:seat];
-        }
-        [builder addAllFlightSeats:seats];
-        Flight *flight = [builder build];
-        [mutableArray addObject:flight];
-    }
-    
-    self.dataList = mutableArray;
-}
+//- (void)testData
+//{
+//    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+//    for (int i = 0 ; i < 20; i++) {
+//        Flight_Builder *builder = [[[Flight_Builder alloc] init] autorelease];
+//        [builder setFlightNumber:@"CA1893"];
+//        [builder setAirlineId:1];
+//        [builder setPlaneType:@"大型机"];
+//        [builder setPrice:@"1189"];
+//        [builder setDepartAirport:@"新白云机场"];
+//        [builder setArriveAirport:@"首都机场"];
+//        
+//        
+//        NSMutableArray *seats = [[[NSMutableArray alloc] init] autorelease];
+//        for (int j = 0 ; j < 3; j++) {
+//            FlightSeat_Builder *seatBuilder = [[[FlightSeat_Builder alloc] init] autorelease];
+//            [seatBuilder setCode:[NSString stringWithFormat:@"%d",j]];
+//            [seatBuilder setName:@"经济舱"];
+//            [seatBuilder setRemainingCount:@"10"];
+//            [seatBuilder setTicketPrice:@"200"];
+//            [seatBuilder setPrice:@"800"];
+//            [seatBuilder setRefundNote:@"退票规则"];
+//            [seatBuilder setChangeNote:@"改签规则"];
+//            
+//            FlightSeat *seat = [seatBuilder build];
+//            [seats addObject:seat];
+//        }
+//        [builder addAllFlightSeats:seats];
+//        Flight *flight = [builder build];
+//        [mutableArray addObject:flight];
+//    }
+//    
+//    self.dataList = mutableArray;
+//}
 
 #pragma mark -
 #pragma AirHotelServiceDelegate methods
@@ -233,10 +233,10 @@
         Flight *flight1 = (Flight *)obj1;
         Flight *flight2 = (Flight *)obj2;
         
-        if (isAsc) {
-            return [flight1.price compare:flight2.price options:NSCaseInsensitiveSearch];
+        if (flight1.price >= flight2.price) {
+            return (isAsc ? NSOrderedAscending : NSOrderedDescending);
         } else {
-            return [flight1.price compare:flight2.price options:NSCaseInsensitiveSearch];
+            return (isAsc ? NSOrderedDescending : NSOrderedAscending);
         }
     }];
     
@@ -276,7 +276,7 @@
 }
 
 - (IBAction)clickFliterButton:(id)sender {
-    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:dataList];
+    NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:_allDataList];
     
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:itemList selectedItemIds:_selectedItemList multiOptions:YES needConfirm:YES needShowCount:NO];
     controller.delegate = self;

@@ -11,6 +11,7 @@
 #import "AirHotel.pb.h"
 #import "TimeUtils.h"
 #import "AppManager.h"
+#import "PriceUtils.h"
 
 @implementation FlightCell
 
@@ -50,7 +51,7 @@
 {
     [self clearContent];
     
-    self.priceLabel.text = flight.price;
+    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flight.price]];
     self.discountLabel.text = flight.discount;
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];

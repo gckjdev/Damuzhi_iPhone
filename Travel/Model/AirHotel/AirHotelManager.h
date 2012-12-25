@@ -20,6 +20,7 @@ typedef enum{
 
 + (AirHotelManager *)defaultManager;
 
+- (AirOrder_Builder *)createDefaultAirOrderBuilder;
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder;
 
 - (NSArray *)hotelOrderListFromBuilderList:(NSArray *)builderList;

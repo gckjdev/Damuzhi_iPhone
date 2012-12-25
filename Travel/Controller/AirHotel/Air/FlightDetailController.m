@@ -112,6 +112,10 @@
     
     
     NSString *airlineName = [[AppManager defaultManager] getAirlineName:_flight.airlineId];
+    if (airlineName == nil) {
+        airlineName = @"";
+    }
+    
     self.airlineAndFlightNumberLabel.text = [NSString stringWithFormat:@"%@ %@", airlineName, _flight.flightNumber];
     
     self.departCityLabel.text = _departCityName;

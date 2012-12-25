@@ -18,6 +18,8 @@
 
 @interface SelectAirCityController : PPTableViewController<UISearchBarDelegate, UISearchDisplayDelegate>
 
-- (id)initWithDelegate:(id<SelectAirCityControllerDelegate>)delegate;
+- (id)initWithDelegate:(id<SelectAirCityControllerDelegate>)delegate
+           hasSelected:(BOOL)hasSelected
+        selectedCityId:(int)selectedCityId;
 
 @end

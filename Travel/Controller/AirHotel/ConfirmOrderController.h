@@ -19,6 +19,8 @@
 @property (retain, nonatomic) IBOutlet UIButton *contactPersonButton;
 @property (retain, nonatomic) IBOutlet UIButton *paymentButton;
 
+@property (retain, nonatomic) IBOutlet UILabel *airPirceLabel;
+@property (retain, nonatomic) IBOutlet UILabel *hotelPriceLabel;
 
 - (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
             hotelOrderBuilders:(NSArray *)hotelOrderBuilders

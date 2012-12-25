@@ -13,6 +13,7 @@
 #import "AppManager.h"
 #import "TimeUtils.h"
 #import "LogUtil.h"
+#import "PriceUtils.h"
 
 @implementation ConfirmAirCell
 
@@ -127,8 +128,10 @@
     //self.adultPriceLabel.text =
     //self.childPriceLabel.text =
     
-    self.adultAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", airOrderBuilder.flight.adultAirportTax, airOrderBuilder.flight.adultFuelTax];
-    self.childAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", airOrderBuilder.flight.childAirportTax, airOrderBuilder.flight.childFuelTax];
+    
+    self.adultAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", [PriceUtils priceToString:airOrderBuilder.flight.adultAirportTax], [PriceUtils priceToString:airOrderBuilder.flight.adultFuelTax]];
+    
+    self.childAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", [PriceUtils priceToString:airOrderBuilder.flight.childAirportTax], [PriceUtils priceToString:airOrderBuilder.flight.childFuelTax]];
     
     
     //set passenger

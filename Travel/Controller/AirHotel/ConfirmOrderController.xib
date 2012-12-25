@@ -645,6 +645,22 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">airPirceLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="547180391"/>
+					</object>
+					<int key="connectionID">80</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">hotelPriceLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="395923623"/>
+					</object>
+					<int key="connectionID">81</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
 						<reference key="source" ref="376875396"/>
 						<reference key="destination" ref="372490531"/>
@@ -937,43 +953,37 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">79</int>
+			<int key="maxID">81</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">ConfirmOrderController</string>
 					<string key="superclassName">PPTableViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="clickContactPersonButton:">id</string>
-						<string key="clickOrderButton:">id</string>
-						<string key="clickPaymentButton:">id</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="airPirceLabel">UILabel</string>
+						<string key="contactPersonButton">UIButton</string>
+						<string key="hotelPriceLabel">UILabel</string>
+						<string key="paymentButton">UIButton</string>
 					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="clickContactPersonButton:">
-							<string key="name">clickContactPersonButton:</string>
-							<string key="candidateClassName">id</string>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="airPirceLabel">
+							<string key="name">airPirceLabel</string>
+							<string key="candidateClassName">UILabel</string>
 						</object>
-						<object class="IBActionInfo" key="clickOrderButton:">
-							<string key="name">clickOrderButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="clickPaymentButton:">
-							<string key="name">clickPaymentButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">contactPersonButton</string>
-						<string key="NS.object.0">UIButton</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">contactPersonButton</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
+						<object class="IBToOneOutletInfo" key="contactPersonButton">
 							<string key="name">contactPersonButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-					</object>
+						<object class="IBToOneOutletInfo" key="hotelPriceLabel">
+							<string key="name">hotelPriceLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="paymentButton">
+							<string key="name">paymentButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/ConfirmOrderController.h</string>

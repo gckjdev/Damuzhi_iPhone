@@ -1249,8 +1249,8 @@ static HotelOrder* defaultHotelOrderInstance = nil;
 @property (retain) NSString* code;
 @property (retain) NSString* name;
 @property (retain) NSString* remainingCount;
-@property (retain) NSString* ticketPrice;
-@property (retain) NSString* price;
+@property Float64 ticketPrice;
+@property Float64 price;
 @property (retain) NSString* refundNote;
 @property (retain) NSString* changeNote;
 @property (retain) NSString* reschedule;
@@ -1318,8 +1318,6 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   self.code = nil;
   self.name = nil;
   self.remainingCount = nil;
-  self.ticketPrice = nil;
-  self.price = nil;
   self.refundNote = nil;
   self.changeNote = nil;
   self.reschedule = nil;
@@ -1330,8 +1328,8 @@ static HotelOrder* defaultHotelOrderInstance = nil;
     self.code = @"";
     self.name = @"";
     self.remainingCount = @"";
-    self.ticketPrice = @"";
-    self.price = @"";
+    self.ticketPrice = 0;
+    self.price = 0;
     self.refundNote = @"";
     self.changeNote = @"";
     self.reschedule = @"";
@@ -1370,10 +1368,10 @@ static FlightSeat* defaultFlightSeatInstance = nil;
     [output writeString:3 value:self.remainingCount];
   }
   if (self.hasTicketPrice) {
-    [output writeString:10 value:self.ticketPrice];
+    [output writeDouble:10 value:self.ticketPrice];
   }
   if (self.hasPrice) {
-    [output writeString:11 value:self.price];
+    [output writeDouble:11 value:self.price];
   }
   if (self.hasRefundNote) {
     [output writeString:20 value:self.refundNote];
@@ -1403,10 +1401,10 @@ static FlightSeat* defaultFlightSeatInstance = nil;
     size += computeStringSize(3, self.remainingCount);
   }
   if (self.hasTicketPrice) {
-    size += computeStringSize(10, self.ticketPrice);
+    size += computeDoubleSize(10, self.ticketPrice);
   }
   if (self.hasPrice) {
-    size += computeStringSize(11, self.price);
+    size += computeDoubleSize(11, self.price);
   }
   if (self.hasRefundNote) {
     size += computeStringSize(20, self.refundNote);
@@ -1549,12 +1547,12 @@ static FlightSeat* defaultFlightSeatInstance = nil;
         [self setRemainingCount:[input readString]];
         break;
       }
-      case 82: {
-        [self setTicketPrice:[input readString]];
+      case 81: {
+        [self setTicketPrice:[input readDouble]];
         break;
       }
-      case 90: {
-        [self setPrice:[input readString]];
+      case 89: {
+        [self setPrice:[input readDouble]];
         break;
       }
       case 162: {
@@ -1623,33 +1621,33 @@ static FlightSeat* defaultFlightSeatInstance = nil;
 - (BOOL) hasTicketPrice {
   return result.hasTicketPrice;
 }
-- (NSString*) ticketPrice {
+- (Float64) ticketPrice {
   return result.ticketPrice;
 }
-- (FlightSeat_Builder*) setTicketPrice:(NSString*) value {
+- (FlightSeat_Builder*) setTicketPrice:(Float64) value {
   result.hasTicketPrice = YES;
   result.ticketPrice = value;
   return self;
 }
 - (FlightSeat_Builder*) clearTicketPrice {
   result.hasTicketPrice = NO;
-  result.ticketPrice = @"";
+  result.ticketPrice = 0;
   return self;
 }
 - (BOOL) hasPrice {
   return result.hasPrice;
 }
-- (NSString*) price {
+- (Float64) price {
   return result.price;
 }
-- (FlightSeat_Builder*) setPrice:(NSString*) value {
+- (FlightSeat_Builder*) setPrice:(Float64) value {
   result.hasPrice = YES;
   result.price = value;
   return self;
 }
 - (FlightSeat_Builder*) clearPrice {
   result.hasPrice = NO;
-  result.price = @"";
+  result.price = 0;
   return self;
 }
 - (BOOL) hasRefundNote {
@@ -1706,7 +1704,7 @@ static FlightSeat* defaultFlightSeatInstance = nil;
 @property (retain) NSString* flightNumber;
 @property int32_t airlineId;
 @property (retain) NSString* planeType;
-@property (retain) NSString* price;
+@property Float64 price;
 @property (retain) NSString* discount;
 @property (retain) NSString* departAirport;
 @property (retain) NSString* arriveAirport;
@@ -1714,10 +1712,12 @@ static FlightSeat* defaultFlightSeatInstance = nil;
 @property int32_t arriveDate;
 @property BOOL transit;
 @property (retain) NSString* transitInfo;
-@property (retain) NSString* adultAirportTax;
-@property (retain) NSString* childAirportTax;
-@property (retain) NSString* adultFuelTax;
-@property (retain) NSString* childFuelTax;
+@property Float64 adultAirportTax;
+@property Float64 childAirportTax;
+@property Float64 adultFuelTax;
+@property Float64 childFuelTax;
+@property Float64 insuranceFee;
+@property Float64 sendTicketFee;
 @property (retain) NSMutableArray* mutableFlightSeatsList;
 @end
 
@@ -1833,19 +1833,28 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   hasChildFuelTax_ = !!value;
 }
 @synthesize childFuelTax;
+- (BOOL) hasInsuranceFee {
+  return !!hasInsuranceFee_;
+}
+- (void) setHasInsuranceFee:(BOOL) value {
+  hasInsuranceFee_ = !!value;
+}
+@synthesize insuranceFee;
+- (BOOL) hasSendTicketFee {
+  return !!hasSendTicketFee_;
+}
+- (void) setHasSendTicketFee:(BOOL) value {
+  hasSendTicketFee_ = !!value;
+}
+@synthesize sendTicketFee;
 @synthesize mutableFlightSeatsList;
 - (void) dealloc {
   self.flightNumber = nil;
   self.planeType = nil;
-  self.price = nil;
   self.discount = nil;
   self.departAirport = nil;
   self.arriveAirport = nil;
   self.transitInfo = nil;
-  self.adultAirportTax = nil;
-  self.childAirportTax = nil;
-  self.adultFuelTax = nil;
-  self.childFuelTax = nil;
   self.mutableFlightSeatsList = nil;
   [super dealloc];
 }
@@ -1854,7 +1863,7 @@ static FlightSeat* defaultFlightSeatInstance = nil;
     self.flightNumber = @"";
     self.airlineId = 0;
     self.planeType = @"";
-    self.price = @"";
+    self.price = 0;
     self.discount = @"";
     self.departAirport = @"";
     self.arriveAirport = @"";
@@ -1862,10 +1871,12 @@ static FlightSeat* defaultFlightSeatInstance = nil;
     self.arriveDate = 0;
     self.transit = NO;
     self.transitInfo = @"";
-    self.adultAirportTax = @"";
-    self.childAirportTax = @"";
-    self.adultFuelTax = @"";
-    self.childFuelTax = @"";
+    self.adultAirportTax = 0;
+    self.childAirportTax = 0;
+    self.adultFuelTax = 0;
+    self.childFuelTax = 0;
+    self.insuranceFee = 0;
+    self.sendTicketFee = 0;
   }
   return self;
 }
@@ -1913,7 +1924,7 @@ static Flight* defaultFlightInstance = nil;
     [output writeString:3 value:self.planeType];
   }
   if (self.hasPrice) {
-    [output writeString:4 value:self.price];
+    [output writeDouble:4 value:self.price];
   }
   if (self.hasDiscount) {
     [output writeString:5 value:self.discount];
@@ -1937,16 +1948,22 @@ static Flight* defaultFlightInstance = nil;
     [output writeString:11 value:self.transitInfo];
   }
   if (self.hasAdultAirportTax) {
-    [output writeString:20 value:self.adultAirportTax];
+    [output writeDouble:20 value:self.adultAirportTax];
   }
   if (self.hasChildAirportTax) {
-    [output writeString:21 value:self.childAirportTax];
+    [output writeDouble:21 value:self.childAirportTax];
   }
   if (self.hasAdultFuelTax) {
-    [output writeString:22 value:self.adultFuelTax];
+    [output writeDouble:22 value:self.adultFuelTax];
   }
   if (self.hasChildFuelTax) {
-    [output writeString:23 value:self.childFuelTax];
+    [output writeDouble:23 value:self.childFuelTax];
+  }
+  if (self.hasInsuranceFee) {
+    [output writeDouble:24 value:self.insuranceFee];
+  }
+  if (self.hasSendTicketFee) {
+    [output writeDouble:25 value:self.sendTicketFee];
   }
   for (FlightSeat* element in self.flightSeatsList) {
     [output writeMessage:30 value:element];
@@ -1970,7 +1987,7 @@ static Flight* defaultFlightInstance = nil;
     size += computeStringSize(3, self.planeType);
   }
   if (self.hasPrice) {
-    size += computeStringSize(4, self.price);
+    size += computeDoubleSize(4, self.price);
   }
   if (self.hasDiscount) {
     size += computeStringSize(5, self.discount);
@@ -1994,16 +2011,22 @@ static Flight* defaultFlightInstance = nil;
     size += computeStringSize(11, self.transitInfo);
   }
   if (self.hasAdultAirportTax) {
-    size += computeStringSize(20, self.adultAirportTax);
+    size += computeDoubleSize(20, self.adultAirportTax);
   }
   if (self.hasChildAirportTax) {
-    size += computeStringSize(21, self.childAirportTax);
+    size += computeDoubleSize(21, self.childAirportTax);
   }
   if (self.hasAdultFuelTax) {
-    size += computeStringSize(22, self.adultFuelTax);
+    size += computeDoubleSize(22, self.adultFuelTax);
   }
   if (self.hasChildFuelTax) {
-    size += computeStringSize(23, self.childFuelTax);
+    size += computeDoubleSize(23, self.childFuelTax);
+  }
+  if (self.hasInsuranceFee) {
+    size += computeDoubleSize(24, self.insuranceFee);
+  }
+  if (self.hasSendTicketFee) {
+    size += computeDoubleSize(25, self.sendTicketFee);
   }
   for (FlightSeat* element in self.flightSeatsList) {
     size += computeMessageSize(30, element);
@@ -2128,6 +2151,12 @@ static Flight* defaultFlightInstance = nil;
   if (other.hasChildFuelTax) {
     [self setChildFuelTax:other.childFuelTax];
   }
+  if (other.hasInsuranceFee) {
+    [self setInsuranceFee:other.insuranceFee];
+  }
+  if (other.hasSendTicketFee) {
+    [self setSendTicketFee:other.sendTicketFee];
+  }
   if (other.mutableFlightSeatsList.count > 0) {
     if (result.mutableFlightSeatsList == nil) {
       result.mutableFlightSeatsList = [NSMutableArray array];
@@ -2167,8 +2196,8 @@ static Flight* defaultFlightInstance = nil;
         [self setPlaneType:[input readString]];
         break;
       }
-      case 34: {
-        [self setPrice:[input readString]];
+      case 33: {
+        [self setPrice:[input readDouble]];
         break;
       }
       case 42: {
@@ -2199,20 +2228,28 @@ static Flight* defaultFlightInstance = nil;
         [self setTransitInfo:[input readString]];
         break;
       }
-      case 162: {
-        [self setAdultAirportTax:[input readString]];
+      case 161: {
+        [self setAdultAirportTax:[input readDouble]];
         break;
       }
-      case 170: {
-        [self setChildAirportTax:[input readString]];
+      case 169: {
+        [self setChildAirportTax:[input readDouble]];
         break;
       }
-      case 178: {
-        [self setAdultFuelTax:[input readString]];
+      case 177: {
+        [self setAdultFuelTax:[input readDouble]];
         break;
       }
-      case 186: {
-        [self setChildFuelTax:[input readString]];
+      case 185: {
+        [self setChildFuelTax:[input readDouble]];
+        break;
+      }
+      case 193: {
+        [self setInsuranceFee:[input readDouble]];
+        break;
+      }
+      case 201: {
+        [self setSendTicketFee:[input readDouble]];
         break;
       }
       case 242: {
@@ -2275,17 +2312,17 @@ static Flight* defaultFlightInstance = nil;
 - (BOOL) hasPrice {
   return result.hasPrice;
 }
-- (NSString*) price {
+- (Float64) price {
   return result.price;
 }
-- (Flight_Builder*) setPrice:(NSString*) value {
+- (Flight_Builder*) setPrice:(Float64) value {
   result.hasPrice = YES;
   result.price = value;
   return self;
 }
 - (Flight_Builder*) clearPrice {
   result.hasPrice = NO;
-  result.price = @"";
+  result.price = 0;
   return self;
 }
 - (BOOL) hasDiscount {
@@ -2403,65 +2440,97 @@ static Flight* defaultFlightInstance = nil;
 - (BOOL) hasAdultAirportTax {
   return result.hasAdultAirportTax;
 }
-- (NSString*) adultAirportTax {
+- (Float64) adultAirportTax {
   return result.adultAirportTax;
 }
-- (Flight_Builder*) setAdultAirportTax:(NSString*) value {
+- (Flight_Builder*) setAdultAirportTax:(Float64) value {
   result.hasAdultAirportTax = YES;
   result.adultAirportTax = value;
   return self;
 }
 - (Flight_Builder*) clearAdultAirportTax {
   result.hasAdultAirportTax = NO;
-  result.adultAirportTax = @"";
+  result.adultAirportTax = 0;
   return self;
 }
 - (BOOL) hasChildAirportTax {
   return result.hasChildAirportTax;
 }
-- (NSString*) childAirportTax {
+- (Float64) childAirportTax {
   return result.childAirportTax;
 }
-- (Flight_Builder*) setChildAirportTax:(NSString*) value {
+- (Flight_Builder*) setChildAirportTax:(Float64) value {
   result.hasChildAirportTax = YES;
   result.childAirportTax = value;
   return self;
 }
 - (Flight_Builder*) clearChildAirportTax {
   result.hasChildAirportTax = NO;
-  result.childAirportTax = @"";
+  result.childAirportTax = 0;
   return self;
 }
 - (BOOL) hasAdultFuelTax {
   return result.hasAdultFuelTax;
 }
-- (NSString*) adultFuelTax {
+- (Float64) adultFuelTax {
   return result.adultFuelTax;
 }
-- (Flight_Builder*) setAdultFuelTax:(NSString*) value {
+- (Flight_Builder*) setAdultFuelTax:(Float64) value {
   result.hasAdultFuelTax = YES;
   result.adultFuelTax = value;
   return self;
 }
 - (Flight_Builder*) clearAdultFuelTax {
   result.hasAdultFuelTax = NO;
-  result.adultFuelTax = @"";
+  result.adultFuelTax = 0;
   return self;
 }
 - (BOOL) hasChildFuelTax {
   return result.hasChildFuelTax;
 }
-- (NSString*) childFuelTax {
+- (Float64) childFuelTax {
   return result.childFuelTax;
 }
-- (Flight_Builder*) setChildFuelTax:(NSString*) value {
+- (Flight_Builder*) setChildFuelTax:(Float64) value {
   result.hasChildFuelTax = YES;
   result.childFuelTax = value;
   return self;
 }
 - (Flight_Builder*) clearChildFuelTax {
   result.hasChildFuelTax = NO;
-  result.childFuelTax = @"";
+  result.childFuelTax = 0;
+  return self;
+}
+- (BOOL) hasInsuranceFee {
+  return result.hasInsuranceFee;
+}
+- (Float64) insuranceFee {
+  return result.insuranceFee;
+}
+- (Flight_Builder*) setInsuranceFee:(Float64) value {
+  result.hasInsuranceFee = YES;
+  result.insuranceFee = value;
+  return self;
+}
+- (Flight_Builder*) clearInsuranceFee {
+  result.hasInsuranceFee = NO;
+  result.insuranceFee = 0;
+  return self;
+}
+- (BOOL) hasSendTicketFee {
+  return result.hasSendTicketFee;
+}
+- (Float64) sendTicketFee {
+  return result.sendTicketFee;
+}
+- (Flight_Builder*) setSendTicketFee:(Float64) value {
+  result.hasSendTicketFee = YES;
+  result.sendTicketFee = value;
+  return self;
+}
+- (Flight_Builder*) clearSendTicketFee {
+  result.hasSendTicketFee = NO;
+  result.sendTicketFee = 0;
   return self;
 }
 - (NSArray*) flightSeatsList {
@@ -2703,8 +2772,6 @@ static FlightList* defaultFlightListInstance = nil;
 @property int32_t flightDate;
 @property BOOL insurance;
 @property BOOL sendTicket;
-@property (retain) NSString* insuranceFee;
-@property (retain) NSString* sendTicketFee;
 @property (retain) NSMutableArray* mutablePassengerList;
 @property (retain) Flight* flight;
 @property (retain) FlightSeat* flightSeat;
@@ -2764,20 +2831,6 @@ static FlightList* defaultFlightListInstance = nil;
 - (void) setSendTicket:(BOOL) value {
   sendTicket_ = !!value;
 }
-- (BOOL) hasInsuranceFee {
-  return !!hasInsuranceFee_;
-}
-- (void) setHasInsuranceFee:(BOOL) value {
-  hasInsuranceFee_ = !!value;
-}
-@synthesize insuranceFee;
-- (BOOL) hasSendTicketFee {
-  return !!hasSendTicketFee_;
-}
-- (void) setHasSendTicketFee:(BOOL) value {
-  hasSendTicketFee_ = !!value;
-}
-@synthesize sendTicketFee;
 @synthesize mutablePassengerList;
 - (BOOL) hasFlight {
   return !!hasFlight_;
@@ -2796,8 +2849,6 @@ static FlightList* defaultFlightListInstance = nil;
 - (void) dealloc {
   self.flightNumber = nil;
   self.flightSeatCode = nil;
-  self.insuranceFee = nil;
-  self.sendTicketFee = nil;
   self.mutablePassengerList = nil;
   self.flight = nil;
   self.flightSeat = nil;
@@ -2811,8 +2862,6 @@ static FlightList* defaultFlightListInstance = nil;
     self.flightDate = 0;
     self.insurance = NO;
     self.sendTicket = NO;
-    self.insuranceFee = @"";
-    self.sendTicketFee = @"";
     self.flight = [Flight defaultInstance];
     self.flightSeat = [FlightSeat defaultInstance];
   }
@@ -2875,12 +2924,6 @@ static AirOrder* defaultAirOrderInstance = nil;
   if (self.hasSendTicket) {
     [output writeBool:6 value:self.sendTicket];
   }
-  if (self.hasInsuranceFee) {
-    [output writeString:10 value:self.insuranceFee];
-  }
-  if (self.hasSendTicketFee) {
-    [output writeString:11 value:self.sendTicketFee];
-  }
   for (Person* element in self.passengerList) {
     [output writeMessage:20 value:element];
   }
@@ -2916,12 +2959,6 @@ static AirOrder* defaultAirOrderInstance = nil;
   }
   if (self.hasSendTicket) {
     size += computeBoolSize(6, self.sendTicket);
-  }
-  if (self.hasInsuranceFee) {
-    size += computeStringSize(10, self.insuranceFee);
-  }
-  if (self.hasSendTicketFee) {
-    size += computeStringSize(11, self.sendTicketFee);
   }
   for (Person* element in self.passengerList) {
     size += computeMessageSize(20, element);
@@ -3025,12 +3062,6 @@ static AirOrder* defaultAirOrderInstance = nil;
   if (other.hasSendTicket) {
     [self setSendTicket:other.sendTicket];
   }
-  if (other.hasInsuranceFee) {
-    [self setInsuranceFee:other.insuranceFee];
-  }
-  if (other.hasSendTicketFee) {
-    [self setSendTicketFee:other.sendTicketFee];
-  }
   if (other.mutablePassengerList.count > 0) {
     if (result.mutablePassengerList == nil) {
       result.mutablePassengerList = [NSMutableArray array];
@@ -3086,14 +3117,6 @@ static AirOrder* defaultAirOrderInstance = nil;
       }
       case 48: {
         [self setSendTicket:[input readBool]];
-        break;
-      }
-      case 82: {
-        [self setInsuranceFee:[input readString]];
-        break;
-      }
-      case 90: {
-        [self setSendTicketFee:[input readString]];
         break;
       }
       case 162: {
@@ -3217,38 +3240,6 @@ static AirOrder* defaultAirOrderInstance = nil;
 - (AirOrder_Builder*) clearSendTicket {
   result.hasSendTicket = NO;
   result.sendTicket = NO;
-  return self;
-}
-- (BOOL) hasInsuranceFee {
-  return result.hasInsuranceFee;
-}
-- (NSString*) insuranceFee {
-  return result.insuranceFee;
-}
-- (AirOrder_Builder*) setInsuranceFee:(NSString*) value {
-  result.hasInsuranceFee = YES;
-  result.insuranceFee = value;
-  return self;
-}
-- (AirOrder_Builder*) clearInsuranceFee {
-  result.hasInsuranceFee = NO;
-  result.insuranceFee = @"";
-  return self;
-}
-- (BOOL) hasSendTicketFee {
-  return result.hasSendTicketFee;
-}
-- (NSString*) sendTicketFee {
-  return result.sendTicketFee;
-}
-- (AirOrder_Builder*) setSendTicketFee:(NSString*) value {
-  result.hasSendTicketFee = YES;
-  result.sendTicketFee = value;
-  return self;
-}
-- (AirOrder_Builder*) clearSendTicketFee {
-  result.hasSendTicketFee = NO;
-  result.sendTicketFee = @"";
   return self;
 }
 - (NSArray*) passengerList {
@@ -4051,8 +4042,8 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
 @property int32_t orderId;
 @property int32_t orderDate;
 @property int32_t orderStatus;
-@property (retain) NSString* hotelPrice;
-@property (retain) NSString* airPrice;
+@property Float64 hotelPrice;
+@property Float64 airPrice;
 @property AirPaymentStatus airPaymentStatus;
 @end
 
@@ -4159,8 +4150,6 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
   self.mutableHotelOrdersList = nil;
   self.paymentInfo = nil;
   self.contactPerson = nil;
-  self.hotelPrice = nil;
-  self.airPrice = nil;
   [super dealloc];
 }
 - (id) init {
@@ -4175,8 +4164,8 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
     self.orderId = 0;
     self.orderDate = 0;
     self.orderStatus = 0;
-    self.hotelPrice = @"";
-    self.airPrice = @"";
+    self.hotelPrice = 0;
+    self.airPrice = 0;
     self.airPaymentStatus = AirPaymentStatusAirPaymentNotPaid;
   }
   return self;
@@ -4263,10 +4252,10 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
     [output writeInt32:22 value:self.orderStatus];
   }
   if (self.hasHotelPrice) {
-    [output writeString:30 value:self.hotelPrice];
+    [output writeDouble:30 value:self.hotelPrice];
   }
   if (self.hasAirPrice) {
-    [output writeString:31 value:self.airPrice];
+    [output writeDouble:31 value:self.airPrice];
   }
   if (self.hasAirPaymentStatus) {
     [output writeEnum:33 value:self.airPaymentStatus];
@@ -4317,10 +4306,10 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
     size += computeInt32Size(22, self.orderStatus);
   }
   if (self.hasHotelPrice) {
-    size += computeStringSize(30, self.hotelPrice);
+    size += computeDoubleSize(30, self.hotelPrice);
   }
   if (self.hasAirPrice) {
-    size += computeStringSize(31, self.airPrice);
+    size += computeDoubleSize(31, self.airPrice);
   }
   if (self.hasAirPaymentStatus) {
     size += computeEnumSize(33, self.airPaymentStatus);
@@ -4534,12 +4523,12 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
         [self setOrderStatus:[input readInt32]];
         break;
       }
-      case 242: {
-        [self setHotelPrice:[input readString]];
+      case 241: {
+        [self setHotelPrice:[input readDouble]];
         break;
       }
-      case 250: {
-        [self setAirPrice:[input readString]];
+      case 249: {
+        [self setAirPrice:[input readDouble]];
         break;
       }
       case 264: {
@@ -4803,33 +4792,33 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
 - (BOOL) hasHotelPrice {
   return result.hasHotelPrice;
 }
-- (NSString*) hotelPrice {
+- (Float64) hotelPrice {
   return result.hotelPrice;
 }
-- (AirHotelOrder_Builder*) setHotelPrice:(NSString*) value {
+- (AirHotelOrder_Builder*) setHotelPrice:(Float64) value {
   result.hasHotelPrice = YES;
   result.hotelPrice = value;
   return self;
 }
 - (AirHotelOrder_Builder*) clearHotelPrice {
   result.hasHotelPrice = NO;
-  result.hotelPrice = @"";
+  result.hotelPrice = 0;
   return self;
 }
 - (BOOL) hasAirPrice {
   return result.hasAirPrice;
 }
-- (NSString*) airPrice {
+- (Float64) airPrice {
   return result.airPrice;
 }
-- (AirHotelOrder_Builder*) setAirPrice:(NSString*) value {
+- (AirHotelOrder_Builder*) setAirPrice:(Float64) value {
   result.hasAirPrice = YES;
   result.airPrice = value;
   return self;
 }
 - (AirHotelOrder_Builder*) clearAirPrice {
   result.hasAirPrice = NO;
-  result.airPrice = @"";
+  result.airPrice = 0;
   return self;
 }
 - (BOOL) hasAirPaymentStatus {

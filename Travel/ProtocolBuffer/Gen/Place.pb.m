@@ -23,7 +23,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @property int32_t roomId;
 @property (retain) NSString* name;
 @property (retain) NSString* breakfast;
-@property (retain) NSString* price;
+@property Float64 price;
 @property (retain) NSString* bed;
 @end
 
@@ -67,7 +67,6 @@ static PBExtensionRegistry* extensionRegistry = nil;
 - (void) dealloc {
   self.name = nil;
   self.breakfast = nil;
-  self.price = nil;
   self.bed = nil;
   [super dealloc];
 }
@@ -76,7 +75,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     self.roomId = 0;
     self.name = @"";
     self.breakfast = @"";
-    self.price = @"";
+    self.price = 0;
     self.bed = @"";
   }
   return self;
@@ -113,7 +112,7 @@ static HotelRoom* defaultHotelRoomInstance = nil;
     [output writeString:3 value:self.breakfast];
   }
   if (self.hasPrice) {
-    [output writeString:4 value:self.price];
+    [output writeDouble:4 value:self.price];
   }
   if (self.hasBed) {
     [output writeString:5 value:self.bed];
@@ -137,7 +136,7 @@ static HotelRoom* defaultHotelRoomInstance = nil;
     size += computeStringSize(3, self.breakfast);
   }
   if (self.hasPrice) {
-    size += computeStringSize(4, self.price);
+    size += computeDoubleSize(4, self.price);
   }
   if (self.hasBed) {
     size += computeStringSize(5, self.bed);
@@ -265,8 +264,8 @@ static HotelRoom* defaultHotelRoomInstance = nil;
         [self setBreakfast:[input readString]];
         break;
       }
-      case 34: {
-        [self setPrice:[input readString]];
+      case 33: {
+        [self setPrice:[input readDouble]];
         break;
       }
       case 42: {
@@ -327,17 +326,17 @@ static HotelRoom* defaultHotelRoomInstance = nil;
 - (BOOL) hasPrice {
   return result.hasPrice;
 }
-- (NSString*) price {
+- (Float64) price {
   return result.price;
 }
-- (HotelRoom_Builder*) setPrice:(NSString*) value {
+- (HotelRoom_Builder*) setPrice:(Float64) value {
   result.hasPrice = YES;
   result.price = value;
   return self;
 }
 - (HotelRoom_Builder*) clearPrice {
   result.hasPrice = NO;
-  result.price = @"";
+  result.price = 0;
   return self;
 }
 - (BOOL) hasBed {
