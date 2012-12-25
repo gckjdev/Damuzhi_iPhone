@@ -21,6 +21,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *arriveAirportLabel;
 @property (retain, nonatomic) IBOutlet UILabel *airlineNameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *flightNumberLabel;
+@property (retain, nonatomic) IBOutlet UIImageView *areLineLogo;
 
 - (void)setCellWithFlight:(Flight *)flight;
 

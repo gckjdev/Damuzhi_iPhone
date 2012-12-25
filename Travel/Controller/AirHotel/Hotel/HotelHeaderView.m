@@ -16,6 +16,7 @@
 @interface HotelHeaderView ()
 
 @property (assign, nonatomic) NSInteger section;
+@property (assign, nonatomic) int placeId;
 
 @end
 
@@ -60,7 +61,7 @@
          isSelected:(BOOL)isSelected
 {
     self.section = section;
-    
+    self.placeId = hotel.placeId;
     self.selectButton.selected = isSelected;
     
     self.nameLabel.text = hotel.name;
@@ -75,7 +76,7 @@
     self.starLabel.text = [PlaceUtils hotelStarToString:hotel.hotelStar];
     
     //set price
-    self.priceLabel.text = [NSString stringWithFormat:@"参考价格:%@",[PlaceUtils getPrice:hotel]];
+    self.priceLabel.text = [NSString stringWithFormat:@"%@",[PlaceUtils getPrice:hotel]];
     
     //set rank
     for (int tag = 1 ; tag <= 3; tag ++) {
@@ -103,6 +104,12 @@
 - (IBAction)clickSelectButton:(id)sender {
     if ([_delegate respondsToSelector:@selector(didClickSelectButton:)]) {
         [_delegate didClickSelectButton:_section];
+    }
+}
+
+- (IBAction)clickHotelButton:(id)sender {
+    if ([_delegate respondsToSelector:@selector(didClickHotel:)]) {
+        [_delegate didClickHotel:_placeId];
     }
 }
 

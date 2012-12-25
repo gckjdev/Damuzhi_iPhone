@@ -16,6 +16,7 @@
 #import "AirHotelManager.h"
 #import "UserManager.h"
 #import "LoginController.h"
+#import "CommonWebController.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
     GO_DATE = 0,
@@ -598,6 +599,39 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     [dataTableView reloadData];
+}
+
+- (IBAction)clickBookNoteButton:(id)sender {
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[[AppManager defaultManager] getAirHotelBookingNotice]];
+    controller.title = @"预订说明";
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+    
+}
+
+
+- (IBAction)clickCustomerServiceTelephone:(id)sender
+{
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    for(NSString* title in [[AppManager defaultManager] getServicePhoneList]){
+        [actionSheet addButtonWithTitle:title];
+    }
+    [actionSheet addButtonWithTitle:NSLS(@"返回")];
+    [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    [actionSheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
+    NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
+    //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    [UIUtils makeCall:phone];
 }
 
 @end

@@ -12,6 +12,8 @@
 #import "FontSize.h"
 #import "AppManager.h"
 #import "AirHotel.pb.h"
+#import "CommonPlaceDetailController.h"
+#import "PPNetworkRequest.h"
 
 @interface SelectHotelController ()
 
@@ -320,6 +322,30 @@
     }
     
     [self.dataTableView reloadData];
+}
+
+- (void)didClickHotel:(int)placeId
+{
+    [[PlaceService defaultService] findPlace:placeId viewController:self];
+}
+
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+                  place:(Place *)place
+{
+    if (resultCode != ERROR_SUCCESS) {
+        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark -

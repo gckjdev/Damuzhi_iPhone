@@ -10,6 +10,7 @@
 #import "RoomCell.h"
 #import "HotelHeaderView.h"
 #import "AirHotelService.h"
+#import "PlaceService.h"
 
 @protocol SelectHotelControllerDelegate <NSObject>
 
@@ -19,7 +20,7 @@
 @end
 
 
-@interface SelectHotelController : PPTableViewController<AirHotelServiceDelegate,HotelHeaderViewDelegate,RoomCellDelegate>
+@interface SelectHotelController : PPTableViewController<AirHotelServiceDelegate,HotelHeaderViewDelegate,RoomCellDelegate, PlaceServiceDelegate>
 
 - (id)initWithCheckInDate:(NSDate *)checkInDate
              checkOutDate:(NSDate *)checkOutDate
