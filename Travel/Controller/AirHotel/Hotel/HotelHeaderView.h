@@ -13,6 +13,7 @@
 
 @optional
 - (void)didClickSelectButton:(NSInteger)section;
+- (void)didClickHotel:(int)placeId;
 @end
 
 

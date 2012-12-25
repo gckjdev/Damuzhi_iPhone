@@ -183,7 +183,7 @@
     }
     [actionSheet addButtonWithTitle:NSLS(@"返回")];
     [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
-    [actionSheet showInView:self.view];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
     [actionSheet release];
     
 }

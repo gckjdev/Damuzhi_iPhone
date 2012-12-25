@@ -12,6 +12,7 @@
 #import "TimeUtils.h"
 #import "AppManager.h"
 #import "PriceUtils.h"
+#import "UIImageView+WebCache.h"
 
 @implementation FlightCell
 
@@ -25,6 +26,7 @@
     [_arriveAirportLabel release];
     [_airlineNameLabel release];
     [_flightNumberLabel release];
+    [_areLineLogo release];
     [super dealloc];
 }
 
@@ -51,8 +53,17 @@
 {
     [self clearContent];
     
-    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flight.price]];
-    self.discountLabel.text = flight.discount;
+    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToString:flight.price]];
+    
+    if (flight.discount.length == 0) {
+        self.discountLabel.text = @"无折扣";
+    }else {
+        self.discountLabel.text = flight.discount;
+    }
+    
+    [self.areLineLogo setImageWithURL:[NSURL URLWithString:[[AppManager defaultManager] getAirlineLogo:flight.airlineId]] placeholderImage:nil success:^(UIImage *image, BOOL cached) {
+    } failure:^(NSError *error) {
+    }];
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];
     self.departDateLabel.text = dateToChineseStringByFormat(departDate, FLIGHT_TIME_FORMAT);

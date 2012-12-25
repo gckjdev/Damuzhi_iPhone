@@ -13,12 +13,12 @@
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
 #import "FontSize.h"
+#import "DeviceDetection.h"
 @implementation CommonWebController
 
 @synthesize htmlPath = _htmlPath;
 @synthesize webView;
 @synthesize dataSource;
-//@synthesize scrollView;
 
 
 - (CommonWebController*)initWithWebUrl:(NSString*)htmlPath
@@ -70,22 +70,19 @@
             [self.webView loadRequest:request];        
         }
     }
-//    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height + 1);
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)];
-    [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
-//    [scrollView addSubview:imageView];
-//    [imageView release];
     
-    [webView.scrollView addSubview:imageView];
+    if ([DeviceDetection isOS5]) {
+        UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, -250, 320, 250)] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_up.png"]];
+        [webView.scrollView addSubview:imageView];
+    }
     
-//    scrollView.backgroundColor = [UIColor colorWithRed:227.0/255.0 green:227.0/255.0 blue:230.0/255.0 alpha:1];
     webView.backgroundColor = [UIColor colorWithRed:211/255.0 green:215/255.0 blue:218/255.0 alpha:1];
 }
 
 - (void)viewDidUnload
 {
     [self setWebView:nil];
-//    [self setScrollView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -103,7 +100,7 @@
 - (void)dealloc {
     [_htmlPath release];
     [webView release];
-//    [scrollView release];
+
     [super dealloc];
 }
 
@@ -121,10 +118,12 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView1
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView1.scrollView.contentSize.height, 320, 250)];
-    [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
-    [webView1.scrollView addSubview:imageView];
-    [imageView release];
+    if ([DeviceDetection isOS5]) {
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView1.scrollView.contentSize.height, 320, 250)];
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [webView1.scrollView addSubview:imageView];
+        [imageView release];
+    }
     
     [self hideActivity];
  

@@ -1319,6 +1319,16 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+- (NSString *)getAirlineLogo:(int)airlineId
+{
+    for (NameIdPair *nameIdPair in _app.airlinesList) {
+        if (airlineId == nameIdPair.id) {
+            return nameIdPair.image;
+        }
+    }
+    return nil;
+}
+
 
 - (BOOL)isHasItem:(NSArray *)itemList airlineId:(int)airlineId
 {
@@ -1346,6 +1356,11 @@ static AppManager* _defaultAppManager = nil;
     }
     
     return airlineList;
+}
+
+- (NSString *)getAirHotelBookingNotice
+{
+    return _app.airHotelBookingNotice;
 }
 
 @end

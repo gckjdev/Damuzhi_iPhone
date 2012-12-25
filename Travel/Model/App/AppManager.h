@@ -117,6 +117,8 @@
 - (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter;
 - (NSString *)getAirCityName:(int)cityId;
 - (NSString *)getAirlineName:(int)airlineId;
+- (NSString *)getAirlineLogo:(int)airlineId;
 - (NSArray *)getAirlineItemList:(NSArray *)flightList;
+- (NSString *)getAirHotelBookingNotice;
 
 @end
