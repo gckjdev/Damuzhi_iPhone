@@ -1249,7 +1249,8 @@ static HotelOrder* defaultHotelOrderInstance = nil;
 @property (retain) NSString* code;
 @property (retain) NSString* name;
 @property (retain) NSString* remainingCount;
-@property Float64 ticketPrice;
+@property Float64 adultTicketPrice;
+@property Float64 childTicketPrice;
 @property Float64 price;
 @property (retain) NSString* refundNote;
 @property (retain) NSString* changeNote;
@@ -1279,13 +1280,20 @@ static HotelOrder* defaultHotelOrderInstance = nil;
   hasRemainingCount_ = !!value;
 }
 @synthesize remainingCount;
-- (BOOL) hasTicketPrice {
-  return !!hasTicketPrice_;
+- (BOOL) hasAdultTicketPrice {
+  return !!hasAdultTicketPrice_;
 }
-- (void) setHasTicketPrice:(BOOL) value {
-  hasTicketPrice_ = !!value;
+- (void) setHasAdultTicketPrice:(BOOL) value {
+  hasAdultTicketPrice_ = !!value;
 }
-@synthesize ticketPrice;
+@synthesize adultTicketPrice;
+- (BOOL) hasChildTicketPrice {
+  return !!hasChildTicketPrice_;
+}
+- (void) setHasChildTicketPrice:(BOOL) value {
+  hasChildTicketPrice_ = !!value;
+}
+@synthesize childTicketPrice;
 - (BOOL) hasPrice {
   return !!hasPrice_;
 }
@@ -1328,7 +1336,8 @@ static HotelOrder* defaultHotelOrderInstance = nil;
     self.code = @"";
     self.name = @"";
     self.remainingCount = @"";
-    self.ticketPrice = 0;
+    self.adultTicketPrice = 0;
+    self.childTicketPrice = 0;
     self.price = 0;
     self.refundNote = @"";
     self.changeNote = @"";
@@ -1367,11 +1376,14 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   if (self.hasRemainingCount) {
     [output writeString:3 value:self.remainingCount];
   }
-  if (self.hasTicketPrice) {
-    [output writeDouble:10 value:self.ticketPrice];
+  if (self.hasAdultTicketPrice) {
+    [output writeDouble:10 value:self.adultTicketPrice];
+  }
+  if (self.hasChildTicketPrice) {
+    [output writeDouble:11 value:self.childTicketPrice];
   }
   if (self.hasPrice) {
-    [output writeDouble:11 value:self.price];
+    [output writeDouble:12 value:self.price];
   }
   if (self.hasRefundNote) {
     [output writeString:20 value:self.refundNote];
@@ -1400,11 +1412,14 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   if (self.hasRemainingCount) {
     size += computeStringSize(3, self.remainingCount);
   }
-  if (self.hasTicketPrice) {
-    size += computeDoubleSize(10, self.ticketPrice);
+  if (self.hasAdultTicketPrice) {
+    size += computeDoubleSize(10, self.adultTicketPrice);
+  }
+  if (self.hasChildTicketPrice) {
+    size += computeDoubleSize(11, self.childTicketPrice);
   }
   if (self.hasPrice) {
-    size += computeDoubleSize(11, self.price);
+    size += computeDoubleSize(12, self.price);
   }
   if (self.hasRefundNote) {
     size += computeStringSize(20, self.refundNote);
@@ -1499,8 +1514,11 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   if (other.hasRemainingCount) {
     [self setRemainingCount:other.remainingCount];
   }
-  if (other.hasTicketPrice) {
-    [self setTicketPrice:other.ticketPrice];
+  if (other.hasAdultTicketPrice) {
+    [self setAdultTicketPrice:other.adultTicketPrice];
+  }
+  if (other.hasChildTicketPrice) {
+    [self setChildTicketPrice:other.childTicketPrice];
   }
   if (other.hasPrice) {
     [self setPrice:other.price];
@@ -1548,10 +1566,14 @@ static FlightSeat* defaultFlightSeatInstance = nil;
         break;
       }
       case 81: {
-        [self setTicketPrice:[input readDouble]];
+        [self setAdultTicketPrice:[input readDouble]];
         break;
       }
       case 89: {
+        [self setChildTicketPrice:[input readDouble]];
+        break;
+      }
+      case 97: {
         [self setPrice:[input readDouble]];
         break;
       }
@@ -1618,20 +1640,36 @@ static FlightSeat* defaultFlightSeatInstance = nil;
   result.remainingCount = @"";
   return self;
 }
-- (BOOL) hasTicketPrice {
-  return result.hasTicketPrice;
+- (BOOL) hasAdultTicketPrice {
+  return result.hasAdultTicketPrice;
 }
-- (Float64) ticketPrice {
-  return result.ticketPrice;
+- (Float64) adultTicketPrice {
+  return result.adultTicketPrice;
 }
-- (FlightSeat_Builder*) setTicketPrice:(Float64) value {
-  result.hasTicketPrice = YES;
-  result.ticketPrice = value;
+- (FlightSeat_Builder*) setAdultTicketPrice:(Float64) value {
+  result.hasAdultTicketPrice = YES;
+  result.adultTicketPrice = value;
   return self;
 }
-- (FlightSeat_Builder*) clearTicketPrice {
-  result.hasTicketPrice = NO;
-  result.ticketPrice = 0;
+- (FlightSeat_Builder*) clearAdultTicketPrice {
+  result.hasAdultTicketPrice = NO;
+  result.adultTicketPrice = 0;
+  return self;
+}
+- (BOOL) hasChildTicketPrice {
+  return result.hasChildTicketPrice;
+}
+- (Float64) childTicketPrice {
+  return result.childTicketPrice;
+}
+- (FlightSeat_Builder*) setChildTicketPrice:(Float64) value {
+  result.hasChildTicketPrice = YES;
+  result.childTicketPrice = value;
+  return self;
+}
+- (FlightSeat_Builder*) clearChildTicketPrice {
+  result.hasChildTicketPrice = NO;
+  result.childTicketPrice = 0;
   return self;
 }
 - (BOOL) hasPrice {
@@ -5036,6 +5074,403 @@ static AirHotelOrderList* defaultAirHotelOrderListInstance = nil;
     result.mutableAirHotelOrdersList = [NSMutableArray array];
   }
   [result.mutableAirHotelOrdersList addObject:value];
+  return self;
+}
+@end
+
+@interface PersonList ()
+@property (retain) NSMutableArray* mutablePersonsList;
+@end
+
+@implementation PersonList
+
+@synthesize mutablePersonsList;
+- (void) dealloc {
+  self.mutablePersonsList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static PersonList* defaultPersonListInstance = nil;
++ (void) initialize {
+  if (self == [PersonList class]) {
+    defaultPersonListInstance = [[PersonList alloc] init];
+  }
+}
++ (PersonList*) defaultInstance {
+  return defaultPersonListInstance;
+}
+- (PersonList*) defaultInstance {
+  return defaultPersonListInstance;
+}
+- (NSArray*) personsList {
+  return mutablePersonsList;
+}
+- (Person*) personsAtIndex:(int32_t) index {
+  id value = [mutablePersonsList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (Person* element in self.personsList) {
+    [output writeMessage:1 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  for (Person* element in self.personsList) {
+    size += computeMessageSize(1, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (PersonList*) parseFromData:(NSData*) data {
+  return (PersonList*)[[[PersonList builder] mergeFromData:data] build];
+}
++ (PersonList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PersonList*)[[[PersonList builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (PersonList*) parseFromInputStream:(NSInputStream*) input {
+  return (PersonList*)[[[PersonList builder] mergeFromInputStream:input] build];
+}
++ (PersonList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PersonList*)[[[PersonList builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PersonList*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (PersonList*)[[[PersonList builder] mergeFromCodedInputStream:input] build];
+}
++ (PersonList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (PersonList*)[[[PersonList builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (PersonList_Builder*) builder {
+  return [[[PersonList_Builder alloc] init] autorelease];
+}
++ (PersonList_Builder*) builderWithPrototype:(PersonList*) prototype {
+  return [[PersonList builder] mergeFrom:prototype];
+}
+- (PersonList_Builder*) builder {
+  return [PersonList builder];
+}
+@end
+
+@interface PersonList_Builder()
+@property (retain) PersonList* result;
+@end
+
+@implementation PersonList_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[PersonList alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (PersonList_Builder*) clear {
+  self.result = [[[PersonList alloc] init] autorelease];
+  return self;
+}
+- (PersonList_Builder*) clone {
+  return [PersonList builderWithPrototype:result];
+}
+- (PersonList*) defaultInstance {
+  return [PersonList defaultInstance];
+}
+- (PersonList*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (PersonList*) buildPartial {
+  PersonList* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (PersonList_Builder*) mergeFrom:(PersonList*) other {
+  if (other == [PersonList defaultInstance]) {
+    return self;
+  }
+  if (other.mutablePersonsList.count > 0) {
+    if (result.mutablePersonsList == nil) {
+      result.mutablePersonsList = [NSMutableArray array];
+    }
+    [result.mutablePersonsList addObjectsFromArray:other.mutablePersonsList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (PersonList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (PersonList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        Person_Builder* subBuilder = [Person builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addPersons:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) personsList {
+  if (result.mutablePersonsList == nil) { return [NSArray array]; }
+  return result.mutablePersonsList;
+}
+- (Person*) personsAtIndex:(int32_t) index {
+  return [result personsAtIndex:index];
+}
+- (PersonList_Builder*) replacePersonsAtIndex:(int32_t) index with:(Person*) value {
+  [result.mutablePersonsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (PersonList_Builder*) addAllPersons:(NSArray*) values {
+  if (result.mutablePersonsList == nil) {
+    result.mutablePersonsList = [NSMutableArray array];
+  }
+  [result.mutablePersonsList addObjectsFromArray:values];
+  return self;
+}
+- (PersonList_Builder*) clearPersonsList {
+  result.mutablePersonsList = nil;
+  return self;
+}
+- (PersonList_Builder*) addPersons:(Person*) value {
+  if (result.mutablePersonsList == nil) {
+    result.mutablePersonsList = [NSMutableArray array];
+  }
+  [result.mutablePersonsList addObject:value];
+  return self;
+}
+@end
+
+@interface CreditCardList ()
+@property (retain) NSMutableArray* mutableCreditCardsList;
+@end
+
+@implementation CreditCardList
+
+@synthesize mutableCreditCardsList;
+- (void) dealloc {
+  self.mutableCreditCardsList = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static CreditCardList* defaultCreditCardListInstance = nil;
++ (void) initialize {
+  if (self == [CreditCardList class]) {
+    defaultCreditCardListInstance = [[CreditCardList alloc] init];
+  }
+}
++ (CreditCardList*) defaultInstance {
+  return defaultCreditCardListInstance;
+}
+- (CreditCardList*) defaultInstance {
+  return defaultCreditCardListInstance;
+}
+- (NSArray*) creditCardsList {
+  return mutableCreditCardsList;
+}
+- (CreditCard*) creditCardsAtIndex:(int32_t) index {
+  id value = [mutableCreditCardsList objectAtIndex:index];
+  return value;
+}
+- (BOOL) isInitialized {
+  for (CreditCard* element in self.creditCardsList) {
+    if (!element.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  for (CreditCard* element in self.creditCardsList) {
+    [output writeMessage:1 value:element];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (int32_t) serializedSize {
+  int32_t size = memoizedSerializedSize;
+  if (size != -1) {
+    return size;
+  }
+
+  size = 0;
+  for (CreditCard* element in self.creditCardsList) {
+    size += computeMessageSize(1, element);
+  }
+  size += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size;
+  return size;
+}
++ (CreditCardList*) parseFromData:(NSData*) data {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromData:data] build];
+}
++ (CreditCardList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (CreditCardList*) parseFromInputStream:(NSInputStream*) input {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromInputStream:input] build];
+}
++ (CreditCardList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CreditCardList*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromCodedInputStream:input] build];
+}
++ (CreditCardList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (CreditCardList*)[[[CreditCardList builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (CreditCardList_Builder*) builder {
+  return [[[CreditCardList_Builder alloc] init] autorelease];
+}
++ (CreditCardList_Builder*) builderWithPrototype:(CreditCardList*) prototype {
+  return [[CreditCardList builder] mergeFrom:prototype];
+}
+- (CreditCardList_Builder*) builder {
+  return [CreditCardList builder];
+}
+@end
+
+@interface CreditCardList_Builder()
+@property (retain) CreditCardList* result;
+@end
+
+@implementation CreditCardList_Builder
+@synthesize result;
+- (void) dealloc {
+  self.result = nil;
+  [super dealloc];
+}
+- (id) init {
+  if ((self = [super init])) {
+    self.result = [[[CreditCardList alloc] init] autorelease];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return result;
+}
+- (CreditCardList_Builder*) clear {
+  self.result = [[[CreditCardList alloc] init] autorelease];
+  return self;
+}
+- (CreditCardList_Builder*) clone {
+  return [CreditCardList builderWithPrototype:result];
+}
+- (CreditCardList*) defaultInstance {
+  return [CreditCardList defaultInstance];
+}
+- (CreditCardList*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (CreditCardList*) buildPartial {
+  CreditCardList* returnMe = [[result retain] autorelease];
+  self.result = nil;
+  return returnMe;
+}
+- (CreditCardList_Builder*) mergeFrom:(CreditCardList*) other {
+  if (other == [CreditCardList defaultInstance]) {
+    return self;
+  }
+  if (other.mutableCreditCardsList.count > 0) {
+    if (result.mutableCreditCardsList == nil) {
+      result.mutableCreditCardsList = [NSMutableArray array];
+    }
+    [result.mutableCreditCardsList addObjectsFromArray:other.mutableCreditCardsList];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (CreditCardList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (CreditCardList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSet_Builder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    int32_t tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        CreditCard_Builder* subBuilder = [CreditCard builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addCreditCards:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSArray*) creditCardsList {
+  if (result.mutableCreditCardsList == nil) { return [NSArray array]; }
+  return result.mutableCreditCardsList;
+}
+- (CreditCard*) creditCardsAtIndex:(int32_t) index {
+  return [result creditCardsAtIndex:index];
+}
+- (CreditCardList_Builder*) replaceCreditCardsAtIndex:(int32_t) index with:(CreditCard*) value {
+  [result.mutableCreditCardsList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (CreditCardList_Builder*) addAllCreditCards:(NSArray*) values {
+  if (result.mutableCreditCardsList == nil) {
+    result.mutableCreditCardsList = [NSMutableArray array];
+  }
+  [result.mutableCreditCardsList addObjectsFromArray:values];
+  return self;
+}
+- (CreditCardList_Builder*) clearCreditCardsList {
+  result.mutableCreditCardsList = nil;
+  return self;
+}
+- (CreditCardList_Builder*) addCreditCards:(CreditCard*) value {
+  if (result.mutableCreditCardsList == nil) {
+    result.mutableCreditCardsList = [NSMutableArray array];
+  }
+  [result.mutableCreditCardsList addObject:value];
   return self;
 }
 @end

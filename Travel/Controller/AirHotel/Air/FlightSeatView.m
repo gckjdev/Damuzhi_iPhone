@@ -51,10 +51,10 @@
     self.flightSeatNameLabel.text = flightSeat.name;
     self.planeTypeLabel.text = flight.planeType;
     self.remainingCountLabel.text = flightSeat.remainingCount;
-    self.ticketPriceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.ticketPrice]];
+    self.ticketPriceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.adultTicketPrice]];
     self.airportAndFuelTax.text = [NSString stringWithFormat:@"%@ / %@",[PriceUtils priceToStringCNY:flight.adultAirportTax], [PriceUtils priceToStringCNY:flight.adultFuelTax]];
     
-    double totalPrice = flightSeat.ticketPrice + flight.adultAirportTax + flight.adultFuelTax;
+    double totalPrice = flightSeat.adultTicketPrice + flight.adultAirportTax + flight.adultFuelTax;
     
     self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToString:totalPrice]];
     

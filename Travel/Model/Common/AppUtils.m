@@ -134,6 +134,11 @@ static BOOL _showUserLocateDenyAlert = YES;
     return [FileUtil getFileFullPath:DIR_OF_FOLLOW_LOCAL_ROUTES];
 }
 
++ (NSString*)getPersonDir
+{
+    return [FileUtil getFileFullPath:DIR_OF_PERSON];
+}
+
 + (NSString*)getDownloadPath:(int)cityId
 {
     return [[AppUtils getDownloadDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.zip", cityId]];
@@ -316,6 +321,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString *)getFollowLocalRoutesFilePath
 {
     return [[AppUtils getFollowLocalRoutesDir] stringByAppendingPathComponent:@"localRoute.dat"];
+}
+
++ (NSString *)getPersonFilePath:(int)type
+{
+    return [[AppUtils getPersonDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",type]];
 }
 
 + (BOOL)isShowImage

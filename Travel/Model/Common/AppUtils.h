@@ -69,6 +69,9 @@
 //For follow local routes data dir
 + (NSString*)getFollowLocalRoutesDir;
 
+//For persons data dir
++ (NSString*)getPersonDir;
+
 // Interface for app data file.
 + (NSString*)getAppFilePath;
 
@@ -122,6 +125,9 @@
 
 // For getting follow local routes file path 
 + (NSString *)getFollowLocalRoutesFilePath;
+
+//Fot getting person file path
++ (NSString *)getPersonFilePath:(int)type;
 
 // For place image showable.
 + (BOOL)isShowImage;

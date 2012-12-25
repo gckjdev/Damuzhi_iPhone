@@ -899,22 +899,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">insuranceFeeLabel</string>
-						<reference key="source" ref="395623900"/>
-						<reference key="destination" ref="509855257"/>
-					</object>
-					<int key="connectionID">54</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">sendTicketFeeLabel</string>
-						<reference key="source" ref="395623900"/>
-						<reference key="destination" ref="179226736"/>
-					</object>
-					<int key="connectionID">55</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">insuranceButton</string>
 						<reference key="source" ref="395623900"/>
 						<reference key="destination" ref="896783279"/>
@@ -952,6 +936,22 @@
 						<reference key="destination" ref="1024959975"/>
 					</object>
 					<int key="connectionID">68</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">insuranceLabel</string>
+						<reference key="source" ref="395623900"/>
+						<reference key="destination" ref="509855257"/>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">sendTicketLabel</string>
+						<reference key="source" ref="395623900"/>
+						<reference key="destination" ref="179226736"/>
+					</object>
+					<int key="connectionID">70</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1171,11 +1171,11 @@
 							<reference ref="113089753"/>
 							<reference ref="874194483"/>
 							<reference ref="122680902"/>
-							<reference ref="509855257"/>
 							<reference ref="56114620"/>
 							<reference ref="179226736"/>
 							<reference ref="896783279"/>
 							<reference ref="781186856"/>
+							<reference ref="509855257"/>
 						</array>
 						<reference key="parent" ref="91314295"/>
 					</object>
@@ -1273,7 +1273,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">68</int>
+			<int key="maxID">70</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1294,12 +1294,14 @@
 						<string key="holderView">UIView</string>
 						<string key="insuranceButton">UIButton</string>
 						<string key="insuranceFeeLabel">UILabel</string>
+						<string key="insuranceLabel">UILabel</string>
 						<string key="passengerButton">UIButton</string>
 						<string key="personHolderView">UIView</string>
 						<string key="planeTypeLabel">UILabel</string>
 						<string key="seatLabel">UILabel</string>
 						<string key="sendTicketButton">UIButton</string>
 						<string key="sendTicketFeeLabel">UILabel</string>
+						<string key="sendTicketLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="adultAirportFuelTax">
@@ -1354,6 +1356,10 @@
 							<string key="name">insuranceFeeLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="insuranceLabel">
+							<string key="name">insuranceLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="passengerButton">
 							<string key="name">passengerButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -1376,6 +1382,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="sendTicketFeeLabel">
 							<string key="name">sendTicketFeeLabel</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="sendTicketLabel">
+							<string key="name">sendTicketLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 					</dictionary>

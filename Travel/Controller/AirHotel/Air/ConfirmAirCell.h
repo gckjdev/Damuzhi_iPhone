@@ -38,12 +38,12 @@
 @property (retain, nonatomic) IBOutlet UILabel *childAirportFuelTax;
 @property (retain, nonatomic) IBOutlet UIButton *passengerButton;
 
-@property (retain, nonatomic) IBOutlet UILabel *insuranceFeeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *sendTicketFeeLabel;
 @property (retain, nonatomic) IBOutlet UIButton *insuranceButton;
 @property (retain, nonatomic) IBOutlet UIButton *sendTicketButton;
 @property (retain, nonatomic) IBOutlet UIView *footerView;
 @property (retain, nonatomic) IBOutlet UIView *personHolderView;
+@property (retain, nonatomic) IBOutlet UILabel *insuranceLabel;
+@property (retain, nonatomic) IBOutlet UILabel *sendTicketLabel;
 
 + (CGFloat)getCellHeight:(NSUInteger)personListCount;
 

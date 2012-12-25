@@ -11,6 +11,8 @@
 @class AirOrder;
 @class AirOrder_Builder;
 @class CreditCard;
+@class CreditCardList;
+@class CreditCardList_Builder;
 @class CreditCard_Builder;
 @class Flight;
 @class FlightList;
@@ -27,6 +29,8 @@
 @class PaymentInfo;
 @class PaymentInfo_Builder;
 @class Person;
+@class PersonList;
+@class PersonList_Builder;
 @class Person_Builder;
 @class Place;
 @class PlaceList;
@@ -349,7 +353,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 
 @interface FlightSeat : PBGeneratedMessage {
 @private
-  BOOL hasTicketPrice_:1;
+  BOOL hasAdultTicketPrice_:1;
+  BOOL hasChildTicketPrice_:1;
   BOOL hasPrice_:1;
   BOOL hasCode_:1;
   BOOL hasName_:1;
@@ -357,7 +362,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   BOOL hasRefundNote_:1;
   BOOL hasChangeNote_:1;
   BOOL hasReschedule_:1;
-  Float64 ticketPrice;
+  Float64 adultTicketPrice;
+  Float64 childTicketPrice;
   Float64 price;
   NSString* code;
   NSString* name;
@@ -369,7 +375,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (BOOL) hasCode;
 - (BOOL) hasName;
 - (BOOL) hasRemainingCount;
-- (BOOL) hasTicketPrice;
+- (BOOL) hasAdultTicketPrice;
+- (BOOL) hasChildTicketPrice;
 - (BOOL) hasPrice;
 - (BOOL) hasRefundNote;
 - (BOOL) hasChangeNote;
@@ -377,7 +384,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @property (readonly, retain) NSString* code;
 @property (readonly, retain) NSString* name;
 @property (readonly, retain) NSString* remainingCount;
-@property (readonly) Float64 ticketPrice;
+@property (readonly) Float64 adultTicketPrice;
+@property (readonly) Float64 childTicketPrice;
 @property (readonly) Float64 price;
 @property (readonly, retain) NSString* refundNote;
 @property (readonly, retain) NSString* changeNote;
@@ -432,10 +440,15 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (FlightSeat_Builder*) setRemainingCount:(NSString*) value;
 - (FlightSeat_Builder*) clearRemainingCount;
 
-- (BOOL) hasTicketPrice;
-- (Float64) ticketPrice;
-- (FlightSeat_Builder*) setTicketPrice:(Float64) value;
-- (FlightSeat_Builder*) clearTicketPrice;
+- (BOOL) hasAdultTicketPrice;
+- (Float64) adultTicketPrice;
+- (FlightSeat_Builder*) setAdultTicketPrice:(Float64) value;
+- (FlightSeat_Builder*) clearAdultTicketPrice;
+
+- (BOOL) hasChildTicketPrice;
+- (Float64) childTicketPrice;
+- (FlightSeat_Builder*) setChildTicketPrice:(Float64) value;
+- (FlightSeat_Builder*) clearChildTicketPrice;
 
 - (BOOL) hasPrice;
 - (Float64) price;
@@ -1231,5 +1244,103 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (AirHotelOrderList_Builder*) addAirHotelOrders:(AirHotelOrder*) value;
 - (AirHotelOrderList_Builder*) addAllAirHotelOrders:(NSArray*) values;
 - (AirHotelOrderList_Builder*) clearAirHotelOrdersList;
+@end
+
+@interface PersonList : PBGeneratedMessage {
+@private
+  NSMutableArray* mutablePersonsList;
+}
+- (NSArray*) personsList;
+- (Person*) personsAtIndex:(int32_t) index;
+
++ (PersonList*) defaultInstance;
+- (PersonList*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (PersonList_Builder*) builder;
++ (PersonList_Builder*) builder;
++ (PersonList_Builder*) builderWithPrototype:(PersonList*) prototype;
+
++ (PersonList*) parseFromData:(NSData*) data;
++ (PersonList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PersonList*) parseFromInputStream:(NSInputStream*) input;
++ (PersonList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (PersonList*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (PersonList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface PersonList_Builder : PBGeneratedMessage_Builder {
+@private
+  PersonList* result;
+}
+
+- (PersonList*) defaultInstance;
+
+- (PersonList_Builder*) clear;
+- (PersonList_Builder*) clone;
+
+- (PersonList*) build;
+- (PersonList*) buildPartial;
+
+- (PersonList_Builder*) mergeFrom:(PersonList*) other;
+- (PersonList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (PersonList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) personsList;
+- (Person*) personsAtIndex:(int32_t) index;
+- (PersonList_Builder*) replacePersonsAtIndex:(int32_t) index with:(Person*) value;
+- (PersonList_Builder*) addPersons:(Person*) value;
+- (PersonList_Builder*) addAllPersons:(NSArray*) values;
+- (PersonList_Builder*) clearPersonsList;
+@end
+
+@interface CreditCardList : PBGeneratedMessage {
+@private
+  NSMutableArray* mutableCreditCardsList;
+}
+- (NSArray*) creditCardsList;
+- (CreditCard*) creditCardsAtIndex:(int32_t) index;
+
++ (CreditCardList*) defaultInstance;
+- (CreditCardList*) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (CreditCardList_Builder*) builder;
++ (CreditCardList_Builder*) builder;
++ (CreditCardList_Builder*) builderWithPrototype:(CreditCardList*) prototype;
+
++ (CreditCardList*) parseFromData:(NSData*) data;
++ (CreditCardList*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CreditCardList*) parseFromInputStream:(NSInputStream*) input;
++ (CreditCardList*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (CreditCardList*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (CreditCardList*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface CreditCardList_Builder : PBGeneratedMessage_Builder {
+@private
+  CreditCardList* result;
+}
+
+- (CreditCardList*) defaultInstance;
+
+- (CreditCardList_Builder*) clear;
+- (CreditCardList_Builder*) clone;
+
+- (CreditCardList*) build;
+- (CreditCardList*) buildPartial;
+
+- (CreditCardList_Builder*) mergeFrom:(CreditCardList*) other;
+- (CreditCardList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (CreditCardList_Builder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSArray*) creditCardsList;
+- (CreditCard*) creditCardsAtIndex:(int32_t) index;
+- (CreditCardList_Builder*) replaceCreditCardsAtIndex:(int32_t) index with:(CreditCard*) value;
+- (CreditCardList_Builder*) addCreditCards:(CreditCard*) value;
+- (CreditCardList_Builder*) addAllCreditCards:(NSArray*) values;
+- (CreditCardList_Builder*) clearCreditCardsList;
 @end
 

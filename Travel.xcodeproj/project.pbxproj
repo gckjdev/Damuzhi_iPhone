@@ -779,6 +779,7 @@
 		EA627979168776FB00F92630 /* AddCheckInPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA627977168776FA00F92630 /* AddCheckInPersonController.m */; };
 		EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA627978168776FA00F92630 /* AddCheckInPersonController.xib */; };
 		EA62797D1688577D00F92630 /* PriceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EA62797C1688577D00F92630 /* PriceUtils.m */; };
+		EA8423BF168A368A0058ACB0 /* CreditCardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8423BE168A368A0058ACB0 /* CreditCardManager.m */; };
 		EAA6A16715CA73ED0094B122 /* line_n_t4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */; };
 		EAA6A16815CA73ED0094B122 /* line_n_t5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */; };
 		EAA6A16915CA73ED0094B122 /* line_n_t7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */; };
@@ -2004,6 +2005,8 @@
 		EA627978168776FA00F92630 /* AddCheckInPersonController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCheckInPersonController.xib; sourceTree = "<group>"; };
 		EA62797B1688577C00F92630 /* PriceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceUtils.h; sourceTree = "<group>"; };
 		EA62797C1688577D00F92630 /* PriceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceUtils.m; sourceTree = "<group>"; };
+		EA8423BD168A36890058ACB0 /* CreditCardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardManager.h; sourceTree = "<group>"; };
+		EA8423BE168A368A0058ACB0 /* CreditCardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardManager.m; sourceTree = "<group>"; };
 		EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t4@2x.png"; sourceTree = "<group>"; };
 		EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t5@2x.png"; sourceTree = "<group>"; };
 		EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t7@2x.png"; sourceTree = "<group>"; };
@@ -4787,6 +4790,8 @@
 			children = (
 				EAE4B38416707E23006BE2C6 /* PersonManager.h */,
 				EAE4B38516707E23006BE2C6 /* PersonManager.m */,
+				EA8423BD168A36890058ACB0 /* CreditCardManager.h */,
+				EA8423BE168A368A0058ACB0 /* CreditCardManager.m */,
 			);
 			path = Person;
 			sourceTree = "<group>";
@@ -5697,6 +5702,7 @@
 				A4FB53DB168958D600102CF6 /* SDWebImagePrefetcher.m in Sources */,
 				A4FB53DC168958D600102CF6 /* UIButton+WebCache.m in Sources */,
 				A4FB53DD168958D600102CF6 /* UIImageView+WebCache.m in Sources */,
+				EA8423BF168A368A0058ACB0 /* CreditCardManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,6 +48,8 @@
 @class CommonTravelTipList_Builder;
 @class CommonTravelTip_Builder;
 @class CreditCard;
+@class CreditCardList;
+@class CreditCardList_Builder;
 @class CreditCard_Builder;
 @class DailySchedule;
 @class DailySchedule_Builder;
@@ -82,6 +84,8 @@
 @class PaymentInfo;
 @class PaymentInfo_Builder;
 @class Person;
+@class PersonList;
+@class PersonList_Builder;
 @class Person_Builder;
 @class Place;
 @class PlaceList;

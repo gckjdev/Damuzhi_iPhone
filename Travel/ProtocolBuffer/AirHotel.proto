@@ -61,8 +61,10 @@ message FlightSeat {
     required string name = 2;                   //舱位名称
     optional string remainingCount  = 3;        //剩余票数信息
     
-    optional double ticketPrice = 10;           //机票价格
-    optional double price = 11;                 //总价(怎么生成？)
+    optional double adultTicketPrice = 10;      //成人机票价格
+    optional double childTicketPrice = 11;      //儿童机票价格
+    
+    optional double price = 12;                 //总价(怎么生成？)
     
     optional string refundNote = 20;            //退票规则
     optional string changeNote = 21;            //改签规则
@@ -165,3 +167,12 @@ message AirHotelOrderList {
     repeated AirHotelOrder airHotelOrders = 1;
 }
 
+//用于方便本地保存
+message PersonList {
+    repeated Person persons = 1;
+}
+
+//用于方便本地保存
+message CreditCardList {
+    repeated CreditCard creditCards = 1;
+}

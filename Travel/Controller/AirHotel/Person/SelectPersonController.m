@@ -11,11 +11,12 @@
 #import "ImageManager.h"
 #import "AirHotel.pb.h"
 #import "AddCheckInPersonController.h"
+#import "PersonManager.h"
 
 @interface SelectPersonController ()
 
 @property (retain, nonatomic) NSMutableArray *selectedIndexList;
-@property (assign, nonatomic) PersonType personType;
+@property (assign, nonatomic) SelectPersonViewType type;
 @property (assign, nonatomic) BOOL isMultipleChoice;
 @property (assign, nonatomic) id<SelectPersonControllerDelegate> delegate;
 
@@ -24,7 +25,7 @@
 
 @implementation SelectPersonController
 @synthesize selectedIndexList = _selectedIndexList;
-@synthesize personType = _personType;
+@synthesize type = _type;
 @synthesize isMultipleChoice = _isMultipleChoice;
 @synthesize delegate = _delegate;
 
@@ -35,14 +36,14 @@
     [super dealloc];
 }
 
-- (id)initWithType:(PersonType)personType
+- (id)initWithType:(SelectPersonViewType)type
   isMultipleChoice:(BOOL)isMultipleChoice
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title
 {
     self = [super init];
     if (self) {
-        self.personType = personType;
+        self.type = type;
         self.isMultipleChoice = isMultipleChoice;
         self.delegate = delegate;
         self.title = title;
@@ -52,35 +53,28 @@
     return self;
 }
 
-//typedef enum{
-//    PersonTypePassenger = 1,
-//    PersonTypeCheckIn = 2,
-//    PersonTypeContact = 3,
-//    PersonTypeCreditCard = 4
-//} PersonType;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    switch (_personType) {
-        case PersonTypePassenger:
+    switch (_type) {
+        case ViewTypePassenger:
             self.headeTitleLabel.text = NSLS(@"添加国际航班登机人");
             break;
-        case PersonTypeCheckIn:
+        case ViewTypeCheckIn:
             self.headeTitleLabel.text = NSLS(@"添加入住人");
             break;
-        case PersonTypeContact:
+        case ViewTypeContact:
             self.headeTitleLabel.text = NSLS(@"添加联系人");
             break;
-        case PersonTypeCreditCard:
+        case ViewTypeCreditCard:
             self.headeTitleLabel.text = NSLS(@"添加常用信用卡");
             break;
         default:
             break;
     }
     
-    self.dataList = [[PersonManager defaultManager] personList:_personType];
+    //self.dataList = [[PersonManager defaultManager] personList:_personType];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     [self setNavigationLeftButton:NSLS(@" 返回")
@@ -104,7 +98,7 @@
     }
     
     if ([_delegate respondsToSelector:@selector(finishSelectPerson:objectList:)]) {
-        [_delegate finishSelectPerson:_personType objectList:resultArray];
+        [_delegate finishSelectPerson:_type objectList:resultArray];
     }
 }
 
@@ -184,17 +178,17 @@
 
 - (IBAction)clickAddPersonButton:(id)sender {
     
-    switch (_personType) {
-        case PersonTypePassenger:
+    switch (_type) {
+        case ViewTypePassenger:
             
             break;
-        case PersonTypeCheckIn:
+        case ViewTypeCheckIn:
             break;
             
-        case PersonTypeContact:
+        case ViewTypeContact:
             
             break;
-        case PersonTypeCreditCard:
+        case ViewTypeCreditCard:
             
             break;
         default:

@@ -8,6 +8,14 @@
 
 #import "PPTableViewCell.h"
 
+typedef enum{
+    ViewTypePassenger = 1,
+    ViewTypeCheckIn = 2,
+    ViewTypeContact = 3,
+    ViewTypeCreditCard = 4
+} SelectPersonViewType;
+
+
 @protocol SelectPersonCellDelegate <NSObject>
 
 @optional

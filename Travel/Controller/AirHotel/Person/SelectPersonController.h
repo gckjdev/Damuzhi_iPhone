@@ -8,20 +8,22 @@
 
 #import "PPTableViewController.h"
 #import "SelectPersonCell.h"
-#import "PersonManager.h"
+
 
 @protocol SelectPersonControllerDelegate <NSObject>
 
 @optional
-- (void)finishSelectPerson:(PersonType)personType objectList:(NSArray *)objectList;
+- (void)finishSelectPerson:(SelectPersonViewType)type objectList:(NSArray *)objectList;
  
 @end
+
+
 
 
 @interface SelectPersonController : PPTableViewController <SelectPersonCellDelegate>
 @property (retain, nonatomic) IBOutlet UILabel *headeTitleLabel;
 
-- (id)initWithType:(PersonType)personType
+- (id)initWithType:(SelectPersonViewType)type
   isMultipleChoice:(BOOL)isMultipleChoice
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title;

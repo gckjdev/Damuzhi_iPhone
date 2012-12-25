@@ -48,13 +48,13 @@
     [_adultAirportFuelTax release];
     [_childAirportFuelTax release];
     [_passengerButton release];
-    [_insuranceFeeLabel release];
-    [_sendTicketFeeLabel release];
     [_insuranceButton release];
     [_sendTicketButton release];
     [_holderView release];
     [_footerView release];
     [_personHolderView release];
+    [_insuranceLabel release];
+    [_sendTicketLabel release];
     [super dealloc];
 }
 
@@ -99,6 +99,9 @@
     self.flightDateLabel.text = [[AirHotelManager defaultManager] dateIntToYearMonthDayWeekString2:airOrderBuilder.flightDate];
     
     NSString *airline = [[AppManager defaultManager] getAirlineName:airOrderBuilder.flight.airlineId];
+    if (airline == nil) {
+        airline = @"";
+    }
     self.airLineAndFlightNumberLabel.text = [NSString stringWithFormat:@"%@ %@", airline, airOrderBuilder.flightNumber];
     
     self.planeTypeLabel.text = [NSString stringWithFormat:@"机型:%@",airOrderBuilder.flight.planeType] ;
@@ -124,10 +127,12 @@
     self.departAirportAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@",airOrderBuilder.flight.departAirport, departDateStr];
     self.arriveAirportAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@", arriveDateStr,airOrderBuilder.flight.arriveAirport];
     
-    //TO DO
-    //self.adultPriceLabel.text =
-    //self.childPriceLabel.text =
     
+    //set price
+    double adultPrice = airOrderBuilder.flightSeat.adultTicketPrice + airOrderBuilder.flight.adultAirportTax + airOrderBuilder.flight.adultFuelTax;
+    double childPrice = airOrderBuilder.flightSeat.childTicketPrice + airOrderBuilder.flight.childAirportTax + airOrderBuilder.flight.childFuelTax;
+    self.adultPriceLabel.text = [PriceUtils priceToStringCNY:adultPrice];
+    self.childPriceLabel.text = [PriceUtils priceToStringCNY:childPrice];
     
     self.adultAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", [PriceUtils priceToString:airOrderBuilder.flight.adultAirportTax], [PriceUtils priceToString:airOrderBuilder.flight.adultFuelTax]];
     
@@ -144,6 +149,9 @@
         [self.passengerButton setTitle:NSLS(@"添加登机人") forState:UIControlStateNormal];
     }
     
+    
+    self.insuranceLabel.text = [NSString stringWithFormat:@"%@/份", [PriceUtils priceToStringCNY:airOrderBuilder.flight.insuranceFee]];
+    self.sendTicketLabel.text = [NSString stringWithFormat:@"报销凭证(快递费%@元)",[PriceUtils priceToString:airOrderBuilder.flight.sendTicketFee]];
     
     self.insuranceButton.selected = airOrderBuilder.insurance;
     self.sendTicketButton.selected = airOrderBuilder.sendTicket;

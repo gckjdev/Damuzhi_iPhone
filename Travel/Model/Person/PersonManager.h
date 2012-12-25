@@ -12,17 +12,13 @@ typedef enum{
     PersonTypePassenger = 1,
     PersonTypeCheckIn = 2,
     PersonTypeContact = 3,
-    PersonTypeCreditCard = 4
 } PersonType;
 
 
-enum{
-    PaymentTypeCreditCard = 1
-};
 
 @interface PersonManager : NSObject
 
-+ (PersonManager *)defaultManager;
++ (PersonManager *)defaultManager:(PersonType)personType;
 
 - (NSArray *)personList:(PersonType)personType;
 

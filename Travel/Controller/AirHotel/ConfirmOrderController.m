@@ -15,6 +15,7 @@
 #import "RescheduleInfoController.h"
 #import "CommonWebController.h"
 #import "PriceUtils.h"
+#import "CreditCardManager.h"
 
 @interface ConfirmOrderController ()
 
@@ -241,12 +242,12 @@
 }
 
 - (IBAction)clickContactPersonButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeContact isMultipleChoice:NO delegate:self title:NSLS(@"联系人选择")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeContact isMultipleChoice:NO delegate:self title:NSLS(@"联系人选择")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)clickPaymentButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCreditCard isMultipleChoice:NO delegate:self title:NSLS(@"信用卡支付")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCreditCard isMultipleChoice:NO delegate:self title:NSLS(@"信用卡支付")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -283,7 +284,7 @@
 {
     self.currentIndexPath = indexPath;
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypePassenger isMultipleChoice:YES delegate:self title:NSLS(@"选择登机人")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger isMultipleChoice:YES delegate:self title:NSLS(@"选择登机人")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -313,20 +314,20 @@
 {
     self.currentIndexPath = indexPath;
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:PersonTypeCheckIn isMultipleChoice:YES delegate:self title:NSLS(@"入住人选择")] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn isMultipleChoice:YES delegate:self title:NSLS(@"入住人选择")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark -
 #pragma SelectPersonControllerDelegate method
-- (void)finishSelectPerson:(PersonType)personType objectList:(NSArray *)objectList
+- (void)finishSelectPerson:(SelectPersonViewType)personType objectList:(NSArray *)objectList
 {
-    if (personType == PersonTypeContact) {
+    if (personType == ViewTypeContact) {
         Person *person = (Person *)[objectList objectAtIndex:0];
         [_airHotelOrderBuilder setContactPerson:person];
         
         [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
-    } else if (personType == PersonTypeCreditCard) {
+    } else if (personType == ViewTypeCreditCard) {
         CreditCard *creditCard = (CreditCard *)[objectList objectAtIndex:0];
         
         PaymentInfo_Builder *pib = [[[PaymentInfo_Builder alloc] init] autorelease];
@@ -336,11 +337,11 @@
         [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
         
         [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
-    } else if (personType == PersonTypeCheckIn) {
+    } else if (personType == ViewTypeCheckIn) {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];
         [builder clearCheckInPersonsList];
         [builder addAllCheckInPersons:objectList];
-    } else if (personType == PersonTypePassenger) {
+    } else if (personType == ViewTypePassenger) {
         AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:_currentIndexPath.section];
         [builder clearPassengerList];
         [builder addAllPassenger:objectList];

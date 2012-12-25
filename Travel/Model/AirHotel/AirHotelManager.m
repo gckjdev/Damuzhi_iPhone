@@ -170,9 +170,9 @@ static AirHotelManager *_airHotelManager = nil;
         for (Person *person in builder.passengerList) {
             double each = 0;
             if (person.ageType == PersonAgeTypePersonAgeChild) {
-                each = builder.flightSeat.ticketPrice + builder.flight.childAirportTax + builder.flight.childFuelTax;
+                each = builder.flightSeat.childTicketPrice + builder.flight.childAirportTax + builder.flight.childFuelTax;
             }else {
-                each = builder.flightSeat.ticketPrice + builder.flight.adultAirportTax + builder.flight.adultFuelTax;
+                each = builder.flightSeat.adultTicketPrice + builder.flight.adultAirportTax + builder.flight.adultFuelTax;
             }
             totalPrice += each;
         }
