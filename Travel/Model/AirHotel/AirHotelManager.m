@@ -8,6 +8,9 @@
 
 #import "AirHotelManager.h"
 #import "TimeUtils.h"
+#import "PriceUtils.h"
+#import "AppManager.h"
+#import "LogUtil.h"
 
 static AirHotelManager *_airHotelManager = nil;
 
@@ -157,6 +160,54 @@ static AirHotelManager *_airHotelManager = nil;
     }
     
     return resultArray;
+}
+
+- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList
+{
+    double totalPrice = 0;
+    
+    for (AirOrder_Builder *builder in airOrderBuilderList) {
+        for (Person *person in builder.passengerList) {
+            double each = 0;
+            if (person.ageType == PersonAgeTypePersonAgeChild) {
+                each = builder.flightSeat.ticketPrice + builder.flight.childAirportTax + builder.flight.childFuelTax;
+            }else {
+                each = builder.flightSeat.ticketPrice + builder.flight.adultAirportTax + builder.flight.adultFuelTax;
+            }
+            totalPrice += each;
+        }
+    }
+    
+    return [PriceUtils priceToStringCNY:totalPrice];
+}
+
+- (HotelRoom *)getRoomWithRoomId:(int)roomId hotel:(Place *)hotel
+{
+    for (HotelRoom *room in hotel.roomsList) {
+        if (roomId == room.roomId) {
+            return room;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList
+{
+    double totalPrice = 0;
+    
+    for (HotelOrder_Builder *builder in hotelOrderBuilderList) {
+        for (HotelOrderRoomInfo *info in builder.roomInfosList) {
+            HotelRoom *room = [self getRoomWithRoomId:info.roomId hotel:builder.hotel];
+            totalPrice += info.count * room.price;
+        }
+    }
+    
+    AppManager *manager = [AppManager defaultManager];
+    int currentCiytId = [manager getCurrentCityId];
+    NSString *currency = [manager getCurrencySymbol:currentCiytId];
+    
+    return [PriceUtils priceToString:totalPrice currency:currency];
 }
 
 @end

@@ -387,7 +387,7 @@
 											<object class="IBUILabel" id="547180391">
 												<reference key="NSNextResponder" ref="305900079"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{98, 9}, {46, 15}}</string>
+												<string key="NSFrame">{{94, 9}, {51, 15}}</string>
 												<reference key="NSSuperview" ref="305900079"/>
 												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -397,7 +397,10 @@
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">3000</string>
-												<reference key="IBUITextColor" ref="603872356"/>
+												<object class="NSColor" key="IBUITextColor">
+													<int key="NSColorSpace">1</int>
+													<bytes key="NSRGB">MC45ODAzOTIxNTY5IDAuMzA5ODAzOTIxNiAwLjEyNTQ5MDE5NjEAA</bytes>
+												</object>
 												<nil key="IBUIHighlightedColor"/>
 												<int key="IBUIBaselineAdjustment">0</int>
 												<reference key="IBUIFontDescription" ref="342327322"/>
@@ -417,7 +420,10 @@
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">(划扣)</string>
-												<reference key="IBUITextColor" ref="603872356"/>
+												<object class="NSColor" key="IBUITextColor" id="785681095">
+													<int key="NSColorSpace">1</int>
+													<bytes key="NSRGB">MC4zMzMzMzMzMzMzIDAuMzMzMzMzMzMzMyAwLjMzMzMzMzMzMzMAA</bytes>
+												</object>
 												<nil key="IBUIHighlightedColor"/>
 												<int key="IBUIBaselineAdjustment">0</int>
 												<reference key="IBUIFontDescription" ref="342327322"/>
@@ -437,7 +443,7 @@
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">(冻结)</string>
-												<reference key="IBUITextColor" ref="603872356"/>
+												<reference key="IBUITextColor" ref="785681095"/>
 												<nil key="IBUIHighlightedColor"/>
 												<int key="IBUIBaselineAdjustment">0</int>
 												<reference key="IBUIFontDescription" ref="342327322"/>
@@ -447,7 +453,7 @@
 											<object class="IBUILabel" id="395923623">
 												<reference key="NSNextResponder" ref="305900079"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{98, 33}, {46, 15}}</string>
+												<string key="NSFrame">{{94, 33}, {51, 15}}</string>
 												<reference key="NSSuperview" ref="305900079"/>
 												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -457,7 +463,10 @@
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">3000</string>
-												<reference key="IBUITextColor" ref="603872356"/>
+												<object class="NSColor" key="IBUITextColor">
+													<int key="NSColorSpace">1</int>
+													<bytes key="NSRGB">MC45ODAzOTIxNTY5IDAuMzA5ODAzOTIxNiAwLjEyNTQ5MDE5NjEAA</bytes>
+												</object>
 												<nil key="IBUIHighlightedColor"/>
 												<int key="IBUIBaselineAdjustment">0</int>
 												<reference key="IBUIFontDescription" ref="342327322"/>
@@ -497,10 +506,7 @@
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 												<string key="IBUIText">1、机票出票后需划扣应支付金额</string>
-												<object class="NSColor" key="IBUITextColor" id="785681095">
-													<int key="NSColorSpace">1</int>
-													<bytes key="NSRGB">MC4zMzMzMzMzMzMzIDAuMzMzMzMzMzMzMyAwLjMzMzMzMzMzMzMAA</bytes>
-												</object>
+												<reference key="IBUITextColor" ref="785681095"/>
 												<nil key="IBUIHighlightedColor"/>
 												<int key="IBUIBaselineAdjustment">0</int>
 												<reference key="IBUIFontDescription" ref="342327322"/>
@@ -834,10 +840,10 @@
 							<reference ref="761280344"/>
 							<reference ref="107694470"/>
 							<reference ref="856855328"/>
-							<reference ref="547180391"/>
 							<reference ref="395923623"/>
 							<reference ref="386983861"/>
 							<reference ref="889506713"/>
+							<reference ref="547180391"/>
 						</array>
 						<reference key="parent" ref="260111246"/>
 					</object>

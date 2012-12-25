@@ -14,6 +14,7 @@
 #import "UserManager.h"
 #import "RescheduleInfoController.h"
 #import "CommonWebController.h"
+#import "PriceUtils.h"
 
 @interface ConfirmOrderController ()
 
@@ -69,6 +70,8 @@
 {
     self.hidesBottomBarWhenPushed = YES;
     [super viewDidAppear:animated];
+    
+    [self updatePrice];
 }
 
 - (IBAction)clickOrderButton:(id)sender {
@@ -249,12 +252,10 @@
 
 - (void)updatePrice
 {
-//    double airPirce;
-//    for (AirOrder_Builder *builder in _airOrderBuilders) {
-//        int personCount = [[builder passengerList] count];
-//        
-//        //double eachPrice = builder.flightSeat.ticketPrice + builder.flightSeat.
-//    }
+    AirHotelManager *manager = [AirHotelManager defaultManager];
+    
+    self.airPirceLabel.text = [manager calculateAirTotalPrice:_airOrderBuilders];
+    self.hotelPriceLabel.text = [manager calculateHotelTotalPrice:_hotelOrderBuilders];
 }
 
 

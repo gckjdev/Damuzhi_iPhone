@@ -38,4 +38,7 @@ typedef enum{
 - (NSArray *)validAirOrderBuilders:(NSArray *)builders;
 - (NSArray *)validHotelOrderBuilders:(NSArray *)builders;
 
+- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
+- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
+
 @end

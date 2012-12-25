@@ -52,13 +52,14 @@
     self.planeTypeLabel.text = flight.planeType;
     self.remainingCountLabel.text = flightSeat.remainingCount;
     self.ticketPriceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.ticketPrice]];
-    self.airportAndFuelTax.text = [NSString stringWithFormat:@"%@/%@",[PriceUtils priceToString:flight.adultAirportTax], [PriceUtils priceToString:flight.adultFuelTax]];
-    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToStringCNY:flightSeat.price]];
+    self.airportAndFuelTax.text = [NSString stringWithFormat:@"%@ / %@",[PriceUtils priceToStringCNY:flight.adultAirportTax], [PriceUtils priceToStringCNY:flight.adultFuelTax]];
     
-    PPDebug(@"price:%lf", flightSeat.price);
+    double totalPrice = flightSeat.ticketPrice + flight.adultAirportTax + flight.adultFuelTax;
     
-    self.refundNoteTextView.text = [NSString stringWithFormat:@"                 %@", flightSeat.refundNote];
-    self.changeNoteTextView.text = [NSString stringWithFormat:@"                 %@", flightSeat.changeNote];
+    self.priceLabel.text = [NSString stringWithFormat:@"%@", [PriceUtils priceToString:totalPrice]];
+    
+    self.refundNoteTextView.text = [NSString stringWithFormat:@"                  %@", flightSeat.refundNote];
+    self.changeNoteTextView.text = [NSString stringWithFormat:@"                  %@", flightSeat.changeNote];
 }
 
 - (IBAction)clickSelectFlightSeatButton:(id)sender {

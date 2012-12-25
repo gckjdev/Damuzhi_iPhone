@@ -24,7 +24,7 @@
 
 + (NSString *)priceToStringCNY:(double)price
 {
-    return [self priceToString:price currency:@"¥"];
+    return [self priceToString:price currency:@"￥"];
 }
 
 @end
