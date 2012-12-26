@@ -27,6 +27,8 @@
              resultInfo:(NSString *)resultInfo
              flightList:(NSArray *)flightList;
 
+- (void)findOrdersDone:(int)result orderList:(NSArray *)orderList;
+
 @end
 
 
@@ -52,5 +54,12 @@
                          flightType:(int)flightType
                        flightNumber:(NSString *)flightNumber
                            delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findOrderUsingUserId:(NSString *)userId
+                    delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findOrderUsingLoginId:(NSString *)loginId
+                        token:(NSString *)token
+                     delegate:(id<AirHotelServiceDelegate>)delegate;
 
 @end

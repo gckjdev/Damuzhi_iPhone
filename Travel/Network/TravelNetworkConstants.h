@@ -192,6 +192,7 @@
 
 #define OBJECT_LIST_FLIGHT                          100
 #define OBJECT_LIST_CHECK_IN_HOTEL                  101
+#define OBJECT_LIST_AIR_HOTEL_ORDER                 110
 
 // For object type
 #define OBJECT_TYPE_PLACE                       1

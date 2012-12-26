@@ -12,6 +12,7 @@
 #import "AirHotel.pb.h"
 #import "AddCheckInPersonController.h"
 #import "PersonManager.h"
+#import "AddPassengerController.h"
 
 @interface SelectPersonController ()
 
@@ -53,16 +54,15 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)updateTitleAndDataSource
 {
-    [super viewDidLoad];
-    
     switch (_type) {
         case ViewTypePassenger:
             self.headeTitleLabel.text = NSLS(@"添加国际航班登机人");
             break;
         case ViewTypeCheckIn:
             self.headeTitleLabel.text = NSLS(@"添加入住人");
+            self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllPersons];
             break;
         case ViewTypeContact:
             self.headeTitleLabel.text = NSLS(@"添加联系人");
@@ -73,8 +73,11 @@
         default:
             break;
     }
-    
-    //self.dataList = [[PersonManager defaultManager] personList:_personType];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
     [self setNavigationLeftButton:NSLS(@" 返回")
@@ -86,6 +89,12 @@
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickFinish:)];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateTitleAndDataSource];
 }
 
 - (void)clickFinish:(id)sender
@@ -119,7 +128,7 @@
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return [dataList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,14 +189,24 @@
     
     switch (_type) {
         case ViewTypePassenger:
-            
+        {
+            AddPassengerController *controller = [[[AddPassengerController alloc] init] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
+        }
         case ViewTypeCheckIn:
+        {
+            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] init] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
-            
+        }
         case ViewTypeContact:
-            
+        {
+            //for test
+            AddPassengerController *controller = [[[AddPassengerController alloc] init] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
+        }
         case ViewTypeCreditCard:
             
             break;
@@ -195,8 +214,7 @@
             break;
     }
     
-    AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] init] autorelease];
-    [self.navigationController pushViewController:controller animated:YES];
+
 }
 
 - (void)viewDidUnload {

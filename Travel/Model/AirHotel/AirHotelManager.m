@@ -103,7 +103,7 @@ static AirHotelManager *_airHotelManager = nil;
 - (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt
 {
     NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
-    NSString *dateString  = dateToStringByFormat(date, @"yyyy年MM月dd日");
+    NSString *dateString  = dateToChineseStringByFormat(date, @"yyyy年MM月dd日");
     NSString *week = chineseWeekDayFromDate(date);
     
     NSString *resultStr = [NSString stringWithFormat:@"%@ %@", dateString, week];
@@ -113,7 +113,7 @@ static AirHotelManager *_airHotelManager = nil;
 - (NSString *)dateIntToYearMonthDayWeekString2:(int)dateInt
 {
     NSDate  *date = [NSDate dateWithTimeIntervalSince1970:dateInt];
-    NSString *dateString  = dateToStringByFormat(date, @"yyyy-MM-dd");
+    NSString *dateString  = dateToChineseStringByFormat(date, @"yyyy-MM-dd");
     NSString *week = chineseWeekDayFromDate(date);
     
     NSString *resultStr = [NSString stringWithFormat:@"%@ %@", dateString, week];
