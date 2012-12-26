@@ -798,6 +798,8 @@
 		EADE868D168B1E10006D3D79 /* AddPassengerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE8688168B1E10006D3D79 /* AddPassengerController.xib */; };
 		EADE868E168B1E10006D3D79 /* AddPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE868A168B1E10006D3D79 /* AddPersonCell.m */; };
 		EADE868F168B1E10006D3D79 /* AddPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE868B168B1E10006D3D79 /* AddPersonCell.xib */; };
+		EADE8693168B2C6A006D3D79 /* AddCreditCardController.m in Sources */ = {isa = PBXBuildFile; fileRef = EADE8691168B2C68006D3D79 /* AddCreditCardController.m */; };
+		EADE8694168B2C6A006D3D79 /* AddCreditCardController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EADE8692168B2C69006D3D79 /* AddCreditCardController.xib */; };
 		EAE047DE1665BB9300D2EF0B /* MakeOrderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */; };
 		EAE047E01665BBAE00D2EF0B /* MakeOrderHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */; };
 		EAE2832D167C7B1D00C22A56 /* FlightSimpleView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2832C167C7B1900C22A56 /* FlightSimpleView.m */; };
@@ -2039,6 +2041,9 @@
 		EADE8689168B1E10006D3D79 /* AddPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPersonCell.h; sourceTree = "<group>"; };
 		EADE868A168B1E10006D3D79 /* AddPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPersonCell.m; sourceTree = "<group>"; };
 		EADE868B168B1E10006D3D79 /* AddPersonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPersonCell.xib; sourceTree = "<group>"; };
+		EADE8690168B2C66006D3D79 /* AddCreditCardController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCreditCardController.h; sourceTree = "<group>"; };
+		EADE8691168B2C68006D3D79 /* AddCreditCardController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCreditCardController.m; sourceTree = "<group>"; };
+		EADE8692168B2C69006D3D79 /* AddCreditCardController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCreditCardController.xib; sourceTree = "<group>"; };
 		EAE047DC1665BB9300D2EF0B /* MakeOrderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeOrderHeader.h; sourceTree = "<group>"; };
 		EAE047DD1665BB9300D2EF0B /* MakeOrderHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeOrderHeader.m; sourceTree = "<group>"; };
 		EAE047DF1665BBAE00D2EF0B /* MakeOrderHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MakeOrderHeader.xib; sourceTree = "<group>"; };
@@ -4527,6 +4532,9 @@
 				EADE8686168B1E10006D3D79 /* AddPassengerController.h */,
 				EADE8687168B1E10006D3D79 /* AddPassengerController.m */,
 				EADE8688168B1E10006D3D79 /* AddPassengerController.xib */,
+				EADE8690168B2C66006D3D79 /* AddCreditCardController.h */,
+				EADE8691168B2C68006D3D79 /* AddCreditCardController.m */,
+				EADE8692168B2C69006D3D79 /* AddCreditCardController.xib */,
 				EADE8689168B1E10006D3D79 /* AddPersonCell.h */,
 				EADE868A168B1E10006D3D79 /* AddPersonCell.m */,
 				EADE868B168B1E10006D3D79 /* AddPersonCell.xib */,
@@ -5373,6 +5381,7 @@
 				A45C6084168AFA2900809AAE /* trip_list_top@2x.png in Resources */,
 				EADE868D168B1E10006D3D79 /* AddPassengerController.xib in Resources */,
 				EADE868F168B1E10006D3D79 /* AddPersonCell.xib in Resources */,
+				EADE8694168B2C6A006D3D79 /* AddCreditCardController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5735,6 +5744,7 @@
 				EA8423BF168A368A0058ACB0 /* CreditCardManager.m in Sources */,
 				EADE868C168B1E10006D3D79 /* AddPassengerController.m in Sources */,
 				EADE868E168B1E10006D3D79 /* AddPersonCell.m in Sources */,
+				EADE8693168B2C6A006D3D79 /* AddCreditCardController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

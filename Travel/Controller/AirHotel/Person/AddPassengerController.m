@@ -10,12 +10,14 @@
 #import "ImageManager.h"
 #import "FontSize.h"
 #import "AirHotel.pb.h"
-#import "SelectController.h"
 #import "TimeUtils.h"
+#import "AppManager.h"
+#import "PersonManager.h"
 
 @interface AddPassengerController ()
 @property (retain, nonatomic) Person_Builder *personBuilder;
 @property (retain, nonatomic) NSDate *birthday;
+@property (retain, nonatomic) NSMutableArray *selectedItemIds;
 @end
 
 #define TITLE_PASSENGE_TYPE     @"登机人类型:"
@@ -34,6 +36,7 @@
     [_datePickerView release];
     [_datePickerHolderView release];
     [_birthday release];
+    [_selectedItemIds release];
     [super dealloc];
 }
 
@@ -42,6 +45,7 @@
     self = [super init];
     if (self) {
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
+        self.selectedItemIds = [[[NSMutableArray alloc] init] autorelease];
     }
     return self;
 }
@@ -100,6 +104,8 @@
         return;
     }
     
+    Person *person = [self.personBuilder build];
+    [[PersonManager defaultManager:PersonTypePassenger] savePerson:person];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -134,52 +140,67 @@
             isAdult = (_personBuilder.ageType == PersonAgeTypePersonAgeAdult);
             isChild = !isAdult;
         }
-        
         [cell setCellWithType:TypeRadio
                     indexPath:indexPath
                         title:cellTitle
                     inputText:nil
+             inputPlaceholder:nil
                   radio1Title:NSLS(@"成人")
                   radio2Title:NSLS(@"儿童")
                radio1Selected:isAdult
                radio2Selected:isChild
             selectButtonTitle:nil];
-    } else if ([cellTitle isEqualToString:TITLE_NAME]) {
-        
+    }
+    
+    else if ([cellTitle isEqualToString:TITLE_NAME]) {
         [cell setCellWithType:TypeInput
                     indexPath:indexPath
                         title:cellTitle
                     inputText:_personBuilder.name
+             inputPlaceholder:NSLS(@"请输入姓名")
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
                radio2Selected:NO
             selectButtonTitle:nil];
-    } else if ([cellTitle isEqualToString:TITLE_CARD_TYPE]) {
+    }
+    
+    else if ([cellTitle isEqualToString:TITLE_CARD_TYPE]) {
+        NSString *cardTypeName = nil;
+        if ([_personBuilder hasCardTypeId]) {
+            cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
+        } else {
+            cardTypeName = NSLS(@"请选择");
+        }
         
         [cell setCellWithType:TypeSelect
                     indexPath:indexPath
                         title:cellTitle
                     inputText:nil
+             inputPlaceholder:nil
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
                radio2Selected:NO
-            selectButtonTitle:NSLS(@"请选择")];
+            selectButtonTitle:cardTypeName];
         
-    } else if ([cellTitle isEqualToString:TITLE_CARD_NUMBER]) {
-        
+    }
+    
+    else if ([cellTitle isEqualToString:TITLE_CARD_NUMBER]) {
         [cell setCellWithType:TypeInput
                     indexPath:indexPath
                         title:cellTitle
                     inputText:_personBuilder.cardNumber
+             inputPlaceholder:NSLS(@"请输入证件号码")
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
                radio2Selected:NO
             selectButtonTitle:nil];
-        
-    } else if ([cellTitle isEqualToString:TITLE_GENDER]) {
+    }
+    
+    
+    else if ([cellTitle isEqualToString:TITLE_GENDER]) {
         BOOL isMale = NO;
         BOOL isFemale = NO;
         if ([_personBuilder hasGender]) {
@@ -190,13 +211,15 @@
                     indexPath:indexPath
                         title:cellTitle
                     inputText:nil
+             inputPlaceholder:nil
                   radio1Title:NSLS(@"男")
                   radio2Title:NSLS(@"女")
                radio1Selected:isMale
                radio2Selected:isFemale
             selectButtonTitle:nil];
-        
-    } else if ([cellTitle isEqualToString:TITLE_BIRTHDAY]) {
+    }
+    
+    else if ([cellTitle isEqualToString:TITLE_BIRTHDAY]) {
         NSString *birthStr = nil;
         if ([_personBuilder hasBirthday]) {
             NSDate *birthDay = [NSDate dateWithTimeIntervalSince1970:_personBuilder.birthday];
@@ -209,6 +232,7 @@
                     indexPath:indexPath
                         title:cellTitle
                     inputText:nil
+             inputPlaceholder:nil
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
@@ -249,18 +273,16 @@
 {
     NSString *title = [dataList objectAtIndex:indexPath.row];
     if ([title isEqualToString:TITLE_CARD_TYPE]) {
-        //SelectController *controller = [[[SelectController alloc] initWithTitle:<#(NSString *)#> itemList:<#(NSArray *)#> selectedItemIds:<#(NSMutableArray *)#> multiOptions:<#(BOOL)#> needConfirm:<#(BOOL)#> needShowCount:<#(BOOL)#>] autorelease];
+        NSArray *itemList = [[AppManager defaultManager] getCardItemList];
         
+        SelectController *controller = [[[SelectController alloc] initWithTitle:NSLS(@"证件类型") itemList:itemList selectedItemIds:_selectedItemIds multiOptions:NO needConfirm:YES needShowCount:NO] autorelease];
+        controller.delegate = self;
+        [self.navigationController pushViewController:controller animated:YES];
     } else if ([title isEqualToString:TITLE_BIRTHDAY]) {
         self.datePickerHolderView.hidden = NO;
     }
     
     [dataTableView reloadData];
-}
-
-- (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text
-{
-    
 }
 
 - (void)inputTextFieldDidEndEditing:(NSIndexPath *)indexPath text:(NSString *)text
@@ -275,9 +297,16 @@
     [dataTableView reloadData];
 }
 
-- (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text
+
+#pragma mark - 
+#pragma SelectControllerDelegate methods
+- (void)didSelectFinish:(NSArray*)selectedItems
 {
-    
+    if ([_selectedItemIds count] > 0) {
+        int cardTypeId = [[_selectedItemIds objectAtIndex:0] intValue];
+        [_personBuilder setCardTypeId:cardTypeId];
+    }
+    [dataTableView reloadData];
 }
 
 - (IBAction)clickCancelDatePickerButton:(id)sender {

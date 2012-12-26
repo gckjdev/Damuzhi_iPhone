@@ -1379,4 +1379,70 @@ static AppManager* _defaultAppManager = nil;
     return _app.airHotelBookingNotice;
 }
 
+- (NSArray *)getCardItemList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (NameIdPair *card in _app.cardsList) {
+        [mutableArray addObject:[Item itemWithId:card.id itemName:card.name count:0]];
+    }
+    
+    return mutableArray;
+}
+
+- (NSArray *)getNationalityItemList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (NameIdPair *nationality in _app.nationalitysList) {
+        [mutableArray addObject:[Item itemWithId:nationality.id itemName:nationality.name count:0]];
+    }
+    
+    return mutableArray;
+}
+
+- (NSArray *)getBankItemList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (NameIdPair *bank in _app.banksList) {
+        [mutableArray addObject:[Item itemWithId:bank.id itemName:bank.name count:0]];
+    }
+    
+    return mutableArray;
+}
+
+- (NSString *)getCardName:(int)cardId
+{
+    for (NameIdPair *card in _app.cardsList) {
+        if (card.id == cardId) {
+            return card.name;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)getNationalityName:(int)nationalityId
+{
+    for (NameIdPair *nationality in _app.nationalitysList) {
+        if (nationality.id == nationalityId) {
+            return nationality.name;
+        }
+    }
+    
+    return nil;
+}
+
+- (NSString *)getBankName:(int)bankId
+{
+    for (NameIdPair *bank in _app.banksList) {
+        if (bank.id == bankId) {
+            return bank.name;
+        }
+    }
+    
+    return nil;
+}
+
 @end

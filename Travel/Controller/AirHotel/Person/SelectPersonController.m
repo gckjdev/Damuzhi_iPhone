@@ -13,6 +13,7 @@
 #import "AddCheckInPersonController.h"
 #import "PersonManager.h"
 #import "AddPassengerController.h"
+#import "AddCreditCardController.h"
 
 @interface SelectPersonController ()
 
@@ -59,6 +60,7 @@
     switch (_type) {
         case ViewTypePassenger:
             self.headeTitleLabel.text = NSLS(@"添加国际航班登机人");
+            self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllPersons];
             break;
         case ViewTypeCheckIn:
             self.headeTitleLabel.text = NSLS(@"添加入住人");
@@ -208,8 +210,13 @@
             break;
         }
         case ViewTypeCreditCard:
-            
+        {
+            AddCreditCardController *controller = [[[AddCreditCardController alloc] init] autorelease];
+            [self.navigationController pushViewController:controller
+                                                 animated:YES];
             break;
+        }
+            
         default:
             break;
     }

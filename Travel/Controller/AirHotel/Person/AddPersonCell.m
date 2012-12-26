@@ -64,6 +64,7 @@
               indexPath:(NSIndexPath *)aIndexPath
                   title:(NSString *)title
               inputText:(NSString *)inputText
+       inputPlaceholder:(NSString *)inputPlaceholder
             radio1Title:(NSString *)radio1Title
             radio2Title:(NSString *)radio2Title
          radio1Selected:(BOOL)radio1Selected
@@ -77,6 +78,7 @@
     self.titleLabel.text = title;
     
     self.inputTextField.text = inputText;
+    self.inputTextField.placeholder = inputPlaceholder;
     
     self.radio1Title.text = radio1Title;
     self.radio2Title.text = radio2Title;
