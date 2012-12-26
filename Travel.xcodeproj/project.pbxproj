@@ -751,6 +751,8 @@
 		EA1A349516085D4A000E325B /* DepartPlaceMapController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1A349316085D4A000E325B /* DepartPlaceMapController.xib */; };
 		EA1B6E8B165CAD5400C00EEC /* CommonMonthController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */; };
 		EA1BC556165B305C00699C77 /* AirHotel.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1BC555165B305C00699C77 /* AirHotel.pb.m */; };
+		EA1D8A0F168B67CB005295DC /* AddContactPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1D8A0D168B67C8005295DC /* AddContactPersonController.m */; };
+		EA1D8A10168B67CB005295DC /* AddContactPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
 		EA2382831664B00F001ECA2D /* all_page_bg2_i5@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EA2382821664B00F001ECA2D /* all_page_bg2_i5@2x.jpg */; };
 		EA2382851664B01E001ECA2D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2382841664B01E001ECA2D /* Default-568h@2x.png */; };
@@ -1976,6 +1978,9 @@
 		EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMonthController.m; sourceTree = "<group>"; };
 		EA1BC554165B305C00699C77 /* AirHotel.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotel.pb.h; sourceTree = "<group>"; };
 		EA1BC555165B305C00699C77 /* AirHotel.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotel.pb.m; sourceTree = "<group>"; };
+		EA1D8A0C168B67C8005295DC /* AddContactPersonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddContactPersonController.h; sourceTree = "<group>"; };
+		EA1D8A0D168B67C8005295DC /* AddContactPersonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddContactPersonController.m; sourceTree = "<group>"; };
+		EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactPersonController.xib; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
 		EA2382821664B00F001ECA2D /* all_page_bg2_i5@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "all_page_bg2_i5@2x.jpg"; sourceTree = "<group>"; };
@@ -4532,6 +4537,9 @@
 				EADE8686168B1E10006D3D79 /* AddPassengerController.h */,
 				EADE8687168B1E10006D3D79 /* AddPassengerController.m */,
 				EADE8688168B1E10006D3D79 /* AddPassengerController.xib */,
+				EA1D8A0C168B67C8005295DC /* AddContactPersonController.h */,
+				EA1D8A0D168B67C8005295DC /* AddContactPersonController.m */,
+				EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */,
 				EADE8690168B2C66006D3D79 /* AddCreditCardController.h */,
 				EADE8691168B2C68006D3D79 /* AddCreditCardController.m */,
 				EADE8692168B2C69006D3D79 /* AddCreditCardController.xib */,
@@ -5382,6 +5390,7 @@
 				EADE868D168B1E10006D3D79 /* AddPassengerController.xib in Resources */,
 				EADE868F168B1E10006D3D79 /* AddPersonCell.xib in Resources */,
 				EADE8694168B2C6A006D3D79 /* AddCreditCardController.xib in Resources */,
+				EA1D8A10168B67CB005295DC /* AddContactPersonController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5745,6 +5754,7 @@
 				EADE868C168B1E10006D3D79 /* AddPassengerController.m in Sources */,
 				EADE868E168B1E10006D3D79 /* AddPersonCell.m in Sources */,
 				EADE8693168B2C6A006D3D79 /* AddCreditCardController.m in Sources */,
+				EA1D8A0F168B67CB005295DC /* AddContactPersonController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

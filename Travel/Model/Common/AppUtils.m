@@ -64,7 +64,9 @@ static BOOL _showUserLocateDenyAlert = YES;
     && [FileUtil createDir:[self getFavoriteDir]]
     && [FileUtil createDir:[self getHistoryDir]] 
     && [FileUtil createDir:[self getFollowRoutesDir]]
-    && [FileUtil createDir:[self getFollowLocalRoutesDir]];
+    && [FileUtil createDir:[self getFollowLocalRoutesDir]]
+    && [FileUtil createDir:[self getPersonDir]]
+    && [FileUtil createDir:[self getPaymentDir]];
     
     return success;
 }
@@ -137,6 +139,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString*)getPersonDir
 {
     return [FileUtil getFileFullPath:DIR_OF_PERSON];
+}
+
++ (NSString*)getPaymentDir
+{
+    return [FileUtil getFileFullPath:DIR_OF_PAYMENT ];
 }
 
 + (NSString*)getDownloadPath:(int)cityId
@@ -326,6 +333,11 @@ static BOOL _showUserLocateDenyAlert = YES;
 + (NSString *)getPersonFilePath:(int)type
 {
     return [[AppUtils getPersonDir] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.dat",type]];
+}
+
++ (NSString *)getCreditCardFilePath
+{
+    return [[AppUtils getPaymentDir] stringByAppendingPathComponent:CREDIT_CARD_FILE];
 }
 
 + (BOOL)isShowImage

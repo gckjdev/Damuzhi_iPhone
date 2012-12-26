@@ -15,6 +15,8 @@
 #import "PPNetworkRequest.h"
 #import "UIViewUtils.h"
 #import "FontSize.h"
+#import "SelectPersonController.h"
+
 enum{
     SECTION_0 = 0,
     SECTION_1 = 1,
@@ -22,6 +24,11 @@ enum{
 
 #define ROW_LOGINID   0
 #define ROW_MODIFY_PASSWORD   1
+#define ROW_CREDIT_CARD       2
+#define ROW_PASSENGER         3
+#define ROW_CHECKIN_PERSON   4
+#define ROW_CONTACT_PERSON    5
+
 
 #define ROW_NICKNAME   0
 #define ROW_FULLNAME  1
@@ -30,10 +37,16 @@ enum{
 #define SEPRATOR_STRING @"|"
 
 #define TITLE_LOGINID       NSLS(@"用户名:")
+#define TITLE_MODIFY_PASSWORD NSLS(@"密码修改")
+
+#define TITLE_CREDIT_CARD       NSLS(@"信用卡管理")
+#define TITLE_PASSENGER         NSLS(@"登机人管理")
+#define TITLE_CHECKIN_PERSON    NSLS(@"酒店入住人管理")
+#define TITLE_CONTACT_PERSON    NSLS(@"联系人管理")
+
 #define TITLE_EMAIL         NSLS(@"邮   箱:|请输入您的邮箱地址")
 #define TITLE_TELEPHONE     NSLS(@"手机号码:|请输入您的电话号码")
 
-#define TITLE_MODIFY_PASSWORD NSLS(@"密码修改")
 
 #define TITLE_NICKNAME   NSLS(@"昵   称:|请输入您的昵称")
 #define TITLE_FULLNAME   NSLS(@"姓   名:|请输入您的真实姓名")
@@ -95,6 +108,12 @@ enum{
     
     [section0TitleDic setObject:TITLE_LOGINID forKey:[NSNumber numberWithInt:ROW_LOGINID]];
     [section0TitleDic setObject:TITLE_MODIFY_PASSWORD forKey:[NSNumber numberWithInt:ROW_MODIFY_PASSWORD]];
+    
+    [section0TitleDic setObject:TITLE_CREDIT_CARD forKey:[NSNumber numberWithInt:ROW_CREDIT_CARD]];
+    [section0TitleDic setObject:TITLE_PASSENGER forKey:[NSNumber numberWithInt:ROW_PASSENGER]];
+    [section0TitleDic setObject:TITLE_CHECKIN_PERSON forKey:[NSNumber numberWithInt:ROW_CHECKIN_PERSON]];
+    [section0TitleDic setObject:TITLE_CONTACT_PERSON forKey:[NSNumber numberWithInt:ROW_CONTACT_PERSON]];
+    
 
     [section1TitleDic setObject:TITLE_NICKNAME forKey:[NSNumber numberWithInt:ROW_NICKNAME]];
     [section1TitleDic setObject:TITLE_FULLNAME forKey:[NSNumber numberWithInt:ROW_FULLNAME]];
@@ -190,7 +209,11 @@ enum{
     
     cell.inputTextField.text = inputText;
     
-    if ([title isEqualToString:TITLE_MODIFY_PASSWORD]) {
+    if ([title isEqualToString:TITLE_MODIFY_PASSWORD]
+        || [title isEqualToString:TITLE_CREDIT_CARD]
+        || [title isEqualToString:TITLE_PASSENGER]
+        || [title isEqualToString:TITLE_CHECKIN_PERSON]
+        || [title isEqualToString:TITLE_CONTACT_PERSON]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -251,7 +274,7 @@ enum{
                                                email:(_userInfo.loginType == LoginTypeEmail) ? _userInfo.loginId : telephoneOrEmail
                                              address:nil
                                             delegate:self];
-} 
+}
 
 #pragma mark - UserInfoCellDelegate methods
 - (void)inputTextFieldDidBeginEditing:(NSIndexPath *)aIndexPath
@@ -321,6 +344,12 @@ enum{
     [self popupMessage:NSLS(@"修改成功") title:nil];
 }
 
+- (void)pushSelectPerson:(SelectPersonViewType)type navTitle:(NSString *)navTitle
+{
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:type isMultipleChoice:NO delegate:nil title:navTitle isSelect:NO] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)handleSingleTapFrom:(UITapGestureRecognizer*)recognizer 
 {
     CGPoint point = [recognizer locationInView:self.dataTableView];
@@ -331,6 +360,22 @@ enum{
         ChangePasswordController *contrller = [[ChangePasswordController alloc] init];
         [self.navigationController pushViewController:contrller animated:YES];
         [contrller release];
+    }
+    
+    else if ([title isEqualToString:TITLE_CREDIT_CARD]) {
+        [self pushSelectPerson:ViewTypeCreditCard navTitle:TITLE_CREDIT_CARD];
+    }
+    
+    else if ([title isEqualToString:TITLE_PASSENGER]) {
+        [self pushSelectPerson:ViewTypePassenger navTitle:TITLE_PASSENGER];
+    }
+    
+    else if ([title isEqualToString:TITLE_CHECKIN_PERSON]) {
+        [self pushSelectPerson:ViewTypeCheckIn navTitle:TITLE_CHECKIN_PERSON];
+    }
+    
+    else if ([title isEqualToString:TITLE_CONTACT_PERSON]) {
+        [self pushSelectPerson:ViewTypeContact navTitle:TITLE_CONTACT_PERSON];
     }
     
     [_currentInputTextField resignFirstResponder];

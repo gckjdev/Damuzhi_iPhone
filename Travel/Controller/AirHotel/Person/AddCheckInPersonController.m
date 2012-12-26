@@ -75,16 +75,12 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-//#pragma mark -
-//#pragma UITextFieldDelegate methods
-//- (void)textFieldDidEndEditing:(UITextField *)textField
-//{
-//    
-//}
-
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField
-//{
-//    
-//}
+#pragma mark -
+#pragma UITextFieldDelegate methods
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 @end

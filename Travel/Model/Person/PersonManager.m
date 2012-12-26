@@ -32,7 +32,7 @@ static PersonManager *_personManager = nil;
 
 - (NSString*)getFilePath
 {
-    return [AppUtils getFollowRoutesFilePath:_personType];
+    return [AppUtils getPersonFilePath:_personType];
 }
 
 - (NSArray*)findAllPersons

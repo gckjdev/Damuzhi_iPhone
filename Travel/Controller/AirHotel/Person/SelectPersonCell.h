@@ -19,7 +19,7 @@ typedef enum{
 @protocol SelectPersonCellDelegate <NSObject>
 
 @optional
-- (void)didClickSelectButton:(NSIndexPath *)indexPath isSelect:(BOOL)isSelect;
+- (void)didClickSelectButton:(NSIndexPath *)indexPath;
 
 @end
 
@@ -27,9 +27,11 @@ typedef enum{
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *subTitleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *noteLabel;
+@property (retain, nonatomic) IBOutlet UIButton *selectButton;
 
 - (void)setCellWithTitle:(NSString *)title
                 subTitle:(NSString *)subTitle
                     note:(NSString *)note
-               indexPath:(NSIndexPath *)aIndexPath;
+               indexPath:(NSIndexPath *)aIndexPath
+              isSelected:(BOOL)isSelected;
 @end

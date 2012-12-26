@@ -80,8 +80,43 @@
 
 - (void)clickFinish:(id)sender
 {
-//    CreditCard *creditCard = [self.creditCardBuilder build];
-//    [[CreditCard defaultManager] savePerson:person];
+    if ([_creditCardBuilder hasBankId] == NO) {
+        [self popupMessage:NSLS(@"请选择发卡银行") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasNumber] == NO) {
+        [self popupMessage:NSLS(@"请输入卡号") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasCcv] == NO) {
+        [self popupMessage:NSLS(@"请输入卡背面的数字") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasName] == NO) {
+        [self popupMessage:NSLS(@"请输入持卡人姓名") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasValidDateYear] == NO || [_creditCardBuilder hasValidDateMonth] == NO) {
+        [self popupMessage:NSLS(@"请选择有效期") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasIdCardTypeId] == NO) {
+        [self popupMessage:NSLS(@"请选择证件类型") title:nil];
+        return;
+    }
+    
+    if ([_creditCardBuilder hasIdCardNumber] == NO) {
+        [self popupMessage:NSLS(@"请输入证件号码") title:nil];
+        return;
+    }
+    
+    CreditCard *creditCard = [self.creditCardBuilder build];
+    [[CreditCardManager defaultManager] saveCreditCard:creditCard];
     
     [self resetViewSite];
     [self.navigationController popViewControllerAnimated:YES];

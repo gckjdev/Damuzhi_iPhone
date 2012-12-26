@@ -12,7 +12,15 @@ enum{
     PaymentTypeCreditCard = 1
 };
 
+@class CreditCard;
 
 @interface CreditCardManager : NSObject
+
++ (CreditCardManager *)defaultManager;
+
+- (NSArray*)findAllCreditCards;
+- (void)deleteCreditCard:(CreditCard *)creditCard;
+- (void)saveCreditCard:(CreditCard *)creditCard;
+
 
 @end
