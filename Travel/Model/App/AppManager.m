@@ -1326,7 +1326,7 @@ static AppManager* _defaultAppManager = nil;
             return nameIdPair.image;
         }
     }
-    return nil;
+    return @"";
 }
 
 
