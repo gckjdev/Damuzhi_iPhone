@@ -87,7 +87,7 @@
     _selectedSection = SELECTED_SECTION_NONE;
     
     [self findHotels];
-    
+
     //test data
 //    [self testData];
 //    [dataTableView reloadData];
@@ -127,6 +127,8 @@
 
 - (void)findHotels
 {
+    [self showActivityWithText:NSLS(@"数据加载中......")];
+
     [[AirHotelService defaultService] findHotelsWithCityId:[[AppManager defaultManager] getCurrentCityId]
                                                checkInDate:_checkInDate
                                               checkOutDate:_checkOutDate
@@ -386,6 +388,13 @@
             totalCount:(int)totalCount
              hotelList:(NSArray*)hotelList
 {
+    [self hideActivity];
+    
+    if (result != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
+        return;
+    }
+
     PPDebug(@"hotelList count:%d", [hotelList count]);
     self.hotelList = [NSMutableArray arrayWithArray:hotelList];
     
@@ -394,6 +403,13 @@
     }
     
     [dataTableView reloadData];
+    
+    if ([self.hotelList count] == 0) {
+        self.noMoreData = YES;
+        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+    }else {
+        [self hideTipsOnTableView];
+    }
 }
 
 @end

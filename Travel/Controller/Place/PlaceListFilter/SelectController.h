@@ -19,6 +19,7 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) id<SelectControllerDelegate> delegate;
 @property (retain, nonatomic) UIColor *cellTextColor;
+@property (retain, nonatomic) NSArray *accessoryImageList;
 
 - (SelectController*)initWithTitle:(NSString *)title
                           itemList:(NSArray *)itemList

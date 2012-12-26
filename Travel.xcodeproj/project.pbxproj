@@ -180,6 +180,9 @@
 		A455F8E81585D43900CA5743 /* RouteIntroductionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A455F8D61585D43900CA5743 /* RouteIntroductionController.xib */; };
 		A45663A91599537F00DD926B /* NonMemberOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = A45663A71599537F00DD926B /* NonMemberOrderController.m */; };
 		A45663AA1599537F00DD926B /* NonMemberOrderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A45663A81599537F00DD926B /* NonMemberOrderController.xib */; };
+		A45C6082168AFA2900809AAE /* trip_list_bottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A45C607F168AFA2900809AAE /* trip_list_bottom@2x.png */; };
+		A45C6083168AFA2900809AAE /* trip_list_middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A45C6080168AFA2900809AAE /* trip_list_middle@2x.png */; };
+		A45C6084168AFA2900809AAE /* trip_list_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A45C6081168AFA2900809AAE /* trip_list_top@2x.png */; };
 		A483AAEE1594717900A1F699 /* CityImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = A483AAEC1594717900A1F699 /* CityImageController.m */; };
 		A483AAEF1594717900A1F699 /* CityImageController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A483AAED1594717900A1F699 /* CityImageController.xib */; };
 		A483AAF31594D39A00A1F699 /* OrderService.m in Sources */ = {isa = PBXBuildFile; fileRef = A483AAF21594D39A00A1F699 /* OrderService.m */; };
@@ -1106,6 +1109,9 @@
 		A45663A61599537F00DD926B /* NonMemberOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonMemberOrderController.h; sourceTree = "<group>"; };
 		A45663A71599537F00DD926B /* NonMemberOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonMemberOrderController.m; sourceTree = "<group>"; };
 		A45663A81599537F00DD926B /* NonMemberOrderController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NonMemberOrderController.xib; sourceTree = "<group>"; };
+		A45C607F168AFA2900809AAE /* trip_list_bottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trip_list_bottom@2x.png"; sourceTree = "<group>"; };
+		A45C6080168AFA2900809AAE /* trip_list_middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trip_list_middle@2x.png"; sourceTree = "<group>"; };
+		A45C6081168AFA2900809AAE /* trip_list_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trip_list_top@2x.png"; sourceTree = "<group>"; };
 		A483AAEB1594717900A1F699 /* CityImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityImageController.h; sourceTree = "<group>"; };
 		A483AAEC1594717900A1F699 /* CityImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityImageController.m; sourceTree = "<group>"; };
 		A483AAED1594717900A1F699 /* CityImageController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CityImageController.xib; sourceTree = "<group>"; };
@@ -2996,6 +3002,9 @@
 		A48E04F71534058900B2695E /* select */ = {
 			isa = PBXGroup;
 			children = (
+				A45C607F168AFA2900809AAE /* trip_list_bottom@2x.png */,
+				A45C6080168AFA2900809AAE /* trip_list_middle@2x.png */,
+				A45C6081168AFA2900809AAE /* trip_list_top@2x.png */,
 				A421C8BB153A9F3200109478 /* select_bg_center@2x.png */,
 				A421C8BC153A9F3200109478 /* select_bg_down@2x.png */,
 				A421C8BD153A9F3200109478 /* select_bg_top@2x.png */,
@@ -5343,6 +5352,9 @@
 				EAE2832F167C7E9D00C22A56 /* FlightSimpleView.xib in Resources */,
 				EA37A8F0168209D900879094 /* RescheduleInfoController.xib in Resources */,
 				EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */,
+				A45C6082168AFA2900809AAE /* trip_list_bottom@2x.png in Resources */,
+				A45C6083168AFA2900809AAE /* trip_list_middle@2x.png in Resources */,
+				A45C6084168AFA2900809AAE /* trip_list_top@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
