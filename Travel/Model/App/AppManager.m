@@ -1326,7 +1326,7 @@ static AppManager* _defaultAppManager = nil;
             return nameIdPair.image;
         }
     }
-    return nil;
+    return @"";
 }
 
 
@@ -1356,6 +1356,22 @@ static AppManager* _defaultAppManager = nil;
     }
     
     return airlineList;
+}
+
+- (NSArray *)getAirlineItemImageList:(NSArray *)flightList
+{
+    NSArray *airlineItemList = [self getAirlineItemList:flightList];
+    NSMutableArray *logoList = [NSMutableArray array];
+    [logoList addObject:@""];
+    
+    
+    
+    for (Item * item in airlineItemList) {
+        NSString *airlineLogo = [self getAirlineLogo:item.itemId];
+        [logoList addObject:airlineLogo];
+    }
+    
+    return logoList;
 }
 
 - (NSString *)getAirHotelBookingNotice

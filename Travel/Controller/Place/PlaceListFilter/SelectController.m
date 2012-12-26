@@ -15,6 +15,8 @@
 #import "Item.h"
 #import "AppConstants.h"
 #import "FontSize.h"
+#import "UIImageView+WebCache.h"
+
 @interface SelectController ()
 
 @property (copy, nonatomic) NSString *navigationTitle;
@@ -51,6 +53,7 @@
     
     [tableView release];
     [_cellTextColor release];
+    [_accessoryImageList release];
     [super dealloc];
 }
 
@@ -139,6 +142,9 @@
     
     UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellForCategory"] autorelease];
     
+    cell.backgroundView = [self getBackgoundImageView:row];
+
+    
     Item *item = [_itemList objectAtIndex:row];
 
     if (_needShowCount) {
@@ -148,27 +154,41 @@
         NSString *text = [NSString stringWithFormat:@"%@", item.itemName];
         [[cell textLabel] setText:text];
     }
-    
-    
+    cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     if (_cellTextColor) {
         cell.textLabel.textColor = _cellTextColor;
     }
     
+    if (_accessoryImageList !=nil) {
+        cell.accessoryView = [self getAccessoryView:row];
+    }
+    
     if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];
-        cell.backgroundView = [self getBackgoundImageView:row];
+//        cell.backgroundView = [self getSelectedBackgoundImageView:row];
         if (!_multiOptinos) {
             cell.accessoryView =[self getCheckedImageView];
         }
     }else {
         [cell.imageView setImage:[self getUnselectedImage]];
-        cell.accessoryView = nil;
+        if (!_multiOptinos) {
+            cell.accessoryView = nil;
+        }
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	return cell;	
+}
+
+- (UIImageView*)getAccessoryView:(int)row
+{
+    CGRect rect = CGRectMake(0, 0, 20, 20);
+    UIImageView *imageView = [[[UIImageView alloc] initWithFrame:rect] autorelease];
+    [imageView setImageWithURL:[NSURL URLWithString:[_accessoryImageList objectAtIndex:row]]];
+    
+    return  imageView;
 }
 
 - (UIImageView*)getCheckedImageView
@@ -180,8 +200,8 @@
     return  imageView;
 }
 
-- (UIView*)getBackgoundImageView:(int)row
-{
+- (UIView*)getSelectedBackgoundImageView:(int)row
+{    
     UIImageView *view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 20)] autorelease];
   
     if (row == 0) {
@@ -192,6 +212,23 @@
     }
     else {
         [view setImage:[UIImage strectchableImageName:@"select_bg_center.png"]];
+    }
+    
+    return view;
+}
+
+- (UIView*)getBackgoundImageView:(int)row
+{
+    UIImageView *view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 20)] autorelease];
+    
+    if (row == 0) {
+        [view setImage:[UIImage imageNamed:@"trip_list_top@2x.png"]];
+    }
+    else if(row == [_itemList count]-1){
+        [view setImage:[UIImage imageNamed:@"trip_list_bottom@2x.png"]];
+    }
+    else {
+        [view setImage:[UIImage strectchableImageName:@"trip_list_middle@2x.png"]];
     }
     
     return view;

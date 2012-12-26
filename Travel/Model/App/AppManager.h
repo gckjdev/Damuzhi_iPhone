@@ -119,6 +119,8 @@
 - (NSString *)getAirlineName:(int)airlineId;
 - (NSString *)getAirlineLogo:(int)airlineId;
 - (NSArray *)getAirlineItemList:(NSArray *)flightList;
+- (NSArray *)getAirlineItemImageList:(NSArray *)flightList;
+
 - (NSString *)getAirHotelBookingNotice;
 
 @end

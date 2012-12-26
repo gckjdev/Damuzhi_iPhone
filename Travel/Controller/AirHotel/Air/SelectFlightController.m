@@ -15,6 +15,7 @@
 #import "TimeUtils.h"
 #import "Item.h"
 #import "AppConstants.h"
+#import "PPNetworkRequest.h"
 
 @interface SelectFlightController ()
 @property (assign, nonatomic) int departCityId;
@@ -166,10 +167,23 @@
 - (void)findFlightsDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo flightList:(NSArray *)flightList
 {
     [self hideActivity];
+    
+    if (result != ERROR_SUCCESS) {
+        [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
+        return;
+    }
+    
     self.allDataList = flightList;
     self.dataList = flightList;
     self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
     [dataTableView reloadData];
+    
+    if ([self.dataList count] == 0) {
+        self.noMoreData = YES;
+        [self showTipsOnTableView:NSLS(@"未找到相关信息")];
+    }else {
+        [self hideTipsOnTableView];
+    }
 }
 
 
@@ -277,6 +291,7 @@
 
 - (IBAction)clickFliterButton:(id)sender {
     NSArray *itemList = [[AppManager defaultManager] getAirlineItemList:_allDataList];
+    NSArray *imageList = [[AppManager defaultManager] getAirlineItemImageList:_allDataList];
     
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:itemList selectedItemIds:_selectedItemList multiOptions:YES needConfirm:YES needShowCount:NO];
     controller.delegate = self;
