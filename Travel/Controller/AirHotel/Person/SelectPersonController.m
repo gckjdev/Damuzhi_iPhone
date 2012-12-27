@@ -24,6 +24,7 @@
 @property (assign, nonatomic) BOOL isMultipleChoice;
 @property (assign, nonatomic) id<SelectPersonControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isSelect;
+@property (assign, nonatomic) BOOL isEidtingTable;
 
 @end
 
@@ -38,6 +39,7 @@
 {
     [_selectedIndexList release];
     [_headeTitleLabel release];
+    [_headerHolderView release];
     [super dealloc];
 }
 
@@ -93,7 +95,14 @@
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
-    [self setNavigationRightButton:NSLS(@"确定")
+    NSString *rightButtonTitle = nil;
+    if (_isSelect) {
+        rightButtonTitle = NSLS(@"确定");
+    } else {
+        rightButtonTitle = NSLS(@"管理");
+    }
+    
+    [self setNavigationRightButton:rightButtonTitle
                           fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickFinish:)];
@@ -106,17 +115,52 @@
     [self updateTitleAndDataSource];
 }
 
+- (void)moveHeaderToRight
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.30];
+    self.headerHolderView.frame = CGRectMake(41, self.headerHolderView.frame.origin.y, self.headerHolderView.frame.size.width, self.headerHolderView.frame.size.height);
+    [UIImageView commitAnimations];
+}
+
+- (void)resetHeader
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.30];
+    self.headerHolderView.frame = CGRectMake(9, self.headerHolderView.frame.origin.y, self.headerHolderView.frame.size.width, self.headerHolderView.frame.size.height);
+    [UIImageView commitAnimations];
+}
+
 - (void)clickFinish:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
-    
-    NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
-    for (NSIndexPath *indexPath in _selectedIndexList) {
-        [resultArray addObject:[dataList objectAtIndex:indexPath.row]];
-    }
-    
-    if ([_delegate respondsToSelector:@selector(finishSelectPerson:objectList:)]) {
-        [_delegate finishSelectPerson:_type objectList:resultArray];
+    if (_isSelect) {
+        NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
+        for (NSIndexPath *indexPath in _selectedIndexList) {
+            [resultArray addObject:[dataList objectAtIndex:indexPath.row]];
+        }
+        
+        if ([_delegate respondsToSelector:@selector(finishSelectPerson:objectList:)]) {
+            [_delegate finishSelectPerson:_type objectList:resultArray];
+        }
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        _isEidtingTable = !_isEidtingTable;
+        if (_isEidtingTable) {
+            [self setNavigationRightButton:NSLS(@"完成")
+                                  fontSize:FONT_SIZE
+                                 imageName:@"topmenu_btn_right.png"
+                                    action:@selector(clickFinish:)];
+            [self moveHeaderToRight];
+        } else {
+            [self setNavigationRightButton:NSLS(@"管理")
+                                  fontSize:FONT_SIZE
+                                 imageName:@"topmenu_btn_right.png"
+                                    action:@selector(clickFinish:)];
+            [self resetHeader];
+        }
+        
+        [dataTableView setEditing:_isEidtingTable animated:YES];
     }
 }
 
@@ -155,21 +199,51 @@
     id oneObject = [dataList objectAtIndex:indexPath.row];
     if ([[oneObject class] isSubclassOfClass:[Person class]]) {
         Person *person = (Person *)oneObject;
-        [cell setCellWithTitle:person.name
-                      subTitle:person.nameEnglish
-                          note:nil
-                     indexPath:indexPath
-                    isSelected:[self isChoose:indexPath]];
+        [cell setCellWithType:_type
+                       person:person
+                   creditCard:nil
+                    indexPath:indexPath
+                   isSelected:[self isChoose:indexPath]
+                   isMultiple:_isMultipleChoice];
     } else{
         CreditCard *creditCard = (CreditCard *)oneObject;
-        [cell setCellWithTitle:creditCard.name
-                      subTitle:creditCard.number
-                          note:nil
-                     indexPath:indexPath
-                    isSelected:[self isChoose:indexPath]];
+        [cell setCellWithType:_type
+                       person:nil
+                   creditCard:creditCard
+                    indexPath:indexPath
+                   isSelected:[self isChoose:indexPath]
+                   isMultiple:_isMultipleChoice];
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if (_type == ViewTypeCreditCard) {
+            CreditCard *creditCard = (CreditCard *)[dataList objectAtIndex:indexPath.row];
+            [[CreditCardManager defaultManager] deleteCreditCard:creditCard];
+        } else {
+            PersonType storeType;
+            if (_type == ViewTypeCheckIn) {
+                storeType = PersonTypeCheckIn;
+            } else if (_type == ViewTypeContact) {
+                storeType = PersonTypeContact;
+            } if (_type == ViewTypePassenger) {
+                storeType = PersonTypePassenger;
+            }
+            
+            Person *person = (Person *)[dataList objectAtIndex:indexPath.row];
+            [[PersonManager defaultManager:storeType] deletePerson:person];
+        }
+        
+        NSMutableArray *mutableDataList = [NSMutableArray arrayWithArray:dataList];
+        [mutableDataList removeObjectAtIndex:indexPath.row];
+        self.dataList = mutableDataList;
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 
@@ -208,30 +282,67 @@
     [dataTableView reloadData];
 }
 
-- (IBAction)clickAddPersonButton:(id)sender {
-    
+- (void)didClickEditButton:(NSIndexPath *)indexPath
+{
     switch (_type) {
         case ViewTypePassenger:
         {
-            AddPassengerController *controller = [[[AddPassengerController alloc] init] autorelease];
+            Person *person = [dataList objectAtIndex:indexPath.row];
+            AddPassengerController *controller  = [[[AddPassengerController alloc] initWithIsAdd:NO person:person] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCheckIn:
         {
-            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] init] autorelease];
+            Person *person = [dataList objectAtIndex:indexPath.row];
+            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:NO person:person] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeContact:
         {
-            AddContactPersonController *controller = [[[AddContactPersonController alloc] init] autorelease];
+            Person *person = [dataList objectAtIndex:indexPath.row];
+            AddContactPersonController *controller  = [[[AddContactPersonController alloc] initWithIsAdd:NO person:person] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCreditCard:
         {
-            AddCreditCardController *controller = [[[AddCreditCardController alloc] init] autorelease];
+            CreditCard *creditCard = [dataList objectAtIndex:indexPath.row];
+            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:NO creditCard:creditCard] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (IBAction)clickAddPersonButton:(id)sender {
+    
+    switch (_type) {
+        case ViewTypePassenger:
+        {
+            AddPassengerController *controller = [[[AddPassengerController alloc] initWithIsAdd:YES person:nil] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
+        case ViewTypeCheckIn:
+        {
+            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:YES person:nil] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
+        case ViewTypeContact:
+        {
+            AddContactPersonController *controller = [[[AddContactPersonController alloc] initWithIsAdd:YES person:nil] autorelease];
+            [self.navigationController pushViewController:controller animated:YES];
+            break;
+        }
+        case ViewTypeCreditCard:
+        {
+            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:YES creditCard:nil] autorelease];
             [self.navigationController pushViewController:controller
                                                  animated:YES];
             break;
@@ -240,12 +351,11 @@
         default:
             break;
     }
-    
-
 }
 
 - (void)viewDidUnload {
     [self setHeadeTitleLabel:nil];
+    [self setHeaderHolderView:nil];
     [super viewDidUnload];
 }
 @end

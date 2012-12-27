@@ -58,12 +58,29 @@ static CreditCardManager *_creditCardManager = nil;
     [builder release];
 }
 
+- (BOOL)isEqual:(CreditCard *)creditCard anotherCreditCard:(CreditCard *)anotherCreditCard
+{
+    if (creditCard.bankId == anotherCreditCard.bankId
+        && [creditCard.number isEqualToString:anotherCreditCard.number]
+        && [creditCard.name isEqualToString:anotherCreditCard.name]
+        && [creditCard.ccv isEqualToString:anotherCreditCard.ccv]
+        && creditCard.validDateYear == anotherCreditCard.validDateYear
+        && creditCard.validDateMonth == anotherCreditCard.validDateMonth
+        && creditCard.idCardTypeId == anotherCreditCard.idCardTypeId
+        && [creditCard.idCardNumber isEqualToString:anotherCreditCard.idCardNumber])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (void)deleteCreditCard:(CreditCard *)creditCard
 {
     BOOL found = NO;
     NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllCreditCards]];
     for (CreditCard *creditCardTemp in mutableArray) {
-        if ([creditCardTemp isEqual:creditCard]) {
+        if ([self isEqual:creditCardTemp anotherCreditCard:creditCard]) {
             [mutableArray removeObject:creditCardTemp];
             found = YES;
             break;

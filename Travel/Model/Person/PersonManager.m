@@ -64,12 +64,30 @@ static PersonManager *_personManager = nil;
     [builder release];
 }
 
+- (BOOL)isEqual:(Person *)person anotherPerson:(Person *)anotherPerson
+{
+    if ([person.name isEqual:anotherPerson.name]
+        && [person.nameEnglish isEqualToString:anotherPerson.nameEnglish]
+        && person.ageType == anotherPerson.ageType
+        && person.gender == anotherPerson.gender
+        && person.nationalityId == anotherPerson.nationalityId
+        && person.cardTypeId == anotherPerson.cardTypeId
+        && [person.cardNumber isEqualToString:anotherPerson.cardNumber]
+        && person.cardValidDate == anotherPerson.cardValidDate
+        && person.birthday == anotherPerson.birthday
+        && [person.phone isEqualToString:anotherPerson.phone]) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 - (void)deletePerson:(Person *)person
 {
     BOOL found = NO;
     NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
     for (Person *personTemp in mutableArray) {
-        if ([personTemp isEqual:person]) {
+        if ([self isEqual:personTemp anotherPerson:person]) {
             [mutableArray removeObject:personTemp];
             found = YES;
             break;

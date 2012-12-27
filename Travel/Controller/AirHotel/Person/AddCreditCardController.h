@@ -9,10 +9,14 @@
 #import "PPTableViewController.h"
 #import "AddPersonCell.h"
 #import "SelectController.h"
+#import "SRMonthPicker.h"
 
-@interface AddCreditCardController : PPTableViewController<AddPersonCellDelegate, SelectControllerDelegate>
+@class CreditCard;
+
+@interface AddCreditCardController : PPTableViewController<AddPersonCellDelegate, SelectControllerDelegate, SRMonthPickerDelegate>
 @property (retain, nonatomic) IBOutlet UIView *datePickerHolderView;
+@property (retain, nonatomic) IBOutlet SRMonthPicker *monthPicker;
 
-@property (retain, nonatomic) IBOutlet UIDatePicker *datePickerView;
+- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard;
 
 @end
