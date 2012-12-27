@@ -167,7 +167,7 @@
     
     if ([self isSelectedItemIds:_selectedItemIdsBeforConfirm containItemId:item.itemId]) {
         [cell.imageView setImage:[self getSelectedImage]];
-//        cell.backgroundView = [self getSelectedBackgoundImageView:row];
+        cell.backgroundView = [self getSelectedBackgoundImageView:row];
         if (!_multiOptinos) {
             cell.accessoryView =[self getCheckedImageView];
         }
@@ -205,13 +205,16 @@
     UIImageView *view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 20)] autorelease];
   
     if (row == 0) {
-        [view setImage:[UIImage imageNamed:@"select_bg_top.png"]];
+//        [view setImage:[UIImage imageNamed:@"select_bg_top.png"]];
+        [view setImage:[UIImage imageNamed:@"trip_list_top_on@2x.png"]];
     }
     else if(row == [_itemList count]-1){
-        [view setImage:[UIImage imageNamed:@"select_bg_down.png"]];
+//        [view setImage:[UIImage imageNamed:@"select_bg_down.png"]];
+        [view setImage:[UIImage imageNamed:@"trip_list_bottom_on@2x.png"]];
     }
     else {
-        [view setImage:[UIImage strectchableImageName:@"select_bg_center.png"]];
+//        [view setImage:[UIImage strectchableImageName:@"select_bg_center.png"]];
+        [view setImage:[UIImage strectchableImageName:@"trip_list_middle_on@2x.png"]];
     }
     
     return view;
