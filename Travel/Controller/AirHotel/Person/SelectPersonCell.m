@@ -14,6 +14,7 @@
     [_titleLabel release];
     [_subTitleLabel release];
     [_noteLabel release];
+    [_selectButton release];
     [super dealloc];
 }
 
@@ -31,19 +32,19 @@
                 subTitle:(NSString *)subTitle
                     note:(NSString *)note
                indexPath:(NSIndexPath *)aIndexPath
+              isSelected:(BOOL)isSelected
 {
     self.titleLabel.text = title;
     self.subTitleLabel.text = subTitle;
     self.noteLabel.text = note;
     self.indexPath = aIndexPath;
+    
+    self.selectButton.selected = isSelected;
 }
 
-- (IBAction)clickSelectButton:(id)sender {
-    UIButton *button = (UIButton *)sender;
-    button.selected = !button.selected;
-    
-    if ([delegate respondsToSelector:@selector(didClickSelectButton:isSelect:)]) {
-        [delegate didClickSelectButton:indexPath isSelect:button.selected];
+- (IBAction)clickSelectButton:(id)sender {    
+    if ([delegate respondsToSelector:@selector(didClickSelectButton:)]) {
+        [delegate didClickSelectButton:indexPath];
     }
 }
 

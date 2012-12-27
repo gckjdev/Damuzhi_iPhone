@@ -60,6 +60,7 @@
 #define DIR_OF_FOLLOW_ROUTES                @"app/user/followRoutes/"
 #define DIR_OF_FOLLOW_LOCAL_ROUTES          @"app/user/followLocalRoutes/"
 #define DIR_OF_PERSON                       @"app/user/person/"
+#define DIR_OF_PAYMENT                      @"app/user/payment/"
 
 // Under city dir, relative.
 #define FLAG_OF_UNZIP_SUCCESS               @"unzip_success" 
@@ -73,6 +74,9 @@
 #define FAVORITE_PLACE_FILE         @"favorite_place.dat"
 #define HISTORY_PLACE_FILE          @"history_place.dat"
 #define PLACE_STORAGE_DEFAULT_DIR   @"save_place_data"
+
+//patment file name
+#define CREDIT_CARD_FILE            @"credit_card.dat"
 
 // Under help dir.
 #define FILENAME_OF_HELP_HTML               @"helpinfo.html"

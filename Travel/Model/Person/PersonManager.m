@@ -32,7 +32,7 @@ static PersonManager *_personManager = nil;
 
 - (NSString*)getFilePath
 {
-    return [AppUtils getFollowRoutesFilePath:_personType];
+    return [AppUtils getPersonFilePath:_personType];
 }
 
 - (NSArray*)findAllPersons
@@ -51,10 +51,46 @@ static PersonManager *_personManager = nil;
     return [list personsList];
 }
 
-- (void)savePerson:(Person *)person type:(PersonType)personType
+- (void)writeToFileWithList:(NSArray*)newList
 {
+    PersonList_Builder* builder = [[PersonList_Builder alloc] init];
+    [builder addAllPersons:newList];
+    PersonList *newPersonList = [builder build];
     
+    PPDebug(@"<PersonManager> %@",[self getFilePath]);
+    if (![[newPersonList data] writeToFile:[self getFilePath]  atomically:YES]) {
+        PPDebug(@"<PersonManager> error");
+    }
+    [builder release];
 }
+
+- (void)deletePerson:(Person *)person
+{
+    BOOL found = NO;
+    NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
+    for (Person *personTemp in mutableArray) {
+        if ([personTemp isEqual:person]) {
+            [mutableArray removeObject:personTemp];
+            found = YES;
+            break;
+        }
+    }
+    
+    if (found) {
+        [self writeToFileWithList:mutableArray];
+    }
+}
+
+- (void)savePerson:(Person *)person
+{
+    [self deletePerson:person];
+    
+    NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
+    [mutableArray addObject:person];
+    [self writeToFileWithList:mutableArray];
+}
+
+
 
 //+ (PersonManager *)defaultManager
 //{

@@ -14,12 +14,14 @@ typedef enum{
     PersonTypeContact = 3,
 } PersonType;
 
-
+@class Person;
 
 @interface PersonManager : NSObject
 
 + (PersonManager *)defaultManager:(PersonType)personType;
 
-- (NSArray *)personList:(PersonType)personType;
+- (NSArray*)findAllPersons;
+- (void)deletePerson:(Person *)person;
+- (void)savePerson:(Person *)person;
 
 @end

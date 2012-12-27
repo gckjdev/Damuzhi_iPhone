@@ -72,6 +72,9 @@
 //For persons data dir
 + (NSString*)getPersonDir;
 
+//For payment data dir
++ (NSString*)getPaymentDir;
+
 // Interface for app data file.
 + (NSString*)getAppFilePath;
 
@@ -126,8 +129,11 @@
 // For getting follow local routes file path 
 + (NSString *)getFollowLocalRoutesFilePath;
 
-//Fot getting person file path
+//For getting person file path
 + (NSString *)getPersonFilePath:(int)type;
+
+//For getting credit card file path
++ (NSString *)getCreditCardFilePath;
 
 // For place image showable.
 + (BOOL)isShowImage;

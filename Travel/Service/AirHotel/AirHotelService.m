@@ -12,6 +12,7 @@
 #import "LogUtil.h"
 #import "TimeUtils.h"
 #import "AirHotel.pb.h"
+#import "JSON.h"
 
 static AirHotelService *_airHotelService = nil;
 
@@ -163,6 +164,63 @@ static AirHotelService *_airHotelService = nil;
                 }
         });
         
+    });
+}
+
+- (void)findOrderUsingUserId:(NSString *)userId
+                    delegate:(id<AirHotelServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryList:OBJECT_LIST_AIR_HOTEL_ORDER userId:userId lang:LanguageTypeZhHans];
+        int result = -1;
+        NSString *resultInfo;
+        TravelResponse *travelResponse = nil;
+        
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+            } @catch (NSException *exception){
+                PPDebug (@"<findOrderUsingUserId> Caught %@%@", [exception name], [exception reason]);
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findOrdersDone:orderList:)]) {
+                [delegate findOrdersDone:output.resultCode orderList:[travelResponse.airHotelOrderList airHotelOrdersList]];
+            }
+        });
+    });
+}
+
+- (void)findOrderUsingLoginId:(NSString *)loginId
+                        token:(NSString *)token
+                     delegate:(id<AirHotelServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryList:OBJECT_LIST_AIR_HOTEL_ORDER loginId:loginId token:token lang:LanguageTypeZhHans];
+        int result = -1;
+        NSString *resultInfo;
+        TravelResponse *travelResponse = nil;
+        
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            @try{
+                travelResponse = [TravelResponse parseFromData:output.responseData];
+            } @catch (NSException *exception){
+                PPDebug (@"<findOrderUsingUserId> Caught %@%@", [exception name], [exception reason]);
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findOrdersDone:orderList:)]) {
+                [delegate findOrdersDone:output.resultCode orderList:[travelResponse.airHotelOrderList airHotelOrdersList]];
+            }
+        });
     });
 }
 

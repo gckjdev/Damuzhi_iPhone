@@ -123,4 +123,12 @@
 
 - (NSString *)getAirHotelBookingNotice;
 
+- (NSArray *)getCardItemList;
+- (NSArray *)getNationalityItemList;
+- (NSArray *)getBankItemList;
+
+- (NSString *)getCardName:(int)cardId;
+- (NSString *)getNationalityName:(int)nationalityId;
+- (NSString *)getBankName:(int)bankId;
+
 @end
