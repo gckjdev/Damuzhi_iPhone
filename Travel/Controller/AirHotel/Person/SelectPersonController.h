@@ -21,6 +21,7 @@
 
 
 @interface SelectPersonController : PPTableViewController <SelectPersonCellDelegate>
+@property (retain, nonatomic) IBOutlet UIView *headerHolderView;
 @property (retain, nonatomic) IBOutlet UILabel *headeTitleLabel;
 
 - (id)initWithType:(SelectPersonViewType)type

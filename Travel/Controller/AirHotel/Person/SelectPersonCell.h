@@ -20,18 +20,24 @@ typedef enum{
 
 @optional
 - (void)didClickSelectButton:(NSIndexPath *)indexPath;
+- (void)didClickEditButton:(NSIndexPath *)indexPath;
 
 @end
+
+@class Person;
+@class CreditCard;
 
 @interface SelectPersonCell : PPTableViewCell
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *subTitleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *noteLabel;
 @property (retain, nonatomic) IBOutlet UIButton *selectButton;
+@property (retain, nonatomic) IBOutlet UIButton *editButton;
 
-- (void)setCellWithTitle:(NSString *)title
-                subTitle:(NSString *)subTitle
-                    note:(NSString *)note
-               indexPath:(NSIndexPath *)aIndexPath
-              isSelected:(BOOL)isSelected;
+- (void)setCellWithType:(SelectPersonViewType)type
+                 person:(Person *)person
+             creditCard:(CreditCard *)creditCard
+              indexPath:(NSIndexPath *)aIndexPath
+             isSelected:(BOOL)isSelected
+             isMultiple:(BOOL)isMultiple;
 @end

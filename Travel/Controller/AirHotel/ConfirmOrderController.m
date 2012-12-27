@@ -333,20 +333,24 @@
 - (void)finishSelectPerson:(SelectPersonViewType)personType objectList:(NSArray *)objectList
 {
     if (personType == ViewTypeContact) {
-        Person *person = (Person *)[objectList objectAtIndex:0];
-        [_airHotelOrderBuilder setContactPerson:person];
-        
-        [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
+        if ([objectList count] > 0) {
+            Person *person = (Person *)[objectList objectAtIndex:0];
+            [_airHotelOrderBuilder setContactPerson:person];
+            
+            [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
+        }
     } else if (personType == ViewTypeCreditCard) {
-        CreditCard *creditCard = (CreditCard *)[objectList objectAtIndex:0];
-        
-        PaymentInfo_Builder *pib = [[[PaymentInfo_Builder alloc] init] autorelease];
-        [pib setPaymentType:PaymentTypeCreditCard];
-        [pib setCreditCard:creditCard];
-        PaymentInfo *paymentInfo = [pib build];
-        [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
-        
-        [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
+        if ([objectList count] > 0) {
+            CreditCard *creditCard = (CreditCard *)[objectList objectAtIndex:0];
+            
+            PaymentInfo_Builder *pib = [[[PaymentInfo_Builder alloc] init] autorelease];
+            [pib setPaymentType:PaymentTypeCreditCard];
+            [pib setCreditCard:creditCard];
+            PaymentInfo *paymentInfo = [pib build];
+            [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
+            
+            [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
+        }
     } else if (personType == ViewTypeCheckIn) {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];
         [builder clearCheckInPersonsList];

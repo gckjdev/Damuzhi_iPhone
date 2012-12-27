@@ -13,7 +13,9 @@
 #import "PersonManager.h"
 
 @interface AddContactPersonController ()
-
+@property (assign, nonatomic) BOOL isAdd;
+@property (retain, nonatomic) Person *person;
+@property (retain, nonatomic) Person_Builder *personBuilder;
 @end
 
 @implementation AddContactPersonController
@@ -22,9 +24,27 @@
 #define PHONE_TEXT_FIELD_TAG    2012122702
 
 - (void)dealloc {
+    [_person release];
+    [_personBuilder release];
     [_nameTextField release];
     [_phoneTextField release];
     [super dealloc];
+}
+
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+{
+    self = [super init];
+    if (self) {
+        self.isAdd = isAdd;
+        self.personBuilder = [[[Person_Builder alloc] init] autorelease];
+        
+        if (isAdd == NO) {
+            self.person = person;
+            self.personBuilder.name = person.name;
+            self.personBuilder.phone = person.phone;
+        }
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -32,7 +52,12 @@
     [super viewDidLoad];
     
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
-    self.title = NSLS(@"添加入住人");
+    if (_isAdd) {
+        self.title = NSLS(@"添加联系人");
+    } else {
+        self.title = NSLS(@"修改联系人");
+    }
+    
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
@@ -41,6 +66,9 @@
                           fontSize:FONT_SIZE
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickFinish:)];
+    
+    self.nameTextField.text = _personBuilder.name;
+    self.phoneTextField.text = _personBuilder.phone;
     
     self.nameTextField.tag = NAME_TEXT_FIELD_TAG;
     self.phoneTextField.tag = PHONE_TEXT_FIELD_TAG;
@@ -58,10 +86,12 @@
         return;
     }
     
-    Person_Builder *builder = [[[Person_Builder alloc] init] autorelease];
-    [builder setName:_nameTextField.text];
-    [builder setPhone:_phoneTextField.text];
-    Person *person = [builder build];
+    [_personBuilder setName:_nameTextField.text];
+    [_personBuilder setNameEnglish:_phoneTextField.text];
+    if (self.isAdd == NO) {
+        [[PersonManager defaultManager:PersonTypeCheckIn] deletePerson:_person];
+    }
+    Person *person = [_personBuilder build];
     [[PersonManager defaultManager:PersonTypeContact] savePerson:person];
     
     [self.navigationController popViewControllerAnimated:YES];

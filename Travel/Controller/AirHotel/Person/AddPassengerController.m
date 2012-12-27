@@ -15,9 +15,13 @@
 #import "PersonManager.h"
 
 @interface AddPassengerController ()
+
+@property (assign, nonatomic) BOOL isAdd;
+@property (retain, nonatomic) Person *person;
 @property (retain, nonatomic) Person_Builder *personBuilder;
 @property (retain, nonatomic) NSDate *birthday;
 @property (retain, nonatomic) NSMutableArray *selectedItemIds;
+
 @end
 
 #define TITLE_PASSENGE_TYPE     @"登机人类型:"
@@ -32,6 +36,7 @@
 
 - (void)dealloc
 {
+    [_person release];
     [_personBuilder release];
     [_datePickerView release];
     [_datePickerHolderView release];
@@ -40,12 +45,25 @@
     [super dealloc];
 }
 
-- (id)init
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
 {
     self = [super init];
     if (self) {
+        self.isAdd = isAdd;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         self.selectedItemIds = [[[NSMutableArray alloc] init] autorelease];
+        
+        if (isAdd == NO) {
+            self.person = person;
+            self.personBuilder.ageType = person.ageType;
+            self.personBuilder.name = person.name;
+            self.personBuilder.cardTypeId = person.cardTypeId;
+            self.personBuilder.cardNumber = person.cardNumber;
+            self.personBuilder.gender = person.gender;
+            self.personBuilder.birthday = person.birthday;
+            
+            [_selectedItemIds addObject:[NSNumber numberWithInt:person.cardTypeId]];
+        }
     }
     return self;
 }
@@ -54,7 +72,13 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
-    self.title = NSLS(@"添加登机人");
+    
+    if (_isAdd) {
+        self.title = NSLS(@"添加登机人");
+    } else {
+        self.title = NSLS(@"修改登机人");
+    }
+    
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
@@ -104,6 +128,9 @@
         return;
     }
     
+    if (self.isAdd == NO) {
+        [[PersonManager defaultManager:PersonTypeCheckIn] deletePerson:_person];
+    }
     Person *person = [self.personBuilder build];
     [[PersonManager defaultManager:PersonTypePassenger] savePerson:person];
     [self.navigationController popViewControllerAnimated:YES];

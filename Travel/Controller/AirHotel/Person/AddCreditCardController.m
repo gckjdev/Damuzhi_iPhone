@@ -16,6 +16,8 @@
 #import "TimeUtils.h"
 
 @interface AddCreditCardController ()
+@property (assign, nonatomic) BOOL isAdd;
+@property (retain, nonatomic) CreditCard *creditCard;
 @property (retain, nonatomic) CreditCard_Builder *creditCardBuilder;
 @property (assign, nonatomic) int validYear;
 @property (assign, nonatomic) int validMonth;
@@ -35,21 +37,38 @@
 
 - (void)dealloc
 {
+    [_creditCard release];
     [_creditCardBuilder release];
     [_bankSelectedItemIds release];
     [_idCardSelectedItemIds release];
-    [_datePickerView release];
     [_datePickerHolderView release];
+    [_monthPicker release];
     [super dealloc];
 }
 
-- (id)init
+- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard
 {
     self = [super init];
     if (self) {
+        self.isAdd = isAdd;
         self.creditCardBuilder = [[[CreditCard_Builder alloc] init] autorelease];
         self.bankSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
         self.idCardSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
+        
+        if (isAdd == NO) {
+            self.creditCard = creditCard;
+            self.creditCardBuilder.bankId = creditCard.bankId;
+            self.creditCardBuilder.number = creditCard.number;
+            self.creditCardBuilder.ccv = creditCard.ccv;
+            self.creditCardBuilder.name = creditCard.name;
+            self.creditCardBuilder.validDateYear = creditCard.validDateYear;
+            self.creditCardBuilder.validDateMonth = creditCard.validDateMonth;
+            self.creditCardBuilder.idCardTypeId = creditCard.idCardTypeId;
+            self.creditCardBuilder.idCardNumber = creditCard.idCardNumber;
+            
+            [_bankSelectedItemIds addObject:[NSNumber numberWithInt:creditCard.bankId]];
+            [_idCardSelectedItemIds addObject:[NSNumber numberWithInt:creditCard.idCardTypeId]];
+        }
     }
     return self;
 }
@@ -58,7 +77,12 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
-    self.title = NSLS(@"添加信用卡");
+    if (_isAdd) {
+        self.title = NSLS(@"添加信用卡");
+    } else {
+        self.title = NSLS(@"修改信用卡");
+    }
+    
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
@@ -69,13 +93,21 @@
                             action:@selector(clickFinish:)];
     
     self.dataList = [NSArray arrayWithObjects:TITLE_BANK, TITLE_CARD_NUMBER, TITLE_CCV, TITLE_NAME, TITLE_VALID_DATE, TITLE_ID_CARD_TYPE, TITLE_ID_CARD_NUMBER, nil];
-    
+    [self setDefaultMonthPicker];
+}
+
+- (void)setDefaultMonthPicker
+{
     self.datePickerHolderView.hidden = YES;
     
-    self.datePickerView.date = [NSDate date];
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:self.datePickerView.date];
-    self.validYear = [components year];
-    self.validMonth = [components month];    
+    self.monthPicker.monthPickerDelegate = self;
+    self.monthPicker.date = [NSDate date];
+    self.validYear = getYear(self.monthPicker.date);
+    self.validMonth = getMonth(self.monthPicker.date);
+    self.monthPicker.minimumYear = [NSNumber numberWithInt:_validYear];
+    self.monthPicker.maximumYear = [NSNumber numberWithInt:_validYear + 100];
+    self.monthPicker.yearFirst = YES;
+    self.monthPicker.enableColourRow = YES;
 }
 
 - (void)clickFinish:(id)sender
@@ -115,6 +147,9 @@
         return;
     }
     
+    if (self.isAdd == NO) {
+        [[CreditCardManager defaultManager] deleteCreditCard:_creditCard];
+    }
     CreditCard *creditCard = [self.creditCardBuilder build];
     [[CreditCardManager defaultManager] saveCreditCard:creditCard];
     
@@ -149,7 +184,7 @@
     if ([cellTitle isEqualToString:TITLE_BANK]) {
         NSString *bankName = nil;
         if ([_creditCardBuilder hasBankId]) {
-            bankName = [[AppManager defaultManager] getBankName:_creditCardBuilder.hasBankId];
+            bankName = [[AppManager defaultManager] getBankName:_creditCardBuilder.bankId];
         } else {
             bankName = NSLS(@"请选择");
         }
@@ -364,15 +399,17 @@
     [dataTableView reloadData];
 }
 
-- (IBAction)dateChange:(id)sender {
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:self.datePickerView.date]; 
-    self.validYear = [components year];
-    self.validMonth = [components month];
+#pragma mark - 
+#pragma SRMonthPickerDelegate methods
+- (void)monthPickerDidChangeDate:(SRMonthPicker *)monthPicker
+{
+    self.validYear = getYear(monthPicker.date);
+    self.validMonth = getMonth(monthPicker.date);
 }
 
 - (void)viewDidUnload {
-    [self setDatePickerView:nil];
     [self setDatePickerHolderView:nil];
+    [self setMonthPicker:nil];
     [super viewDidUnload];
 }
 @end

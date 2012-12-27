@@ -8,8 +8,12 @@
 
 #import "PPViewController.h"
 
+@class Person;
+
 @interface AddCheckInPersonController : PPViewController<UITextFieldDelegate>
 @property (retain, nonatomic) IBOutlet UITextField *chineseNameTextField;
 @property (retain, nonatomic) IBOutlet UITextField *englishNameTextField;
+
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person;
 
 @end
