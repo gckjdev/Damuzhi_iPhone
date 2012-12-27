@@ -14,6 +14,9 @@
 #import "UIViewUtils.h"
 #import "FontSize.h"
 #import "DeviceDetection.h"
+#import "WebViewConstants.h"
+#import "XQueryComponents.h"
+
 @implementation CommonWebController
 
 @synthesize htmlPath = _htmlPath;
@@ -107,10 +110,10 @@
 
 #pragma mark -
 #pragma mark: implementation of web view delegate.
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    return YES;
-}
+//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+//{
+//    return YES;
+//}
 - (void)webViewDidStartLoad:(UIWebView *)webView1
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
@@ -172,6 +175,44 @@
 }
 
 
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    PPDebug(@"<LocalRouteIntroductionController> url:%@", request.URL);
+    
+    NSURL *URL = request.URL;
+    NSString *scheme = URL.scheme;
+    NSString *host = URL.host;
+    
+    if ([scheme isEqualToString:WEB_SCHEME_DMZ] &&
+        [host isEqualToString:WEB_MAKE_CALL])
+    {
+        NSString *phone = [URL.queryComponents objectForKey:WEB_PHONE_NUM];
+        
+        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+        
+        [actionSheet addButtonWithTitle:phone];
+        [actionSheet addButtonWithTitle:NSLS(@"返回")];
+        [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+        [actionSheet release];
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet cancelButtonIndex]) {
+        return;
+    }
+    
+    NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
+    //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    [UIUtils makeCall:phone];
+}
 @end
 
 

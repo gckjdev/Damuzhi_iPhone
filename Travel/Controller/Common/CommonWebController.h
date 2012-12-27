@@ -17,7 +17,7 @@
 
 @end
 
-@interface CommonWebController : PPViewController <UIWebViewDelegate, CityOverviewServiceDelegate>
+@interface CommonWebController : PPViewController <UIWebViewDelegate, CityOverviewServiceDelegate, UIActionSheetDelegate>
 
 @property (retain, nonatomic) IBOutlet UIWebView *webView;
 @property (retain, nonatomic) NSString *htmlPath;
