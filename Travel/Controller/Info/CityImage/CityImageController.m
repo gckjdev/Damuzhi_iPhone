@@ -27,10 +27,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [[CityOverviewService defaultService] findCityImages:[[AppManager defaultManager] getCurrentCityId] 
-                                                   start:_start
-                                                   count:EACH_COUNT 
-                                                delegate:self];
+//    [[CityOverviewService defaultService] findCityImages:[[AppManager defaultManager] getCurrentCityId] 
+//                                                   start:_start
+//                                                   count:EACH_COUNT 
+//                                                delegate:self];
     
 }
 

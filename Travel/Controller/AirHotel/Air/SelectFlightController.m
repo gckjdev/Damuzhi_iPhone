@@ -295,6 +295,7 @@
     
     SelectController *controller = [[SelectController alloc] initWithTitle:NSLS(@"航班筛选") itemList:itemList selectedItemIds:_selectedItemList multiOptions:YES needConfirm:YES needShowCount:NO];
     controller.delegate = self;
+    controller.accessoryImageList = imageList;
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
 }

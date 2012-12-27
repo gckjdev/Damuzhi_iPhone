@@ -1362,9 +1362,6 @@ static AppManager* _defaultAppManager = nil;
 {
     NSArray *airlineItemList = [self getAirlineItemList:flightList];
     NSMutableArray *logoList = [NSMutableArray array];
-    [logoList addObject:@""];
-    
-    
     
     for (Item * item in airlineItemList) {
         NSString *airlineLogo = [self getAirlineLogo:item.itemId];

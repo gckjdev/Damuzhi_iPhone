@@ -75,15 +75,15 @@
     return self;
 }
 
-//- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
-//{
-//    if (self= [super init]) {
-//        self.bookings = bookings;
-//        _routeType = routeType;
-//    }
-//    
-//    return self;
-//}
+- (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType
+{
+    if (self= [super init]) {
+        self.bookings = bookings;
+        _routeType = routeType;
+    }
+    
+    return self;
+}
 
 - (id)initWithBookings:(NSArray *)bookings currency:(NSString *)currency
 {
