@@ -184,7 +184,7 @@
 
 - (UIImageView*)getAccessoryView:(int)row
 {
-    CGRect rect = CGRectMake(0, 0, 20, 20);
+    CGRect rect = CGRectMake(0, 0, 16, 16);
     UIImageView *imageView = [[[UIImageView alloc] initWithFrame:rect] autorelease];
     [imageView setImageWithURL:[NSURL URLWithString:[_accessoryImageList objectAtIndex:row]]];
     
