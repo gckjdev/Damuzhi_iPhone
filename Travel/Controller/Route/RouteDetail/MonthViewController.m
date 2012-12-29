@@ -18,6 +18,10 @@
 #import "LogUtil.h"
 #import "TimeUtils.h"
 #import "FontSize.h"
+
+#define USER_UIIMAGE_NAME_DATE_TILE_SELECTED  (@"date_t_bg2.png")
+#define USER_UIIMAGE_NAME_DATE_TILE  (@"date_t_bg.png")
+
 @interface MonthViewController ()
 {
     int _routeType;
@@ -110,8 +114,7 @@
                                                                     date:[NSDate date]
                                                               tileHeight:55
                                                                 hasTitle:NO
-                                                               hasShadow:NO
-                                                   userInteractionEnable:YES] autorelease];
+                                                               hasShadow:NO] autorelease];
                                                   
 
     [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
@@ -221,7 +224,7 @@
     
     while(YES){
         [texts addObject:[self bookingStringWithDate:d]];
-		
+
 		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		info.day++;
 		d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -256,6 +259,8 @@
 
 - (NSString*)bookingStringWithDate:(NSDate *)date
 {
+//    return @"销售中";
+    
     NSString *bookingInfo = @"";
     
     Booking *booking = [RouteUtils bookingOfDate:date bookings:_bookings];
@@ -322,5 +327,72 @@
         }
     }
 }
+
+- (NSArray *)calendarMonthView:(TKCalendarMonthView *)monthView tileBgImageNamesForNormalFromDate:(NSDate *)startDate toDate:(NSDate *)lastDate
+{
+    NSMutableArray *images = [[[NSMutableArray alloc] init] autorelease];
+    
+    // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
+    NSDate *d = startDate;
+    
+    while(YES){
+        [images addObject:([d isToday] ? USER_UIIMAGE_NAME_DATE_TILE : USER_UIIMAGE_NAME_DATE_TILE)];
+        
+		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		info.day++;
+		d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		if([d compare:lastDate]==NSOrderedDescending) break;
+	}
+    
+    return images;
+}
+
+- (NSArray *)calendarMonthView:(TKCalendarMonthView *)monthView tileBgImageNamesForSelectedFromDate:(NSDate *)startDate toDate:(NSDate *)lastDate
+{
+    NSMutableArray *images = [[[NSMutableArray alloc] init] autorelease];
+    
+    // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
+    NSDate *d = startDate;
+    
+    while(YES){
+        if ([d isSameYearMonth:[NSDate date]]) {
+            [images addObject:([d isToday] ? USER_UIIMAGE_NAME_DATE_TILE_SELECTED : USER_UIIMAGE_NAME_DATE_TILE_SELECTED)];
+        }else {
+            [images addObject:@""];
+        }
+        
+		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		info.day++;
+		d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		if([d compare:lastDate]==NSOrderedDescending) break;
+	}
+    
+    return images;
+}
+
+- (NSArray *)calendarMonthView:(TKCalendarMonthView *)monthView tileTouchDisabledsFromDate:(NSDate *)startDate toDate:(NSDate *)lastDate
+{
+    NSMutableArray *touchDisableds = [[[NSMutableArray alloc] init] autorelease];
+    
+    // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
+    NSDate *d = startDate;
+    
+    while(YES){
+        if ([d isSameYearMonth:[NSDate date]]) {
+            [touchDisableds addObject:@(NO)];
+        }else {
+            [touchDisableds addObject:@(YES)];
+        }
+        
+		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		info.day++;
+		d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		if([d compare:lastDate]==NSOrderedDescending) break;
+	}
+    
+    return touchDisableds;
+}
+
+
 
 @end
