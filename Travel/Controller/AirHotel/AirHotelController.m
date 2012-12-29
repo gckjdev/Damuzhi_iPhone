@@ -345,7 +345,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
 - (IBAction)clickNonMemberButton:(id)sender {
     [self order:NO];
 }
@@ -393,8 +392,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didClickHotelButton:(NSIndexPath *)indexPath
 {
     self.currentIndexPath = indexPath;
-    
     HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
+    if (![builder hasCheckInDate]) {
+        [self popupMessage:@"未选择入住时间" title:nil];
+        return;
+    }
+    
+    if (![builder hasCheckOutDate]) {
+        [self popupMessage:@"未选择退房时间" title:nil];
+        return;
+    }
+    
     NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
     NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate];
     

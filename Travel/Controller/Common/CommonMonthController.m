@@ -126,21 +126,5 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark -
-#pragma TKCalendarMonthViewDataSource methods
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView marksFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
-{
-    return nil;
-}
-
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
-{
-    return nil;
-}
-
-- (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextColorsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
-{
-    return nil;
-}
 
 @end

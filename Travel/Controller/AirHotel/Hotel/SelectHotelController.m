@@ -16,6 +16,10 @@
 #import "PPNetworkRequest.h"
 
 @interface SelectHotelController ()
+{
+    int _start;
+    int _totalCount;
+}
 
 @property (assign, nonatomic) id<SelectHotelControllerDelegate> delegate;
 @property (retain, nonatomic) NSMutableArray *hotelList;
@@ -29,7 +33,7 @@
 @end
 
 
-#define EACH_COUNT  20
+#define EACH_COUNT 20
 
 #define SELECTED_SECTION_NONE   -1
 
@@ -65,6 +69,14 @@
         
         self.viewsForSectionHeaders = [[[NSMutableArray alloc] init] autorelease];
         self.roomInfoDic = [[[NSMutableDictionary alloc] init] autorelease];
+        
+        self.supportRefreshHeader = YES;
+        self.supportRefreshFooter = YES;
+        self.footerRefreshType = AutoAndAddMore;
+        self.footerLoadMoreTitle = NSLS(@"更多...");
+        self.footerLoadMoreLoadingTitle = NSLS(@"正在加载...");
+        
+        _start = 0;
     }
     return self;
 }
@@ -78,6 +90,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    
     self.title = NSLS(@"酒店列表");
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self setNavigationLeftButton:NSLS(@" 返回")
@@ -108,6 +122,7 @@
     }
     
     if ([[_roomInfoDic allKeys] count] == 0) {
+        [self popupMessage:NSLS(@"未选择房型") title:nil];
         return;
     }
     Place *hotel = [_hotelList objectAtIndex:_selectedSection];
@@ -138,7 +153,7 @@
     [[AirHotelService defaultService] findHotelsWithCityId:[[AppManager defaultManager] getCurrentCityId]
                                                checkInDate:_checkInDate
                                               checkOutDate:_checkOutDate
-                                                     start:0
+                                                     start:_start
                                                      count:EACH_COUNT
                                                   delegate:self];
 }
@@ -400,22 +415,53 @@
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
         return;
     }
-
-    PPDebug(@"hotelList count:%d", [hotelList count]);
-    self.hotelList = [NSMutableArray arrayWithArray:hotelList];
     
-    for (Place *hotel in hotelList) {
-        PPDebug(@"<findHotelsDone> id:%d name:%@", hotel.placeId, hotel.name);
+    if (_start == 0) {
+        self.noMoreData = NO;
+        self.hotelList = [NSMutableArray array];
+    }
+    
+    _start += [hotelList count];
+    _totalCount = totalCount;
+    
+    [self.hotelList addObjectsFromArray:hotelList];
+    
+    if (_start >= totalCount) {
+        self.noMoreData = YES;
     }
     
     [dataTableView reloadData];
-    
+
     if ([self.hotelList count] == 0) {
         self.noMoreData = YES;
         [self showTipsOnTableView:NSLS(@"未找到相关信息")];
     }else {
         [self hideTipsOnTableView];
     }
+    
+    [self dataSourceDidFinishLoadingNewData];
+    [self dataSourceDidFinishLoadingMoreData];
 }
+
+- (void)loadMoreTableViewDataSource
+{
+    if (_start >= _totalCount) {
+        self.noMoreData = YES;
+        [self dataSourceDidFinishLoadingMoreData];
+        return;
+    }
+    
+    else {
+        [self findHotels];
+    }
+}
+
+- (void)reloadTableViewDataSource
+{
+    _start = 0;
+    [self findHotels];
+}
+
+
 
 @end
