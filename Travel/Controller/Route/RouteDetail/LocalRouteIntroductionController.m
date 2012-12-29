@@ -15,6 +15,7 @@
 #import "XQueryComponents.h"
 #import "WebViewConstants.h"
 #import "LocalRouteStorage.h"
+#import "DeviceDetection.h"
 
 @interface LocalRouteIntroductionController ()
 
@@ -66,7 +67,10 @@
     
     self.contentWebView.alpha = 0.0;
     self.contentWebView.userInteractionEnabled = YES;
-    self.contentWebView.scrollView.scrollEnabled = NO;
+    
+    if ([DeviceDetection isOS5]) {
+        self.contentWebView.scrollView.scrollEnabled = NO;
+    }
     
     [self.LoadWebActivityView stopAnimating];
 }
@@ -135,9 +139,14 @@
 //        CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
 //        overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
 //    }
+    
+    
+    NSString *heightString = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"];
+    PPDebug(@"webview document body scrollHeight is %@ high",heightString);
+    
     [self.LoadWebActivityView stopAnimating];
     webView.alpha = 1.0;
-    webView.frame =  CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.scrollView.contentSize.height);
+    webView.frame =  CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, [heightString floatValue]);
     CGFloat overallScrollViewHeight = webView.frame.origin.y + webView.frame.size.height;
     overallScrollView.contentSize = CGSizeMake(overallScrollView.contentSize.width, overallScrollViewHeight);
     

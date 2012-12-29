@@ -106,12 +106,13 @@
                            action:@selector(clickBack:)];
     self.backgroundImageView.image = [[UIImage imageNamed:@"date_t_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
     self.rightLineImageView.backgroundColor = [UIColor colorWithRed:209/255.0 green:210/255.0 blue:214/255.0 alpha:1.0];
-    self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO 
+    self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO
                                                                     date:[NSDate date]
-                                                    hasMonthYearAndArrow:NO 
-                                                        hasTopBackground:NO
-                                                               hasShadow:NO 
+                                                              tileHeight:55
+                                                                hasTitle:NO
+                                                               hasShadow:NO
                                                    userInteractionEnable:YES] autorelease];
+                                                  
 
     [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
                              forState:UIControlStateNormal];
@@ -233,15 +234,22 @@
 - (NSArray*) calendarMonthView:(TKCalendarMonthView*)monthView markTextColorsFromDate:(NSDate*)startDate toDate:(NSDate*)lastDate
 {
     NSMutableArray *colors = [[[NSMutableArray alloc] init] autorelease];
-    NSArray *markTexts = [self calendarMonthView:monthView markTextsFromDate:startDate toDate:lastDate];
     
-    for (NSString *str in markTexts) {
-        if ([str isEqualToString:NSLS(@"销售中")]) {
+    // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
+    NSDate *d = startDate;
+    
+    while(YES){
+        if ([[self bookingStringWithDate:d] isEqualToString:NSLS(@"销售中")]) {
             [colors addObject:[UIColor redColor]];
         } else {
             [colors addObject:[UIColor blackColor]];
         }
-    }
+        
+		TKDateInformation info = [d dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		info.day++;
+		d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		if([d compare:lastDate]==NSOrderedDescending) break;
+	}
     
     return colors;
 }

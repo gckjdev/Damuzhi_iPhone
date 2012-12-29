@@ -10,7 +10,10 @@
 #define WEB_SCHEME_DMZ          @"dmz"
 
 #define WEB_HOST_LOCAL_ROUTE    @"LocalRoute"
+#define WEB_MAKE_CALL           @"MakeCall"
 
+
+#define WEB_PHONE_NUM           @"phone"
 #define WEB_PARA_LOCAL_ROUTE_TYPE        @"type"
 #define WEB_PARA_LOCAL_ROUTE_PLACE_ID    @"placeId"
 
