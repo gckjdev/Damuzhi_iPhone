@@ -87,9 +87,9 @@
     }
     
     [_personBuilder setName:_nameTextField.text];
-    [_personBuilder setNameEnglish:_phoneTextField.text];
+    [_personBuilder setPhone:_phoneTextField.text];
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypeCheckIn] deletePerson:_person];
+        [[PersonManager defaultManager:PersonTypeContact] deletePerson:_person];
     }
     Person *person = [_personBuilder build];
     [[PersonManager defaultManager:PersonTypeContact] savePerson:person];

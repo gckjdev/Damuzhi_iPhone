@@ -9,6 +9,7 @@
 #import "ConfirmHotelCell.h"
 #import "AirHotel.pb.h"
 #import "TimeUtils.h"
+#import "PriceUtils.h"
 
 @implementation ConfirmHotelCell
 
@@ -44,7 +45,7 @@
 {
     UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 2, 90, 21)] autorelease];
     label.backgroundColor = [UIColor clearColor];
-    label.font = [UIFont systemFontOfSize:14];
+    label.font = [UIFont systemFontOfSize:13];
     
     return label;
 }
@@ -62,16 +63,17 @@
     UILabel *countLabel = [self createOneLabelInRoomInfo];
     UILabel *priceLabel = [self createOneLabelInRoomInfo];
     
-    roomNameLabel.frame = CGRectMake(13, 2, 93, 21);
-    breakfastAndBedLabel.frame = CGRectMake(118, 2, 66, 21);
-    countLabel.frame = CGRectMake(192, 2, 32, 21);
-    priceLabel.frame = CGRectMake(232, 2, 57, 21);
+    roomNameLabel.frame = CGRectMake(13, 2, 100, 21);
+    breakfastAndBedLabel.frame = CGRectMake(114, 2, 90, 21);
+    countLabel.frame = CGRectMake(205, 2, 32, 21);
+    priceLabel.frame = CGRectMake(237, 2, 57, 21);
     
     roomNameLabel.text = roomName;
     breakfastAndBedLabel.text = [NSString stringWithFormat:@"%@/%@", breakfast, bed];
-    countLabel.text = [NSString stringWithFormat:@"%d", count];
+    countLabel.text = [NSString stringWithFormat:@"%d间", count];
     priceLabel.text = price;
     
+    countLabel.textAlignment = NSTextAlignmentRight;
     priceLabel.textAlignment = NSTextAlignmentRight;
     
     [resultView addSubview:roomNameLabel];
@@ -101,7 +103,7 @@
                 roomName = room.name;
                 breakfast = room.breakfast;
                 bed = room.bed;
-                price = [NSString stringWithFormat:@"%lf", room.price];
+                price = [PriceUtils priceToString:room.price];
             }
         }
         

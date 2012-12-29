@@ -48,18 +48,24 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
+- (HotelOrder_Builder *)hotelOrderBuilder:(HotelOrder *)order
+{
+    HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
+    builder.checkInDate = order.checkInDate;
+    builder.checkOutDate = order.checkOutDate;
+    builder.hotelId = order.hotelId;
+    [builder addAllRoomInfos:order.roomInfosList];
+    [builder addAllCheckInPersons:order.checkInPersonsList];
+    builder.hotel = order.hotel;
+    
+    return builder;
+}
+
 - (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList
 {
     NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
     for (HotelOrder *order in orderList) {
-        HotelOrder_Builder *builder = [[[HotelOrder_Builder alloc] init] autorelease];
-        builder.checkInDate = order.checkInDate;
-        builder.checkOutDate = order.checkOutDate;
-        builder.hotelId = order.hotelId;
-        [builder addAllRoomInfos:order.roomInfosList];
-        [builder addAllCheckInPersons:order.checkInPersonsList];
-        builder.hotel = order.hotel;
-        
+        HotelOrder_Builder *builder = [self hotelOrderBuilder:order];
         [reArray addObject:builder];
     }
     return reArray;
@@ -78,22 +84,27 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
+- (AirOrder_Builder *)airOrderBuilder:(AirOrder *)order
+{
+    AirOrder_Builder *builder = [[[AirOrder_Builder alloc] init] autorelease];
+    builder.flightNumber = order.flightNumber;
+    builder.flightSeatCode = order.flightSeatCode;
+    builder.flightType = order.flightType;
+    builder.flightDate = order.flightDate;
+    builder.insurance = order.insurance;
+    builder.sendTicket = order.sendTicket;
+    [builder addAllPassenger:order.passengerList];
+    builder.flight = order.flight;
+    builder.flightSeat = order.flightSeat;
+    
+    return builder;
+}
 
 - (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList
 {
     NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
     for (AirOrder *order in orderList) {
-        AirOrder_Builder *builder = [[[AirOrder_Builder alloc] init] autorelease];
-        builder.flightNumber = order.flightNumber;
-        builder.flightSeatCode = order.flightSeatCode;
-        builder.flightType = order.flightType;
-        builder.flightDate = order.flightDate;
-        builder.insurance = order.insurance;
-        builder.sendTicket = order.sendTicket;
-        [builder addAllPassenger:order.passengerList];
-        builder.flight = order.flight;
-        builder.flightSeat = order.flightSeat;
-        
+        AirOrder_Builder *builder = [self airOrderBuilder:order];
         [reArray addObject:builder];
     }
     return reArray;

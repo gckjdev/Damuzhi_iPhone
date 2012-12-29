@@ -15,27 +15,28 @@
 #import "LoginController.h"
 #import "AppManager.h"
 #import "FontSize.h"
+#import "AirHotelOrderListController.h"
+
 @interface OrderManagerController ()
 
-@property (retain, nonatomic) NSArray *orderTypeList;
 @property (retain, nonatomic) UIButton *loginoutButton;
 @property (retain, nonatomic) NSArray *phoneList;
 
 @end
 
 @implementation OrderManagerController
-
-@synthesize orderTypeList = _orderTypeList;
 @synthesize loginoutButton = _loginoutButton;
 @synthesize phoneList = _phoneList;
 
 - (void)dealloc
 {
-    [_orderTypeList release];
     [_loginoutButton release];
     [_phoneList release];
     [super dealloc];
 }
+
+#define ROW_LOCAL_ROUTE 0
+#define ROW_AIR_HOTEL   1
 
 - (void)viewDidLoad
 {
@@ -54,10 +55,6 @@
 
     [self updateNavButtons];
     self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机+酒订单管理"),nil];
-    
-    self.orderTypeList = [NSArray arrayWithObjects:[NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
-    
-    
 }
 
 - (void)updateNavButtons
@@ -135,10 +132,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderListController *controller = [[OrderListController alloc] initWithOrderType:[[_orderTypeList objectAtIndex:indexPath.row] intValue]];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
-    
+    if (indexPath.row == ROW_LOCAL_ROUTE) {
+        OrderListController *controller = [[OrderListController alloc] initWithOrderType:OBJECT_LIST_LOCAL_ROUTE_ORDER];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    } else if (indexPath.row == ROW_AIR_HOTEL) {
+        AirHotelOrderListController *controller = [[AirHotelOrderListController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    }
 }
 
 #define HEIGHT_FOOTER_VIEW 44
@@ -147,8 +149,6 @@
 {
     return HEIGHT_FOOTER_VIEW;
 }
-
-
 
 
 #define CUSTOMER_SERVICE_TELEPHONE @"400-800-888"

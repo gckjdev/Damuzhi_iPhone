@@ -129,7 +129,7 @@
     }
     
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypeCheckIn] deletePerson:_person];
+        [[PersonManager defaultManager:PersonTypePassenger] deletePerson:_person];
     }
     Person *person = [self.personBuilder build];
     [[PersonManager defaultManager:PersonTypePassenger] savePerson:person];

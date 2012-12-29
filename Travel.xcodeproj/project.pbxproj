@@ -724,6 +724,21 @@
 		EA0EFC60160C10A40057E36C /* HappyTourController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA0EFC5E160C10A40057E36C /* HappyTourController.m */; };
 		EA0EFC61160C10A40057E36C /* HappyTourController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA0EFC5F160C10A40057E36C /* HappyTourController.xib */; };
 		EA1007BB15550E1600E299D1 /* pin_yl@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA1007B915550E1600E299D1 /* pin_yl@2x.png */; };
+		EA116A9D168D4272004C3B4B /* AirHotelOrderListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116A9C168D4272004C3B4B /* AirHotelOrderListCell.m */; };
+		EA116A9F168D42B3004C3B4B /* AirHotelOrderListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116A9E168D42B3004C3B4B /* AirHotelOrderListCell.xib */; };
+		EA116AB1168D96FE004C3B4B /* my_order@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA116AB0168D96FE004C3B4B /* my_order@2x.png */; };
+		EA116AB4168D9D99004C3B4B /* AirHotelOrderDetailTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116AB3168D9D98004C3B4B /* AirHotelOrderDetailTopCell.m */; };
+		EA116AB6168D9DB7004C3B4B /* AirHotelOrderDetailTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116AB5168D9DB7004C3B4B /* AirHotelOrderDetailTopCell.xib */; };
+		EA116AB9168DE51E004C3B4B /* AirOrderDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116AB8168DE51C004C3B4B /* AirOrderDetailCell.m */; };
+		EA116ABB168DE537004C3B4B /* AirOrderDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116ABA168DE536004C3B4B /* AirOrderDetailCell.xib */; };
+		EA116ABE168DE55D004C3B4B /* HotelOrderDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116ABD168DE55C004C3B4B /* HotelOrderDetailCell.m */; };
+		EA116AC0168DEABB004C3B4B /* HotelOrderDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116ABF168DEAB9004C3B4B /* HotelOrderDetailCell.xib */; };
+		EA116AD2168EC1E7004C3B4B /* OrderFlightView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116ACD168EC1E7004C3B4B /* OrderFlightView.m */; };
+		EA116AD3168EC1E7004C3B4B /* OrderFlightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116ACE168EC1E7004C3B4B /* OrderFlightView.xib */; };
+		EA116AD4168EC1E7004C3B4B /* OrderHotelView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116AD0168EC1E7004C3B4B /* OrderHotelView.m */; };
+		EA116AD5168EC1E7004C3B4B /* OrderHotelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA116AD1168EC1E7004C3B4B /* OrderHotelView.xib */; };
+		EA116AD8168F01F9004C3B4B /* RoomInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116AD7168F01F1004C3B4B /* RoomInfoView.m */; };
+		EA116ADB168F33DF004C3B4B /* PersonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA116ADA168F33D6004C3B4B /* PersonsView.m */; };
 		EA13A8FA1675EB9E0057EEDB /* FlightDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA13A8F81675EB9D0057EEDB /* FlightDetailController.m */; };
 		EA13A8FB1675EB9E0057EEDB /* FlightDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA13A8F91675EB9D0057EEDB /* FlightDetailController.xib */; };
 		EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA13A90B1676E2D10057EEDB /* FlightSeatView.m */; };
@@ -757,6 +772,10 @@
 		EA1D8A0F168B67CB005295DC /* AddContactPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1D8A0D168B67C8005295DC /* AddContactPersonController.m */; };
 		EA1D8A10168B67CB005295DC /* AddContactPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */; };
 		EA1D8A14168C3D18005295DC /* SRMonthPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1D8A13168C3D18005295DC /* SRMonthPicker.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		EA1D8A29168C4F1A005295DC /* AirHotelOrderListController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1D8A27168C4F1A005295DC /* AirHotelOrderListController.m */; };
+		EA1D8A2A168C4F1A005295DC /* AirHotelOrderListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1D8A28168C4F1A005295DC /* AirHotelOrderListController.xib */; };
+		EA1D8A2E168C4F7E005295DC /* AirHotelOrderDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA1D8A2C168C4F7E005295DC /* AirHotelOrderDetailController.m */; };
+		EA1D8A2F168C4F7E005295DC /* AirHotelOrderDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA1D8A2D168C4F7E005295DC /* AirHotelOrderDetailController.xib */; };
 		EA20A061153192AE00F6F478 /* AnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA20A060153192AE00F6F478 /* AnimationManager.m */; };
 		EA2382831664B00F001ECA2D /* all_page_bg2_i5@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EA2382821664B00F001ECA2D /* all_page_bg2_i5@2x.jpg */; };
 		EA2382851664B01E001ECA2D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA2382841664B01E001ECA2D /* Default-568h@2x.png */; };
@@ -1939,6 +1958,29 @@
 		EA0EFC5E160C10A40057E36C /* HappyTourController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HappyTourController.m; sourceTree = "<group>"; };
 		EA0EFC5F160C10A40057E36C /* HappyTourController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HappyTourController.xib; sourceTree = "<group>"; };
 		EA1007B915550E1600E299D1 /* pin_yl@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin_yl@2x.png"; sourceTree = "<group>"; };
+		EA116A9B168D4271004C3B4B /* AirHotelOrderListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelOrderListCell.h; sourceTree = "<group>"; };
+		EA116A9C168D4272004C3B4B /* AirHotelOrderListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelOrderListCell.m; sourceTree = "<group>"; };
+		EA116A9E168D42B3004C3B4B /* AirHotelOrderListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AirHotelOrderListCell.xib; sourceTree = "<group>"; };
+		EA116AB0168D96FE004C3B4B /* my_order@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "my_order@2x.png"; sourceTree = "<group>"; };
+		EA116AB2168D9D98004C3B4B /* AirHotelOrderDetailTopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelOrderDetailTopCell.h; sourceTree = "<group>"; };
+		EA116AB3168D9D98004C3B4B /* AirHotelOrderDetailTopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelOrderDetailTopCell.m; sourceTree = "<group>"; };
+		EA116AB5168D9DB7004C3B4B /* AirHotelOrderDetailTopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AirHotelOrderDetailTopCell.xib; sourceTree = "<group>"; };
+		EA116AB7168DE51B004C3B4B /* AirOrderDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirOrderDetailCell.h; sourceTree = "<group>"; };
+		EA116AB8168DE51C004C3B4B /* AirOrderDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirOrderDetailCell.m; sourceTree = "<group>"; };
+		EA116ABA168DE536004C3B4B /* AirOrderDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AirOrderDetailCell.xib; sourceTree = "<group>"; };
+		EA116ABC168DE55A004C3B4B /* HotelOrderDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotelOrderDetailCell.h; sourceTree = "<group>"; };
+		EA116ABD168DE55C004C3B4B /* HotelOrderDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelOrderDetailCell.m; sourceTree = "<group>"; };
+		EA116ABF168DEAB9004C3B4B /* HotelOrderDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotelOrderDetailCell.xib; sourceTree = "<group>"; };
+		EA116ACC168EC1E7004C3B4B /* OrderFlightView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderFlightView.h; sourceTree = "<group>"; };
+		EA116ACD168EC1E7004C3B4B /* OrderFlightView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderFlightView.m; sourceTree = "<group>"; };
+		EA116ACE168EC1E7004C3B4B /* OrderFlightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderFlightView.xib; sourceTree = "<group>"; };
+		EA116ACF168EC1E7004C3B4B /* OrderHotelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderHotelView.h; sourceTree = "<group>"; };
+		EA116AD0168EC1E7004C3B4B /* OrderHotelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderHotelView.m; sourceTree = "<group>"; };
+		EA116AD1168EC1E7004C3B4B /* OrderHotelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderHotelView.xib; sourceTree = "<group>"; };
+		EA116AD6168F01EF004C3B4B /* RoomInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomInfoView.h; sourceTree = "<group>"; };
+		EA116AD7168F01F1004C3B4B /* RoomInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInfoView.m; sourceTree = "<group>"; };
+		EA116AD9168F33D4004C3B4B /* PersonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonsView.h; sourceTree = "<group>"; };
+		EA116ADA168F33D6004C3B4B /* PersonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonsView.m; sourceTree = "<group>"; };
 		EA13A8F71675EB9C0057EEDB /* FlightDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlightDetailController.h; sourceTree = "<group>"; };
 		EA13A8F81675EB9D0057EEDB /* FlightDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlightDetailController.m; sourceTree = "<group>"; };
 		EA13A8F91675EB9D0057EEDB /* FlightDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlightDetailController.xib; sourceTree = "<group>"; };
@@ -1990,6 +2032,12 @@
 		EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactPersonController.xib; sourceTree = "<group>"; };
 		EA1D8A12168C3D18005295DC /* SRMonthPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRMonthPicker.h; sourceTree = "<group>"; };
 		EA1D8A13168C3D18005295DC /* SRMonthPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRMonthPicker.m; sourceTree = "<group>"; };
+		EA1D8A26168C4F1A005295DC /* AirHotelOrderListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelOrderListController.h; sourceTree = "<group>"; };
+		EA1D8A27168C4F1A005295DC /* AirHotelOrderListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelOrderListController.m; sourceTree = "<group>"; };
+		EA1D8A28168C4F1A005295DC /* AirHotelOrderListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AirHotelOrderListController.xib; sourceTree = "<group>"; };
+		EA1D8A2B168C4F7D005295DC /* AirHotelOrderDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelOrderDetailController.h; sourceTree = "<group>"; };
+		EA1D8A2C168C4F7E005295DC /* AirHotelOrderDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelOrderDetailController.m; sourceTree = "<group>"; };
+		EA1D8A2D168C4F7E005295DC /* AirHotelOrderDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AirHotelOrderDetailController.xib; sourceTree = "<group>"; };
 		EA20A05F153192AE00F6F478 /* AnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationManager.h; sourceTree = "<group>"; };
 		EA20A060153192AE00F6F478 /* AnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationManager.m; sourceTree = "<group>"; };
 		EA2382821664B00F001ECA2D /* all_page_bg2_i5@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "all_page_bg2_i5@2x.jpg"; sourceTree = "<group>"; };
@@ -4570,6 +4618,7 @@
 				EA27F71A166E0418006FB717 /* person */,
 				EA05F1DA166E01CC008685DA /* confirm_order */,
 				EA05F1E5166E01CC008685DA /* hotel_list */,
+				EA116AB0168D96FE004C3B4B /* my_order@2x.png */,
 				EA05F1E1166E01CC008685DA /* fly_p3@2x.png */,
 				EA05F1E2166E01CC008685DA /* fly_p4@2x.png */,
 				EA05F1E3166E01CC008685DA /* hotel_add_bg@2x.png */,
@@ -4654,6 +4703,23 @@
 			path = HappyTour;
 			sourceTree = "<group>";
 		};
+		EA116ACB168EC1E3004C3B4B /* CommonView */ = {
+			isa = PBXGroup;
+			children = (
+				EA116ACC168EC1E7004C3B4B /* OrderFlightView.h */,
+				EA116ACD168EC1E7004C3B4B /* OrderFlightView.m */,
+				EA116ACE168EC1E7004C3B4B /* OrderFlightView.xib */,
+				EA116ACF168EC1E7004C3B4B /* OrderHotelView.h */,
+				EA116AD0168EC1E7004C3B4B /* OrderHotelView.m */,
+				EA116AD1168EC1E7004C3B4B /* OrderHotelView.xib */,
+				EA116AD6168F01EF004C3B4B /* RoomInfoView.h */,
+				EA116AD7168F01F1004C3B4B /* RoomInfoView.m */,
+				EA116AD9168F33D4004C3B4B /* PersonsView.h */,
+				EA116ADA168F33D6004C3B4B /* PersonsView.m */,
+			);
+			path = CommonView;
+			sourceTree = "<group>";
+		};
 		EA140185164A4315009DF6DC /* SinaWeiBoSDK_sso */ = {
 			isa = PBXGroup;
 			children = (
@@ -4730,6 +4796,31 @@
 			path = "../Common_iPhone_20/Components/Component-View/SRMonthPicker";
 			sourceTree = "<group>";
 		};
+		EA1D8A25168C4C8A005295DC /* OrderManage */ = {
+			isa = PBXGroup;
+			children = (
+				EA1D8A26168C4F1A005295DC /* AirHotelOrderListController.h */,
+				EA1D8A27168C4F1A005295DC /* AirHotelOrderListController.m */,
+				EA1D8A28168C4F1A005295DC /* AirHotelOrderListController.xib */,
+				EA116A9B168D4271004C3B4B /* AirHotelOrderListCell.h */,
+				EA116A9C168D4272004C3B4B /* AirHotelOrderListCell.m */,
+				EA116A9E168D42B3004C3B4B /* AirHotelOrderListCell.xib */,
+				EA1D8A2B168C4F7D005295DC /* AirHotelOrderDetailController.h */,
+				EA1D8A2C168C4F7E005295DC /* AirHotelOrderDetailController.m */,
+				EA1D8A2D168C4F7E005295DC /* AirHotelOrderDetailController.xib */,
+				EA116AB7168DE51B004C3B4B /* AirOrderDetailCell.h */,
+				EA116AB8168DE51C004C3B4B /* AirOrderDetailCell.m */,
+				EA116ABA168DE536004C3B4B /* AirOrderDetailCell.xib */,
+				EA116ABC168DE55A004C3B4B /* HotelOrderDetailCell.h */,
+				EA116ABD168DE55C004C3B4B /* HotelOrderDetailCell.m */,
+				EA116ABF168DEAB9004C3B4B /* HotelOrderDetailCell.xib */,
+				EA116AB2168D9D98004C3B4B /* AirHotelOrderDetailTopCell.h */,
+				EA116AB3168D9D98004C3B4B /* AirHotelOrderDetailTopCell.m */,
+				EA116AB5168D9DB7004C3B4B /* AirHotelOrderDetailTopCell.xib */,
+			);
+			path = OrderManage;
+			sourceTree = "<group>";
+		};
 		EA20A05E153192AE00F6F478 /* Core-Utils-Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -4783,6 +4874,8 @@
 				EAE3388B166361C100E03D51 /* Air */,
 				EAE33892166361C100E03D51 /* Hotel */,
 				EA05F1CE166DFB8E008685DA /* Person */,
+				EA1D8A25168C4C8A005295DC /* OrderManage */,
+				EA116ACB168EC1E3004C3B4B /* CommonView */,
 			);
 			path = AirHotel;
 			sourceTree = "<group>";
@@ -5417,6 +5510,15 @@
 				A45C6098168BE81400809AAE /* trip_list_bottom_on@2x.png in Resources */,
 				A45C6099168BE81400809AAE /* trip_list_middle_on@2x.png in Resources */,
 				A45C609A168BE81400809AAE /* trip_list_top_on@2x.png in Resources */,
+				EA1D8A2A168C4F1A005295DC /* AirHotelOrderListController.xib in Resources */,
+				EA1D8A2F168C4F7E005295DC /* AirHotelOrderDetailController.xib in Resources */,
+				EA116A9F168D42B3004C3B4B /* AirHotelOrderListCell.xib in Resources */,
+				EA116AB1168D96FE004C3B4B /* my_order@2x.png in Resources */,
+				EA116AB6168D9DB7004C3B4B /* AirHotelOrderDetailTopCell.xib in Resources */,
+				EA116ABB168DE537004C3B4B /* AirOrderDetailCell.xib in Resources */,
+				EA116AC0168DEABB004C3B4B /* HotelOrderDetailCell.xib in Resources */,
+				EA116AD3168EC1E7004C3B4B /* OrderFlightView.xib in Resources */,
+				EA116AD5168EC1E7004C3B4B /* OrderHotelView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5782,6 +5884,16 @@
 				EADE8693168B2C6A006D3D79 /* AddCreditCardController.m in Sources */,
 				EA1D8A0F168B67CB005295DC /* AddContactPersonController.m in Sources */,
 				EA1D8A14168C3D18005295DC /* SRMonthPicker.m in Sources */,
+				EA1D8A29168C4F1A005295DC /* AirHotelOrderListController.m in Sources */,
+				EA1D8A2E168C4F7E005295DC /* AirHotelOrderDetailController.m in Sources */,
+				EA116A9D168D4272004C3B4B /* AirHotelOrderListCell.m in Sources */,
+				EA116AB4168D9D99004C3B4B /* AirHotelOrderDetailTopCell.m in Sources */,
+				EA116AB9168DE51E004C3B4B /* AirOrderDetailCell.m in Sources */,
+				EA116ABE168DE55D004C3B4B /* HotelOrderDetailCell.m in Sources */,
+				EA116AD2168EC1E7004C3B4B /* OrderFlightView.m in Sources */,
+				EA116AD4168EC1E7004C3B4B /* OrderHotelView.m in Sources */,
+				EA116AD8168F01F9004C3B4B /* RoomInfoView.m in Sources */,
+				EA116ADB168F33DF004C3B4B /* PersonsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

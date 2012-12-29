@@ -84,7 +84,7 @@
     self.indexPath = aIndexPath;
     
     self.nameLabel.text = room.name;
-    self.breakfastLabel.text = room.breakfast;
+    self.breakfastLabel.text = [NSString stringWithFormat:@"%@/%@", room.bed, room.breakfast];
     self.selectRoomButton.selected = isSelected;
     
     [self updateCountLabel];

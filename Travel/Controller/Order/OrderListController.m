@@ -72,7 +72,7 @@
                             action:@selector(clickConsult:)];
     
     
-    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过本地游订单"), [NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], NSLS(@"即将推出"), [NSNumber numberWithInt:OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER], nil];
+    self.tipDic = [NSDictionary dictionaryWithObjectsAndKeys:NSLS(@"您还没有下过本地游订单"), [NSNumber numberWithInt:OBJECT_LIST_LOCAL_ROUTE_ORDER], nil];
     
     
     if ([[UserManager defaultManager] isLogin]) {
