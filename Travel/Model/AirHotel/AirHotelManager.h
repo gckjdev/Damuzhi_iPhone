@@ -23,9 +23,11 @@ typedef enum{
 - (AirOrder_Builder *)createDefaultAirOrderBuilder;
 - (HotelOrder_Builder *)createDefaultHotelOrderBuilder;
 
+- (HotelOrder_Builder *)hotelOrderBuilder:(HotelOrder *)order;
 - (NSArray *)hotelOrderListFromBuilderList:(NSArray *)builderList;
 - (NSArray *)hotelOrderBuilderListFromOrderList:(NSArray *)orderList;
 
+- (AirOrder_Builder *)airOrderBuilder:(AirOrder *)order;
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList;
 - (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList;
 

@@ -186,7 +186,6 @@
 #define OBJECT_LIST_UNPACKAGE_TOUR_ORDER            81
 #define OBJECT_LIST_SELF_GUIDE_TOUR_ORDER           82
 #define OBJECT_LIST_LOCAL_ROUTE_ORDER               83
-#define OBJECT_LIST_TICKET_HOTEL_TOUR_ORDER         84
 
 #define OBJECT_LIST_LOCAL_ROUTE                     90
 

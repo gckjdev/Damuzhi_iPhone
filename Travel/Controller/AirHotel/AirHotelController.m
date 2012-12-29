@@ -340,6 +340,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.airOrderBuilderList = [NSMutableArray arrayWithArray:[manager validAirOrderBuilders:_airOrderBuilderList]];
     self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:[manager validHotelOrderBuilders:_hotelOrderBuilderList]];
     
+    
     ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:_airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
     
     [self.navigationController pushViewController:controller animated:YES];

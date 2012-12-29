@@ -17,6 +17,10 @@
 #import "PriceUtils.h"
 #import "CreditCardManager.h"
 
+
+
+#import "AirHotelOrderListController.h"
+
 @interface ConfirmOrderController ()
 
 @property (retain, nonatomic) AirHotelOrder_Builder *airHotelOrderBuilder;
@@ -125,10 +129,16 @@
         [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
     } else {
         [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
+        PPDebug(@"<ConfirmOrderController> userId%@", [[UserManager defaultManager] getUserId]);
     }
     
     AirHotelOrder *order = [_airHotelOrderBuilder build];
     [[AirHotelService defaultService] order:order delegate:self];
+    
+    //for test
+//    AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
+//    [self.navigationController pushViewController:controller animated:YES];
+//    controller.dataList = [NSArray arrayWithObjects:order, nil];
 }
 
 #pragma mark - 
