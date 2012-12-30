@@ -17,6 +17,7 @@
 
 @interface OrderHotelView()
 @property (assign, nonatomic) id<OrderHotelViewDelegate> delegate;
+@property (assign, nonatomic) int hotelId;
 @end
 
 
@@ -91,19 +92,26 @@
     HotelOrder_Builder *builder = [[AirHotelManager defaultManager] hotelOrderBuilder:hotelOrder];
     [self setViewWithOrderBuilder:builder];
     
+    self.hotelNameLabel.textColor = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
+    self.dateLabel.textColor = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
     self.arrowImageView.hidden = YES;
     self.addCheckInPersonButton.hidden = YES;
 }
 
 - (void)setViewWithOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
 {
+    self.hotelId = hotelOrderBuilder.hotelId;
     self.hotelNameLabel.text = hotelOrderBuilder.hotel.name;
     
     NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:hotelOrderBuilder.checkInDate];
     NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:hotelOrderBuilder.checkOutDate];
     NSString *checkInDateString = dateToStringByFormat(checkInDate, @"yyyy年MM月dd日");
     NSString *checkOutDateString = dateToStringByFormat(checkOutDate, @"MM月dd日");
-    self.dateLabel.text = [NSString stringWithFormat:@"%@ - %@", checkInDateString, checkOutDateString];
+    
+    NSTimeInterval diff = [checkOutDate timeIntervalSinceDate:checkInDate];
+    NSInteger dayCount =  diff / 60 / 60 / 24;
+    
+    self.dateLabel.text = [NSString stringWithFormat:@"%@ - %@ (%d晚)", checkInDateString, checkOutDateString, dayCount];
     
     [self createRoomInfo:hotelOrderBuilder];
     
@@ -117,6 +125,12 @@
     PPDebug(@"OrderHotelView height:%f", self.frame.size.height);
 }
 
+- (IBAction)clickHoltelButton:(id)sender {
+    if ([_delegate respondsToSelector:@selector(didClickHotelButton:)]) {
+        [_delegate didClickHotelButton:_hotelId];
+    }
+}
+
 - (void)dealloc {
     [_hotelNameLabel release];
     [_dateLabel release];
@@ -126,6 +140,7 @@
     [_checkInPersonButton release];
     [_arrowImageView release];
     [_addCheckInPersonButton release];
+    [_hotelButton release];
     [super dealloc];
 }
 @end

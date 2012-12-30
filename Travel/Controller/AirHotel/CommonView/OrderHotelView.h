@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @protocol OrderHotelViewDelegate <NSObject>
-
+@optional
+- (void)didClickHotelButton:(int)hotelId;
+- (void)didClickAddCheckInPersonButton:(int)hotelId;
 @end
 
 @class HotelOrder;
@@ -25,6 +27,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *checkInPersonButton;
 @property (retain, nonatomic) IBOutlet UIImageView *arrowImageView;
 @property (retain, nonatomic) IBOutlet UIButton *addCheckInPersonButton;
+@property (retain, nonatomic) IBOutlet UIButton *hotelButton;
 
 + (id)createOrderHotelView:(id<OrderHotelViewDelegate>)delegate;
 

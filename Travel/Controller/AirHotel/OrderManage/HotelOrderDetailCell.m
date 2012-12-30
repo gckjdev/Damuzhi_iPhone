@@ -9,6 +9,8 @@
 #import "HotelOrderDetailCell.h"
 #import "AirHotel.pb.h"
 #import "LogUtil.h"
+#import "AppManager.h"
+#import "PriceUtils.h"
 
 @implementation HotelOrderDetailCell
 
@@ -36,7 +38,7 @@
 {
     CGFloat y = HEIGHT_TOP;
     for (HotelOrder *order in airHotelOrde.hotelOrdersList) {
-        OrderHotelView *view = [OrderHotelView createOrderHotelView:self];
+        OrderHotelView *view = [OrderHotelView createOrderHotelView:delegate];
         [view setViewWithOrder:order];
         view.frame = CGRectMake(9, y, view.frame.size.width, view.frame.size.height);
         [self addSubview:view];
@@ -46,7 +48,14 @@
     self.priceHolderView.frame = CGRectMake(self.priceHolderView.frame.origin.x, y, self.priceHolderView.frame.size.width, self.priceHolderView.frame.size.height);
     
     self.holderView.frame = CGRectMake(self.holderView.frame.origin.x, self.holderView.frame.origin.y, self.holderView.frame.size.width, y + self.priceHolderView.frame.size.height);
+    
+    AppManager *manager = [AppManager defaultManager];
+    int currentCiytId = [manager getCurrentCityId];
+    NSString *currency = [manager getCurrencySymbol:currentCiytId];
+    self.priceLabel.text= [PriceUtils priceToString:airHotelOrde.hotelPrice currency:currency];
 }
+
+
 
 - (void)dealloc {
     [_statusLabel release];

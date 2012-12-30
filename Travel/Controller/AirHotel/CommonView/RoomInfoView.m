@@ -9,6 +9,7 @@
 #import "RoomInfoView.h"
 #import "AirHotel.pb.h"
 #import "PriceUtils.h"
+#import "AppManager.h"
 
 @implementation RoomInfoView
 
@@ -51,6 +52,14 @@
     countLabel.frame = CGRectMake(205, 0, 32, HEIGHT_ONE_ROOM_VIEW);
     priceLabel.frame = CGRectMake(237, 0, 57, HEIGHT_ONE_ROOM_VIEW);
     
+    if (breakfast == nil) {
+        breakfast = @"";
+    }
+    
+    if (bed == nil) {
+        bed = @"";
+    }
+    
     roomNameLabel.text = roomName;
     breakfastAndBedLabel.text = [NSString stringWithFormat:@"%@/%@", breakfast, bed];
     countLabel.text = [NSString stringWithFormat:@"%d间", count];
@@ -58,6 +67,7 @@
     
     countLabel.textAlignment = NSTextAlignmentRight;
     priceLabel.textAlignment = NSTextAlignmentRight;
+    priceLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:72.0/255.0 blue:0.0/255.0 alpha:1];
     
     [resultView addSubview:roomNameLabel];
     [resultView addSubview:breakfastAndBedLabel];
@@ -87,7 +97,11 @@
                 roomName = room.name;
                 breakfast = room.breakfast;
                 bed = room.bed;
-                price = [PriceUtils priceToString:room.price];
+                
+                AppManager *manager = [AppManager defaultManager];
+                int currentCiytId = [manager getCurrentCityId];
+                NSString *currency = [manager getCurrencySymbol:currentCiytId];
+                price = [PriceUtils priceToString:room.price currency:currency];
             }
         }
         

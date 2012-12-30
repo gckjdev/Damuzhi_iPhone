@@ -12,6 +12,8 @@
 #import "HotelOrderDetailCell.h"
 #import "AirHotel.pb.h"
 #import "FontSize.h"
+#import "PlaceService.h"
+#import "CommonPlaceDetailController.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -141,6 +143,35 @@
     }
     
     return 0;
+}
+
+#pragma mark -
+#pragma OrderHotelViewDelegate method
+- (void)didClickHotelButton:(int)hotelId
+{
+    [self showActivityWithText:NSLS(@"数据加载中...")];
+    [[PlaceService defaultService] findPlace:hotelId viewController:self];
+}
+
+
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+                  place:(Place *)place
+{
+    [self hideActivity];
+    if (resultCode != 0) {
+        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

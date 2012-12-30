@@ -7,10 +7,12 @@
 //
 
 #import "PPTableViewController.h"
+#import "OrderHotelView.h"
+#import "PlaceService.h"
 
 @class AirHotelOrder;
 
-@interface AirHotelOrderDetailController : PPTableViewController
+@interface AirHotelOrderDetailController : PPTableViewController <OrderHotelViewDelegate, PlaceServiceDelegate>
 
 - (id)initWithOrder:(AirHotelOrder *)airHotelOrder;
 
