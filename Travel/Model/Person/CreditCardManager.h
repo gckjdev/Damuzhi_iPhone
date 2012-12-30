@@ -21,6 +21,5 @@ enum{
 - (NSArray*)findAllCreditCards;
 - (void)deleteCreditCard:(CreditCard *)creditCard;
 - (void)saveCreditCard:(CreditCard *)creditCard;
-
-
+ 
 @end
