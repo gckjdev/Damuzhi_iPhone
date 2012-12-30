@@ -131,7 +131,7 @@
 {
     NSString *mark = [dataList objectAtIndex:indexPath.row];
     if ([mark isEqualToString:MARK_TOP_SECTON]) {
-        return [AirHotelOrderDetailTopCell getCellHeight] + 10;
+        return [AirHotelOrderDetailTopCell getCellHeight:_airHotelOrder] + 10;
     }
     
     else if ([mark isEqualToString:MARK_AIR_SECTION]){

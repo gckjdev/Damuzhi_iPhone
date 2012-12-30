@@ -38,6 +38,7 @@
 
 - (void)findOrderList
 {
+    [self showActivityWithText:NSLS(@"数据加载中...")];
     [[AirHotelService defaultService] findOrderUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
 }
 
@@ -46,6 +47,7 @@
     for (AirHotelOrder *order in dataList) {
         PPDebug(@"orderId:%d", order.orderId);
         PPDebug(@"orderStatus:%d", order.orderStatus);
+        PPDebug(@"arrive cityId:%d", order.arriveCityId);
         PPDebug(@"contactPerson name:%@", order.contactPerson.name);
         PPDebug(@"contactPerson phone:%@", order.contactPerson.phone);
         PPDebug(@"airOrders count:%d", [order.airOrdersList count]);
@@ -79,12 +81,9 @@
 #pragma mark - 
 #pragma AirHotelServiceDelegate methods
 - (void)findOrdersDone:(int)result orderList:(NSArray *)orderList
-{    
-    if (result == 0) {
-//        NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:dataList];
-//        [mutableArray addObjectsFromArray:orderList];
-//        self.dataList = mutableArray;
-        
+{
+    [self hideActivity];
+    if (result == 0) {        
         self.dataList  = orderList;
         [dataTableView reloadData];
         

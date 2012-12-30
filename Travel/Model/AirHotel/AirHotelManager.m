@@ -221,4 +221,45 @@ static AirHotelManager *_airHotelManager = nil;
     return [PriceUtils priceToString:totalPrice currency:currency];
 }
 
+- (NSString *)orderStatusName:(int)status
+{
+    NSString *statusName = nil;
+    switch (status) {
+        case 5:
+            statusName = @"意向订单";
+            break;
+        case 15:
+            statusName = @"已确认订单";
+            break;
+        case 25:
+            statusName = @"取消订单";
+            break;
+        default:
+            break;
+    }
+    return statusName;
+}
+
+- (UIColor *)orderStatusColor:(int)status
+{
+    UIColor *statusColor = [UIColor blackColor];
+    switch (status) {
+        case 5:
+            //statusColor = [UIColor colorWithRed:0x00/0xFF green:0x99/0xFF blue:0x00/0xFF alpha:1];
+            statusColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:0.0/255.0 alpha:1];
+            break;
+        case 15:
+            //statusColor = [UIColor colorWithRed:0xC6/0xFF green:0x00/0xFF blue:0x00/0xFF alpha:1];
+            statusColor = [UIColor colorWithRed:198.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1];
+            break;
+        case 25:
+            //statusColor = [UIColor colorWithRed:0x67/0xFF green:0x67/0xFF blue:0x67/0xFF alpha:1];
+            statusColor = [UIColor colorWithRed:103.0/255.0 green:103.0/255.0 blue:103.0/255.0 alpha:1];
+            break;
+        default:
+            break;
+    }
+    return statusColor;
+}
+
 @end

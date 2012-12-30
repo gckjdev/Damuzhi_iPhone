@@ -16,8 +16,7 @@
 #import "CommonWebController.h"
 #import "PriceUtils.h"
 #import "CreditCardManager.h"
-
-
+#import "AppManager.h"
 
 #import "AirHotelOrderListController.h"
 
@@ -123,6 +122,8 @@
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
     
+    
+    [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
     
     if (_isMember) {
         [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
