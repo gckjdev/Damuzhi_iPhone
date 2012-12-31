@@ -107,7 +107,6 @@
         return;
     }
     
-    
     AirHotelManager *manager = [AirHotelManager defaultManager];
     NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
     NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
@@ -121,7 +120,6 @@
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
     
-    
     [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
     
     if (_isMember) {
@@ -129,7 +127,6 @@
         [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
     } else {
         [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
-        PPDebug(@"<ConfirmOrderController> userId%@", [[UserManager defaultManager] getUserId]);
     }
     
     NSString *message = NSLS(@"是否预订？");

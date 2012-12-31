@@ -4,6 +4,10 @@
 //
 //  Created by kaibin on 12-9-21.
 //
+//  变量说明：
+//  机票订单保存在airOrderBuilderList
+//  goAirOrderBuiler是指向airOrderBuilderList中的去程航班
+//  backAirOrderBuiler指向airOrderBuilderList中的回程航班
 //
 
 #import "AirHotelController.h"
@@ -26,20 +30,16 @@ enum HOTEL_FLIGHT_DATE_TAG{
 };
 
 @interface AirHotelController ()
-
 @property (retain, nonatomic) NSMutableArray *hotelOrderBuilderList;
 @property (retain, nonatomic) NSMutableArray *airOrderBuilderList;
 @property (retain, nonatomic) AirOrder_Builder *goAirOrderBuiler;
 @property (retain, nonatomic) AirOrder_Builder *backAirOrderBuiler;
-
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) int currentDateTag;
 @property (retain, nonatomic) NSMutableArray *sectionStat;
 @property (assign, nonatomic) AirType airType;
 @property (retain, nonatomic) AirHotelManager *manager;
-
 @property (retain, nonatomic) AirCity *departCity;
-
 @end
 
 @implementation AirHotelController
@@ -49,11 +49,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [_airOrderBuilderList release];
     [_goAirOrderBuiler release];
     [_backAirOrderBuiler release];
-    
     [_currentIndexPath release];
     [_sectionStat release];
     [_manager release];
-    
     [_departCity release];
     [super dealloc];
 }
@@ -65,7 +63,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
         self.manager = [AirHotelManager defaultManager];
         self.airOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
         self.hotelOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
-        
         [self createDefaultData];
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
     }
@@ -79,7 +76,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.navigationItem.title = NSLS(@"机+酒");
     
     [self changeAirType:AirGoAndBack];
-    
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
 }
 
@@ -141,7 +137,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         AirOrder_Builder *builder1 = [_airOrderBuilderList objectAtIndex:0];
         AirOrder_Builder *builder2 = [_manager createDefaultAirOrderBuilder];
         
-        if (builder1.flightType == FlightTypeGo || builder1.flightType == FlightTypeGoOfDouble){
+        if (builder1.flightType == FlightTypeBack || builder1.flightType == FlightTypeBackOfDouble){
             [_airOrderBuilderList insertObject:builder2 atIndex:0];
         } else{
             [_airOrderBuilderList addObject:builder2];
@@ -160,7 +156,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewWillAppear:animated];
     
     [self createTitleView:NSLS(@"机+酒")];
-    
     [self createDefaultData];
 }
 
@@ -178,7 +173,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewDidDisappear:animated];
 }
 
-
 - (void)updateAirTypeToBuilder
 {
     if (_airType == AirGo) {
@@ -195,18 +189,21 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     if (_airType != airType) {
         _airType = airType;
-        
+        if (airType == AirGoAndBack) {
+            [_backAirOrderBuiler clearFlightSeatCode];
+            [_backAirOrderBuiler clearFlightSeat];
+            [_backAirOrderBuiler clearFlightNumber];
+            [_backAirOrderBuiler clearFlight];
+        }
         [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
     }
     
     [self updateAirTypeToBuilder];
 }
 
-#define SECTION_AIR     0
-
-
 #pragma mark -
 #pragma UITableViewDelegate methods
+#define SECTION_AIR     0
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == SECTION_AIR) {
@@ -300,13 +297,11 @@ enum HOTEL_FLIGHT_DATE_TAG{
                 cell = [MakeAirOrderOneCell createCell:self];
             }
             
-            
             if (_airType == AirGo) {
                 [cell setCellWithType:_airType departCityName:_departCity.cityName builder:_goAirOrderBuiler];
             } else if (_airType == AirBack) {
                 [cell setCellWithType:_airType departCityName:_departCity.cityName builder:_backAirOrderBuiler];
             }
-            
             
             return cell;
         }
@@ -326,7 +321,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
-
 - (void)order:(BOOL)isMember
 {
     AirHotelManager *manager = [AirHotelManager defaultManager];
@@ -337,6 +331,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_airOrderBuilderList removeObject:_goAirOrderBuiler];
     }
     
+    //取出有效的订单
     NSArray *validAirList = [manager validAirOrderBuilders:_airOrderBuilderList];
     NSArray *validHotelList = [manager validHotelOrderBuilders:_hotelOrderBuilderList];
     
@@ -357,7 +352,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 }
 
 - (IBAction)clickMemberButton:(id)sender {
-    
     if (![[UserManager defaultManager] isLogin]) {
         LoginController *controller = [[LoginController alloc] init];
         [self.navigationController pushViewController:controller animated:YES];
@@ -435,7 +429,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
         
         if (_currentDateTag == CHECK_IN_DATE) {
             [builder setCheckInDate:[date timeIntervalSince1970]];
-            PPDebug(@"didSelectDate:%d", builder.checkInDate);
         } else if (_currentDateTag == CHECK_OUT_DATE) {
             [builder setCheckOutDate:[date timeIntervalSince1970]];
         }
@@ -528,7 +521,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
-    if (_goAirOrderBuiler.flightDate == 0) {
+    if ([_goAirOrderBuiler hasFlightDate] == NO) {
         [self popupHappyMessage:NSLS(@"请选择出发日期") title:nil];
         return;
     }
@@ -554,16 +547,15 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
-    if (_backAirOrderBuiler.flightDate == 0) {
+    if ([_backAirOrderBuiler hasFlightDate] == NO) {
         [self popupHappyMessage:NSLS(@"请选择回程日期") title:nil];
         return;
     }
     
     if (_airType == AirGoAndBack ) {
-        if (_goAirOrderBuiler.flightNumber == nil)
+        if ([_goAirOrderBuiler hasFlightNumber] == NO)
         {
-            PPDebug(@"请选择去程航班");
-            [self popupHappyMessage:NSLS(@"请选择去程航班") title:nil];
+            [self popupHappyMessage:NSLS(@"请先选择去程航班") title:nil];
             return;
         }
     }
@@ -643,7 +635,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
-    //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [UIUtils makeCall:phone];
 }
 
