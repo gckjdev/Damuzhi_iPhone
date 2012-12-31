@@ -31,10 +31,12 @@
 
 + (id)createOrderHotelView:(id<OrderHotelViewDelegate>)delegate;
 
-+ (CGFloat)getCellHeightWithBuiler:(HotelOrder_Builder *)builder;
+//user to view 
 + (CGFloat)getCellHeightWithOrder:(HotelOrder *)order;
-
 - (void)setViewWithOrder:(HotelOrder *)hotelOrder;
+
+//user to edit and view
++ (CGFloat)getCellHeightWithBuiler:(HotelOrder_Builder *)builder;
 - (void)setViewWithOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder;
 
 @end

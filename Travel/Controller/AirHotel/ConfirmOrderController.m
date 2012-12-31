@@ -17,6 +17,7 @@
 #import "CreditCardManager.h"
 #import "AppManager.h"
 #import "AirHotelOrderListController.h"
+#import "CommonPlaceDetailController.h"
 
 @interface ConfirmOrderController ()
 
@@ -182,8 +183,8 @@
         return  height;
     } else {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
-        
-        CGFloat height = [ConfirmHotelCell getCellHeight:[builder.roomInfosList count] personCount:[builder.checkInPersonsList count]];
+        CGFloat height = [ConfirmHotelCell getCellHeight:builder];
+        //CGFloat height = [ConfirmHotelCell getCellHeight:[builder.roomInfosList count] personCount:[builder.checkInPersonsList count]];
         return height;
     }
 }
@@ -352,6 +353,36 @@
     self.currentIndexPath = indexPath;
     
     SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn isMultipleChoice:YES delegate:self title:NSLS(@"入住人选择") isSelect:YES] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didClickShowHotelDetailButton:(NSIndexPath *)indexPath
+{
+    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+    
+    [self showActivityWithText:NSLS(@"数据加载中...")];
+    [[PlaceService defaultService] findPlace:builder.hotelId viewController:self];
+}
+
+#pragma mark -
+#pragma PlaceServiceDelegate method
+- (void)findRequestDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+                  place:(Place *)place
+{
+    [self hideActivity];
+    if (resultCode != 0) {
+        [self popupMessage:@"网络弱，数据加载失败" title:nil];
+        return;
+    }
+    
+    if (result != 0) {
+        [self popupMessage:resultInfo title:nil];
+        return;
+    }
+    
+    CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

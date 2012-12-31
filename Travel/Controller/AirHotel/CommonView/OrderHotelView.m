@@ -39,7 +39,7 @@
 }
 
 
-#define HEIGHT_BAISC 160
+#define HEIGHT_BAISC 158
 + (CGFloat)getCellHeightWithBuiler:(HotelOrder_Builder *)builder
 {
     return HEIGHT_BAISC + [RoomInfoView getHeight:builder.roomInfosList] - 25 + [PersonsView getHeight:builder.checkInPersonsList] - 24;
@@ -61,16 +61,18 @@
     return CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, height);
 }
 
-#define PACE_PERSONSVIEW_BEFORE  11
+#define PACE_PERSONSVIEW_TOP  11
+#define PACE_PERSONSVIEW_BOTTOM  8
+//holder view height is 44 (look at xib), so 44 = 25 + 11 + 8
 - (void)createCheckInPersonView:(NSArray *)personList
 {
     PersonsView *personsView = [PersonsView createCheckInPersonLabels:personList];
-    //personsView.backgroundColor = [UIColor blueColor];
     
-    personsView.frame = [self updateOriginY:personsView originY:PACE_PERSONSVIEW_BEFORE];
+    personsView.frame = [self updateOriginY:personsView originY:PACE_PERSONSVIEW_TOP];
     
-    self.checkInPersonHolderView.frame = [self updateHeight:self.checkInPersonHolderView height:PACE_PERSONSVIEW_BEFORE + personsView.frame.size.height + PACE_PERSONSVIEW_BEFORE];
-    [self.checkInPersonHolderView addSubview:personsView];
+    self.checkInPersonHolderView.frame = [self updateHeight:self.checkInPersonHolderView height:PACE_PERSONSVIEW_TOP + personsView.frame.size.height + PACE_PERSONSVIEW_BOTTOM];
+    [self.checkInPersonHolderView insertSubview:personsView belowSubview:self.checkInPersonButton];
+    
     self.footerView.frame = [self updateHeight:self.footerView height:self.checkInPersonHolderView.frame.origin.y + self.checkInPersonHolderView.frame.size.height];
     self.frame = [self updateHeight:self height:self.footerView.frame.origin.y + self.footerView.frame.size.height];
 }
@@ -85,7 +87,6 @@
     self.footerView.frame = [self updateOriginY:self.footerView originY:self.roomInfoHolderView.frame.origin.y + self.roomInfoHolderView.frame.size.height];
     self.frame = [self updateHeight:self height:self.footerView.frame.origin.y + self.footerView.frame.size.height];
 }
-
 
 - (void)setViewWithOrder:(HotelOrder *)hotelOrder
 {
@@ -128,6 +129,11 @@
 - (IBAction)clickHoltelButton:(id)sender {
     if ([_delegate respondsToSelector:@selector(didClickHotelButton:)]) {
         [_delegate didClickHotelButton:_hotelId];
+    }
+}
+- (IBAction)clickAddCheckInButton:(id)sender {
+    if ([_delegate respondsToSelector:@selector(didClickAddCheckInPersonButton:)]) {
+        [_delegate didClickAddCheckInPersonButton:_hotelId];
     }
 }
 
