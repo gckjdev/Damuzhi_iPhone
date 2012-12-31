@@ -105,8 +105,6 @@
     } else {
         [self.monthView hideRightArrow:NO];
     }
-
-    PPDebug(@"calendarMonthView:monthDidChange:%@", month);
 }
 
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
@@ -123,7 +121,7 @@
         [_delegate didSelectDate:date];
     }
     
-//    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
