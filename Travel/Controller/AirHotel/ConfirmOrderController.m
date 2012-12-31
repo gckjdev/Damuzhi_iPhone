@@ -16,7 +16,6 @@
 #import "PriceUtils.h"
 #import "CreditCardManager.h"
 #import "AppManager.h"
-
 #import "AirHotelOrderListController.h"
 
 @interface ConfirmOrderController ()
@@ -164,6 +163,10 @@
     [self hideActivity];
     if (result == 0) {
         [self popupMessage:NSLS(@"预订成功") title:nil];
+        AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        [self popupMessage:NSLS(@"预订失败") title:nil];
     }
 }
 
@@ -361,6 +364,7 @@
             Person *person = (Person *)[objectList objectAtIndex:0];
             [_airHotelOrderBuilder setContactPerson:person];
             
+            [_contactPersonButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
             [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
@@ -373,6 +377,7 @@
             PaymentInfo *paymentInfo = [pib build];
             [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
             
+            [_paymentButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
             [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCheckIn) {

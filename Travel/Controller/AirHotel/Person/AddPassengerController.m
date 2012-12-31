@@ -25,10 +25,10 @@
 @end
 
 #define TITLE_PASSENGE_TYPE     @"登机人类型:"
-#define TITLE_NAME              @"姓   名:"
+#define TITLE_NAME              @"姓       名:"
 #define TITLE_CARD_TYPE         @"证件类型:"
 #define TITLE_CARD_NUMBER       @"证件号码:"
-#define TITLE_GENDER            @"性   别:"
+#define TITLE_GENDER            @"性       别:"
 #define TITLE_BIRTHDAY          @"出生日期:"
 
 @implementation AddPassengerController
@@ -95,6 +95,26 @@
     self.datePickerView.date = _birthday;
 }
 
+- (void)moveView:(NSIndexPath *)indexPath
+{
+    if (indexPath.row > 2) {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.25];
+        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
+        [UIImageView commitAnimations];
+    } else {
+        [self resetViewSite];
+    }
+}
+
+- (void)resetViewSite
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.25];
+    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [UIImageView commitAnimations];
+}
+
 
 - (void)clickFinish:(id)sender
 {
@@ -127,6 +147,7 @@
         [self popupMessage:NSLS(@"请选择出生日期") title:nil];
         return;
     }
+    [self resetViewSite];
     
     if (self.isAdd == NO) {
         [[PersonManager defaultManager:PersonTypePassenger] deletePerson:_person];
@@ -280,7 +301,7 @@
     } else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderMale];
     }
-    
+    [self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -292,7 +313,7 @@
     }else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderFemale];
     }
-    
+    [self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -308,9 +329,10 @@
     } else if ([title isEqualToString:TITLE_BIRTHDAY]) {
         self.datePickerHolderView.hidden = NO;
     }
-    
+    [self resetViewSite];
     [dataTableView reloadData];
 }
+
 
 - (void)inputTextFieldDidEndEditing:(NSIndexPath *)indexPath text:(NSString *)text
 {
@@ -324,6 +346,15 @@
     [dataTableView reloadData];
 }
 
+- (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text
+{
+    [self moveView:indexPath];
+}
+
+- (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text
+{
+    [self resetViewSite];
+}
 
 #pragma mark - 
 #pragma SelectControllerDelegate methods
