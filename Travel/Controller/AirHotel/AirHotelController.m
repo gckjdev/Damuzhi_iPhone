@@ -335,14 +335,20 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_airOrderBuilderList removeObject:_backAirOrderBuiler];
     } else if (_airType == AirBack) {
         [_airOrderBuilderList removeObject:_goAirOrderBuiler];
-    } 
+    }
     
-    self.airOrderBuilderList = [NSMutableArray arrayWithArray:[manager validAirOrderBuilders:_airOrderBuilderList]];
-    self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:[manager validHotelOrderBuilders:_hotelOrderBuilderList]];
+    NSArray *validAirList = [manager validAirOrderBuilders:_airOrderBuilderList];
+    NSArray *validHotelList = [manager validHotelOrderBuilders:_hotelOrderBuilderList];
     
+    if ([validAirList count] == 0 && [validHotelList count] == 0) {
+        [self popupMessage:NSLS(@"未选择任何航班或酒店") title:nil];
+        return;
+    }
+    
+    self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];
+    self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:validHotelList];
     
     ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:_airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
-    
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -425,7 +431,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     if (_currentIndexPath.section > SECTION_AIR) {
-        HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.row];
+        HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.section - 1];
         
         if (_currentDateTag == CHECK_IN_DATE) {
             [builder setCheckInDate:[date timeIntervalSince1970]];
@@ -442,7 +448,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma SelectHotelControllerDelegate methods
 - (void)didClickFinish:(Place *)hotel roomInfos:(NSArray *)roomInfos
 {
-    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.row];
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.section - 1];
     [builder setHotelId:hotel.placeId];
     [builder setHotel:hotel];
     [builder clearRoomInfosList];

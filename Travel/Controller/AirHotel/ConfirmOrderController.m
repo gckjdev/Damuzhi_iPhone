@@ -12,13 +12,10 @@
 #import "MakeOrderHeader.h"
 #import "AirHotelManager.h"
 #import "UserManager.h"
-#import "RescheduleInfoController.h"
 #import "CommonWebController.h"
 #import "PriceUtils.h"
 #import "CreditCardManager.h"
-
-
-
+#import "AppManager.h"
 #import "AirHotelOrderListController.h"
 
 @interface ConfirmOrderController ()
@@ -124,6 +121,8 @@
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
     
     
+    [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
+    
     if (_isMember) {
         [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
         [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
@@ -132,13 +131,27 @@
         PPDebug(@"<ConfirmOrderController> userId%@", [[UserManager defaultManager] getUserId]);
     }
     
-    AirHotelOrder *order = [_airHotelOrderBuilder build];
-    [[AirHotelService defaultService] order:order delegate:self];
+    NSString *message = NSLS(@"是否预订？");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle: NSLS(@"取消")otherButtonTitles:NSLS(@"确定"),nil];
+    [alert show];
     
     //for test
 //    AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
 //    [self.navigationController pushViewController:controller animated:YES];
 //    controller.dataList = [NSArray arrayWithObjects:order, nil];
+}
+
+#pragma mark -
+#pragma UIAlertViewDelegate method
+- (void)alertView:(UIAlertView *)theAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == theAlertView.cancelButtonIndex) {
+        return;
+    } else{
+        AirHotelOrder *order = [_airHotelOrderBuilder build];
+        [self showActivityWithText:NSLS(@"正在预订...")];
+        [[AirHotelService defaultService] order:order delegate:self];
+    }
 }
 
 #pragma mark - 
@@ -147,9 +160,13 @@
        resultInfo:(NSString *)resultInfo
 {
     PPDebug(@"orderDone result:%d, resultInfo:%@", result, resultInfo);
-    
+    [self hideActivity];
     if (result == 0) {
         [self popupMessage:NSLS(@"预订成功") title:nil];
+        AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else {
+        [self popupMessage:NSLS(@"预订失败") title:nil];
     }
 }
 
@@ -347,6 +364,7 @@
             Person *person = (Person *)[objectList objectAtIndex:0];
             [_airHotelOrderBuilder setContactPerson:person];
             
+            [_contactPersonButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
             [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
@@ -359,6 +377,7 @@
             PaymentInfo *paymentInfo = [pib build];
             [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
             
+            [_paymentButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
             [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCheckIn) {

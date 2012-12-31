@@ -18,6 +18,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *sendTickeLabel;
 @property (retain, nonatomic) IBOutlet UILabel *priceLabel;
 
+
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde;
 
 @end

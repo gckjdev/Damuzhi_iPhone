@@ -82,7 +82,6 @@
         [self.flightButton setTitle:@"" forState:UIControlStateNormal];
         self.flightHolderView.hidden = NO;
         
-        
         FlightSimpleView *simpleView = (FlightSimpleView *)[self.flightHolderView viewWithTag:TAG_FLIGHT_SIMPLE];
         if (simpleView == nil) {
             simpleView = [FlightSimpleView createFlightSimpleView];
@@ -95,6 +94,7 @@
         self.flightHolderView.hidden = YES;
     }
 }
+
 - (IBAction)clickDepartCityButton:(id)sender {
     if ([delegate respondsToSelector:@selector(didClickDepartCityButton)]) {
         [delegate didClickDepartCityButton];

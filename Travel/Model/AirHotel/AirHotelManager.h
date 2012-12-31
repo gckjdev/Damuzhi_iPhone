@@ -43,4 +43,7 @@ typedef enum{
 - (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
 - (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
 
+- (NSString *)orderStatusName:(int)status;
+- (UIColor *)orderStatusColor:(int)status;
+
 @end

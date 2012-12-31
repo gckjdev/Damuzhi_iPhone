@@ -84,13 +84,9 @@
 {
     self.orderIdLabel.text = [NSString stringWithFormat:@"订单号:%d",self.airHotelOrder.orderId];
     
-    PPDebug(@"orderStatus:%d", self.airHotelOrder.orderStatus);
-    
-    //TO DO 
-//    NSString *status = nil;
-//    if () {
-//    }
-//    self.orderStatusLabel.text = [NSString ]
+    AirHotelManager *manager = [AirHotelManager defaultManager];
+    self.orderStatusLabel.text = [manager orderStatusName:self.airHotelOrder.orderStatus];
+    self.orderStatusLabel.textColor = [manager orderStatusColor:self.airHotelOrder.orderStatus];
 }
 
 - (void)updateAirView

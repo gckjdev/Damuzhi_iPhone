@@ -433,7 +433,7 @@
 											<object class="IBUIView" id="1010367132">
 												<reference key="NSNextResponder" ref="420527621"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{67, 0}, {205, 40}}</string>
+												<string key="NSFrame">{{67, 0}, {208, 40}}</string>
 												<reference key="NSSuperview" ref="420527621"/>
 												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -548,7 +548,7 @@
 											<object class="IBUIView" id="526507615">
 												<reference key="NSNextResponder" ref="515577224"/>
 												<int key="NSvFlags">292</int>
-												<string key="NSFrame">{{67, 0}, {205, 40}}</string>
+												<string key="NSFrame">{{67, 0}, {208, 40}}</string>
 												<reference key="NSSuperview" ref="515577224"/>
 												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -1081,38 +1081,10 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MakeAirOrderTwoCell</string>
 					<string key="superclassName">PPTableViewCell</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="clickBackDateButton:">id</string>
-						<string key="clickBackFlightButton:">id</string>
-						<string key="clickDepartCityButton:">id</string>
-						<string key="clickGoDateButton:">id</string>
-						<string key="clickGoFlightButton:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="clickBackDateButton:">
-							<string key="name">clickBackDateButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="clickBackFlightButton:">
-							<string key="name">clickBackFlightButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="clickDepartCityButton:">
-							<string key="name">clickDepartCityButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="clickGoDateButton:">
-							<string key="name">clickGoDateButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="clickGoFlightButton:">
-							<string key="name">clickGoFlightButton:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backDateButton">UIButton</string>
 						<string key="backFlightButton">UIButton</string>
+						<string key="backFlightHolderView">UIView</string>
 						<string key="departCityButton">UIButton</string>
 						<string key="goDateButton">UIButton</string>
 						<string key="goFlightButton">UIButton</string>
@@ -1126,6 +1098,10 @@
 						<object class="IBToOneOutletInfo" key="backFlightButton">
 							<string key="name">backFlightButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="backFlightHolderView">
+							<string key="name">backFlightHolderView</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="departCityButton">
 							<string key="name">departCityButton</string>

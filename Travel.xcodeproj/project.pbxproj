@@ -800,8 +800,6 @@
 		EA35B867162D36E600216678 /* update_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B862162D36E600216678 /* update_3@2x.png */; };
 		EA35B868162D36E600216678 /* update_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B863162D36E600216678 /* update_4@2x.png */; };
 		EA35B869162D36E600216678 /* update_5_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA35B864162D36E600216678 /* update_5_btn@2x.png */; };
-		EA37A8EF168209D900879094 /* RescheduleInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA37A8ED168209D900879094 /* RescheduleInfoController.m */; };
-		EA37A8F0168209D900879094 /* RescheduleInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA37A8EE168209D900879094 /* RescheduleInfoController.xib */; };
 		EA5C766A1534575B0025AFB2 /* TravelPreparationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */; };
 		EA5C766D1534579A0025AFB2 /* TravelTransportDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5C766C1534579A0025AFB2 /* TravelTransportDataSource.m */; };
 		EA627979168776FB00F92630 /* AddCheckInPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA627977168776FA00F92630 /* AddCheckInPersonController.m */; };
@@ -2067,9 +2065,6 @@
 		EA35B862162D36E600216678 /* update_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_3@2x.png"; sourceTree = "<group>"; };
 		EA35B863162D36E600216678 /* update_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_4@2x.png"; sourceTree = "<group>"; };
 		EA35B864162D36E600216678 /* update_5_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "update_5_btn@2x.png"; sourceTree = "<group>"; };
-		EA37A8EC168209D900879094 /* RescheduleInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RescheduleInfoController.h; sourceTree = "<group>"; };
-		EA37A8ED168209D900879094 /* RescheduleInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RescheduleInfoController.m; sourceTree = "<group>"; };
-		EA37A8EE168209D900879094 /* RescheduleInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RescheduleInfoController.xib; sourceTree = "<group>"; };
 		EA5C76681534575B0025AFB2 /* TravelPreparationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TravelPreparationDataSource.h; path = Common/TravelPreparationDataSource.h; sourceTree = "<group>"; };
 		EA5C76691534575B0025AFB2 /* TravelPreparationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TravelPreparationDataSource.m; path = Common/TravelPreparationDataSource.m; sourceTree = "<group>"; };
 		EA5C766B1534579A0025AFB2 /* TravelTransportDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelTransportDataSource.h; sourceTree = "<group>"; };
@@ -4913,9 +4908,6 @@
 				EA13A90A1676E2D00057EEDB /* FlightSeatView.h */,
 				EA13A90B1676E2D10057EEDB /* FlightSeatView.m */,
 				EA13A90D1676E4580057EEDB /* FlightSeatView.xib */,
-				EA37A8EC168209D900879094 /* RescheduleInfoController.h */,
-				EA37A8ED168209D900879094 /* RescheduleInfoController.m */,
-				EA37A8EE168209D900879094 /* RescheduleInfoController.xib */,
 			);
 			path = Air;
 			sourceTree = "<group>";
@@ -5498,7 +5490,6 @@
 				EA13A919167728630057EEDB /* flight_point_off@2x.png in Resources */,
 				EA13A91A167728630057EEDB /* flight_point_on@2x.png in Resources */,
 				EAE2832F167C7E9D00C22A56 /* FlightSimpleView.xib in Resources */,
-				EA37A8F0168209D900879094 /* RescheduleInfoController.xib in Resources */,
 				EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */,
 				A45C6082168AFA2900809AAE /* trip_list_bottom@2x.png in Resources */,
 				A45C6083168AFA2900809AAE /* trip_list_middle@2x.png in Resources */,
@@ -5867,7 +5858,6 @@
 				EA13A90C1676E2D20057EEDB /* FlightSeatView.m in Sources */,
 				EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */,
 				EAE2832D167C7B1D00C22A56 /* FlightSimpleView.m in Sources */,
-				EA37A8EF168209D900879094 /* RescheduleInfoController.m in Sources */,
 				EA627979168776FB00F92630 /* AddCheckInPersonController.m in Sources */,
 				EA62797D1688577D00F92630 /* PriceUtils.m in Sources */,
 				A4FB53D6168958D600102CF6 /* MKAnnotationView+WebCache.m in Sources */,
