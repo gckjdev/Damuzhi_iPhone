@@ -2025,6 +2025,7 @@
 		EA1B6E8A165CAD5400C00EEC /* CommonMonthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMonthController.m; sourceTree = "<group>"; };
 		EA1BC554165B305C00699C77 /* AirHotel.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotel.pb.h; sourceTree = "<group>"; };
 		EA1BC555165B305C00699C77 /* AirHotel.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotel.pb.m; sourceTree = "<group>"; };
+		EA1CE04C169188D300895AB4 /* AirHotelColorConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelColorConstants.h; sourceTree = "<group>"; };
 		EA1D8A0C168B67C8005295DC /* AddContactPersonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddContactPersonController.h; sourceTree = "<group>"; };
 		EA1D8A0D168B67C8005295DC /* AddContactPersonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddContactPersonController.m; sourceTree = "<group>"; };
 		EA1D8A0E168B67C9005295DC /* AddContactPersonController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddContactPersonController.xib; sourceTree = "<group>"; };
@@ -4711,6 +4712,7 @@
 				EA116AD7168F01F1004C3B4B /* RoomInfoView.m */,
 				EA116AD9168F33D4004C3B4B /* PersonsView.h */,
 				EA116ADA168F33D6004C3B4B /* PersonsView.m */,
+				EA1CE04C169188D300895AB4 /* AirHotelColorConstants.h */,
 			);
 			path = CommonView;
 			sourceTree = "<group>";

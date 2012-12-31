@@ -10,6 +10,7 @@
 #import "AirHotel.pb.h"
 #import "AirHotelManager.h"
 #import "LocaleUtils.h"
+#import "AirHotelColorConstants.h"
 
 @implementation MakeHotelOrderCell
 
@@ -38,20 +39,26 @@
     NSString *defaultTips = NSLS(@"请选择");
     
     if ([hotelOrderBuilder hasCheckInDate]) {
+        [self.checkInButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.checkInButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkInDate] forState:UIControlStateNormal];
     } else {
+        [self.checkInButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.checkInButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     if ([hotelOrderBuilder hasCheckOutDate]) {
+        [self.checkOutButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.checkOutButton setTitle:[_manager dateIntToYearMonthDayWeekString:hotelOrderBuilder.checkOutDate] forState:UIControlStateNormal];
     } else {
+        [self.checkOutButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
          [self.checkOutButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     if ([hotelOrderBuilder hasHotel]) {
+        [self.hotelButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.hotelButton setTitle:hotelOrderBuilder.hotel.name forState:UIControlStateNormal];
     } else {
+        [self.hotelButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.hotelButton setTitle:defaultTips forState:UIControlStateNormal];
     }
 }

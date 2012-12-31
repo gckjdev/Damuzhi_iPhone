@@ -11,12 +11,12 @@
 #import "AirHotel.pb.h"
 #import "AirHotelManager.h"
 #import "FlightSimpleView.h"
+#import "AirHotelColorConstants.h"
 
 @interface MakeAirOrderOneCell()
 @property (assign, nonatomic) AirType airType;
 
 @end
-
 
 @implementation MakeAirOrderOneCell
 
@@ -66,15 +66,19 @@
     
     
     if (departCityName) {
+        [self.departCityButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.departCityButton setTitle:departCityName forState:UIControlStateNormal];
     } else {
+        [self.departCityButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.departCityButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     
     if ([builder hasFlightDate]) {
+        [self.flightDateButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.flightDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:builder.flightDate] forState:UIControlStateNormal];
     } else {
+        [self.flightDateButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.flightDateButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
@@ -90,7 +94,8 @@
         }
         [simpleView setViewWith:builder.flight flightSeatCode:builder.flightSeatCode];
     } else {
-        [self.flightButton setTitle:@"请选择" forState:UIControlStateNormal];
+        [self.flightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
+        [self.flightButton setTitle:defaultTips forState:UIControlStateNormal];
         self.flightHolderView.hidden = YES;
     }
 }

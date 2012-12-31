@@ -576,7 +576,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
         flightType = FlightTypeBack;
     }
     
-    
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
     
     SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:_goAirOrderBuiler.flightNumber delegate:self];
@@ -616,14 +615,13 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [dataTableView reloadData];
 }
 
+#pragma mark -
 - (IBAction)clickBookNoteButton:(id)sender {
     CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:[[AppManager defaultManager] getAirHotelBookingNotice]];
     controller.title = @"预订说明";
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
-    
 }
-
 
 - (IBAction)clickCustomerServiceTelephone:(id)sender
 {

@@ -11,6 +11,7 @@
 #import "AirHotelManager.h"
 #import "LocaleUtils.h"
 #import "FlightSimpleView.h"
+#import "AirHotelColorConstants.h"
 
 @implementation MakeAirOrderTwoCell
 
@@ -46,21 +47,27 @@
     NSString *defaultTips = NSLS(@"请选择");
     
     if (departCityName) {
+        [self.departCityButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.departCityButton setTitle:departCityName forState:UIControlStateNormal];
     } else {
+        [self.departCityButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.departCityButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     if ([goBuilder hasFlightDate]) {
+        [self.goDateButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.goDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:goBuilder.flightDate] forState:UIControlStateNormal];
     } else {
+        [self.goDateButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.goDateButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
     
     if ([backBuilder hasFlightDate]) {
+        [self.backDateButton setTitleColor:COLOR_VALUE forState:UIControlStateNormal];
         [self.backDateButton setTitle:[_manager dateIntToYearMonthDayWeekString:backBuilder.flightDate] forState:UIControlStateNormal];
     } else {
+        [self.backDateButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
         [self.backDateButton setTitle:defaultTips forState:UIControlStateNormal];
     }
     
@@ -77,7 +84,8 @@
         }
         [simpleView setViewWith:goBuilder.flight flightSeatCode:goBuilder.flightSeatCode];
     } else {
-        [self.goFlightButton setTitle:@"请选择" forState:UIControlStateNormal];
+        [self.goFlightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
+        [self.goFlightButton setTitle:defaultTips forState:UIControlStateNormal];
         self.goFlightHolderView.hidden = YES;
     }
     
@@ -91,9 +99,11 @@
             simpleView.tag  = TAG_BACK_FLIGHT_SIMPLE;
             [self.backFlightHolderView addSubview:simpleView];
         }
+        
         [simpleView setViewWith:backBuilder.flight flightSeatCode:backBuilder.flightSeatCode];
     } else {
-        [self.backFlightButton setTitle:@"请选择" forState:UIControlStateNormal];
+        [self.backFlightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
+        [self.backFlightButton setTitle:defaultTips forState:UIControlStateNormal];
         self.backFlightHolderView.hidden = YES;
     }
     
