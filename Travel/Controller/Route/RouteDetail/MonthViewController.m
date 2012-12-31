@@ -355,7 +355,7 @@
     NSDate *d = startDate;
     
     while(YES){
-        if ([d isSameYearMonth:[NSDate date]]) {
+        if ([d isSameYearMonth:monthView.selectedMonth]) {
             [images addObject:([d isToday] ? USER_UIIMAGE_NAME_DATE_TILE_SELECTED : USER_UIIMAGE_NAME_DATE_TILE_SELECTED)];
         }else {
             [images addObject:@""];
@@ -378,7 +378,11 @@
     NSDate *d = startDate;
     
     while(YES){
-        if ([d isSameYearMonth:[NSDate date]]) {
+        PPDebug(@"%@", monthView);
+        
+        PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
+        PPDebug(@"%@", dateToChineseString(d));
+        if ([d isSameYearMonth:monthView.selectedMonth]) {
             [touchDisableds addObject:@(NO)];
         }else {
             [touchDisableds addObject:@(YES)];
