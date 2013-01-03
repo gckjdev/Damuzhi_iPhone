@@ -110,6 +110,20 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
+- (void)clearAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder
+{
+    [airOrderBuilder clearFlightNumber];
+    [airOrderBuilder clearFlight];
+    [airOrderBuilder clearFlightSeatCode];
+    [airOrderBuilder clearFlightSeat];
+}
+
+- (void)clearHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
+{
+    [hotelOrderBuilder clearHotelId];
+    [hotelOrderBuilder clearHotel];
+    [hotelOrderBuilder clearRoomInfosList];
+}
 
 - (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt
 {

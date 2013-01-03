@@ -17,7 +17,6 @@
 #import "AirHotelManager.h"
 #import "SelectCityController.h"
 #import "AppManager.h"
-#import "AirHotelManager.h"
 #import "UserManager.h"
 #import "LoginController.h"
 #import "CommonWebController.h"
@@ -190,10 +189,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     if (_airType != airType) {
         _airType = airType;
         if (airType == AirGoAndBack) {
-            [_backAirOrderBuiler clearFlightSeatCode];
-            [_backAirOrderBuiler clearFlightSeat];
-            [_backAirOrderBuiler clearFlightNumber];
-            [_backAirOrderBuiler clearFlight];
+            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
         }
         [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
     }
@@ -323,8 +319,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (void)order:(BOOL)isMember
 {
-    AirHotelManager *manager = [AirHotelManager defaultManager];
-    
     if (_airType == AirGo) {
         [_airOrderBuilderList removeObject:_backAirOrderBuiler];
     } else if (_airType == AirBack) {
@@ -332,8 +326,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     //取出有效的订单
-    NSArray *validAirList = [manager validAirOrderBuilders:_airOrderBuilderList];
-    NSArray *validHotelList = [manager validHotelOrderBuilders:_hotelOrderBuilderList];
+    NSArray *validAirList = [_manager validAirOrderBuilders:_airOrderBuilderList];
+    NSArray *validHotelList = [_manager validHotelOrderBuilders:_hotelOrderBuilderList];
     
     if ([validAirList count] == 0 && [validHotelList count] == 0) {
         [self popupMessage:NSLS(@"未选择任何航班或酒店") title:nil];
@@ -393,7 +387,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didClickHotelButton:(NSIndexPath *)indexPath
 {
     self.currentIndexPath = indexPath;
-    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.row];
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
     if (![builder hasCheckInDate]) {
         [self popupMessage:@"未选择入住时间" title:nil];
         return;
@@ -416,10 +410,16 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didSelectDate:(NSDate *)date
 {
     if (_currentDateTag == GO_DATE) {
+        if ([date timeIntervalSince1970] != _goAirOrderBuiler.flightDate) {
+            [_manager clearAirOrderBuilder:_goAirOrderBuiler];
+        }
         [_goAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
         return;
         
     } else if (_currentDateTag == BACK_DATE) {
+        if ([date timeIntervalSince1970] != _backAirOrderBuiler.flightDate) {
+            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+        }
         [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
         return;
     }
@@ -428,9 +428,19 @@ enum HOTEL_FLIGHT_DATE_TAG{
         HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.section - 1];
         
         if (_currentDateTag == CHECK_IN_DATE) {
+            
+            if ([date timeIntervalSince1970] != builder.checkInDate) {
+                [_manager clearHotelOrderBuilder:builder];
+            }
             [builder setCheckInDate:[date timeIntervalSince1970]];
+            
         } else if (_currentDateTag == CHECK_OUT_DATE) {
+            
+            if ([date timeIntervalSince1970] != builder.checkOutDate) {
+                [_manager clearHotelOrderBuilder:builder];
+            }
             [builder setCheckOutDate:[date timeIntervalSince1970]];
+            
         }
         
         [dataTableView reloadData];
@@ -579,6 +589,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma SelectAirCityControllerDelegate methods
 - (void)didSelectCity:(AirCity *)city
 {
+    if (_departCity.cityId != city.cityId) {
+        [_manager clearAirOrderBuilder:_goAirOrderBuiler];
+        [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+        
+        for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
+            [_manager clearHotelOrderBuilder:builder];
+        }
+    }
     self.departCity = city;
 }
 
