@@ -36,13 +36,12 @@
 
 @implementation MonthViewController
 @synthesize aDelegate = _aDelegate;
-@synthesize aBgView = _aBgView;
 @synthesize currentMonthButton = _currentMonthButton;
 @synthesize nextMonthButton = _nextMonthButton;
 @synthesize monthHolderView = _monthHolderView;
 @synthesize buttonHolderView = _buttonHolderView;
 @synthesize backgroundImageView = _backgroundImageView;
-@synthesize rightLineImageView = _rightLineImageView;
+//@synthesize rightLineImageView = _rightLineImageView;
 
 @synthesize monthView = _monthView;
 @synthesize bookings = _bookings;
@@ -59,12 +58,11 @@
     [_currentMonthButton release];
     [_nextMonthButton release];
     [_monthHolderView release];
-    [_aBgView release];
     [_buttonHolderView release];
 //    [_date release];
 
     [_backgroundImageView release];
-    [_rightLineImageView release];
+//    [_rightLineImageView release];
     
     [_currency release];
     [super dealloc];
@@ -108,14 +106,16 @@
                          fontSize:FONT_SIZE
                         imageName:@"back.png" 
                            action:@selector(clickBack:)];
-    self.backgroundImageView.image = [[UIImage imageNamed:@"date_t_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-    self.rightLineImageView.backgroundColor = [UIColor colorWithRed:209/255.0 green:210/255.0 blue:214/255.0 alpha:1.0];
+    self.backgroundImageView.image = [[UIImage imageNamed:@"date_top_bg@2x.png"] stretchableImageWithLeftCapWidth:150 topCapHeight:30];
+//    self.rightLineImageView.backgroundColor = [UIColor colorWithRed:209/255.0 green:210/255.0 blue:214/255.0 alpha:1.0];
     self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:NO
                                                                     date:[NSDate date]
-                                                              tileHeight:55
-                                                                hasTitle:NO
-                                                               hasShadow:NO] autorelease];
-                                                  
+                                                              tileHeight:55] autorelease];
+    [self.monthView hideMonthYearLabel:YES];
+    [self.monthView hideLeftArrow:YES];
+    [self.monthView hideRightArrow:YES];
+    [self.monthView setTopBgImage:nil];
+    
 
     [self.currentMonthButton setTitle:dateToChineseStringByFormat([[NSDate date] chineseFirstOfMonth], @"yyyy年MM月")
                              forState:UIControlStateNormal];
@@ -146,10 +146,9 @@
     [self setCurrentMonthButton:nil];
     [self setNextMonthButton:nil];
     [self setMonthHolderView:nil];
-    [self setABgView:nil];
     [self setButtonHolderView:nil];
     [self setBackgroundImageView:nil];
-    [self setRightLineImageView:nil];
+//    [self setRightLineImageView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

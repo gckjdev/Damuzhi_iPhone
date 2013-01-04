@@ -21,9 +21,6 @@
 
 @property (retain, nonatomic) TKCalendarMonthView *monthView;
 @property (assign, nonatomic) id<MonthViewControllerDelegate> aDelegate;
-
-@property (retain, nonatomic) IBOutlet UIView *aBgView;
-
 @property (retain, nonatomic) IBOutlet UIButton *currentMonthButton;
 @property (retain, nonatomic) IBOutlet UIButton *nextMonthButton;
 @property (retain, nonatomic) IBOutlet UIView *monthHolderView;
@@ -31,7 +28,7 @@
 
 @property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
-@property (retain, nonatomic) IBOutlet UIImageView *rightLineImageView;
+//@property (retain, nonatomic) IBOutlet UIImageView *rightLineImageView;
 
 //- (id)initWithBookings:(NSArray *)bookings;
 - (id)initWithBookings:(NSArray *)bookings routeType:(int)routeType;

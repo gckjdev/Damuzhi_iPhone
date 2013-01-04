@@ -310,7 +310,6 @@
     
     MonthViewController *controller = [[[MonthViewController alloc] initWithBookings:_route.bookingsList currency:_route.currency] autorelease];
     [controller.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
-    controller.aBgView.backgroundColor = [UIColor colorWithRed:220/255. green:219/255. blue:223/255.0 alpha:1];
     controller.aDelegate = self;
     
     [self.navigationController pushViewController:controller animated:YES];
