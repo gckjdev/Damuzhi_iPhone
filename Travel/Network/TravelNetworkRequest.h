@@ -217,4 +217,8 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                      flightNumber:(NSString *)flightNumber
                              lang:(int)lang;
 
++ (CommonNetworkOutput*)queryGeocodeWithLatitude:(double)latitude
+                                       longitude:(double)longitude
+                                        language:(NSString *)language;
+
 @end

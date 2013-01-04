@@ -30,6 +30,9 @@
 #import "LocalRouteListController.h"
 #import "UserManager.h"
 
+
+#import "PlaceService.h"
+
 typedef enum{
     NotificationTypeNone = 0,
     NotificationTypeNormal,
@@ -169,6 +172,8 @@ typedef enum{
     
     
     [MobClick updateOnlineConfig];
+    
+    [[PlaceService defaultService] findCityWithLatitude:23.0 longitude:113.0 delegate:nil];
     
     if ([DeviceDetection isOS5]){
         [[UINavigationBar appearance] setBackgroundImage:[[ImageManager defaultManager] navigationBgImage] forBarMetrics:UIBarMetricsDefault];

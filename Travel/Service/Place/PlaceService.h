@@ -38,6 +38,10 @@
              resultInfo:(NSString *)resultInfo
                   place:(Place *)place;
 
+- (void)findCityDone:(int)result
+            cityName:(NSString *)cityName
+         countryCode:(NSString *)countryCode;
+
 @end
 
 @protocol PlaceListFilterProtocol <NSObject>
@@ -106,5 +110,9 @@
                    start:(int)start
                    count:(int)count
                 delegate:(id<PlaceServiceDelegate>)delegate;
+
+- (void)findCityWithLatitude:(double)latitude
+                   longitude:(double)longitude
+                    delegate:(id<PlaceServiceDelegate>)delegate;
 
 @end

@@ -37,6 +37,7 @@
 - (NSArray*)getCityNameList;
 
 - (NSString*)getCityName:(int)cityId;
+- (NSArray *)getCityLocationInfo:(int)cityId;
 - (NSString*)getCityLatestVersion:(int)cityId;
 - (NSString*)getCountryName:(int)cityId;
 - (int)getCityDataSize:(int)cityId;
@@ -53,6 +54,7 @@
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
+- (NSArray*)getCurrentCityLocationInfo;
 - (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate;
 
 // Get item list for select controller.

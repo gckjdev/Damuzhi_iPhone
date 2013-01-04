@@ -669,6 +669,7 @@
 		CA585FBD14F73C4900471880 /* NearbyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA585FBB14F73C4900471880 /* NearbyController.m */; };
 		CA585FBE14F73C4900471880 /* NearbyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA585FBC14F73C4900471880 /* NearbyController.xib */; };
 		EA00B39316352AAA0081525F /* signup_bg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA00B39216352AAA0081525F /* signup_bg2@2x.png */; };
+		EA04C2F5169569D300E6922A /* GoogleAddressComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = EA04C2F4169569D300E6922A /* GoogleAddressComponent.m */; };
 		EA05F19C166DD572008685DA /* AirHotelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA05F19B166DD572008685DA /* AirHotelManager.m */; };
 		EA05F1D2166DFBD1008685DA /* SelectPersonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA05F1D0166DFBD1008685DA /* SelectPersonController.m */; };
 		EA05F1D3166DFBD1008685DA /* SelectPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA05F1D1166DFBD1008685DA /* SelectPersonController.xib */; };
@@ -1896,6 +1897,8 @@
 		CA585FBB14F73C4900471880 /* NearbyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyController.m; sourceTree = "<group>"; };
 		CA585FBC14F73C4900471880 /* NearbyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NearbyController.xib; sourceTree = "<group>"; };
 		EA00B39216352AAA0081525F /* signup_bg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signup_bg2@2x.png"; sourceTree = "<group>"; };
+		EA04C2F3169569D300E6922A /* GoogleAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAddressComponent.h; sourceTree = "<group>"; };
+		EA04C2F4169569D300E6922A /* GoogleAddressComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAddressComponent.m; sourceTree = "<group>"; };
 		EA05F19A166DD572008685DA /* AirHotelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirHotelManager.h; sourceTree = "<group>"; };
 		EA05F19B166DD572008685DA /* AirHotelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirHotelManager.m; sourceTree = "<group>"; };
 		EA05F1CF166DFBD1008685DA /* SelectPersonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectPersonController.h; sourceTree = "<group>"; };
@@ -3421,6 +3424,8 @@
 				EAE4F093154EAFEB00A656FF /* MapUtils.m */,
 				A406BAEE157DEFD600257DED /* PlaceExtend.h */,
 				A406BAEF157DEFD700257DED /* PlaceExtend.m */,
+				EA04C2F3169569D300E6922A /* GoogleAddressComponent.h */,
+				EA04C2F4169569D300E6922A /* GoogleAddressComponent.m */,
 			);
 			path = Place;
 			sourceTree = "<group>";
@@ -5886,6 +5891,7 @@
 				EA116AD4168EC1E7004C3B4B /* OrderHotelView.m in Sources */,
 				EA116AD8168F01F9004C3B4B /* RoomInfoView.m in Sources */,
 				EA116ADB168F33DF004C3B4B /* PersonsView.m in Sources */,
+				EA04C2F5169569D300E6922A /* GoogleAddressComponent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

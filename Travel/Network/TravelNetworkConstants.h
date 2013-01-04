@@ -208,4 +208,12 @@
 #define STRING_SEPARATOR    @","
 
 
+//google geocode
+#define URL_GOOGLE_GEOCODE_JSON     @"http://maps.googleapis.com/maps/api/geocode/json?"
+#define PARA_GOOGLE_LATLNG          @"latlng"
+#define PARA_GOOGLE_SENSOR          @"sensor"
+#define PARA_GOOGLE_LANGUAGE        @"language"
+
+#define GOOGLE_LANGUAGE_EN                 @"en"
+
 #endif

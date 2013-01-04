@@ -238,9 +238,20 @@ static AppManager* _defaultAppManager = nil;
     return cityName;
 }
 
+- (NSArray *)getCityLocationInfo:(int)cityId
+{
+    for (City *city in CITY_LIST) {
+        if (city.cityId == cityId) {
+            return city.locationInfoList;
+            break;
+        }
+    }
+    return nil;
+}
+
 - (NSString*)getCityLatestVersion:(int)cityId
 {
-    NSString *cityName = NSLS(@"");;
+    NSString *cityName = NSLS(@"");
     for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             cityName = city.cityName;
@@ -439,6 +450,12 @@ static AppManager* _defaultAppManager = nil;
 {
     int cityId = [self getCurrentCityId];
     return [self getCityName:cityId];
+}
+
+- (NSArray*)getCurrentCityLocationInfo
+{
+    int cityId = [self getCurrentCityId];
+    return [self getCityLocationInfo:cityId];
 }
 
 //- (void)setCurrentCityId:(int)newCityId 
