@@ -346,7 +346,7 @@ enum{
 
 - (void)pushSelectPerson:(SelectPersonViewType)type navTitle:(NSString *)navTitle
 {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:type isMultipleChoice:NO delegate:nil title:navTitle isSelect:NO] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:type selectCount:1 delegate:nil title:navTitle isSelect:NO] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

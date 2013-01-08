@@ -972,15 +972,19 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 
 @interface AirCity : PBGeneratedMessage {
 @private
+  BOOL hasHotCity_:1;
   BOOL hasCityId_:1;
   BOOL hasCityName_:1;
+  BOOL hotCity_:1;
   int32_t cityId;
   NSString* cityName;
 }
 - (BOOL) hasCityId;
 - (BOOL) hasCityName;
+- (BOOL) hasHotCity;
 @property (readonly) int32_t cityId;
 @property (readonly, retain) NSString* cityName;
+- (BOOL) hotCity;
 
 + (AirCity*) defaultInstance;
 - (AirCity*) defaultInstance;
@@ -1025,6 +1029,11 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (NSString*) cityName;
 - (AirCity_Builder*) setCityName:(NSString*) value;
 - (AirCity_Builder*) clearCityName;
+
+- (BOOL) hasHotCity;
+- (BOOL) hotCity;
+- (AirCity_Builder*) setHotCity:(BOOL) value;
+- (AirCity_Builder*) clearHotCity;
 @end
 
 @interface App : PBGeneratedMessage {

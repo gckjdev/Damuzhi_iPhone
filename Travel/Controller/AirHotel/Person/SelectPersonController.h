@@ -25,7 +25,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *headeTitleLabel;
 
 - (id)initWithType:(SelectPersonViewType)type
-  isMultipleChoice:(BOOL)isMultipleChoice
+       selectCount:(NSUInteger)selectCount
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title
           isSelect:(BOOL)isSelect;

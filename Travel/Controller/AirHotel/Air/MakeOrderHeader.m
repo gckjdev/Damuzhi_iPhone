@@ -104,18 +104,21 @@
 }
 
 - (IBAction)clickGoButton:(id)sender {
+    [self updateSelectedButton:1];
     if ([_delegate respondsToSelector:@selector(didClickGoButton)]) {
         [_delegate didClickGoButton];
     }
 }
 
 - (IBAction)clickGoAndBackButton:(id)sender {
+    [self updateSelectedButton:2];
     if ([_delegate respondsToSelector:@selector(didClickGoAndBackButton)]) {
         [_delegate didClickGoAndBackButton];
     }
 }
 
 - (IBAction)clickBackButton:(id)sender {
+    [self updateSelectedButton:3];
     if ([_delegate respondsToSelector:@selector(didClickBackButton)]) {
         [_delegate didClickBackButton];
     }

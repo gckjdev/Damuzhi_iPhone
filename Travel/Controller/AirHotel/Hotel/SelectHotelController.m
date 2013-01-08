@@ -14,6 +14,7 @@
 #import "AirHotel.pb.h"
 #import "CommonPlaceDetailController.h"
 #import "PPNetworkRequest.h"
+#import "AirHotel.pb.h"
 
 @interface SelectHotelController ()
 {
@@ -24,11 +25,9 @@
 @property (assign, nonatomic) id<SelectHotelControllerDelegate> delegate;
 @property (retain, nonatomic) NSMutableArray *hotelList;
 @property (retain, nonatomic) NSMutableArray *viewsForSectionHeaders;
-@property (retain, nonatomic) NSDate *checkInDate;
-@property (retain, nonatomic) NSDate *checkOutDate;
-
 @property (assign, nonatomic) NSInteger selectedSection;
 @property (retain, nonatomic) NSMutableDictionary *roomInfoDic;
+@property (retain, nonatomic) HotelOrder_Builder *hotelOrderBuilder;
 
 @end
 
@@ -41,8 +40,6 @@
 @synthesize delegate = _delegate;
 @synthesize hotelList = _hotelList;
 @synthesize viewsForSectionHeaders = _viewsForSectionHeaders;
-@synthesize checkInDate = _checkInDate;
-@synthesize checkOutDate = _checkOutDate;
 @synthesize selectedSection = _selectedSection;
 @synthesize roomInfoDic = _roomInfoDic;
 
@@ -50,25 +47,23 @@
 {
     [_hotelList release];
     [_viewsForSectionHeaders release];
-    [_checkInDate release];
-    [_checkOutDate release];
     [_roomInfoDic release];
+    [_hotelOrderBuilder release];
     [super dealloc];
 }
 
-
-- (id)initWithCheckInDate:(NSDate *)checkInDate
-             checkOutDate:(NSDate *)checkOutDate
-                 delegate:(id<SelectHotelControllerDelegate>)delegate;
+- (id)initWithHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
+                       delegate:(id<SelectHotelControllerDelegate>)delegate
 {
     self = [super init];
     if (self) {
-        self.checkInDate = checkInDate;
-        self.checkOutDate = checkOutDate;
+        self.hotelOrderBuilder = hotelOrderBuilder;
         self.delegate = delegate;
-        
         self.viewsForSectionHeaders = [[[NSMutableArray alloc] init] autorelease];
         self.roomInfoDic = [[[NSMutableDictionary alloc] init] autorelease];
+        for (HotelOrderRoomInfo *roomInfo in _hotelOrderBuilder.roomInfosList) {
+            [_roomInfoDic setValue:[NSNumber numberWithInt:roomInfo.count] forKey:[NSString stringWithFormat:@"%d", roomInfo.roomId]];
+        }
         
         self.supportRefreshHeader = YES;
         self.supportRefreshFooter = YES;
@@ -87,10 +82,20 @@
     [super viewDidAppear:animated];
 }
 
+- (void)findSelectedSection
+{
+    NSInteger index = 0;
+    for (Place *hotel in _hotelList) {
+        if (hotel.placeId == _hotelOrderBuilder.hotelId) {
+            _selectedSection = index;
+        }
+        index ++;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     
     self.title = NSLS(@"酒店列表");
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -107,15 +112,10 @@
     _selectedSection = SELECTED_SECTION_NONE;
     
     [self findHotels];
-
-    //test data
-//    [self testData];
-//    [dataTableView reloadData];
 }
 
 - (void)clickFinish:(id)sender
 {
-    //TO DO
     if (_selectedSection == SELECTED_SECTION_NONE) {
         [self popupMessage:NSLS(@"没有选择酒店") title:nil];
         return;
@@ -129,14 +129,25 @@
     
     NSMutableArray *roomInfos = [[[NSMutableArray alloc] init] autorelease];
     NSArray *roomIds = [_roomInfoDic allKeys];
+    int totalCount = 0;
+    
     for (NSString *roomId in roomIds) {
         NSNumber *count = [_roomInfoDic objectForKey:roomId];
+        totalCount += [count intValue];
         
         HotelOrderRoomInfo_Builder *builder= [[[HotelOrderRoomInfo_Builder alloc] init] autorelease];
         [builder setRoomId:[roomId intValue]];
         [builder setCount:[count intValue]];
         HotelOrderRoomInfo *roomInfo = [builder build];
         [roomInfos addObject:roomInfo];
+    }
+    [_hotelOrderBuilder setHotelId:hotel.placeId];
+    [_hotelOrderBuilder setHotel:hotel];
+    [_hotelOrderBuilder clearRoomInfosList];
+    [_hotelOrderBuilder addAllRoomInfos:roomInfos];
+    
+    if ([_hotelOrderBuilder.checkInPersonsList count] != totalCount) {
+        [_hotelOrderBuilder clearCheckInPersonsList];
     }
     
     if ([_delegate respondsToSelector:@selector(didClickFinish:roomInfos:)]) {
@@ -149,10 +160,13 @@
 - (void)findHotels
 {
     [self showActivityWithText:NSLS(@"数据加载中......")];
+    
+    NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:_hotelOrderBuilder.checkInDate];
+    NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:_hotelOrderBuilder.checkOutDate];
 
     [[AirHotelService defaultService] findHotelsWithCityId:[[AppManager defaultManager] getCurrentCityId]
-                                               checkInDate:_checkInDate
-                                              checkOutDate:_checkOutDate
+                                               checkInDate:checkInDate
+                                              checkOutDate:checkOutDate
                                                      start:_start
                                                      count:EACH_COUNT
                                                   delegate:self];
@@ -276,7 +290,7 @@
                  roomCellSite:site];
     } else {
         [cell setCellWithRoom:room
-                        count:1
+                        count:0
                     indexPath:indexPath
                    isSelected:NO
                  roomCellSite:site];
@@ -430,6 +444,7 @@
         self.noMoreData = YES;
     }
     
+    [self findSelectedSection];
     [dataTableView reloadData];
 
     if ([self.hotelList count] == 0) {

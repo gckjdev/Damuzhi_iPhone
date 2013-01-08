@@ -188,10 +188,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     if (_airType != airType) {
         _airType = airType;
-        if (airType == AirGoAndBack) {
-            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
-        }
-        [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        [self.dataTableView reloadData];
     }
     
     [self updateAirTypeToBuilder];
@@ -270,7 +267,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1 * [[_sectionStat objectAtIndex:section] boolValue];;
+    return 1 * [self isSectionOpen:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -371,7 +368,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_IN_DATE;
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:[NSDate date] monthCount:12 title:NSLS(@"入住日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -380,7 +377,13 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_OUT_DATE;
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    NSDate *checkInDate = nil;
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
+    if ([builder hasCheckInDate]) {
+        checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
+    }
+    
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:checkInDate monthCount:12 title:NSLS(@"退房日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -398,10 +401,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
-    NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
-    NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate];
-    
-    SelectHotelController *controller =[[[SelectHotelController alloc] initWithCheckInDate:checkInDate checkOutDate:checkOutDate delegate:self] autorelease];
+    SelectHotelController *controller =[[[SelectHotelController alloc] initWithHotelOrderBuilder:builder delegate:self] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -414,6 +414,10 @@ enum HOTEL_FLIGHT_DATE_TAG{
             [_manager clearAirOrderBuilder:_goAirOrderBuiler];
         }
         [_goAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
+        
+        if ([_backAirOrderBuiler hasFlightDate] && _backAirOrderBuiler.flightDate < _goAirOrderBuiler.flightDate) {
+            [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970] + 24 * 60 * 60];
+        }
         return;
         
     } else if (_currentDateTag == BACK_DATE) {
@@ -433,6 +437,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
                 [_manager clearHotelOrderBuilder:builder];
             }
             [builder setCheckInDate:[date timeIntervalSince1970]];
+            if ([builder hasCheckOutDate] && builder.checkOutDate < builder.checkInDate) {
+                [builder setCheckOutDate:[date timeIntervalSince1970] + 24 * 60 * 60];
+            }
             
         } else if (_currentDateTag == CHECK_OUT_DATE) {
             
@@ -440,7 +447,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
                 [_manager clearHotelOrderBuilder:builder];
             }
             [builder setCheckOutDate:[date timeIntervalSince1970]];
-            
         }
         
         [dataTableView reloadData];
@@ -451,12 +457,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma SelectHotelControllerDelegate methods
 - (void)didClickFinish:(Place *)hotel roomInfos:(NSArray *)roomInfos
 {
-    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.section - 1];
-    [builder setHotelId:hotel.placeId];
-    [builder setHotel:hotel];
-    [builder clearRoomInfosList];
-    [builder addAllRoomInfos:roomInfos];
-    
     [dataTableView reloadData];
 }
 
@@ -512,15 +512,19 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentDateTag = GO_DATE;
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil monthCount:12 title:NSLS(@"出发日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didClickBackDateButton
 {
     self.currentDateTag = BACK_DATE;
+    NSDate *customStartDate = nil;
+    if ([_goAirOrderBuiler hasFlightDate]) {
+        customStartDate = [NSDate dateWithTimeIntervalSince1970:_goAirOrderBuiler.flightDate];
+    }
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"回程日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:customStartDate monthCount:12 title:NSLS(@"回程日期")] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

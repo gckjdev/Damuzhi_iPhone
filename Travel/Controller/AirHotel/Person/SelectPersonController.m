@@ -25,6 +25,7 @@
 @property (assign, nonatomic) id<SelectPersonControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isSelect;
 @property (assign, nonatomic) BOOL isEidtingTable;
+@property (assign, nonatomic) NSUInteger selectCount;
 
 @end
 
@@ -43,8 +44,8 @@
     [super dealloc];
 }
 
-- (id)initWithType:(SelectPersonViewType)type
-  isMultipleChoice:(BOOL)isMultipleChoice
+- (id)initWithType:(SelectPersonViewType)type 
+       selectCount:(NSUInteger)selectCount
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title
           isSelect:(BOOL)isSelect
@@ -52,7 +53,8 @@
     self = [super init];
     if (self) {
         self.type = type;
-        self.isMultipleChoice = isMultipleChoice;
+        self.selectCount = selectCount;
+        self.isMultipleChoice = (selectCount > 1);
         self.delegate = delegate;
         self.title = title;
         self.isSelect = isSelect;
@@ -134,6 +136,16 @@
 - (void)clickFinish:(id)sender
 {
     if (_isSelect) {
+        if ([_selectedIndexList count] == 0) {
+            [self popupMessage:NSLS(@"请选择") title:nil];
+            return;
+        }
+        
+        if (_type == ViewTypeCheckIn && [_selectedIndexList count] != _selectCount) {
+            [self popupMessage:NSLS(@"入住人数与房间数不一致") title:nil];
+            return;
+        }
+        
         NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
         for (NSIndexPath *indexPath in _selectedIndexList) {
             [resultArray addObject:[dataList objectAtIndex:indexPath.row]];
@@ -273,8 +285,13 @@
         
         [_selectedIndexList removeObjectAtIndex:i];
     } else {
-        if (!self.isMultipleChoice) {
+        if (self.isMultipleChoice == NO) {
             [_selectedIndexList removeAllObjects];
+        } else {
+            if ([_selectedIndexList count] == _selectCount) {
+                [self popupMessage:[NSString stringWithFormat:@"最多选择%d个",_selectCount] title:nil];
+                return;
+            }
         }
         [_selectedIndexList addObject:indexPath];
     }

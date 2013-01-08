@@ -134,12 +134,6 @@
         cell.textLabel.text = city.cityName;
     }
     
-//    typedef NS_ENUM(NSInteger, UITableViewCellAccessoryType) {
-//        UITableViewCellAccessoryNone,                   // don't show any accessory view
-//        UITableViewCellAccessoryDisclosureIndicator,    // regular chevron. doesn't track
-//        UITableViewCellAccessoryDetailDisclosureButton, // blue button w/ chevron. tracks
-//        UITableViewCellAccessoryCheckmark
-    
     if (city.cityId == _selectedCityId) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {

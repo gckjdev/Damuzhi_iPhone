@@ -116,7 +116,8 @@
 - (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList;
 
 - (NSArray *)getAirDepartCitySectionTitles;
-- (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter;
+- (NSArray *)getAirDepartHotCitys;
+- (NSArray *)getAirDepartCitys:(NSString *)sectionTitle;
 - (NSString *)getAirCityName:(int)cityId;
 - (NSString *)getAirlineName:(int)airlineId;
 - (NSString *)getAirlineLogo:(int)airlineId;

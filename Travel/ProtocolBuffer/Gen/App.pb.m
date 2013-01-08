@@ -3707,6 +3707,7 @@ static CityGroup* defaultCityGroupInstance = nil;
 @interface AirCity ()
 @property int32_t cityId;
 @property (retain) NSString* cityName;
+@property BOOL hotCity;
 @end
 
 @implementation AirCity
@@ -3725,6 +3726,18 @@ static CityGroup* defaultCityGroupInstance = nil;
   hasCityName_ = !!value;
 }
 @synthesize cityName;
+- (BOOL) hasHotCity {
+  return !!hasHotCity_;
+}
+- (void) setHasHotCity:(BOOL) value {
+  hasHotCity_ = !!value;
+}
+- (BOOL) hotCity {
+  return !!hotCity_;
+}
+- (void) setHotCity:(BOOL) value {
+  hotCity_ = !!value;
+}
 - (void) dealloc {
   self.cityName = nil;
   [super dealloc];
@@ -3733,6 +3746,7 @@ static CityGroup* defaultCityGroupInstance = nil;
   if ((self = [super init])) {
     self.cityId = 0;
     self.cityName = @"";
+    self.hotCity = NO;
   }
   return self;
 }
@@ -3764,6 +3778,9 @@ static AirCity* defaultAirCityInstance = nil;
   if (self.hasCityName) {
     [output writeString:2 value:self.cityName];
   }
+  if (self.hasHotCity) {
+    [output writeBool:3 value:self.hotCity];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -3778,6 +3795,9 @@ static AirCity* defaultAirCityInstance = nil;
   }
   if (self.hasCityName) {
     size += computeStringSize(2, self.cityName);
+  }
+  if (self.hasHotCity) {
+    size += computeBoolSize(3, self.hotCity);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3860,6 +3880,9 @@ static AirCity* defaultAirCityInstance = nil;
   if (other.hasCityName) {
     [self setCityName:other.cityName];
   }
+  if (other.hasHotCity) {
+    [self setHotCity:other.hotCity];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3887,6 +3910,10 @@ static AirCity* defaultAirCityInstance = nil;
       }
       case 18: {
         [self setCityName:[input readString]];
+        break;
+      }
+      case 24: {
+        [self setHotCity:[input readBool]];
         break;
       }
     }
@@ -3922,6 +3949,22 @@ static AirCity* defaultAirCityInstance = nil;
 - (AirCity_Builder*) clearCityName {
   result.hasCityName = NO;
   result.cityName = @"";
+  return self;
+}
+- (BOOL) hasHotCity {
+  return result.hasHotCity;
+}
+- (BOOL) hotCity {
+  return result.hotCity;
+}
+- (AirCity_Builder*) setHotCity:(BOOL) value {
+  result.hasHotCity = YES;
+  result.hotCity = value;
+  return self;
+}
+- (AirCity_Builder*) clearHotCity {
+  result.hasHotCity = NO;
+  result.hotCity = NO;
   return self;
 }
 @end

@@ -355,6 +355,22 @@
 					<int key="connectionID">48</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">minusButton</string>
+						<reference key="source" ref="509912193"/>
+						<reference key="destination" ref="53809069"/>
+					</object>
+					<int key="connectionID">50</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">plusButton</string>
+						<reference key="source" ref="509912193"/>
+						<reference key="destination" ref="559023063"/>
+					</object>
+					<int key="connectionID">51</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">clickSelectRoomButton:</string>
 						<reference key="source" ref="591635350"/>
@@ -487,7 +503,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">49</int>
+			<int key="maxID">51</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -502,11 +518,31 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">RoomCell</string>
 					<string key="superclassName">PPTableViewCell</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clickMinusButton:">id</string>
+						<string key="clickPlusButton:">id</string>
+						<string key="clickSelectRoomButton:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clickMinusButton:">
+							<string key="name">clickMinusButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="clickPlusButton:">
+							<string key="name">clickPlusButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="clickSelectRoomButton:">
+							<string key="name">clickSelectRoomButton:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="backgroundImageView">UIImageView</string>
 						<string key="breakfastLabel">UILabel</string>
 						<string key="countLabel">UILabel</string>
 						<string key="holderView">UIView</string>
+						<string key="minusButton">UIButton</string>
 						<string key="nameLabel">UILabel</string>
 						<string key="selectRoomButton">UIButton</string>
 					</dictionary>
@@ -526,6 +562,10 @@
 						<object class="IBToOneOutletInfo" key="holderView">
 							<string key="name">holderView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="minusButton">
+							<string key="name">minusButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="nameLabel">
 							<string key="name">nameLabel</string>

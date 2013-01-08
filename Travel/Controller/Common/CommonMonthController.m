@@ -22,7 +22,7 @@
 @property (assign, nonatomic) NSUInteger monthCount;
 @property (assign, nonatomic) id<CommonMonthControllerDelegate> delegate;
 @property (retain, nonatomic) NSString *navigationTitle;
-
+@property (retain, nonatomic) NSDate *customStartDate;
 @end
 
 @implementation CommonMonthController
@@ -36,20 +36,26 @@
 	self.monthView.dataSource = nil;
     [_monthView release];
     [_navigationTitle release];
+    [_customStartDate release];
     [super dealloc];
 }
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
+       customStartDate:(NSDate *)customStartDate
             monthCount:(NSUInteger)monthCount
                  title:(NSString *)title
 {
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        self.customStartDate = customStartDate;
         self.monthCount = monthCount;
         self.navigationTitle = title;
         
-        self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:YES] autorelease];
+        if (_customStartDate == nil) {
+            self.customStartDate = [NSDate date];
+        }
+        self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:YES date:_customStartDate] autorelease];
         _monthView.delegate = self;
         _monthView.dataSource = self;
 
@@ -77,7 +83,6 @@
     if (_monthCount == 0) {
         _monthCount = 12; //default value
     }
-    //[self.monthView selectDate:[NSDate date]];
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.monthView hideLeftArrow:YES];
@@ -99,13 +104,13 @@
 #pragma TKCalendarMonthViewDelegate methods
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)month animated:(BOOL)animated
 {
-    if ([[NSDate date] isSameYearMonth:month]) {
+    if ([_customStartDate isSameYearMonth:month]) {
         [self.monthView hideLeftArrow:YES];
     } else {
         [self.monthView hideLeftArrow:NO];
     }
     
-    if ([[NSDate date] monthsBetweenDate:month] >= _monthCount - 1) {
+    if ([_customStartDate monthsBetweenDate:month] >= _monthCount - 1) {
         [self.monthView hideRightArrow:YES];
     } else {
         [self.monthView hideRightArrow:NO];
@@ -138,7 +143,8 @@
     NSDate *d = startDate;
         
     while(YES){
-        if ([d isBeforeDay:[NSDate date]]) {
+        
+        if ([d isBeforeDay:_customStartDate]) {
             [images addObject:@"date_t_no_bg@2x.png"];
         }else if ([d isToday]){
             [images addObject:USER_UIIMAGE_NAME_DATE_TILE];
@@ -188,10 +194,9 @@
     
     while(YES){
         PPDebug(@"%@", monthView);
-        
         PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
         PPDebug(@"%@", dateToChineseString(d));
-        if ([d isBeforeDay:[NSDate date]]) {
+        if ([d isBeforeDay:_customStartDate]) {
             [touchDisableds addObject:@(YES)];
         }else if([d isSameYearMonth:monthView.selectedMonth]) {
             [touchDisableds addObject:@(NO)];

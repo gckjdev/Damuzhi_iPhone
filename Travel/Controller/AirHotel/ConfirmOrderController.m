@@ -268,9 +268,8 @@
 
 - (IBAction)clickContactPersonButton:(id)sender {
     
-    
     SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeContact
-                                                                      isMultipleChoice:NO
+                                                                           selectCount:1
                                                                               delegate:self
                                                                                  title:NSLS(@"联系人选择")
                                                                               isSelect:YES] autorelease];
@@ -279,7 +278,7 @@
 
 - (IBAction)clickPaymentButton:(id)sender {
     SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCreditCard
-                                                                      isMultipleChoice:NO
+                                                                           selectCount:1
                                                                               delegate:self
                                                                                  title:NSLS(@"信用卡支付")
                                                                               isSelect:YES] autorelease];
@@ -319,7 +318,7 @@
 {
     self.currentIndexPath = indexPath;
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger isMultipleChoice:YES delegate:self title:NSLS(@"选择登机人") isSelect:YES] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger selectCount:100 delegate:self title:NSLS(@"选择登机人") isSelect:YES] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -349,7 +348,13 @@
 {
     self.currentIndexPath = indexPath;
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn isMultipleChoice:YES delegate:self title:NSLS(@"入住人选择") isSelect:YES] autorelease];
+    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+    int totalCount = 0;
+    for (HotelOrderRoomInfo *info in builder.roomInfosList) {
+        totalCount += info.count;
+    }
+    
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn selectCount:totalCount delegate:self title:NSLS(@"入住人选择") isSelect:YES] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -393,7 +398,7 @@
             [_airHotelOrderBuilder setContactPerson:person];
             
             [_contactPersonButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
-            [_contactPersonButton setTitle:person.name forState:UIControlStateNormal];
+            [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@，%@",person.name,person.phone] forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
         if ([objectList count] > 0) {
@@ -406,7 +411,7 @@
             [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
             
             [_paymentButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
-            [_paymentButton setTitle:creditCard.name forState:UIControlStateNormal];
+            [_paymentButton setTitle:NSLS(@"信用卡") forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCheckIn) {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];

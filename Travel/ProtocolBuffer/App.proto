@@ -110,8 +110,9 @@ message CityGroup {
 
 //机票的出发/到达城市
 message AirCity {
-  required int32 cityId = 1;            //城市id
-  required string cityName = 2;         //城市名
+  required int32 cityId = 1;                        //城市id
+  required string cityName = 2;                     //城市名
+  optional bool hotCity = 3 [default = false];      // 是否是热门城市
 }
 
 // 应用相关的基础数据，和城市无关

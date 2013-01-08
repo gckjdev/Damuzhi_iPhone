@@ -89,6 +89,16 @@
     
     [self updateCountLabel];
     [self updateSite:roomCellSite];
+    
+    if (self.selectRoomButton.selected) {
+        self.plusButton.enabled = YES;
+        self.minusButton.enabled = YES;
+        self.countLabel.enabled = YES;
+    } else {
+        self.plusButton.enabled = NO;
+        self.minusButton.enabled = NO;
+        self.countLabel.enabled = NO;
+    }
 }
 
 - (void)updateCountLabel
@@ -114,6 +124,9 @@
 
 - (IBAction)clickSelectRoomButton:(id)sender {
     self.selectRoomButton.selected = !self.selectRoomButton.selected;
+    if (self.selectRoomButton.selected) {
+        _roomCount = 1;
+    }
     
     if ([delegate respondsToSelector:@selector(didClickSelectRoomButton:isSelected:count:indexPath:)]) {
         [delegate didClickSelectRoomButton:_roomId isSelected:self.selectRoomButton.selected count:_roomCount indexPath:indexPath];
@@ -143,6 +156,8 @@
     [_selectRoomButton release];
     [_backgroundImageView release];
     [_holderView release];
+    [_minusButton release];
+    [_plusButton release];
     [super dealloc];
 }
 

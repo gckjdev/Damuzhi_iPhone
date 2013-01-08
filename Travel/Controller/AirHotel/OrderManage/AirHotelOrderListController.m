@@ -45,6 +45,7 @@
 - (void)debugData
 {
     for (AirHotelOrder *order in dataList) {
+        PPDebug(@"*********************");
         PPDebug(@"orderId:%d", order.orderId);
         PPDebug(@"orderStatus:%d", order.orderStatus);
         PPDebug(@"arrive cityId:%d", order.arriveCityId);
@@ -73,6 +74,9 @@
                 PPDebug(@"selectedRoomId:%d", info.roomId);
                 PPDebug(@"selectedRoomCount:%d", info.count);
             }
+        }
+        
+        for (AirOrder *airOrder in order.airOrdersList) {
             
         }
     }
@@ -87,7 +91,7 @@
         self.dataList  = orderList;
         [dataTableView reloadData];
         
-        //[self debugData];
+        [self debugData];
     }
 }
 

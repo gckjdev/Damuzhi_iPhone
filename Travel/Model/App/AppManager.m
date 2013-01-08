@@ -1270,6 +1270,7 @@ static AppManager* _defaultAppManager = nil;
     return items;
 }
 
+#define AIR_HOT_CITY    @"热门"
 - (NSArray *)getAirDepartCitySectionTitles
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
@@ -1290,18 +1291,36 @@ static AppManager* _defaultAppManager = nil;
         return [py1 compare:py2 options:NSCaseInsensitiveSearch];
     }];
     
-    return sortedList;
+    NSMutableArray *resultArray = [NSMutableArray arrayWithArray:sortedList];
+    [resultArray insertObject:AIR_HOT_CITY atIndex:0];
+    
+    return resultArray;
 }
 
-- (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter
+- (NSArray *)getAirDepartHotCitys
 {
+    NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
+     for (AirCity *city in _app.airDepartCitiesList) {
+         if (city.hasHotCity) {
+             [resultArray addObject:city];
+         }
+     }
+    return resultArray;
+}
+
+- (NSArray *)getAirDepartCitys:(NSString *)sectionTitle
+{
+    if ([sectionTitle isEqualToString:AIR_HOT_CITY]) {
+        return [self getAirDepartHotCitys];
+    }
+    
     NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (AirCity *city in _app.airDepartCitiesList) {
         NSString *pinyin = [city.cityName pinyinFirstLetter];
         NSString *pinyinUpper = [pinyin uppercaseString];
         
-        if ([pinyinUpper isEqualToString:pinyinFirstLetter]) {
+        if ([pinyinUpper isEqualToString:sectionTitle]) {
             [resultArray addObject:city];
         }
     }

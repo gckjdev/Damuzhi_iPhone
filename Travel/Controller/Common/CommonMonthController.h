@@ -22,6 +22,7 @@
 @interface CommonMonthController : PPViewController <TKCalendarMonthViewDelegate,TKCalendarMonthViewDataSource>
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
+       customStartDate:(NSDate *)customStartDate
             monthCount:(NSUInteger)monthCount
                  title:(NSString *)title;
 
