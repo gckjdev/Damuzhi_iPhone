@@ -26,6 +26,7 @@
 @property (assign, nonatomic) BOOL isSelect;
 @property (assign, nonatomic) BOOL isEidtingTable;
 @property (assign, nonatomic) NSUInteger selectCount;
+@property (assign, nonatomic) BOOL isMember;
 
 @end
 
@@ -49,6 +50,7 @@
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title
           isSelect:(BOOL)isSelect
+          isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
@@ -58,6 +60,7 @@
         self.delegate = delegate;
         self.title = title;
         self.isSelect = isSelect;
+        self.isMember = isMember;
         
         self.selectedIndexList = [[[NSMutableArray alloc] init] autorelease];
     }
@@ -69,19 +72,35 @@
     switch (_type) {
         case ViewTypePassenger:
             self.headeTitleLabel.text = NSLS(@"添加航班登机人");
-            self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllPersons];
+            if (_isMember) {
+                self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllPersons];
+            } else {
+                self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllTempPersons];
+            }
             break;
         case ViewTypeCheckIn:
             self.headeTitleLabel.text = NSLS(@"添加入住人");
-            self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllPersons];
+            if (_isMember) {
+                self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllPersons];
+            } else {
+                self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllTempPersons];
+            }
             break;
         case ViewTypeContact:
             self.headeTitleLabel.text = NSLS(@"添加联系人");
-            self.dataList = [[PersonManager defaultManager:PersonTypeContact] findAllPersons];
+            if (_isMember) {
+                self.dataList = [[PersonManager defaultManager:PersonTypeContact] findAllPersons];
+            } else {
+                self.dataList = [[PersonManager defaultManager:PersonTypeContact] findAllTempPersons];
+            }
             break;
         case ViewTypeCreditCard:
             self.headeTitleLabel.text = NSLS(@"添加常用信用卡");
-            self.dataList = [[CreditCardManager defaultManager] findAllCreditCards];
+            if (_isMember) {
+                self.dataList = [[CreditCardManager defaultManager] findAllCreditCards];
+            } else {
+                self.dataList = [[CreditCardManager defaultManager] findAllTempCreditCards];
+            }
             break;
         default:
             break;
@@ -189,6 +208,15 @@
     return [SelectPersonCell getCellHeight];
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_isSelect) {
+        return UITableViewCellEditingStyleNone;
+    } else {
+        return UITableViewCellEditingStyleDelete;
+    }
+}
+
 #pragma mark -
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -235,7 +263,11 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if (_type == ViewTypeCreditCard) {
             CreditCard *creditCard = (CreditCard *)[dataList objectAtIndex:indexPath.row];
-            [[CreditCardManager defaultManager] deleteCreditCard:creditCard];
+            if (_isMember) {
+                [[CreditCardManager defaultManager] deleteCreditCard:creditCard];
+            } else {
+               [[CreditCardManager defaultManager] deleteTempCreditCard:creditCard];
+            }
         } else {
             PersonType storeType;
             if (_type == ViewTypeCheckIn) {
@@ -247,7 +279,11 @@
             }
             
             Person *person = (Person *)[dataList objectAtIndex:indexPath.row];
-            [[PersonManager defaultManager:storeType] deletePerson:person];
+            if (_isMember) {
+                [[PersonManager defaultManager:storeType] deletePerson:person];
+            } else {
+                [[PersonManager defaultManager:storeType] deleteTempPerson:person];
+            }
         }
         
         NSMutableArray *mutableDataList = [NSMutableArray arrayWithArray:dataList];
@@ -305,28 +341,28 @@
         case ViewTypePassenger:
         {
             Person *person = [dataList objectAtIndex:indexPath.row];
-            AddPassengerController *controller  = [[[AddPassengerController alloc] initWithIsAdd:NO person:person] autorelease];
+            AddPassengerController *controller  = [[[AddPassengerController alloc] initWithIsAdd:NO person:person isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCheckIn:
         {
             Person *person = [dataList objectAtIndex:indexPath.row];
-            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:NO person:person] autorelease];
+            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:NO person:person isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeContact:
         {
             Person *person = [dataList objectAtIndex:indexPath.row];
-            AddContactPersonController *controller  = [[[AddContactPersonController alloc] initWithIsAdd:NO person:person] autorelease];
+            AddContactPersonController *controller  = [[[AddContactPersonController alloc] initWithIsAdd:NO person:person isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCreditCard:
         {
             CreditCard *creditCard = [dataList objectAtIndex:indexPath.row];
-            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:NO creditCard:creditCard] autorelease];
+            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:NO creditCard:creditCard isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
@@ -341,25 +377,25 @@
     switch (_type) {
         case ViewTypePassenger:
         {
-            AddPassengerController *controller = [[[AddPassengerController alloc] initWithIsAdd:YES person:nil] autorelease];
+            AddPassengerController *controller = [[[AddPassengerController alloc] initWithIsAdd:YES person:nil isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCheckIn:
         {
-            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:YES person:nil] autorelease];
+            AddCheckInPersonController *controller  = [[[AddCheckInPersonController alloc] initWithIsAdd:YES person:nil isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeContact:
         {
-            AddContactPersonController *controller = [[[AddContactPersonController alloc] initWithIsAdd:YES person:nil] autorelease];
+            AddContactPersonController *controller = [[[AddContactPersonController alloc] initWithIsAdd:YES person:nil isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case ViewTypeCreditCard:
         {
-            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:YES creditCard:nil] autorelease];
+            AddCreditCardController *controller = [[[AddCreditCardController alloc] initWithIsAdd:YES creditCard:nil isMember:_isMember] autorelease];
             [self.navigationController pushViewController:controller
                                                  animated:YES];
             break;

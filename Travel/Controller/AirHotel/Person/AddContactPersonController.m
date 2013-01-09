@@ -16,6 +16,7 @@
 @property (assign, nonatomic) BOOL isAdd;
 @property (retain, nonatomic) Person *person;
 @property (retain, nonatomic) Person_Builder *personBuilder;
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 @implementation AddContactPersonController
@@ -31,11 +32,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         
         if (isAdd == NO) {
@@ -88,11 +90,23 @@
     
     [_personBuilder setName:_nameTextField.text];
     [_personBuilder setPhone:_phoneTextField.text];
+    
+    PersonManager *manager = [PersonManager defaultManager:PersonTypeContact];
+    
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypeContact] deletePerson:_person];
+        if (_isMember) {
+            [manager deletePerson:_person];
+        } else {
+            [manager deleteTempPerson:_person];
+        }
     }
     Person *person = [_personBuilder build];
-    [[PersonManager defaultManager:PersonTypeContact] savePerson:person];
+    
+    if (_isMember) {
+        [manager savePerson:person];
+    } else {
+        [manager addTempPerson:person];
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -397,6 +397,7 @@
 - (void)clickLogin:(id)sender
 {
     LoginController *controller = [[[LoginController alloc] init] autorelease];
+    controller.isAutoPop = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

@@ -14,6 +14,6 @@
 @property (retain, nonatomic) IBOutlet UITextField *nameTextField;
 @property (retain, nonatomic) IBOutlet UITextField *phoneTextField;
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person;
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember;
 
 @end

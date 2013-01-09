@@ -16,7 +16,6 @@
 #import "PriceUtils.h"
 #import "CreditCardManager.h"
 #import "AppManager.h"
-#import "AirHotelOrderListController.h"
 #import "CommonPlaceDetailController.h"
 
 @interface ConfirmOrderController ()
@@ -26,6 +25,8 @@
 @property (retain, nonatomic) NSMutableArray *hotelOrderBuilders;
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) BOOL isMember;
+@property (retain, nonatomic) Person *contactPerson;
+@property (retain, nonatomic) PaymentInfo *paymentInfo;
 
 @end
 
@@ -41,6 +42,8 @@
     [_paymentButton release];
     [_airPirceLabel release];
     [_hotelPriceLabel release];
+    [_contactPerson release];
+    [_paymentInfo release];
     [super dealloc];
 }
 
@@ -50,12 +53,49 @@
 {
     self = [super init];
     if (self) {
-        self.airHotelOrderBuilder = [[[AirHotelOrder_Builder alloc] init] autorelease];
         self.airOrderBuilders = airOrderBuilders;
         self.hotelOrderBuilders = hotelOrderBuilders;
         self.isMember = isMember;
+        [self setOrderData];
     }
     return self;
+}
+
+- (void)setOrderData
+{
+    self.airHotelOrderBuilder = [[[AirHotelOrder_Builder alloc] init] autorelease];
+    
+    AirHotelManager *manager = [AirHotelManager defaultManager];
+    NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
+    NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
+    
+    [self.airOrderBuilders removeAllObjects];
+    [self.airOrderBuilders addObjectsFromArray:[manager airOrderBuilderListFromOrderList:airOrderList]];
+    
+    [self.hotelOrderBuilders removeAllObjects];
+    [self.hotelOrderBuilders addObjectsFromArray:[manager hotelOrderBuilderListFromOrderList:hotelOrderList]];
+    
+    //clear value
+    [_airHotelOrderBuilder clearAirOrdersList];
+    [_airHotelOrderBuilder clearHotelOrdersList];
+    [_airHotelOrderBuilder clearArriveCityId];
+    [_airHotelOrderBuilder clearLoginId];
+    [_airHotelOrderBuilder clearToken];
+    [_airHotelOrderBuilder clearUserId];
+    
+    //set value
+    [_airHotelOrderBuilder addAllAirOrders:airOrderList];
+    [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
+    [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
+    if (_isMember) {
+        [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
+        [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
+    } else {
+        [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
+    }
+    
+    [_airHotelOrderBuilder setContactPerson:_contactPerson];
+    [_airHotelOrderBuilder setPaymentInfo:_paymentInfo];
 }
 
 - (void)viewDidLoad
@@ -73,8 +113,12 @@
 {
     self.hidesBottomBarWhenPushed = YES;
     [super viewDidAppear:animated];
-    
     [self updatePrice];
+}
+
+- (void)clickBack:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (IBAction)clickOrderButton:(id)sender {
@@ -107,36 +151,18 @@
         return;
     }
     
-    AirHotelManager *manager = [AirHotelManager defaultManager];
-    NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
-    NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
-    
-    [self.airOrderBuilders removeAllObjects];
-    [self.airOrderBuilders addObjectsFromArray:[manager airOrderBuilderListFromOrderList:airOrderList]];
-    
-    [self.hotelOrderBuilders removeAllObjects];
-    [self.hotelOrderBuilders addObjectsFromArray:[manager hotelOrderBuilderListFromOrderList:hotelOrderList]];
-    
-    [_airHotelOrderBuilder addAllAirOrders:airOrderList];
-    [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
-    
-    [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
-    
-    if (_isMember) {
-        [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];
-        [_airHotelOrderBuilder setToken:[[UserManager defaultManager] token]];
-    } else {
-        [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
-    }
-    
+    [self setOrderData];
+        
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle: NSLS(@"取消")otherButtonTitles:NSLS(@"确定"),nil];
     [alert show];
     
     //for test
 //    AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
+//    controller.isPopToRoot = YES;
+//    controller.delegate = self;
 //    [self.navigationController pushViewController:controller animated:YES];
-//    controller.dataList = [NSArray arrayWithObjects:order, nil];
+    //controller.dataList = [NSArray arrayWithObjects:order, nil];
 }
 
 #pragma mark -
@@ -162,8 +188,11 @@
     if (result == 0) {
         [self popupMessage:NSLS(@"预订成功") title:nil];
         AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
+        controller.delegate = self;
+        controller.isPopToRoot = YES;
         [self.navigationController pushViewController:controller animated:YES];
     } else {
+        [self setOrderData];
         [self popupMessage:NSLS(@"预订失败") title:nil];
     }
 }
@@ -172,7 +201,6 @@
 #pragma UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //if (indexPath.section < [[_builder airOrdersList] count]) {
     if (indexPath.section < [_airOrderBuilders count]) {
         AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
         
@@ -181,7 +209,6 @@
     } else {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
         CGFloat height = [ConfirmHotelCell getCellHeight:builder];
-        //CGFloat height = [ConfirmHotelCell getCellHeight:[builder.roomInfosList count] personCount:[builder.checkInPersonsList count]];
         return height;
     }
 }
@@ -272,7 +299,8 @@
                                                                            selectCount:1
                                                                               delegate:self
                                                                                  title:NSLS(@"联系人选择")
-                                                                              isSelect:YES] autorelease];
+                                                                              isSelect:YES
+                                                                              isMember:_isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -281,7 +309,8 @@
                                                                            selectCount:1
                                                                               delegate:self
                                                                                  title:NSLS(@"信用卡支付")
-                                                                              isSelect:YES] autorelease];
+                                                                              isSelect:YES
+                                                                              isMember:_isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -318,7 +347,7 @@
 {
     self.currentIndexPath = indexPath;
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger selectCount:100 delegate:self title:NSLS(@"选择登机人") isSelect:YES] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger selectCount:100 delegate:self title:NSLS(@"选择登机人") isSelect:YES isMember:_isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -354,7 +383,7 @@
         totalCount += info.count;
     }
     
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn selectCount:totalCount delegate:self title:NSLS(@"入住人选择") isSelect:YES] autorelease];
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCheckIn selectCount:totalCount delegate:self title:NSLS(@"入住人选择") isSelect:YES isMember:_isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -395,10 +424,10 @@
     if (personType == ViewTypeContact) {
         if ([objectList count] > 0) {
             Person *person = (Person *)[objectList objectAtIndex:0];
-            [_airHotelOrderBuilder setContactPerson:person];
+            self.contactPerson = person;
             
             [_contactPersonButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
-            [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@，%@",person.name,person.phone] forState:UIControlStateNormal];
+            [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@，%@",_contactPerson.name,_contactPerson.phone] forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
         if ([objectList count] > 0) {
@@ -408,7 +437,7 @@
             [pib setPaymentType:PaymentTypeCreditCard];
             [pib setCreditCard:creditCard];
             PaymentInfo *paymentInfo = [pib build];
-            [_airHotelOrderBuilder setPaymentInfo:paymentInfo];
+            self.paymentInfo = paymentInfo;
             
             [_paymentButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
             [_paymentButton setTitle:NSLS(@"信用卡") forState:UIControlStateNormal];
@@ -424,6 +453,13 @@
     }
 }
 
+#pragma mark -
+#pragma AirHotelOrderListControllerDelegate method
+- (void)didClickBackButton
+{
+    
+}
+
 - (void)viewDidUnload {
     [self setContactPersonButton:nil];
     [self setPaymentButton:nil];
@@ -431,4 +467,5 @@
     [self setHotelPriceLabel:nil];
     [super viewDidUnload];
 }
+
 @end

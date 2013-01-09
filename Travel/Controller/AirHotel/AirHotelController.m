@@ -18,7 +18,6 @@
 #import "SelectCityController.h"
 #import "AppManager.h"
 #import "UserManager.h"
-#import "LoginController.h"
 #import "CommonWebController.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
@@ -314,7 +313,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
-- (void)order:(BOOL)isMember
+- (BOOL)isCanOrder
 {
     if (_airType == AirGo) {
         [_airOrderBuilderList removeObject:_backAirOrderBuiler];
@@ -325,32 +324,40 @@ enum HOTEL_FLIGHT_DATE_TAG{
     //取出有效的订单
     NSArray *validAirList = [_manager validAirOrderBuilders:_airOrderBuilderList];
     NSArray *validHotelList = [_manager validHotelOrderBuilders:_hotelOrderBuilderList];
-    
     if ([validAirList count] == 0 && [validHotelList count] == 0) {
         [self popupMessage:NSLS(@"未选择任何航班或酒店") title:nil];
-        return;
+        return NO;
+    } else {
+        self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];
+        self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:validHotelList];
+        return YES;
     }
-    
-    self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];
-    self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:validHotelList];
-    
+}
+
+- (void)order:(BOOL)isMember
+{
     ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:_airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)clickNonMemberButton:(id)sender {
-    [self order:NO];
+    if ([self isCanOrder]) {
+        [self order:NO];
+    }
 }
 
 - (IBAction)clickMemberButton:(id)sender {
-    if (![[UserManager defaultManager] isLogin]) {
-        LoginController *controller = [[LoginController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
-        return;
+    if ([self isCanOrder]) {
+        if (![[UserManager defaultManager] isLogin]) {
+            LoginController *controller = [[LoginController alloc] init];
+            controller.delegate = self;
+            controller.isAutoPop = NO;
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
+        } else {
+            [self order:YES];
+        }
     }
-    
-    [self order:YES];
 }
 
 - (IBAction)clickAddHotelButton:(id)sender {
@@ -658,6 +665,13 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
     [UIUtils makeCall:phone];
+}
+
+#pragma mark -
+#pragma mark LoginControllerDelegate methods
+- (void)didLogin
+{
+    [self order:YES];
 }
 
 @end

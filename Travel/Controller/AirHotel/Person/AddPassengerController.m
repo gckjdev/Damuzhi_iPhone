@@ -21,7 +21,7 @@
 @property (retain, nonatomic) Person_Builder *personBuilder;
 @property (retain, nonatomic) NSDate *birthday;
 @property (retain, nonatomic) NSMutableArray *selectedItemIds;
-
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 #define TITLE_PASSENGE_TYPE     @"登机人类型:"
@@ -45,11 +45,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         self.selectedItemIds = [[[NSMutableArray alloc] init] autorelease];
         
@@ -149,11 +150,23 @@
     }
     [self resetViewSite];
     
+    PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger];
+    
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypePassenger] deletePerson:_person];
+        if (_isMember) {
+            [manager deletePerson:_person];
+        } else {
+            [manager deleteTempPerson:_person];
+        }
     }
     Person *person = [self.personBuilder build];
-    [[PersonManager defaultManager:PersonTypePassenger] savePerson:person];
+
+    if (_isMember) {
+        [manager savePerson:person];
+    } else {
+        [manager addTempPerson:person];
+    }
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 

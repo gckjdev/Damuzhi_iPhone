@@ -24,4 +24,11 @@ typedef enum{
 - (void)deletePerson:(Person *)person;
 - (void)savePerson:(Person *)person;
 
+
+/************非会员*************/
+- (NSArray *)findAllTempPersons;
+- (void)deleteTempPerson:(Person *)person;
+- (void)addTempPerson:(Person *)person;
+- (void)deleteAllTempPersons;
+
 @end

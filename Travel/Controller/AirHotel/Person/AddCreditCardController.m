@@ -23,6 +23,7 @@
 @property (assign, nonatomic) int validMonth;
 @property (retain, nonatomic) NSMutableArray *bankSelectedItemIds;
 @property (retain, nonatomic) NSMutableArray *idCardSelectedItemIds;
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 @implementation AddCreditCardController
@@ -46,11 +47,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard
+- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard isMember:(BOOL)isMember;
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.creditCardBuilder = [[[CreditCard_Builder alloc] init] autorelease];
         self.bankSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
         self.idCardSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
@@ -147,11 +149,21 @@
         return;
     }
     
+    CreditCardManager *manager = [CreditCardManager defaultManager];
+    
     if (self.isAdd == NO) {
-        [[CreditCardManager defaultManager] deleteCreditCard:_creditCard];
+        if (_isMember) {
+            [manager deleteCreditCard:_creditCard];
+        } else {
+            [manager deleteTempCreditCard:_creditCard];
+        }
     }
     CreditCard *creditCard = [self.creditCardBuilder build];
-    [[CreditCardManager defaultManager] saveCreditCard:creditCard];
+    if (_isMember) {
+        [manager saveCreditCard:creditCard];
+    } else {
+        [manager addTempCreditCard:creditCard];
+    }
     
     [self resetViewSite];
     [self.navigationController popViewControllerAnimated:YES];

@@ -48,6 +48,8 @@
     [_hotelHolderView release];
     [_arrowImageView release];
     [_roomInfoHolderView release];
+    [_middleSolidLineView release];
+    [_middleDottedLineImageView release];
     [super dealloc];
 }
 
@@ -63,10 +65,11 @@
     return HEIGHT_TOP + [self getAirHeight:order] + [self getHotelHeight:order];
 }
 
+#define HEIGHT_AIR  88
 + (CGFloat)getAirHeight:(AirHotelOrder *)order
 {
     if ([order.airOrdersList count] > 0) {
-        return 88;
+        return HEIGHT_AIR;
     }
     return 0;
 }
@@ -165,28 +168,38 @@
     
     [self updateHeader];
     
-    if ([[order hotelOrdersList] count]> 0 ) {
+    if ([[order hotelOrdersList] count] > 0 ) {
         self.hotelHolderView.hidden = NO;
+        self.middleSolidLineView.hidden = YES;
+        self.middleDottedLineImageView.hidden = NO;
         
         self.hotelOrder = [[order hotelOrdersList] objectAtIndex:0];
         [self updateHotelView];
     } else {
         self.hotelHolderView.hidden = YES;
+        self.middleSolidLineView.hidden = NO;
+        self.middleDottedLineImageView.hidden = YES;
     }
     
     
     if ([[order airOrdersList] count] > 0) {
         self.airHolderView.hidden = NO;
+        self.hotelHolderView.frame = [self updateOriginY:self.hotelHolderView originY:HEIGHT_TOP + HEIGHT_AIR];
         
         self.airOrder = [[order airOrdersList] objectAtIndex:0];
         [self updateAirView];
     } else {
         self.airHolderView.hidden = YES;
-        
-        self.hotelHolderView.frame = CGRectMake(self.hotelHolderView.frame.origin.x, HEIGHT_TOP, self.hotelHolderView.frame.size.width, self.hotelHolderView.frame.size.height);
-        self.arrowImageView.frame = CGRectMake(self.arrowImageView.frame.origin.x, HEIGHT_TOP + 0.5 * self.hotelHolderView.frame.size.height - 10, self.arrowImageView.frame.size.width, self.arrowImageView.frame.size.height);
+        self.hotelHolderView.frame = [self updateOriginY:self.hotelHolderView originY:HEIGHT_TOP];
     }
     
+    
+    if ([[order hotelOrdersList] count] > 0 && [[order airOrdersList] count] > 0) {
+        self.arrowImageView.frame = [self updateOriginY:self.arrowImageView originY:116];
+    } else {
+        CGFloat totalHeight = [AirHotelOrderListCell getCellHeight:order];
+        self.arrowImageView.frame = [self updateOriginY:self.arrowImageView originY:HEIGHT_TOP + 0.5 * (totalHeight - HEIGHT_TOP) - 10];
+    }
 }
 
 @end

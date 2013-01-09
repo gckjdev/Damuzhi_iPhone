@@ -32,14 +32,31 @@
                            action:@selector(clickBack:)];
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
     
-    //self.dataList = nil;
     [self findOrderList];
+}
+
+- (void)clickBack:(id)sender
+{
+    if ([_delegate respondsToSelector:@selector(didClickBackButton)]) {
+        [_delegate didClickBackButton];
+    }
+    
+    if (_isPopToRoot) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)findOrderList
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
-    [[AirHotelService defaultService] findOrderUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        [[AirHotelService defaultService] findOrderUsingLoginId:[[UserManager defaultManager] loginId] token:[[UserManager defaultManager] token] delegate:self];
+    } else {
+        [[AirHotelService defaultService] findOrderUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
+    }
 }
 
 - (void)debugData

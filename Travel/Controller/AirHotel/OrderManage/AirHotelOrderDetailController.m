@@ -54,7 +54,7 @@
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
     [mutableArray addObject:MARK_TOP_SECTON];
     if ([self hasAir:_airHotelOrder]) {
-        [mutableArray addObject:MARK_TOP_SECTON];
+        [mutableArray addObject:MARK_AIR_SECTION];
     }
     if ([self hasHotel:_airHotelOrder]) {
         [mutableArray addObject:MARK_HOTEL_SECTION];

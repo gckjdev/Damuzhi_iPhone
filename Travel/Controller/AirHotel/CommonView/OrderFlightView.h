@@ -33,6 +33,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *adultAirportFuelTax;
 @property (retain, nonatomic) IBOutlet UILabel *childAirportFuelTax;
 
++ (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate;
 
 - (void)setViewWithOrder:(AirOrder *)airOrder;
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder;

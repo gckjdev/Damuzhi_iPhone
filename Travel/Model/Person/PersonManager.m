@@ -13,12 +13,36 @@
 
 @interface PersonManager()
 @property (assign, nonatomic) PersonType personType;
+
+//用于非会员
+@property (retain, nonatomic) NSMutableArray *passengers;
+@property (retain, nonatomic) NSMutableArray *checkInPersons;
+@property (retain, nonatomic) NSMutableArray *contactPersons;
 @end
 
 
 static PersonManager *_personManager = nil;
 
 @implementation PersonManager
+
+- (void)dealloc
+{
+    [_passengers release];
+    [_checkInPersons release];
+    [_contactPersons release];
+    [super dealloc];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.passengers = [[[NSMutableArray alloc] init] autorelease];
+        self.checkInPersons = [[[NSMutableArray alloc] init] autorelease];
+        self.contactPersons = [[[NSMutableArray alloc] init] autorelease];
+    }
+    return self;
+}
 
 + (PersonManager *)defaultManager:(PersonType)personType
 {
@@ -110,52 +134,51 @@ static PersonManager *_personManager = nil;
 
 
 
-//+ (PersonManager *)defaultManager
-//{
-//    if (_personManager == nil) {
-//        _personManager = [[PersonManager alloc] init];
-//    }
-//    return _personManager;
-//}
+/************非会员*************/
+- (NSMutableArray *)getTempArray
+{
+    switch (_personType) {
+        case PersonTypePassenger:
+            return _passengers;
+        case PersonTypeCheckIn:
+            return _checkInPersons;
+            break;
+        case PersonTypeContact:
+            return _contactPersons;
+            break;
+        default:
+            return nil;
+            break;
+    }
+}
 
+- (NSArray *)findAllTempPersons
+{
+    return [self getTempArray];
+}
 
-//- (NSArray *)personList:(PersonType)personType
-//{
-//    NSMutableArray *reArray = [[[NSMutableArray alloc] init] autorelease];
-//    
-//    //test data
-//    NSArray *nameArray = [NSArray arrayWithObjects:@"李一", @"李二", @"李三", @"李四", @"李五", nil];
-//    if (personType != PersonTypeCreditCard) {
-//        for (int i= 0; i < 5; i ++) {
-//            Person_Builder *builder = [[[Person_Builder alloc] init] autorelease];
-//            [builder setName:[nameArray objectAtIndex:i]];
-//            [builder setNameEnglish:@"Yi/Lee"];
-//            [builder setAgeType:PersonAgeTypePersonAgeAdult];
-//            [builder setGender:PersonGenderPersonGenderMale];
-//            [builder setNationalityId:1];
-//            [builder setCardTypeId:1];
-//            [builder setCardNumber:@"123456789"];
-//            [builder setCardValidDate:9999999];
-//            [builder setBirthday:9999999];
-//            [builder setPhone:@"13900000000"];
-//            
-//            Person *person = [builder build];
-//            [reArray addObject:person];
-//        }
-//        return reArray;
-//    } else {
-//        
-//        for (int i= 0; i < 5; i ++) {
-//            CreditCard_Builder *builder = [[[CreditCard_Builder alloc] init] autorelease];
-//            [builder setBankId:1];
-//            [builder setName:[nameArray objectAtIndex:i]];
-//            [builder setNumber:@"987654321"];
-//            
-//            CreditCard *cc = [builder build];
-//            [reArray addObject:cc];
-//        }
-//        return reArray;
-//    }
-//}
+- (void)deleteTempPerson:(Person *)person
+{
+    NSMutableArray *list = [self getTempArray];
+    for (Person *onePerson in list) {
+        if ([self isEqual:person anotherPerson:onePerson]) {
+            [list removeObject:onePerson];
+            break;
+        }
+    }
+}
+
+- (void)addTempPerson:(Person *)person
+{
+    [self deleteTempPerson:person];
+    NSMutableArray *list = [self getTempArray];
+    [list addObject:person];
+}
+
+- (void)deleteAllTempPersons
+{
+    NSMutableArray *list = [self getTempArray];
+    [list removeAllObjects];
+}
 
 @end

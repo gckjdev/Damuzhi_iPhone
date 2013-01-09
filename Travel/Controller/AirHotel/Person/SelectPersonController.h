@@ -28,6 +28,7 @@
        selectCount:(NSUInteger)selectCount
           delegate:(id<SelectPersonControllerDelegate>)delegate
              title:(NSString *)title
-          isSelect:(BOOL)isSelect;
+          isSelect:(BOOL)isSelect
+          isMember:(BOOL)isMember;
 
 @end

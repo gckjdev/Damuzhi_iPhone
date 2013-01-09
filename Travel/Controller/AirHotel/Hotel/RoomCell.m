@@ -8,7 +8,8 @@
 
 #import "RoomCell.h"
 #import "Place.pb.h"
-
+#import "AppManager.h"
+#import "PriceUtils.h"
 
 @interface RoomCell()
 
@@ -34,8 +35,8 @@
     return @"RoomCell";
 }
 
-#define HEIGH_TOP       42
-#define HEIGH_MIDDLE    33
+#define HEIGH_TOP       49
+#define HEIGH_MIDDLE    40
 
 + (CGFloat)getCellHeight:(RoomCellSite)roomCellSite;
 {
@@ -86,6 +87,11 @@
     self.nameLabel.text = room.name;
     self.breakfastLabel.text = [NSString stringWithFormat:@"%@/%@", room.bed, room.breakfast];
     self.selectRoomButton.selected = isSelected;
+    
+    AppManager *manager = [AppManager defaultManager];
+    int currentCiytId = [manager getCurrentCityId];
+    NSString *currency = [manager getCurrencySymbol:currentCiytId];
+    self.priceLabel.text = [PriceUtils priceToString:room.price currency:currency];
     
     [self updateCountLabel];
     [self updateSite:roomCellSite];
@@ -158,6 +164,7 @@
     [_holderView release];
     [_minusButton release];
     [_plusButton release];
+    [_priceLabel release];
     [super dealloc];
 }
 

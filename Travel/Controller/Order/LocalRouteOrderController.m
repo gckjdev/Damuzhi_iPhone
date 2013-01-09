@@ -357,6 +357,7 @@
     }
     if (![[UserManager defaultManager] isLogin]) {
         LoginController *controller = [[LoginController alloc] init];
+        controller.isAutoPop = YES;
         [self.navigationController pushViewController:controller animated:YES];
         [controller release];
         return;

@@ -14,6 +14,6 @@
 @property (retain, nonatomic) IBOutlet UITextField *chineseNameTextField;
 @property (retain, nonatomic) IBOutlet UITextField *englishNameTextField;
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person;
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember;
 
 @end
