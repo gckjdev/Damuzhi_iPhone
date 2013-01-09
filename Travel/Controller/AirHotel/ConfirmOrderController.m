@@ -156,6 +156,7 @@
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle: NSLS(@"取消")otherButtonTitles:NSLS(@"确定"),nil];
     [alert show];
+    [alert release];
     
     //for test
 //    AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];

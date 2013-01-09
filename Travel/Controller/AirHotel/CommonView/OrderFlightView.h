@@ -34,6 +34,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *childAirportFuelTax;
 
 + (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate;
++ (CGFloat)getViewHeight;
 
 - (void)setViewWithOrder:(AirOrder *)airOrder;
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder;

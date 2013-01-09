@@ -28,7 +28,7 @@
     for (HotelOrder *order in airHotelOrde.hotelOrdersList) {
         height += [OrderHotelView getCellHeightWithOrder:order];
         
-        PPDebug(@"OrderHotelView getCellHeight:%f", [OrderHotelView getCellHeightWithOrder:order]);
+        //PPDebug(@"OrderHotelView getCellHeight:%f", [OrderHotelView getCellHeightWithOrder:order]);
     }
     
     return height;

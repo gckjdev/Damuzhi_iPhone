@@ -21,6 +21,7 @@
 @property (retain, nonatomic) IBOutlet UIView *footerView;
 @property (retain, nonatomic) IBOutlet UIView *priceHolderView;
 
++ (CGFloat)getCellHeight:(AirHotelOrder *)airHotelOrde;
 
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde;
 

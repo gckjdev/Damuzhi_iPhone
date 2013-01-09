@@ -8,12 +8,11 @@
 
 #import "AirHotelOrderDetailController.h"
 #import "AirHotelOrderDetailTopCell.h"
-#import "AirOrderDetailCell.h"
-#import "HotelOrderDetailCell.h"
 #import "AirHotel.pb.h"
 #import "FontSize.h"
 #import "PlaceService.h"
 #import "CommonPlaceDetailController.h"
+#import "CommonWebController.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -135,7 +134,7 @@
     }
     
     else if ([mark isEqualToString:MARK_AIR_SECTION]){
-        return [AirOrderDetailCell getCellHeight] + 10;
+        return [AirOrderDetailCell getCellHeight:_airHotelOrder] + 10;
     }
     
     else if ([mark isEqualToString:MARK_HOTEL_SECTION]){
@@ -172,6 +171,16 @@
     
     CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark -
+#pragma mark OrderFlightViewDelegate method
+- (void)didClickRescheduleButton:(NSString *)url
+{
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:url];
+    controller.navigationItem.title = NSLS(@"退改签详情");
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
 @end

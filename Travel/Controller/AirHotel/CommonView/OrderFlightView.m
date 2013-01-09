@@ -35,11 +35,15 @@
     [_arriveAirportLabel release];
     [_arriveTimeLabel release];
     [_adultPriceLabel release];
-    [_adultPriceLabel release];
     [_childPriceLabel release];
     [_adultAirportFuelTax release];
     [_childAirportFuelTax release];
     [super dealloc];
+}
+
++ (CGFloat)getViewHeight
+{
+    return 142;
 }
 
 + (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate
@@ -61,6 +65,12 @@
 {
     AirOrder_Builder *builder = [[AirHotelManager defaultManager] airOrderBuilder:airOrder];
     [self setViewWithOrderBuilder:builder];
+    
+    UIColor *color = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
+    self.departAirportLabel.textColor = color;
+    self.departTimeLabel.textColor = color;
+    self.arriveAirportLabel.textColor = color;
+    self.arriveTimeLabel.textColor = color;
 }
 
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder

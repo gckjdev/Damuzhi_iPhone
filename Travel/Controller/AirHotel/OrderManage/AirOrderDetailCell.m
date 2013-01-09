@@ -32,9 +32,19 @@
 }
 
 #define HEIGHT_TOP      40
-+ (CGFloat)getCellHeight
++ (CGFloat)getCellHeight:(AirHotelOrder *)airHotelOrde
 {
-    return 400.0f;
+    NSUInteger passengerCount = 0;
+    if ([[airHotelOrde airOrdersList] count] > 0) {
+        AirOrder *airOrder = [airHotelOrde airOrdersAtIndex:0];
+        passengerCount = [airOrder.passengerList count];
+    }
+    
+    if (passengerCount == 0) {
+        passengerCount = 1;
+    }
+    
+    return [airHotelOrde.airOrdersList count] * [OrderFlightView getViewHeight] + 24 * (passengerCount -1) + 160;
 }
 
 - (CGRect)updateOriginY:(UIView *)view originY:(CGFloat )originY
@@ -49,12 +59,12 @@
 
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde
 {
-     CGFloat y = HEIGHT_TOP;
+    CGFloat y = HEIGHT_TOP;
     for (AirOrder * airOrder in airHotelOrde.airOrdersList) {
         OrderFlightView *view = [OrderFlightView createOrderFlightView:delegate];
         [view setViewWithOrder:airOrder];
-        view.frame = CGRectMake(9, y, view.frame.size.width, view.frame.size.height);
-        [self addSubview:view];
+        view.frame = CGRectMake(0, y, view.frame.size.width, view.frame.size.height);
+        [self.holderView addSubview:view];
         y += view.frame.size.height;
     }
     
@@ -65,9 +75,8 @@
         airOrder = [airHotelOrde airOrdersAtIndex:0];
     }
     
-    
     PersonsView *personsView = [PersonsView createCheckInPersonLabels:airOrder.passengerList];
-    //spersonsView.backgroundColor = [UIColor blueColor];
+    
     self.passengerHolderView.frame = [self updateHeight:self.passengerHolderView height:personsView.frame.size.height];
     [self.passengerHolderView addSubview:personsView];
     self.priceHolderView.frame = [self updateOriginY:self.priceHolderView originY:_passengerHolderView.frame.origin.y + _passengerHolderView.frame.size.height];
