@@ -75,7 +75,7 @@
         airOrder = [airHotelOrde airOrdersAtIndex:0];
     }
     
-    PersonsView *personsView = [PersonsView createCheckInPersonLabels:airOrder.passengerList];
+    PersonsView *personsView = [PersonsView createCheckInPersonLabels:airOrder.passengerList type:PersonListTypePassenger];
     
     self.passengerHolderView.frame = [self updateHeight:self.passengerHolderView height:personsView.frame.size.height];
     [self.passengerHolderView addSubview:personsView];

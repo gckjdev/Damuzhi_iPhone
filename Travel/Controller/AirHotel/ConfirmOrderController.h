@@ -24,8 +24,9 @@
 @property (retain, nonatomic) IBOutlet UILabel *airPirceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *hotelPriceLabel;
 
-- (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
-            hotelOrderBuilders:(NSArray *)hotelOrderBuilders
+- (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
+            hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders
+                  departCityId:(int)departCityId
                       isMember:(BOOL)isMember;
 
 @end

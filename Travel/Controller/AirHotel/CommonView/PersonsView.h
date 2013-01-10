@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum{
+    PersonListTypePassenger = 1,
+    PersonListTypeCheckIn = 2,
+} PersonListType;
+
 @interface PersonsView : UIView
 
 + (CGFloat)getHeight:(NSArray *)personList;
-+ (PersonsView *)createCheckInPersonLabels:(NSArray *)personList;
++ (PersonsView *)createCheckInPersonLabels:(NSArray *)personList type:(PersonListType)type;
 
 @end

@@ -23,6 +23,7 @@
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
        customStartDate:(NSDate *)customStartDate
+         customEndDate:(NSDate *)customEndDate
             monthCount:(NSUInteger)monthCount
                  title:(NSString *)title;
 

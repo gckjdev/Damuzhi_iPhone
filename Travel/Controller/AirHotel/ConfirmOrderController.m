@@ -27,7 +27,7 @@
 @property (assign, nonatomic) BOOL isMember;
 @property (retain, nonatomic) Person *contactPerson;
 @property (retain, nonatomic) PaymentInfo *paymentInfo;
-
+@property (assign, nonatomic) int departCityId;
 @end
 
 @implementation ConfirmOrderController
@@ -49,12 +49,14 @@
 
 - (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
             hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders
+                  departCityId:(int)departCityId
                       isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.airOrderBuilders = airOrderBuilders;
         self.hotelOrderBuilders = hotelOrderBuilders;
+        self.departCityId = departCityId;
         self.isMember = isMember;
         [self setOrderData];
     }
@@ -86,6 +88,7 @@
     //set value
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
     [_airHotelOrderBuilder addAllHotelOrders:hotelOrderList];
+    [_airHotelOrderBuilder setDepartCityId:_departCityId];
     [_airHotelOrderBuilder setArriveCityId:[[AppManager defaultManager] getCurrentCityId]];
     if (_isMember) {
         [_airHotelOrderBuilder setLoginId:[[UserManager defaultManager] loginId]];

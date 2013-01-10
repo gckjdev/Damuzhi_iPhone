@@ -23,6 +23,7 @@
 @property (assign, nonatomic) id<CommonMonthControllerDelegate> delegate;
 @property (retain, nonatomic) NSString *navigationTitle;
 @property (retain, nonatomic) NSDate *customStartDate;
+@property (retain, nonatomic) NSDate *customEndDate;
 @end
 
 @implementation CommonMonthController
@@ -37,11 +38,13 @@
     [_monthView release];
     [_navigationTitle release];
     [_customStartDate release];
+    [_customEndDate release];
     [super dealloc];
 }
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
        customStartDate:(NSDate *)customStartDate
+         customEndDate:(NSDate *)customEndDate
             monthCount:(NSUInteger)monthCount
                  title:(NSString *)title
 {
@@ -49,12 +52,18 @@
     if (self) {
         self.delegate = delegate;
         self.customStartDate = customStartDate;
+        self.customEndDate = customEndDate;
         self.monthCount = monthCount;
         self.navigationTitle = title;
         
         if (_customStartDate == nil) {
             self.customStartDate = [NSDate date];
         }
+        
+        if (_customEndDate == nil) {
+            self.customEndDate = [NSDate dateWithTimeInterval:(monthCount * 31 * 24 * 60 * 60) sinceDate:_customStartDate];
+        }
+        
         self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:YES date:_customStartDate] autorelease];
         _monthView.delegate = self;
         _monthView.dataSource = self;
@@ -141,10 +150,11 @@
     
     // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
     NSDate *d = startDate;
-        
+    
     while(YES){
-        
         if ([d isBeforeDay:_customStartDate]) {
+            [images addObject:@"date_t_no_bg@2x.png"];
+        }else if ([d isAfterDay:_customEndDate]){
             [images addObject:@"date_t_no_bg@2x.png"];
         }else if ([d isToday]){
             [images addObject:USER_UIIMAGE_NAME_DATE_TILE];
@@ -197,6 +207,8 @@
         PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
         PPDebug(@"%@", dateToChineseString(d));
         if ([d isBeforeDay:_customStartDate]) {
+            [touchDisableds addObject:@(YES)];
+        }else if ([d isAfterDay:_customEndDate]){
             [touchDisableds addObject:@(YES)];
         }else if([d isSameYearMonth:monthView.selectedMonth]) {
             [touchDisableds addObject:@(NO)];
