@@ -68,6 +68,7 @@
     self.airHotelOrderBuilder = [[[AirHotelOrder_Builder alloc] init] autorelease];
     
     AirHotelManager *manager = [AirHotelManager defaultManager];
+    
     NSArray *airOrderList = [manager airOrderListFromBuilderList:_airOrderBuilders];
     NSArray *hotelOrderList = [manager hotelOrderListFromBuilderList:_hotelOrderBuilders];
     
@@ -191,6 +192,10 @@
     [self hideActivity];
     if (result == 0) {
         [self popupMessage:NSLS(@"预订成功") title:nil];
+        
+        [_airOrderBuilders removeAllObjects];
+        [_hotelOrderBuilders removeAllObjects];
+        
         AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
         controller.delegate = self;
         controller.isPopToRoot = YES;
@@ -416,6 +421,7 @@
         [self popupMessage:resultInfo title:nil];
         return;
     }
+    
     
     CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];

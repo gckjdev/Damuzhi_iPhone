@@ -60,7 +60,7 @@ static GACManager *_gACManager = nil;
             NSString *shortName = [componentDic objectForKey:@"short_name"];
             NSArray *types = [componentDic objectForKey:@"types"];
             
-            GoogleAddressComponent *component = [[GoogleAddressComponent alloc] initWithLongName:longName shortName:shortName types:types];
+            GoogleAddressComponent *component = [[[GoogleAddressComponent alloc] initWithLongName:longName shortName:shortName types:types] autorelease];
             [mutableArray addObject:component];
         }
     }

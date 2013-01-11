@@ -1276,6 +1276,7 @@ static AppManager* _defaultAppManager = nil;
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (AirCity *city in _app.airDepartCitiesList) {
+        PPDebug(@"depart city:%@", city.cityName);
         NSString *pinyin = [city.cityName pinyinFirstLetter];
         NSString *pinyinUpper = [pinyin uppercaseString];
         
@@ -1301,7 +1302,7 @@ static AppManager* _defaultAppManager = nil;
 {
     NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
      for (AirCity *city in _app.airDepartCitiesList) {
-         if (city.hasHotCity) {
+         if (city.hotCity) {
              [resultArray addObject:city];
          }
      }

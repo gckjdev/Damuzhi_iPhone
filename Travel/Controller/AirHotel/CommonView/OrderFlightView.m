@@ -93,11 +93,9 @@
     
     
     //set seatname
-    NSString *seatName = nil;
     NSString *reUrl = nil;
     for (FlightSeat *seat in airOrderBuilder.flight.flightSeatsList) {
         if ([seat.code isEqualToString:airOrderBuilder.flightSeatCode]) {
-            seatName = seat.name;
             reUrl = seat.reschedule;
             break;
         }

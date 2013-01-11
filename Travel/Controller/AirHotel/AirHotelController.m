@@ -116,7 +116,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [appDelegate hideTabBar:isHide];
 }
 
-
 - (void)createDefaultData
 {
     if ([_hotelOrderBuilderList count] == 0) {
@@ -327,7 +326,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (BOOL)isCanOrder
 {
-     //取出有效的订单
+    //取出有效的订单
     NSArray *validAirList = nil;
     if (_airType == AirGo) {
         validAirList = [_manager validAirOrderBuilders:[NSArray arrayWithObject:_goAirOrderBuiler]];
@@ -397,6 +396,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     return nil;
 }
 
+//获取最早的入住时间
 - (NSDate *)getCheckInDate
 {
     int timeInterval = 0;
@@ -417,6 +417,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
+//获取最迟的退房时间
 - (NSDate *)getCheckOutDate
 {
     int timeInterval = 0;
@@ -476,8 +477,10 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_IN_DATE;
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
+    
     //入住时间要在去程时间之后，在退房时间、返程时间之前
-    NSDate *checkOutDate = [self getCheckOutDate];
+    NSDate *checkOutDate = (builder.hasCheckOutDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate] : nil);
     NSDate *backDate = [self getBackDate];
     NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
     if (checkOutDate) {
@@ -496,9 +499,11 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_OUT_DATE;
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
+    
     //退房时间要在去程时间、入住时间之前后，返程时间之前
     NSDate *goDate = [self getGoDate];
-    NSDate *checkInDate = [self getCheckInDate];
+    NSDate *checkInDate = (builder.hasCheckInDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkInDate] : nil);
     NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
     if (goDate) {
         [dateList addObject:goDate];
