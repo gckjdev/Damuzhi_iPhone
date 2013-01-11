@@ -13,6 +13,7 @@
 #import "TimeUtils.h"
 #import "AppManager.h"
 #import "PersonManager.h"
+#import "IdCardUtil.h"
 
 @interface AddPassengerController ()
 
@@ -119,6 +120,8 @@
 
 - (void)clickFinish:(id)sender
 {
+    [self resetViewSite];
+    
     if ([_personBuilder hasAgeType] == NO) {
         [self popupMessage:NSLS(@"请选择登机人类型") title:nil];
         return;
@@ -148,7 +151,14 @@
         [self popupMessage:NSLS(@"请选择出生日期") title:nil];
         return;
     }
-    [self resetViewSite];
+    
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
+    if ([cardTypeName isEqualToString:@"身份证"]) {
+        if ([IdCardUtil checkIdcard:_personBuilder.cardNumber] == NO) {
+            [self popupMessage:NSLS(@"请填写正确的身份证号码") title:nil];
+            return;
+        }
+    }
     
     PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger];
     

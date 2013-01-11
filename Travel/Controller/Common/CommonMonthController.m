@@ -135,7 +135,7 @@
         return;
     }
     
-    PPDebug(@"calendarMonthView:didSelectDate%@", date);
+    //PPDebug(@"calendarMonthView:didSelectDate%@", date);
     if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
         [_delegate didSelectDate:date];
     }
@@ -203,9 +203,9 @@
     NSDate *d = startDate;
     
     while(YES){
-        PPDebug(@"%@", monthView);
-        PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
-        PPDebug(@"%@", dateToChineseString(d));
+        //PPDebug(@"%@", monthView);
+        //PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
+        //PPDebug(@"%@", dateToChineseString(d));
         if ([d isBeforeDay:_customStartDate]) {
             [touchDisableds addObject:@(YES)];
         }else if ([d isAfterDay:_customEndDate]){

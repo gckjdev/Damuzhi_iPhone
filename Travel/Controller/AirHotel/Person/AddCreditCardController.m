@@ -14,6 +14,7 @@
 #import "AppManager.h"
 #import "UIViewUtils.h"
 #import "TimeUtils.h"
+#import "IdCardUtil.h"
 
 @interface AddCreditCardController ()
 @property (assign, nonatomic) BOOL isAdd;
@@ -114,6 +115,8 @@
 
 - (void)clickFinish:(id)sender
 {
+    [self resetViewSite];
+    
     if ([_creditCardBuilder hasBankId] == NO) {
         [self popupMessage:NSLS(@"请选择发卡银行") title:nil];
         return;
@@ -149,6 +152,15 @@
         return;
     }
     
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_creditCardBuilder.idCardTypeId];
+    if ([cardTypeName isEqualToString:@"身份证"]) {
+        if ([IdCardUtil checkIdcard:_creditCardBuilder.idCardNumber] == NO) {
+            [self popupMessage:NSLS(@"请填写正确的身份证号码") title:nil];
+            return;
+        }
+    }
+    
+    
     CreditCardManager *manager = [CreditCardManager defaultManager];
     
     if (self.isAdd == NO) {
@@ -165,7 +177,6 @@
         [manager addTempCreditCard:creditCard];
     }
     
-    [self resetViewSite];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

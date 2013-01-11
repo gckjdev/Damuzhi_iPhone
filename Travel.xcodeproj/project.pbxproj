@@ -754,6 +754,8 @@
 		EA140194164A4315009DF6DC /* SinaWeiboAuthorizeView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA14018D164A4315009DF6DC /* SinaWeiboAuthorizeView.m */; };
 		EA140195164A4315009DF6DC /* SinaWeiboRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140190164A4315009DF6DC /* SinaWeiboRequest.m */; };
 		EA140199164A4794009DF6DC /* SinaweiboManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA140198164A4794009DF6DC /* SinaweiboManager.m */; };
+		EA154B5C169FD49D00B98CB1 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = EA154B5B169FD49D00B98CB1 /* RegexKitLite.m */; };
+		EA154B60169FD5D300B98CB1 /* IdCardUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EA154B5F169FD5D300B98CB1 /* IdCardUtil.m */; };
 		EA16E1B316252B63002F388B /* line_zk2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EA16E1B216252B63002F388B /* line_zk2@2x.png */; };
 		EA194DF715FDF53500FA437F /* LocalRouteDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */; };
 		EA194DF815FDF53500FA437F /* LocalRouteDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA194DF315FDF53500FA437F /* LocalRouteDetailController.xib */; };
@@ -2004,6 +2006,10 @@
 		EA140190164A4315009DF6DC /* SinaWeiboRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaWeiboRequest.m; sourceTree = "<group>"; };
 		EA140197164A4794009DF6DC /* SinaweiboManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaweiboManager.h; sourceTree = "<group>"; };
 		EA140198164A4794009DF6DC /* SinaweiboManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaweiboManager.m; sourceTree = "<group>"; };
+		EA154B5A169FD49D00B98CB1 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		EA154B5B169FD49D00B98CB1 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		EA154B5E169FD5D300B98CB1 /* IdCardUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdCardUtil.h; sourceTree = "<group>"; };
+		EA154B5F169FD5D300B98CB1 /* IdCardUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdCardUtil.m; sourceTree = "<group>"; };
 		EA16E1B216252B63002F388B /* line_zk2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_zk2@2x.png"; sourceTree = "<group>"; };
 		EA194DF115FDF53500FA437F /* LocalRouteDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalRouteDetailController.h; sourceTree = "<group>"; };
 		EA194DF215FDF53500FA437F /* LocalRouteDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalRouteDetailController.m; sourceTree = "<group>"; };
@@ -4016,6 +4022,7 @@
 		CA455F9E14F66EDD00DA085D /* Core-Utils-Misc */ = {
 			isa = PBXGroup;
 			children = (
+				EA154B5D169FD56800B98CB1 /* IdCard */,
 				EA1A348816081DBE000E325B /* URL */,
 				CA455F9F14F66EDD00DA085D /* AddressBook */,
 				CA455FA214F66EDD00DA085D /* Array */,
@@ -4182,6 +4189,8 @@
 			children = (
 				CA455FDF14F66EDD00DA085D /* StringUtil.h */,
 				CA455FE014F66EDD00DA085D /* StringUtil.m */,
+				EA154B5A169FD49D00B98CB1 /* RegexKitLite.h */,
+				EA154B5B169FD49D00B98CB1 /* RegexKitLite.m */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -4747,6 +4756,15 @@
 				EA140198164A4794009DF6DC /* SinaweiboManager.m */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		EA154B5D169FD56800B98CB1 /* IdCard */ = {
+			isa = PBXGroup;
+			children = (
+				EA154B5E169FD5D300B98CB1 /* IdCardUtil.h */,
+				EA154B5F169FD5D300B98CB1 /* IdCardUtil.m */,
+			);
+			path = IdCard;
 			sourceTree = "<group>";
 		};
 		EA19E11C1606C1BC006A04A3 /* local_route */ = {
@@ -5884,6 +5902,8 @@
 				EA116AD8168F01F9004C3B4B /* RoomInfoView.m in Sources */,
 				EA116ADB168F33DF004C3B4B /* PersonsView.m in Sources */,
 				EA04C2F5169569D300E6922A /* GoogleAddressComponent.m in Sources */,
+				EA154B5C169FD49D00B98CB1 /* RegexKitLite.m in Sources */,
+				EA154B60169FD5D300B98CB1 /* IdCardUtil.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5977,6 +5997,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				OTHER_LDFLAGS = "-licucore";
 				PROVISIONING_PROFILE = "DD23DC00-0C13-4736-9DED-9B323450B934";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DD23DC00-0C13-4736-9DED-9B323450B934";
 				SDKROOT = iphoneos;
@@ -6002,6 +6023,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-licucore";
 				PROVISIONING_PROFILE = "DD23DC00-0C13-4736-9DED-9B323450B934";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "DD23DC00-0C13-4736-9DED-9B323450B934";
 				SDKROOT = iphoneos;
