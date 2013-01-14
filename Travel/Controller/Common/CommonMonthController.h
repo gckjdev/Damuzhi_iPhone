@@ -19,7 +19,12 @@
 @end
 
 
-@interface CommonMonthController : PPViewController <TKCalendarMonthViewDelegate,TKCalendarMonthViewDataSource>
+@interface CommonMonthController : PPViewController <TKCalendarMonthViewDelegate,TKCalendarMonthViewDataSource, UIAlertViewDelegate>
+
+@property (retain, nonatomic) NSDate *suggestStartDate;
+@property (retain, nonatomic) NSDate *suggestEndDate;
+@property (retain, nonatomic) NSString *suggestStartTips;
+@property (retain, nonatomic) NSString *suggestEndTips;
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
        customStartDate:(NSDate *)customStartDate

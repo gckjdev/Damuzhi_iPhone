@@ -24,6 +24,7 @@
 @property (retain, nonatomic) NSString *navigationTitle;
 @property (retain, nonatomic) NSDate *customStartDate;
 @property (retain, nonatomic) NSDate *customEndDate;
+@property (retain, nonatomic) NSDate *selectedDate;
 @end
 
 @implementation CommonMonthController
@@ -39,6 +40,11 @@
     [_navigationTitle release];
     [_customStartDate release];
     [_customEndDate release];
+    [_suggestStartDate release];
+    [_suggestEndDate release];
+    [_suggestStartTips release];
+    [_suggestEndTips release];
+    [_selectedDate release];
     [super dealloc];
 }
 
@@ -95,6 +101,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.monthView hideLeftArrow:YES];
+    if ([_customStartDate isSameYearMonth:_customEndDate]) {
+        [self.monthView hideRightArrow:YES];
+    }
 }
 
 - (void) viewDidUnload {
@@ -109,6 +118,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark -
 #pragma TKCalendarMonthViewDelegate methods
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)month animated:(BOOL)animated
@@ -119,12 +129,13 @@
         [self.monthView hideLeftArrow:NO];
     }
     
-    if ([_customStartDate monthsBetweenDate:month] >= _monthCount - 1) {
+    if ([_customStartDate monthsBetweenDate:month] >= _monthCount - 1 || [_customEndDate isSameYearMonth:month]) {
         [self.monthView hideRightArrow:YES];
     } else {
         [self.monthView hideRightArrow:NO];
     }
 }
+
 
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
 {
@@ -135,12 +146,30 @@
         return;
     }
     
-    //PPDebug(@"calendarMonthView:didSelectDate%@", date);
-    if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
-        [_delegate didSelectDate:date];
-    }
+    self.selectedDate = date;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if (_suggestStartDate && [date isBeforeDay:_suggestStartDate]) {
+        UIAlertView *tipsAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:_suggestStartTips
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLS(@"取消")
+                                                  otherButtonTitles:NSLS(@"确定"), nil];
+        [tipsAlertView show];
+        [tipsAlertView release];
+    } else if (_suggestEndDate && [date isAfterDay:_suggestEndDate]){
+        UIAlertView *tipsAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:_suggestEndTips
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLS(@"取消")
+                                                      otherButtonTitles:NSLS(@"确定"), nil];
+        [tipsAlertView show];
+        [tipsAlertView release];
+    } else {
+        if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
+            [_delegate didSelectDate:date];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
@@ -223,6 +252,21 @@
 	}
     
     return touchDisableds;
+}
+
+#pragma mark - 
+#pragma mark UIAlertViewDelegate method
+- (void)alertView:(UIAlertView *)theAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [theAlertView cancelButtonIndex]) {
+        [_monthView unselectDate];
+        return;
+    } else {
+        if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
+            [_delegate didSelectDate:_selectedDate];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

@@ -71,7 +71,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
-    self.navigationItem.title = NSLS(@"机+酒");
     
     [self changeAirType:AirGoAndBack];
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
@@ -116,6 +115,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [appDelegate hideTabBar:isHide];
 }
 
+//创建默认数据
 - (void)createDefaultData
 {
     if ([_hotelOrderBuilderList count] == 0) {
@@ -479,19 +479,15 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.currentDateTag = CHECK_IN_DATE;
     HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
     
-    //入住时间要在去程时间之后，在退房时间、返程时间之前
+    //入住时间一定要在退房时间之前，超出去程和返程的时间段要给出提示
     NSDate *checkOutDate = (builder.hasCheckOutDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate] : nil);
-    NSDate *backDate = [self getBackDate];
-    NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
-    if (checkOutDate) {
-        [dateList addObject:checkOutDate];
-    }
-    if (backDate) {
-        [dateList addObject:backDate];
-    }
-    NSDate *minDate = [self minDate:dateList];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:[self getGoDate] customEndDate:minDate monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:checkOutDate monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    controller.suggestStartDate = [self getGoDate];
+    controller.suggestEndDate = [self getBackDate];
+    controller.suggestStartTips = NSLS(@"确定入住日期要早于去程日期？");
+    controller.suggestEndTips = NSLS(@"确定入住日期要迟于回程日期？");
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -501,19 +497,15 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.currentDateTag = CHECK_OUT_DATE;
     HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
     
-    //退房时间要在去程时间、入住时间之前后，返程时间之前
-    NSDate *goDate = [self getGoDate];
+    //退房时间一定要在入住时间之后，超出去程和返程的时间段要给出提示
     NSDate *checkInDate = (builder.hasCheckInDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkInDate] : nil);
-    NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
-    if (goDate) {
-        [dateList addObject:goDate];
-    }
-    if (checkInDate) {
-        [dateList addObject:checkInDate];
-    }
-    NSDate *maxDate = [self maxDate:dateList];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:maxDate customEndDate:[self getBackDate] monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:checkInDate customEndDate:nil monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    controller.suggestStartDate = [self getGoDate];
+    controller.suggestEndDate = [self getBackDate];
+    controller.suggestStartTips = NSLS(@"确定退房日期要早于去程日期？");
+    controller.suggestEndTips = NSLS(@"确定退房日期要迟于回程日期？");
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -641,46 +633,44 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didClickGoDateButton
 {
     self.currentDateTag = GO_DATE;
-    //去程时间必须在回程时间、入住时间、退房时间之前
-    NSDate *backDate = [self getBackDate];
+    //去程时间必须在回程时间之前
     NSDate *checkInDate = [self getCheckInDate];
     NSDate *checkOutDate = [self getCheckOutDate];
-    NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
-    if (backDate) {
-        [dateList addObject:backDate];
-    }
+    NSDate *suggestDate = nil;
+    NSString *suggestTips = nil;
     if (checkInDate) {
-        [dateList addObject:checkInDate];
+        suggestDate = checkInDate;
+        suggestTips = NSLS(@"确定去程日期在酒店入住日期之后？");
+    } else if (checkOutDate) {
+        suggestDate  = checkOutDate;
+        suggestTips =  NSLS(@"确定去程日期在酒店退房日期之后？");
     }
-    if (checkOutDate) {
-        [dateList addObject:checkOutDate];
-    }
-    NSDate *minDate = [self minDate:dateList];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:minDate monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:[self getBackDate] monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    controller.suggestEndDate = suggestDate;
+    controller.suggestEndTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didClickBackDateButton
 {
     self.currentDateTag = BACK_DATE;
-    //回程时间必须去程时间、入住时间、退房时间之后
-    NSDate *goDate = [self getGoDate];
+    //回程时间必须去程时间之后
     NSDate *checkInDate = [self getCheckInDate];
     NSDate *checkOutDate = [self getCheckOutDate];
-    NSMutableArray *dateList = [[[NSMutableArray alloc] init] autorelease];
-    if (goDate) {
-        [dateList addObject:goDate];
-    }
-    if (checkInDate) {
-        [dateList addObject:checkInDate];
-    }
+    NSDate *suggestDate = nil;
+    NSString *suggestTips = nil;
     if (checkOutDate) {
-        [dateList addObject:checkOutDate];
+        suggestDate  = checkOutDate;
+        suggestTips =  NSLS(@"确定回程日期在酒店退房日期之前？");
+    } else if (checkInDate) {
+        suggestDate = checkInDate;
+        suggestTips = NSLS(@"确定回程日期在酒店入住日期之前？");
     }
-    NSDate *maxDate = [self maxDate:dateList];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:maxDate customEndDate:nil monthCount:12 title:NSLS(@"回程日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:[self getGoDate] customEndDate:nil monthCount:12 title:NSLS(@"回程日期")] autorelease];
+    controller.suggestEndDate = suggestDate;
+    controller.suggestEndTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

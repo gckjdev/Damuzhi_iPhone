@@ -16,11 +16,10 @@
 
 @class AirHotelOrder_Builder;
 
-@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate, AirHotelOrderListControllerDelegate>
+@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate, AirHotelOrderListControllerDelegate, OrderFlightViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UIButton *contactPersonButton;
 @property (retain, nonatomic) IBOutlet UIButton *paymentButton;
-
 @property (retain, nonatomic) IBOutlet UILabel *airPirceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *hotelPriceLabel;
 

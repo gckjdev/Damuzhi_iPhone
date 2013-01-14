@@ -43,7 +43,7 @@
 
 + (CGFloat)getViewHeight
 {
-    return 142;
+    return 144;
 }
 
 + (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate

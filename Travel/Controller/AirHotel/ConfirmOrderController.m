@@ -102,6 +102,15 @@
     [_airHotelOrderBuilder setPaymentInfo:_paymentInfo];
 }
 
+#define SECTION_AIR 0
+- (NSUInteger)getAirSectionCount
+{
+    if ([_airOrderBuilders count] > 0) {
+        return 1;
+    }
+    return 0;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -171,7 +180,7 @@
 }
 
 #pragma mark -
-#pragma UIAlertViewDelegate method
+#pragma mark UIAlertViewDelegate methods
 - (void)alertView:(UIAlertView *)theAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == theAlertView.cancelButtonIndex) {
@@ -184,7 +193,7 @@
 }
 
 #pragma mark - 
-#pragma AirHotelServiceDelegate methods
+#pragma mark AirHotelServiceDelegate methods
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo
 {
@@ -206,17 +215,15 @@
     }
 }
 
-#pragma mark -
-#pragma UITableViewDelegate methods
+#pragma mark - 
+#pragma mark UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section < [_airOrderBuilders count]) {
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
-        
-        CGFloat height = [ConfirmAirCell getCellHeight:[builder.passengerList count]];
+    if (indexPath.section == SECTION_AIR  && [_airOrderBuilders count] > 0) {
+        CGFloat height = [ConfirmAirCell getCellHeight:_airOrderBuilders];
         return  height;
     } else {
-        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [self getAirSectionCount]];
         CGFloat height = [ConfirmHotelCell getCellHeight:builder];
         return height;
     }
@@ -230,7 +237,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
-    if (section < [_airOrderBuilders count]) {
+    if (section == SECTION_AIR && [_airOrderBuilders count] > 0) {
         [header setViewWithDelegate:nil
                             section:section
                  airHotelHeaderType:AirHeader
@@ -263,11 +270,11 @@
     return footer;
 }
 
-#pragma mark -
-#pragma UITableViewDataSource methods
+#pragma mark - 
+#pragma mark UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_airOrderBuilders count] + [_hotelOrderBuilders count];
+    return [self getAirSectionCount] + [_hotelOrderBuilders count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -277,15 +284,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section < [_airOrderBuilders count]) {
+    if (indexPath.section == SECTION_AIR  && [_airOrderBuilders count] > 0) {
         NSString *identifier = [ConfirmAirCell getCellIdentifier];
         ConfirmAirCell *cell = (ConfirmAirCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
         
         if (cell == nil) {
             cell = [ConfirmAirCell createCell:self];
         }
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
-        [cell setCellWithAirOrderBuilder:builder indexPath:indexPath];
+        [cell setCellWithAirOrderBuilders:_airOrderBuilders indexPath:indexPath];
         
         return cell;
     } else{
@@ -296,7 +302,7 @@
             cell = [ConfirmHotelCell createCell:self];
         }
         
-        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [self getAirSectionCount]];
         [cell setCellWith:builder indexPath:indexPath];
         return cell;
     }
@@ -333,22 +339,18 @@
 
 
 #pragma mark -
-#pragma ConfirmAirCellDelegate method
+#pragma mark ConfirmAirCellDelegate method
 - (void)didClickInsuranceButton:(NSIndexPath *)indexPath isSelected:(BOOL)isSelected
 {
-    if (indexPath.section < [_airOrderBuilders count]) {
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+    for (AirOrder_Builder *builder in _airOrderBuilders) {
         [builder setInsurance:isSelected];
-        [dataTableView reloadData];
     }
 }
 
 - (void)didClickSendTicketButton:(NSIndexPath *)indexPath isSelected:(BOOL)isSelected
 {
-    if (indexPath.section < [_airOrderBuilders count]) {
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
+    for (AirOrder_Builder *builder in _airOrderBuilders) {
         [builder setSendTicket:isSelected];
-        [dataTableView reloadData];
     }
 }
 
@@ -360,33 +362,24 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)didClickRescheduleButton:(NSIndexPath *)indexPath
+#pragma mark -
+#pragma mark OrderFlightViewDelegate method
+- (void)didClickRescheduleButton:(NSString *)url
 {
-    if (indexPath.section < [_airOrderBuilders count]) {
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:indexPath.section];
-        
-        NSString *url = nil;
-        for (FlightSeat *seat in builder.flight.flightSeatsList) {
-            if ([seat.code isEqualToString:builder.flightSeatCode]) {
-                url = seat.reschedule;
-                break;
-            }
-        }
-        
-        CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:url];
-        controller.navigationItem.title = NSLS(@"退改签详情");
-        [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
-    }
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:url];
+    controller.navigationItem.title = NSLS(@"退改签详情");
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
 }
 
+
 #pragma mark -
-#pragma ConfirmHotelCellDelegate method
+#pragma mark ConfirmHotelCellDelegate method
 - (void)didClickCheckInPersonButton:(NSIndexPath *)indexPath
 {
     self.currentIndexPath = indexPath;
     
-    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [self getAirSectionCount]];
     int totalCount = 0;
     for (HotelOrderRoomInfo *info in builder.roomInfosList) {
         totalCount += info.count;
@@ -398,14 +391,14 @@
 
 - (void)didClickShowHotelDetailButton:(NSIndexPath *)indexPath
 {
-    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [_airOrderBuilders count]];
+    HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:indexPath.section - [self getAirSectionCount]];
     
     [self showActivityWithText:NSLS(@"数据加载中...")];
     [[PlaceService defaultService] findPlace:builder.hotelId viewController:self];
 }
 
 #pragma mark -
-#pragma PlaceServiceDelegate method
+#pragma mark PlaceServiceDelegate method
 - (void)findRequestDone:(int)resultCode
                  result:(int)result
              resultInfo:(NSString *)resultInfo
@@ -428,7 +421,7 @@
 }
 
 #pragma mark -
-#pragma SelectPersonControllerDelegate method
+#pragma mark SelectPersonControllerDelegate method
 - (void)finishSelectPerson:(SelectPersonViewType)personType objectList:(NSArray *)objectList
 {
     if (personType == ViewTypeContact) {
@@ -453,18 +446,19 @@
             [_paymentButton setTitle:NSLS(@"信用卡") forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCheckIn) {
-        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [_airOrderBuilders count]];
+        HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [self getAirSectionCount]];
         [builder clearCheckInPersonsList];
         [builder addAllCheckInPersons:objectList];
     } else if (personType == ViewTypePassenger) {
-        AirOrder_Builder *builder = [_airOrderBuilders objectAtIndex:_currentIndexPath.section];
-        [builder clearPassengerList];
-        [builder addAllPassenger:objectList];
+        for (AirOrder_Builder *builder in _airOrderBuilders) {
+            [builder clearPassengerList];
+            [builder addAllPassenger:objectList];
+        }
     }
 }
 
 #pragma mark -
-#pragma AirHotelOrderListControllerDelegate method
+#pragma mark AirHotelOrderListControllerDelegate method
 - (void)didClickBackButton
 {
     
