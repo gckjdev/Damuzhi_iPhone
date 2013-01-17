@@ -97,30 +97,30 @@
     self.datePickerView.date = _birthday;
 }
 
-- (void)moveView:(NSIndexPath *)indexPath
-{
-    if (indexPath.row > 2) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.25];
-        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
-        [UIImageView commitAnimations];
-    } else {
-        [self resetViewSite];
-    }
-}
+//- (void)moveView:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.row > 2) {
+//        [UIView beginAnimations:nil context:nil];
+//        [UIView setAnimationDuration:0.25];
+//        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
+//        [UIImageView commitAnimations];
+//    } else {
+//        [self resetViewSite];
+//    }
+//}
 
-- (void)resetViewSite
-{
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [UIImageView commitAnimations];
-}
+//- (void)resetViewSite
+//{
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.25];
+//    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    [UIImageView commitAnimations];
+//}
 
 
 - (void)clickFinish:(id)sender
 {
-    [self resetViewSite];
+    [self.dataTableView reloadData];
     
     if ([_personBuilder hasAgeType] == NO) {
         [self popupMessage:NSLS(@"请选择登机人类型") title:nil];
@@ -154,28 +154,32 @@
     
     NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
     if ([cardTypeName isEqualToString:@"身份证"]) {
-        if ([IdCardUtil checkIdcard:_personBuilder.cardNumber] == NO) {
-            [self popupMessage:NSLS(@"请填写正确的身份证号码") title:nil];
+        NSString *resultTips = @"";
+        if ([IdCardUtil checkIdcard:_personBuilder.cardNumber resultTips:&resultTips] == NO) {
+            [self popupMessage:resultTips title:nil];
             return;
         }
     }
     
-    PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger];
+    PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger isMember:_isMember];
     
-    if (self.isAdd == NO) {
-        if (_isMember) {
-            [manager deletePerson:_person];
-        } else {
-            [manager deleteTempPerson:_person];
+    if (_isAdd) {
+        if ([manager isExistName:_personBuilder.name]) {
+            [self popupMessage:NSLS(@"已经存在此姓名") title:nil];
+            return;
         }
-    }
-    Person *person = [self.personBuilder build];
-
-    if (_isMember) {
-        [manager savePerson:person];
+        
+        if ([manager isExistCardTypeId:_personBuilder.cardTypeId cardNumber:_personBuilder.cardNumber]) {
+            [self popupMessage:NSLS(@"已经存在此证件号码") title:nil];
+            return;
+        }
+        
     } else {
-        [manager addTempPerson:person];
+        [manager deletePerson:_person];
     }
+    
+    Person *person = [self.personBuilder build];
+    [manager savePerson:person];
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -324,7 +328,7 @@
     } else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderMale];
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -336,7 +340,7 @@
     }else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderFemale];
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -352,7 +356,7 @@
     } else if ([title isEqualToString:TITLE_BIRTHDAY]) {
         self.datePickerHolderView.hidden = NO;
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -371,12 +375,14 @@
 
 - (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text
 {
-    [self moveView:indexPath];
 }
 
 - (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text
 {
-    [self resetViewSite];
+}
+
+- (void)inputTextFieldshouldChange:(NSIndexPath *)indexPath text:(NSString *)text
+{
 }
 
 #pragma mark - 
@@ -409,4 +415,16 @@
     [self setDatePickerHolderView:nil];
     [super viewDidUnload];
 }
+
+#pragma mark Keyboard Methods
+- (void)keyboardDidShowWithRect:(CGRect)keyboardRect
+{
+    self.dataTableView.frame = CGRectMake(self.dataTableView.frame.origin.x, self.dataTableView.frame.origin.y, self.dataTableView.frame.size.width, self.view.frame.size.height - keyboardRect.size.height - 10);
+}
+
+- (void)keyboardWillHideWithRect:(CGRect)keyboardRect
+{
+    self.dataTableView.frame = CGRectMake(self.dataTableView.frame.origin.x, self.dataTableView.frame.origin.y, self.dataTableView.frame.size.width, self.view.frame.size.height);
+}
+
 @end

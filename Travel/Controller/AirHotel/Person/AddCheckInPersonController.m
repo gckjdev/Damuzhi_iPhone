@@ -101,22 +101,13 @@
     [_personBuilder setName:_chineseNameTextField.text];
     [_personBuilder setNameEnglish:_englishNameTextField.text];
     
-    PersonManager *manager = [PersonManager defaultManager:PersonTypeCheckIn];
+    PersonManager *manager = [PersonManager defaultManager:PersonTypeCheckIn isMember:_isMember];
     
     if (self.isAdd == NO) {
-        if (_isMember) {
-            [manager deletePerson:_person];
-        } else {
-            [manager deleteTempPerson:_person];
-        }
+        [manager deletePerson:_person];
     }
     Person *person = [_personBuilder build];
-
-    if (_isMember) {
-        [manager savePerson:person];
-    } else {
-        [manager addTempPerson:person];
-    }
+    [manager savePerson:person];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

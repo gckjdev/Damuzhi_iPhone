@@ -72,28 +72,19 @@
     switch (_type) {
         case ViewTypePassenger:
             self.headeTitleLabel.text = NSLS(@"添加航班登机人");
-            if (_isMember) {
-                self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllPersons];
-            } else {
-                self.dataList = [[PersonManager defaultManager:PersonTypePassenger] findAllTempPersons];
-            }
+            self.dataList = [[PersonManager defaultManager:PersonTypePassenger isMember:_isMember] findAllPersons];
             break;
+            
         case ViewTypeCheckIn:
             self.headeTitleLabel.text = NSLS(@"添加入住人");
-            if (_isMember) {
-                self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllPersons];
-            } else {
-                self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn] findAllTempPersons];
-            }
+            self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn isMember:_isMember] findAllPersons];
             break;
+            
         case ViewTypeContact:
             self.headeTitleLabel.text = NSLS(@"添加联系人");
-            if (_isMember) {
-                self.dataList = [[PersonManager defaultManager:PersonTypeContact] findAllPersons];
-            } else {
-                self.dataList = [[PersonManager defaultManager:PersonTypeContact] findAllTempPersons];
-            }
+            self.dataList = [[PersonManager defaultManager:PersonTypeContact isMember:_isMember] findAllPersons];
             break;
+            
         case ViewTypeCreditCard:
             self.headeTitleLabel.text = NSLS(@"添加常用信用卡");
             if (_isMember) {
@@ -279,11 +270,7 @@
             }
             
             Person *person = (Person *)[dataList objectAtIndex:indexPath.row];
-            if (_isMember) {
-                [[PersonManager defaultManager:storeType] deletePerson:person];
-            } else {
-                [[PersonManager defaultManager:storeType] deleteTempPerson:person];
-            }
+            [[PersonManager defaultManager:storeType isMember:_isMember] deletePerson:person];
         }
         
         NSMutableArray *mutableDataList = [NSMutableArray arrayWithArray:dataList];

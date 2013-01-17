@@ -154,8 +154,9 @@
     
     NSString *cardTypeName = [[AppManager defaultManager] getCardName:_creditCardBuilder.idCardTypeId];
     if ([cardTypeName isEqualToString:@"身份证"]) {
-        if ([IdCardUtil checkIdcard:_creditCardBuilder.idCardNumber] == NO) {
-            [self popupMessage:NSLS(@"请填写正确的身份证号码") title:nil];
+        NSString *resultTips = @"";
+        if ([IdCardUtil checkIdcard:_creditCardBuilder.idCardNumber resultTips:&resultTips] == NO) {
+            [self popupMessage:resultTips title:nil];
             return;
         }
     }

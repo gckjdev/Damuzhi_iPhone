@@ -202,6 +202,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
         [_manager clearHotelOrderBuilder:builder];
     }
+    
+    self.departCity = nil;
 }
 
 #pragma mark -
@@ -481,8 +483,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     //入住时间一定要在退房时间之前，超出去程和返程的时间段要给出提示
     NSDate *checkOutDate = (builder.hasCheckOutDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate] : nil);
+    NSDate *endDate = (builder.hasCheckOutDate ? [checkOutDate dateByAddingTimeInterval:-24 * 60 * 60]: nil);
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:checkOutDate monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:endDate monthCount:12 title:NSLS(@"入住日期")] autorelease];
     controller.suggestStartDate = [self getGoDate];
     controller.suggestEndDate = [self getBackDate];
     controller.suggestStartTips = NSLS(@"确定入住日期要早于去程日期？");
@@ -499,8 +502,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     //退房时间一定要在入住时间之后，超出去程和返程的时间段要给出提示
     NSDate *checkInDate = (builder.hasCheckInDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkInDate] : nil);
+    NSDate *startDate = (builder.hasCheckInDate ? [checkInDate dateByAddingTimeInterval:24 * 60 * 60] : [NSDate dateWithTimeIntervalSinceNow:24*60*60]);
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:checkInDate customEndDate:nil monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:startDate customEndDate:nil monthCount:12 title:NSLS(@"退房日期")] autorelease];
     controller.suggestStartDate = [self getGoDate];
     controller.suggestEndDate = [self getBackDate];
     controller.suggestStartTips = NSLS(@"确定退房日期要早于去程日期？");
@@ -533,7 +537,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     if (_currentDateTag == GO_DATE) {
         if ([date timeIntervalSince1970] != _goAirOrderBuiler.flightDate) {
-            [_manager clearAirOrderBuilder:_goAirOrderBuiler];
+            [_manager clearFlight:_goAirOrderBuiler];
         }
         [_goAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
         
@@ -544,7 +548,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         
     } else if (_currentDateTag == BACK_DATE) {
         if ([date timeIntervalSince1970] != _backAirOrderBuiler.flightDate) {
-            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+            [_manager clearFlight:_backAirOrderBuiler];
         }
         [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
         return;
@@ -556,7 +560,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         if (_currentDateTag == CHECK_IN_DATE) {
             
             if ([date timeIntervalSince1970] != builder.checkInDate) {
-                [_manager clearHotelOrderBuilder:builder];
+                [_manager clearHotel:builder];
             }
             [builder setCheckInDate:[date timeIntervalSince1970]];
             if ([builder hasCheckOutDate] && builder.checkOutDate < builder.checkInDate) {
@@ -566,7 +570,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         } else if (_currentDateTag == CHECK_OUT_DATE) {
             
             if ([date timeIntervalSince1970] != builder.checkOutDate) {
-                [_manager clearHotelOrderBuilder:builder];
+                [_manager clearHotel:builder];
             }
             [builder setCheckOutDate:[date timeIntervalSince1970]];
         }
@@ -740,8 +744,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didSelectCity:(AirCity *)city
 {
     if (_departCity.cityId != city.cityId) {
-        [_manager clearAirOrderBuilder:_goAirOrderBuiler];
-        [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+        for (AirOrder_Builder *builder in _airOrderBuilderList) {
+            [_manager clearAirOrderBuilder:builder];
+        }
         
         for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
             [_manager clearHotelOrderBuilder:builder];

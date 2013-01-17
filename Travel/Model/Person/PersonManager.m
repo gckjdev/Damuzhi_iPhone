@@ -13,8 +13,9 @@
 
 @interface PersonManager()
 @property (assign, nonatomic) PersonType personType;
+@property (assign, nonatomic) BOOL isMemeber;
 
-//用于非会员
+//用于非会员保存
 @property (retain, nonatomic) NSMutableArray *passengers;
 @property (retain, nonatomic) NSMutableArray *checkInPersons;
 @property (retain, nonatomic) NSMutableArray *contactPersons;
@@ -44,13 +45,15 @@ static PersonManager *_personManager = nil;
     return self;
 }
 
-+ (PersonManager *)defaultManager:(PersonType)personType
+
++ (PersonManager *)defaultManager:(PersonType)personType isMember:(BOOL)isMember
 {
     if (_personManager == nil) {
         _personManager = [[PersonManager alloc] init];
     }
     
     _personManager.personType = personType;
+    _personManager.isMemeber = isMember;
     return _personManager;
 }
 
@@ -61,18 +64,25 @@ static PersonManager *_personManager = nil;
 
 - (NSArray*)findAllPersons
 {
-    NSData* data = [NSData dataWithContentsOfFile:[self getFilePath]];
-    PersonList *list = nil;
-    if (data != nil) {
-        @try {
-            list = [PersonList parseFromData:data];
+    if (_isMemeber) {
+        NSData* data = [NSData dataWithContentsOfFile:[self getFilePath]];
+        PersonList *list = nil;
+        if (data != nil) {
+            @try {
+                list = [PersonList parseFromData:data];
+            }
+            @catch (NSException *exception) {
+                PPDebug(@"<PersonManager> findAllPersons Caught %@%@", [exception name], [exception reason]);
+            }
         }
-        @catch (NSException *exception) {
-            PPDebug(@"<PersonManager> findAllPersons Caught %@%@", [exception name], [exception reason]);
-        }
+        
+        return [list personsList];
     }
     
-    return [list personsList];
+    //非会员
+    else {
+         return [self getTempArray];
+    }
 }
 
 - (void)writeToFileWithList:(NSArray*)newList
@@ -109,7 +119,13 @@ static PersonManager *_personManager = nil;
 - (void)deletePerson:(Person *)person
 {
     BOOL found = NO;
-    NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
+    NSMutableArray* mutableArray = nil;
+    if (_isMemeber) {
+        mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
+    } else {
+        mutableArray = [self getTempArray];
+    }
+    
     for (Person *personTemp in mutableArray) {
         if ([self isEqual:personTemp anotherPerson:person]) {
             [mutableArray removeObject:personTemp];
@@ -118,8 +134,10 @@ static PersonManager *_personManager = nil;
         }
     }
     
-    if (found) {
-        [self writeToFileWithList:mutableArray];
+    if (_isMemeber) {
+        if (found) {
+            [self writeToFileWithList:mutableArray];
+        }
     }
 }
 
@@ -127,12 +145,51 @@ static PersonManager *_personManager = nil;
 {
     [self deletePerson:person];
     
-    NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
-    [mutableArray addObject:person];
-    [self writeToFileWithList:mutableArray];
+    if (_isMemeber) {
+        NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllPersons]];
+        [mutableArray addObject:person];
+        [self writeToFileWithList:mutableArray];
+    }
+    
+    else {
+        NSMutableArray *list = [self getTempArray];
+        [list addObject:person];
+    }
 }
 
+- (void)deleteAllPersons
+{
+    if (_isMemeber) {
+        [self writeToFileWithList:nil];
+    }
+    
+    else {
+        NSMutableArray *list = [self getTempArray];
+        [list removeAllObjects];
+    }
+}
 
+- (BOOL)isExistName:(NSString *)name
+{
+    NSArray *list = [self findAllPersons];
+    for (Person *person in list) {
+        if ([person.name isEqualToString:name]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)isExistCardTypeId:(int)cardTypeId cardNumber:(NSString *)cardNumber
+{
+    NSArray *list = [self findAllPersons];
+    for (Person *person in list) {
+        if (person.cardTypeId == cardTypeId && [person.cardNumber isEqualToString:cardNumber] ) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 /************非会员*************/
 - (NSMutableArray *)getTempArray
@@ -150,35 +207,6 @@ static PersonManager *_personManager = nil;
             return nil;
             break;
     }
-}
-
-- (NSArray *)findAllTempPersons
-{
-    return [self getTempArray];
-}
-
-- (void)deleteTempPerson:(Person *)person
-{
-    NSMutableArray *list = [self getTempArray];
-    for (Person *onePerson in list) {
-        if ([self isEqual:person anotherPerson:onePerson]) {
-            [list removeObject:onePerson];
-            break;
-        }
-    }
-}
-
-- (void)addTempPerson:(Person *)person
-{
-    [self deleteTempPerson:person];
-    NSMutableArray *list = [self getTempArray];
-    [list addObject:person];
-}
-
-- (void)deleteAllTempPersons
-{
-    NSMutableArray *list = [self getTempArray];
-    [list removeAllObjects];
 }
 
 @end

@@ -17,6 +17,7 @@
 #import "CreditCardManager.h"
 #import "AppManager.h"
 #import "CommonPlaceDetailController.h"
+#import "PersonManager.h"
 
 @interface ConfirmOrderController ()
 
@@ -44,6 +45,8 @@
     [_hotelPriceLabel release];
     [_contactPerson release];
     [_paymentInfo release];
+    [_airPriceHolderView release];
+    [_hotelPriceHolderView release];
     [super dealloc];
 }
 
@@ -58,6 +61,15 @@
         self.hotelOrderBuilders = hotelOrderBuilders;
         self.departCityId = departCityId;
         self.isMember = isMember;
+        
+        for (AirOrder_Builder *builder in _airOrderBuilders) {
+            [builder clearPassengerList];
+        }
+        
+        for (HotelOrder_Builder *builder in _hotelOrderBuilders) {
+            [builder clearCheckInPersonsList];
+        }
+        
         [self setOrderData];
     }
     return self;
@@ -85,6 +97,8 @@
     [_airHotelOrderBuilder clearLoginId];
     [_airHotelOrderBuilder clearToken];
     [_airHotelOrderBuilder clearUserId];
+    [_airHotelOrderBuilder clearContactPerson];
+    [_airHotelOrderBuilder clearPaymentInfo];
     
     //set value
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
@@ -98,8 +112,13 @@
         [_airHotelOrderBuilder setUserId:[[UserManager defaultManager] getUserId]];
     }
     
-    [_airHotelOrderBuilder setContactPerson:_contactPerson];
-    [_airHotelOrderBuilder setPaymentInfo:_paymentInfo];
+    if (_contactPerson) {
+        [_airHotelOrderBuilder setContactPerson:_contactPerson];
+    }
+    
+    if (_paymentInfo) {
+            [_airHotelOrderBuilder setPaymentInfo:_paymentInfo];
+    }
 }
 
 #define SECTION_AIR 0
@@ -111,6 +130,20 @@
     return 0;
 }
 
+#define FRAME_PRICE_HOLDER_VIEW CGRectMake(0, 12, 185, 30);
+- (void)updateSite
+{
+    if ([_airOrderBuilders count] == 0) {
+        self.airPriceHolderView.hidden = YES;
+        self.hotelPriceHolderView.frame = FRAME_PRICE_HOLDER_VIEW;
+    }
+    
+    if ([_hotelOrderBuilders count] == 0) {
+        self.airPriceHolderView.frame = FRAME_PRICE_HOLDER_VIEW
+        self.hotelPriceHolderView.hidden = YES;
+    }
+}
+ 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -120,6 +153,8 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
+    
+    [self updateSite];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,6 +166,7 @@
 
 - (void)clickBack:(id)sender
 {
+    [self clearPersons];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -154,12 +190,12 @@
         }
     }
     
-    if ([_airHotelOrderBuilder hasContactPerson] == NO) {
+    if (_contactPerson == nil) {
         [self popupMessage:NSLS(@"没有选择联系人") title:nil];
         return;
     }
     
-    if ([_airHotelOrderBuilder hasPaymentInfo] == NO) {
+    if (_paymentInfo == nil) {
         [self popupMessage:NSLS(@"没有选择支付方式") title:nil];
         return;
     }
@@ -177,6 +213,15 @@
 //    controller.delegate = self;
 //    [self.navigationController pushViewController:controller animated:YES];
     //controller.dataList = [NSArray arrayWithObjects:order, nil];
+}
+
+- (void)clearPersons
+{
+    if (_isMember == NO) {
+        [[PersonManager defaultManager:PersonTypePassenger isMember:NO] deleteAllPersons];
+        [[PersonManager defaultManager:PersonTypeCheckIn isMember:NO] deleteAllPersons];
+        [[PersonManager defaultManager:PersonTypeContact isMember:NO] deleteAllPersons];
+    }
 }
 
 #pragma mark -
@@ -204,6 +249,8 @@
         
         [_airOrderBuilders removeAllObjects];
         [_hotelOrderBuilders removeAllObjects];
+        
+        [self clearPersons];
         
         AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
         controller.delegate = self;
@@ -469,6 +516,8 @@
     [self setPaymentButton:nil];
     [self setAirPirceLabel:nil];
     [self setHotelPriceLabel:nil];
+    [self setAirPriceHolderView:nil];
+    [self setHotelPriceHolderView:nil];
     [super viewDidUnload];
 }
 

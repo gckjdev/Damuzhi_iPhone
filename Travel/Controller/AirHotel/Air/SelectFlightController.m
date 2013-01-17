@@ -247,7 +247,7 @@
         Flight *flight1 = (Flight *)obj1;
         Flight *flight2 = (Flight *)obj2;
         
-        if (flight1.price >= flight2.price) {
+        if (flight1.departDate >= flight2.departDate){
             return (isAsc ? NSOrderedAscending : NSOrderedDescending);
         } else {
             return (isAsc ? NSOrderedDescending : NSOrderedAscending);
@@ -263,7 +263,7 @@
         Flight *flight1 = (Flight *)obj1;
         Flight *flight2 = (Flight *)obj2;
         
-        if (flight1.departDate >= flight2.departDate){
+        if (flight1.price >= flight2.price) {
             return (isAsc ? NSOrderedAscending : NSOrderedDescending);
         } else {
             return (isAsc ? NSOrderedDescending : NSOrderedAscending);

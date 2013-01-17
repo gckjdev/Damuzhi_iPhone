@@ -31,6 +31,9 @@ typedef enum{
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList;
 - (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList;
 
+- (void)clearFlight:(AirOrder_Builder *)airOrderBuilder;
+- (void)clearHotel:(HotelOrder_Builder *)hotelOrderBuilder;
+
 - (void)clearAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder;
 - (void)clearHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder;
 

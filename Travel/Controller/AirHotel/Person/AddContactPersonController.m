@@ -83,30 +83,26 @@
         return;
     }
     
-    if ([_phoneTextField.text length] == 0) {
-        [self popupMessage:NSLS(@"请输入联系电话") title:nil];
+    NSUInteger phoneLen = [_phoneTextField.text length];
+    if (phoneLen != 11) {
+        if (phoneLen == 0) {
+            [self popupMessage:NSLS(@"请输入联系电话") title:nil];
+        } else {
+            [self popupMessage:NSLS(@"请输入11位的电话号码") title:nil];
+        }
         return;
     }
     
     [_personBuilder setName:_nameTextField.text];
     [_personBuilder setPhone:_phoneTextField.text];
     
-    PersonManager *manager = [PersonManager defaultManager:PersonTypeContact];
+    PersonManager *manager = [PersonManager defaultManager:PersonTypeContact isMember:_isMember];
     
     if (self.isAdd == NO) {
-        if (_isMember) {
-            [manager deletePerson:_person];
-        } else {
-            [manager deleteTempPerson:_person];
-        }
+        [manager deletePerson:_person];
     }
     Person *person = [_personBuilder build];
-    
-    if (_isMember) {
-        [manager savePerson:person];
-    } else {
-        [manager addTempPerson:person];
-    }
+    [manager savePerson:person];
     
     [self.navigationController popViewControllerAnimated:YES];
 }
