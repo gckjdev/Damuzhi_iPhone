@@ -24,10 +24,9 @@ enum{
 
 #define ROW_LOGINID   0
 #define ROW_MODIFY_PASSWORD   1
-#define ROW_CREDIT_CARD       2
-#define ROW_PASSENGER         3
-#define ROW_CHECKIN_PERSON   4
-#define ROW_CONTACT_PERSON    5
+#define ROW_PASSENGER         2
+#define ROW_CHECKIN_PERSON   3
+#define ROW_CONTACT_PERSON    4
 
 
 #define ROW_NICKNAME   0
@@ -39,7 +38,6 @@ enum{
 #define TITLE_LOGINID       NSLS(@"用户名:")
 #define TITLE_MODIFY_PASSWORD NSLS(@"密码修改")
 
-#define TITLE_CREDIT_CARD       NSLS(@"信用卡管理")
 #define TITLE_PASSENGER         NSLS(@"登机人管理")
 #define TITLE_CHECKIN_PERSON    NSLS(@"酒店入住人管理")
 #define TITLE_CONTACT_PERSON    NSLS(@"联系人管理")
@@ -109,7 +107,6 @@ enum{
     [section0TitleDic setObject:TITLE_LOGINID forKey:[NSNumber numberWithInt:ROW_LOGINID]];
     [section0TitleDic setObject:TITLE_MODIFY_PASSWORD forKey:[NSNumber numberWithInt:ROW_MODIFY_PASSWORD]];
     
-    [section0TitleDic setObject:TITLE_CREDIT_CARD forKey:[NSNumber numberWithInt:ROW_CREDIT_CARD]];
     [section0TitleDic setObject:TITLE_PASSENGER forKey:[NSNumber numberWithInt:ROW_PASSENGER]];
     [section0TitleDic setObject:TITLE_CHECKIN_PERSON forKey:[NSNumber numberWithInt:ROW_CHECKIN_PERSON]];
     [section0TitleDic setObject:TITLE_CONTACT_PERSON forKey:[NSNumber numberWithInt:ROW_CONTACT_PERSON]];
@@ -210,7 +207,6 @@ enum{
     cell.inputTextField.text = inputText;
     
     if ([title isEqualToString:TITLE_MODIFY_PASSWORD]
-        || [title isEqualToString:TITLE_CREDIT_CARD]
         || [title isEqualToString:TITLE_PASSENGER]
         || [title isEqualToString:TITLE_CHECKIN_PERSON]
         || [title isEqualToString:TITLE_CONTACT_PERSON]) {
@@ -283,7 +279,7 @@ enum{
     self.currentInputTextField = cell.inputTextField;
 
     if (aIndexPath.section >= 1 ) {
-        [self.view moveTtoCenter:CGPointMake(viewCenter.x, viewCenter.y - 100) needAnimation:YES animationDuration:0.5];
+        [self.view moveTtoCenter:CGPointMake(viewCenter.x, viewCenter.y - 200) needAnimation:YES animationDuration:0.5];
     }
 }
 
@@ -360,10 +356,6 @@ enum{
         ChangePasswordController *contrller = [[ChangePasswordController alloc] init];
         [self.navigationController pushViewController:contrller animated:YES];
         [contrller release];
-    }
-    
-    else if ([title isEqualToString:TITLE_CREDIT_CARD]) {
-        [self pushSelectPerson:ViewTypeCreditCard navTitle:TITLE_CREDIT_CARD];
     }
     
     else if ([title isEqualToString:TITLE_PASSENGER]) {

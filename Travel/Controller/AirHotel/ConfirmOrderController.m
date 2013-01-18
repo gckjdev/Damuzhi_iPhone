@@ -27,7 +27,6 @@
 @property (retain, nonatomic) NSIndexPath *currentIndexPath;
 @property (assign, nonatomic) BOOL isMember;
 @property (retain, nonatomic) Person *contactPerson;
-@property (retain, nonatomic) PaymentInfo *paymentInfo;
 @property (assign, nonatomic) int departCityId;
 @end
 
@@ -40,13 +39,12 @@
     [_hotelOrderBuilders release];
     [_currentIndexPath release];
     [_contactPersonButton release];
-    [_paymentButton release];
     [_airPirceLabel release];
     [_hotelPriceLabel release];
     [_contactPerson release];
-    [_paymentInfo release];
     [_airPriceHolderView release];
     [_hotelPriceHolderView release];
+    [_shouldPayPriceLabel release];
     [super dealloc];
 }
 
@@ -98,7 +96,6 @@
     [_airHotelOrderBuilder clearToken];
     [_airHotelOrderBuilder clearUserId];
     [_airHotelOrderBuilder clearContactPerson];
-    [_airHotelOrderBuilder clearPaymentInfo];
     
     //set value
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
@@ -115,10 +112,6 @@
     if (_contactPerson) {
         [_airHotelOrderBuilder setContactPerson:_contactPerson];
     }
-    
-    if (_paymentInfo) {
-            [_airHotelOrderBuilder setPaymentInfo:_paymentInfo];
-    }
 }
 
 #define SECTION_AIR 0
@@ -130,7 +123,7 @@
     return 0;
 }
 
-#define FRAME_PRICE_HOLDER_VIEW CGRectMake(0, 12, 185, 30);
+#define FRAME_PRICE_HOLDER_VIEW CGRectMake(0, 12, 302, 30);
 - (void)updateSite
 {
     if ([_airOrderBuilders count] == 0) {
@@ -192,11 +185,6 @@
     
     if (_contactPerson == nil) {
         [self popupMessage:NSLS(@"没有选择联系人") title:nil];
-        return;
-    }
-    
-    if (_paymentInfo == nil) {
-        [self popupMessage:NSLS(@"没有选择支付方式") title:nil];
         return;
     }
     
@@ -366,22 +354,14 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (IBAction)clickPaymentButton:(id)sender {
-    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypeCreditCard
-                                                                           selectCount:1
-                                                                              delegate:self
-                                                                                 title:NSLS(@"信用卡支付")
-                                                                              isSelect:YES
-                                                                              isMember:_isMember] autorelease];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 - (void)updatePrice
 {
     AirHotelManager *manager = [AirHotelManager defaultManager];
     
     self.airPirceLabel.text = [manager calculateAirTotalPrice:_airOrderBuilders];
     self.hotelPriceLabel.text = [manager calculateHotelTotalPrice:_hotelOrderBuilders];
+    
+    self.shouldPayPriceLabel.text = self.airPirceLabel.text;
 }
 
 
@@ -480,18 +460,7 @@
             [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@，%@",_contactPerson.name,_contactPerson.phone] forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
-        if ([objectList count] > 0) {
-            CreditCard *creditCard = (CreditCard *)[objectList objectAtIndex:0];
-            
-            PaymentInfo_Builder *pib = [[[PaymentInfo_Builder alloc] init] autorelease];
-            [pib setPaymentType:PaymentTypeCreditCard];
-            [pib setCreditCard:creditCard];
-            PaymentInfo *paymentInfo = [pib build];
-            self.paymentInfo = paymentInfo;
-            
-            [_paymentButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
-            [_paymentButton setTitle:NSLS(@"信用卡") forState:UIControlStateNormal];
-        }
+        
     } else if (personType == ViewTypeCheckIn) {
         HotelOrder_Builder *builder = [_hotelOrderBuilders objectAtIndex:_currentIndexPath.section - [self getAirSectionCount]];
         [builder clearCheckInPersonsList];
@@ -513,11 +482,11 @@
 
 - (void)viewDidUnload {
     [self setContactPersonButton:nil];
-    [self setPaymentButton:nil];
     [self setAirPirceLabel:nil];
     [self setHotelPriceLabel:nil];
     [self setAirPriceHolderView:nil];
     [self setHotelPriceHolderView:nil];
+    [self setShouldPayPriceLabel:nil];
     [super viewDidUnload];
 }
 
