@@ -12,11 +12,11 @@
 #import "ConfirmAirCell.h"
 #import "SelectPersonController.h"
 #import "PlaceService.h"
-#import "AirHotelOrderListController.h"
+#import "UPPayPluginDelegate.h"
 
 @class AirHotelOrder_Builder;
 
-@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate, AirHotelOrderListControllerDelegate, OrderFlightViewDelegate>
+@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate, UPPayPluginDelegate>
 
 @property (retain, nonatomic) IBOutlet UIButton *contactPersonButton;
 @property (retain, nonatomic) IBOutlet UILabel *airPirceLabel;

@@ -97,13 +97,14 @@ static AirHotelService *_airHotelService = nil;
             PPDebug(@"<AirHotelService> order failed");
         }
         
+        //NSDictionary *dic = [output.textData JSONValue];
         NSString *reultInfo = [output.jsonDataDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+        NSString *orderId = [output.jsonDataDict objectForKey:PARA_TRAVEL_ID];
         PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
         
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(orderDone:resultInfo:)]) {
-                [delegate orderDone:output.resultCode resultInfo:reultInfo];
+            if ([delegate respondsToSelector:@selector(orderDone:resultInfo:orderId:)]) {
+                [delegate orderDone:output.resultCode resultInfo:reultInfo orderId:orderId];
             }
         });
     });
@@ -167,7 +168,7 @@ static AirHotelService *_airHotelService = nil;
     });
 }
 
-- (void)findOrderUsingUserId:(NSString *)userId
+- (void)findOrdersUsingUserId:(NSString *)userId
                     delegate:(id<AirHotelServiceDelegate>)delegate
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -195,7 +196,7 @@ static AirHotelService *_airHotelService = nil;
     });
 }
 
-- (void)findOrderUsingLoginId:(NSString *)loginId
+- (void)findOrdersUsingLoginId:(NSString *)loginId
                         token:(NSString *)token
                      delegate:(id<AirHotelServiceDelegate>)delegate
 {
@@ -219,6 +220,74 @@ static AirHotelService *_airHotelService = nil;
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([delegate respondsToSelector:@selector(findOrdersDone:orderList:)]) {
                 [delegate findOrdersDone:output.resultCode orderList:[travelResponse.airHotelOrderList airHotelOrdersList]];
+            }
+        });
+    });
+}
+
+- (void)findOrder:(NSString *)orderId delegate:(id<AirHotelServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryObject:OBJECT_TYPE_AIR_HOTEL_ORDER objStringId:orderId lang:LanguageTypeZhHans];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            AirHotelOrder *order;
+            int result;
+            NSString *resultInfo;
+            @try {
+                TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
+                order = [travelResponse airHotelOrder];
+                result = [travelResponse resultCode];
+                resultInfo = [travelResponse resultInfo];
+            }
+            @catch (NSException *exception) {
+                PPDebug(@"<findOrder> Caught %@%@", [exception name], [exception reason]);
+            }
+            
+            if ([delegate respondsToSelector:@selector(findOrderDone:order:)]){
+                [delegate findOrderDone:result order:order];
+            }
+        });
+    });
+}
+
+- (void)findOrderPaymentInfo:(int)orderId
+                    delegate:(id<AirHotelServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        NSError *requestError;
+        NSURLResponse *urlResponse = nil;
+        NSMutableURLRequest * requestm=[[NSMutableURLRequest alloc] init];
+        [requestm setTimeoutInterval:60];
+        NSString* urlAddress = [NSString stringWithFormat:@"%@%@=%d", URL_TRAVEL_ORDER_PAYMENT_INFO,PARA_TRAVEL_ID,orderId];
+        
+        PPDebug(@"<findOrderPaymentInfo> url:%@",urlAddress);
+        
+        NSURL* url = [NSURL URLWithString:urlAddress];
+        [requestm setURL:url];
+        NSData *returnData = [NSURLConnection sendSynchronousRequest:requestm returningResponse:&urlResponse error:&requestError];
+        [requestm release];
+        
+        int result = 0;
+        BOOL isSucc = YES;
+        if (!urlResponse) {
+            if (requestError) {
+                result = 1;
+                isSucc = NO;
+                PPDebug(@"<findOrderPaymentInfo> error");
+            }
+        }
+        
+        NSString* paymentInfo;
+        if (isSucc) {
+           paymentInfo = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
+        }
+        
+        PPDebug(@"<findOrderPaymentInfo> paymentInfo:%@",paymentInfo);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([delegate respondsToSelector:@selector(findOrderPaymentInfoDone:paymentInfo:)]) {
+                [delegate findOrderPaymentInfoDone:result paymentInfo:paymentInfo];
             }
         });
     });

@@ -38,10 +38,10 @@ BOOL PersonGenderIsValidValue(PersonGender value) {
       return NO;
   }
 }
-BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value) {
+BOOL PaymentModeIsValidValue(PaymentMode value) {
   switch (value) {
-    case AirPaymentStatusAirPaymentNotPaid:
-    case AirPaymentStatusAirPaymentFinish:
+    case PaymentModeOnline:
+    case PaymentModeShopEx:
       return YES;
     default:
       return NO;
@@ -4082,7 +4082,8 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
 @property int32_t orderStatus;
 @property Float64 hotelPrice;
 @property Float64 airPrice;
-@property AirPaymentStatus airPaymentStatus;
+@property PaymentMode airPaymentMode;
+@property PaymentMode hotelPaymentMode;
 @end
 
 @implementation AirHotelOrder
@@ -4173,13 +4174,20 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
   hasAirPrice_ = !!value;
 }
 @synthesize airPrice;
-- (BOOL) hasAirPaymentStatus {
-  return !!hasAirPaymentStatus_;
+- (BOOL) hasAirPaymentMode {
+  return !!hasAirPaymentMode_;
 }
-- (void) setHasAirPaymentStatus:(BOOL) value {
-  hasAirPaymentStatus_ = !!value;
+- (void) setHasAirPaymentMode:(BOOL) value {
+  hasAirPaymentMode_ = !!value;
 }
-@synthesize airPaymentStatus;
+@synthesize airPaymentMode;
+- (BOOL) hasHotelPaymentMode {
+  return !!hasHotelPaymentMode_;
+}
+- (void) setHasHotelPaymentMode:(BOOL) value {
+  hasHotelPaymentMode_ = !!value;
+}
+@synthesize hotelPaymentMode;
 - (void) dealloc {
   self.userId = nil;
   self.loginId = nil;
@@ -4204,7 +4212,8 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
     self.orderStatus = 0;
     self.hotelPrice = 0;
     self.airPrice = 0;
-    self.airPaymentStatus = AirPaymentStatusAirPaymentNotPaid;
+    self.airPaymentMode = PaymentModeOnline;
+    self.hotelPaymentMode = PaymentModeOnline;
   }
   return self;
 }
@@ -4295,8 +4304,11 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   if (self.hasAirPrice) {
     [output writeDouble:31 value:self.airPrice];
   }
-  if (self.hasAirPaymentStatus) {
-    [output writeEnum:33 value:self.airPaymentStatus];
+  if (self.hasAirPaymentMode) {
+    [output writeEnum:32 value:self.airPaymentMode];
+  }
+  if (self.hasHotelPaymentMode) {
+    [output writeEnum:33 value:self.hotelPaymentMode];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4349,8 +4361,11 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   if (self.hasAirPrice) {
     size += computeDoubleSize(31, self.airPrice);
   }
-  if (self.hasAirPaymentStatus) {
-    size += computeEnumSize(33, self.airPaymentStatus);
+  if (self.hasAirPaymentMode) {
+    size += computeEnumSize(32, self.airPaymentMode);
+  }
+  if (self.hasHotelPaymentMode) {
+    size += computeEnumSize(33, self.hotelPaymentMode);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -4475,8 +4490,11 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   if (other.hasAirPrice) {
     [self setAirPrice:other.airPrice];
   }
-  if (other.hasAirPaymentStatus) {
-    [self setAirPaymentStatus:other.airPaymentStatus];
+  if (other.hasAirPaymentMode) {
+    [self setAirPaymentMode:other.airPaymentMode];
+  }
+  if (other.hasHotelPaymentMode) {
+    [self setHotelPaymentMode:other.hotelPaymentMode];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4569,10 +4587,19 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
         [self setAirPrice:[input readDouble]];
         break;
       }
+      case 256: {
+        int32_t value = [input readEnum];
+        if (PaymentModeIsValidValue(value)) {
+          [self setAirPaymentMode:value];
+        } else {
+          [unknownFields mergeVarintField:32 value:value];
+        }
+        break;
+      }
       case 264: {
         int32_t value = [input readEnum];
-        if (AirPaymentStatusIsValidValue(value)) {
-          [self setAirPaymentStatus:value];
+        if (PaymentModeIsValidValue(value)) {
+          [self setHotelPaymentMode:value];
         } else {
           [unknownFields mergeVarintField:33 value:value];
         }
@@ -4859,20 +4886,36 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   result.airPrice = 0;
   return self;
 }
-- (BOOL) hasAirPaymentStatus {
-  return result.hasAirPaymentStatus;
+- (BOOL) hasAirPaymentMode {
+  return result.hasAirPaymentMode;
 }
-- (AirPaymentStatus) airPaymentStatus {
-  return result.airPaymentStatus;
+- (PaymentMode) airPaymentMode {
+  return result.airPaymentMode;
 }
-- (AirHotelOrder_Builder*) setAirPaymentStatus:(AirPaymentStatus) value {
-  result.hasAirPaymentStatus = YES;
-  result.airPaymentStatus = value;
+- (AirHotelOrder_Builder*) setAirPaymentMode:(PaymentMode) value {
+  result.hasAirPaymentMode = YES;
+  result.airPaymentMode = value;
   return self;
 }
-- (AirHotelOrder_Builder*) clearAirPaymentStatus {
-  result.hasAirPaymentStatus = NO;
-  result.airPaymentStatus = AirPaymentStatusAirPaymentNotPaid;
+- (AirHotelOrder_Builder*) clearAirPaymentMode {
+  result.hasAirPaymentMode = NO;
+  result.airPaymentMode = PaymentModeOnline;
+  return self;
+}
+- (BOOL) hasHotelPaymentMode {
+  return result.hasHotelPaymentMode;
+}
+- (PaymentMode) hotelPaymentMode {
+  return result.hotelPaymentMode;
+}
+- (AirHotelOrder_Builder*) setHotelPaymentMode:(PaymentMode) value {
+  result.hasHotelPaymentMode = YES;
+  result.hotelPaymentMode = value;
+  return self;
+}
+- (AirHotelOrder_Builder*) clearHotelPaymentMode {
+  result.hasHotelPaymentMode = NO;
+  result.hotelPaymentMode = PaymentModeOnline;
   return self;
 }
 @end

@@ -406,8 +406,8 @@
                                       output:output];
 }
 
-+ (CommonNetworkOutput*)queryObject:(int)type 
-                              objId:(int)objId 
++ (CommonNetworkOutput*)queryObject:(int)type
+                        objStringId:(NSString *)objStringId
                                lang:(int)lang
 {
     CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
@@ -415,26 +415,32 @@
     ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
         
         //set input parameters
-        NSString* str = [NSString stringWithString:baseURL];        
+        NSString* str = [NSString stringWithString:baseURL];
         
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:objId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID value:objStringId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
         
         return str;
     };
     
-    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
         return;
     };
     
     return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_OBJECT
-                         constructURLHandler:constructURLHandler                         
-                             responseHandler:responseHandler         
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
                                 outputFormat:FORMAT_TRAVEL_PB
                                       output:output];
 }
 
++ (CommonNetworkOutput*)queryObject:(int)type
+                              objId:(int)objId 
+                               lang:(int)lang
+{
+    return [TravelNetworkRequest queryObject:type objStringId:[NSString stringWithFormat:@"%d", objId] lang:lang];
+}
 
 + (CommonNetworkOutput*)queryObject:(int)type
                                lang:(int)lang
@@ -1329,7 +1335,7 @@
     PPNetworkResponseBlock responseHandler = ^(NSDictionary *dict, CommonNetworkOutput *output) {
         
         output.resultCode = [[dict objectForKey:PARA_TRAVEL_RESULT] intValue];
-        
+        output.jsonDataDict = dict;
         return;
     };
     

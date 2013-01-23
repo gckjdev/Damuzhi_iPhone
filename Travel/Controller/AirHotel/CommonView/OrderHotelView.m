@@ -123,7 +123,7 @@
         [self.checkInPersonButton setTitle:@"一间房一位入住人    添加入住人" forState:UIControlStateNormal];
     }
     
-    PPDebug(@"OrderHotelView height:%f", self.frame.size.height);
+    //PPDebug(@"OrderHotelView height:%f", self.frame.size.height);
 }
 
 - (IBAction)clickHoltelButton:(id)sender {

@@ -536,9 +536,10 @@ BOOL LoginTypeIsValidValue(LoginType value);
 
 @interface TravelResponse : PBGeneratedMessage {
 @private
-  BOOL hasTotalCount_:1;
   BOOL hasResultCode_:1;
+  BOOL hasTotalCount_:1;
   BOOL hasResultInfo_:1;
+  BOOL hasAirHotelOrder_:1;
   BOOL hasAirHotelOrderList_:1;
   BOOL hasFlightList_:1;
   BOOL hasCityImageList_:1;
@@ -559,9 +560,10 @@ BOOL LoginTypeIsValidValue(LoginType value);
   BOOL hasTravelTip_:1;
   BOOL hasOverview_:1;
   BOOL hasPlace_:1;
-  int32_t totalCount;
   int32_t resultCode;
+  int32_t totalCount;
   NSString* resultInfo;
+  AirHotelOrder* airHotelOrder;
   AirHotelOrderList* airHotelOrderList;
   FlightList* flightList;
   CityImageList* cityImageList;
@@ -606,6 +608,7 @@ BOOL LoginTypeIsValidValue(LoginType value);
 - (BOOL) hasCityImageList;
 - (BOOL) hasFlightList;
 - (BOOL) hasAirHotelOrderList;
+- (BOOL) hasAirHotelOrder;
 @property (readonly) int32_t resultCode;
 @property (readonly, retain) NSString* resultInfo;
 @property (readonly, retain) Place* place;
@@ -629,6 +632,7 @@ BOOL LoginTypeIsValidValue(LoginType value);
 @property (readonly, retain) CityImageList* cityImageList;
 @property (readonly, retain) FlightList* flightList;
 @property (readonly, retain) AirHotelOrderList* airHotelOrderList;
+@property (readonly, retain) AirHotelOrder* airHotelOrder;
 
 + (TravelResponse*) defaultInstance;
 - (TravelResponse*) defaultInstance;
@@ -818,6 +822,13 @@ BOOL LoginTypeIsValidValue(LoginType value);
 - (TravelResponse_Builder*) setAirHotelOrderListBuilder:(AirHotelOrderList_Builder*) builderForValue;
 - (TravelResponse_Builder*) mergeAirHotelOrderList:(AirHotelOrderList*) value;
 - (TravelResponse_Builder*) clearAirHotelOrderList;
+
+- (BOOL) hasAirHotelOrder;
+- (AirHotelOrder*) airHotelOrder;
+- (TravelResponse_Builder*) setAirHotelOrder:(AirHotelOrder*) value;
+- (TravelResponse_Builder*) setAirHotelOrderBuilder:(AirHotelOrder_Builder*) builderForValue;
+- (TravelResponse_Builder*) mergeAirHotelOrder:(AirHotelOrder*) value;
+- (TravelResponse_Builder*) clearAirHotelOrder;
 @end
 
 @interface TravelRequest : PBGeneratedMessage {

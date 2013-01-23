@@ -53,6 +53,8 @@
 
 #define URL_TRAVEL_AIR_HOTEL_ORDER      (URL_SERVICE@"airHotelOrder.aspx?")
 
+#define URL_TRAVEL_ORDER_PAYMENT_INFO   (URL_SERVICE@"orderPaymentInfo.aspx?")
+
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
 #define FORMAT_TRAVEL_PB            2   // protocol buffer
@@ -197,12 +199,13 @@
 #define OBJECT_TYPE_PLACE                       1
 #define OBJECT_TYPE_CITY_BASIC                  2
 #define OBJECT_TYPE_TRAVEL_PREPARATION          3
-#define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4     
+#define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4
 #define OBJECT_TYPE_TRAVEL_UTILITY              5
 #define OBJECT_TYPE_HELP_INOF                   8
 #define OBJECT_TYPE_APP_DATA                    10
 #define OBJECT_TYPE_ROUTE_DETAIL                50
 #define OBJECT_TYPE_LOCAL_ROUTE_DETAIL          51
+#define OBJECT_TYPE_AIR_HOTEL_ORDER             60
 
 
 #define STRING_SEPARATOR    @","

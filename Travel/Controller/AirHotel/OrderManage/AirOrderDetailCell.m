@@ -84,11 +84,7 @@
     self.footerView.frame = [self updateHeight:self.footerView height:_priceHolderView.frame.origin.y + _priceHolderView.frame.size.height];
     self.holderView.frame = [self updateHeight:self.holderView height:self.footerView.frame.origin.y + self.footerView.frame.size.height];
     
-    if (airHotelOrde.airPaymentStatus == AirPaymentStatusAirPaymentFinish) {
-        self.statusLabel.text = NSLS(@"已支付");
-    } else {
-        self.statusLabel.text = NSLS(@"未支付");
-    }
+    self.statusLabel.text = NSLS(@"在线支付");
     
     if (airOrder.insurance) {
         int count = [airOrder.passengerList count];

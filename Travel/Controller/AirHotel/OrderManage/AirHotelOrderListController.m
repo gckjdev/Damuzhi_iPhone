@@ -53,9 +53,9 @@
     [self showActivityWithText:NSLS(@"数据加载中...")];
     
     if ([[UserManager defaultManager] isLogin]) {
-        [[AirHotelService defaultService] findOrderUsingLoginId:[[UserManager defaultManager] loginId] token:[[UserManager defaultManager] token] delegate:self];
+        [[AirHotelService defaultService] findOrdersUsingLoginId:[[UserManager defaultManager] loginId] token:[[UserManager defaultManager] token] delegate:self];
     } else {
-        [[AirHotelService defaultService] findOrderUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
+        [[AirHotelService defaultService] findOrdersUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
     }
 }
 
@@ -109,7 +109,7 @@
         self.dataList  = orderList;
         [dataTableView reloadData];
         
-        [self debugData];
+        //[self debugData];
     }
 }
 

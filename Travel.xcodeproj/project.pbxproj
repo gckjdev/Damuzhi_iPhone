@@ -18,7 +18,6 @@
 		A311151C1532DBEB00E33BB2 /* QOauthKey.m in Sources */ = {isa = PBXBuildFile; fileRef = A31115101532DBEB00E33BB2 /* QOauthKey.m */; };
 		A311151D1532DBEB00E33BB2 /* QSyncHttp.m in Sources */ = {isa = PBXBuildFile; fileRef = A31115121532DBEB00E33BB2 /* QSyncHttp.m */; };
 		A311151E1532DBEB00E33BB2 /* QWeiboRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A31115141532DBEB00E33BB2 /* QWeiboRequest.m */; };
-		A31334DF152FFB260047D013 /* libQWeiboSDK4iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A31334DC152FFA6F0047D013 /* libQWeiboSDK4iOS.a */; };
 		A31334E7152FFB460047D013 /* QVerifyWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A31334E2152FFB460047D013 /* QVerifyWebViewController.m */; };
 		A31334E8152FFB460047D013 /* QWeiboAsyncApi.m in Sources */ = {isa = PBXBuildFile; fileRef = A31334E4152FFB460047D013 /* QWeiboAsyncApi.m */; };
 		A31334E9152FFB460047D013 /* QWeiboSyncApi.m in Sources */ = {isa = PBXBuildFile; fileRef = A31334E6152FFB460047D013 /* QWeiboSyncApi.m */; };
@@ -508,7 +507,6 @@
 		CA45602B14F66EDD00DA085D /* NSArray+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EB114F66EDD00DA085D /* NSArray+TKCategory.m */; };
 		CA45602C14F66EDD00DA085D /* NSDate+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EB314F66EDD00DA085D /* NSDate+TKCategory.m */; };
 		CA45602D14F66EDD00DA085D /* NSDictionary+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EB514F66EDD00DA085D /* NSDictionary+TKCategory.m */; };
-		CA45602E14F66EDD00DA085D /* NSMutableURLRequest+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EB714F66EDD00DA085D /* NSMutableURLRequest+TKCategory.m */; };
 		CA45602F14F66EDD00DA085D /* NSString+TKCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EB914F66EDD00DA085D /* NSString+TKCategory.m */; };
 		CA45603014F66EDD00DA085D /* TapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EBB14F66EDD00DA085D /* TapDetectingView.m */; };
 		CA45603114F66EDD00DA085D /* TKAlertCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = CA455EBE14F66EDD00DA085D /* TKAlertCenter.m */; };
@@ -853,6 +851,9 @@
 		EAE654DA153C398700AAE451 /* detail_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D8153C398700AAE451 /* detail_shadow@2x.png */; };
 		EAE654DB153C398700AAE451 /* topmenu_bg2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */; };
 		EAEADCC916785FDF00E70748 /* UIViewController+Travel.m in Sources */ = {isa = PBXBuildFile; fileRef = EAEADCC816785FDF00E70748 /* UIViewController+Travel.m */; };
+		EAEF3D4C16AD79E500FDE3FF /* UPPayEntitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = EAEF3D4B16AD79E500FDE3FF /* UPPayEntitlements.plist */; };
+		EAEF3D6516AE406600FDE3FF /* libUPPayPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAEF3D6116AE406600FDE3FF /* libUPPayPlugin.a */; };
+		EAEF3D6F16AE4B4C00FDE3FF /* UPPayPluginUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = EAEF3D6E16AE4B4C00FDE3FF /* UPPayPluginUtil.mm */; };
 		EAF5B20816719FA300DF8570 /* SelectFlightController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF5B20616719FA200DF8570 /* SelectFlightController.m */; };
 		EAF5B20916719FA300DF8570 /* SelectFlightController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAF5B20716719FA300DF8570 /* SelectFlightController.xib */; };
 		EAF5B20C1671A3EF00DF8570 /* FlightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF5B20B1671A3EF00DF8570 /* FlightCell.m */; };
@@ -865,20 +866,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A31334DB152FFA6F0047D013 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = QWeiboSDK4iOS;
-		};
-		A31334DD152FFB160047D013 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = QWeiboSDK4iOS;
-		};
 		CA238F9714FB562500114175 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CA238F8D14FB562400114175 /* ProtocolBuffers.xcodeproj */;
@@ -933,7 +920,6 @@
 		A31115131532DBEB00E33BB2 /* QWeiboRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QWeiboRequest.h; path = ../QWeiboRequest.h; sourceTree = "<group>"; };
 		A31115141532DBEB00E33BB2 /* QWeiboRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QWeiboRequest.m; path = ../QWeiboRequest.m; sourceTree = "<group>"; };
 		A31115151532DBEB00E33BB2 /* QWeiboSDK4iOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QWeiboSDK4iOS_Prefix.pch; path = ../QWeiboSDK4iOS_Prefix.pch; sourceTree = "<group>"; };
-		A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QWeiboSDK4iOS.xcodeproj; path = "../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS/QWeiboSDK4iOS.xcodeproj"; sourceTree = "<group>"; };
 		A31334E1152FFB460047D013 /* QVerifyWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QVerifyWebViewController.h; sourceTree = "<group>"; };
 		A31334E2152FFB460047D013 /* QVerifyWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QVerifyWebViewController.m; sourceTree = "<group>"; };
 		A31334E3152FFB460047D013 /* QWeiboAsyncApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QWeiboAsyncApi.h; sourceTree = "<group>"; };
@@ -1591,8 +1577,6 @@
 		CA455EB314F66EDD00DA085D /* NSDate+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+TKCategory.m"; sourceTree = "<group>"; };
 		CA455EB414F66EDD00DA085D /* NSDictionary+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TKCategory.h"; sourceTree = "<group>"; };
 		CA455EB514F66EDD00DA085D /* NSDictionary+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TKCategory.m"; sourceTree = "<group>"; };
-		CA455EB614F66EDD00DA085D /* NSMutableURLRequest+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKCategory.h"; sourceTree = "<group>"; };
-		CA455EB714F66EDD00DA085D /* NSMutableURLRequest+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKCategory.m"; sourceTree = "<group>"; };
 		CA455EB814F66EDD00DA085D /* NSString+TKCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TKCategory.h"; sourceTree = "<group>"; };
 		CA455EB914F66EDD00DA085D /* NSString+TKCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TKCategory.m"; sourceTree = "<group>"; };
 		CA455EBA14F66EDD00DA085D /* TapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapDetectingView.h; sourceTree = "<group>"; };
@@ -2151,6 +2135,12 @@
 		EAE654D9153C398700AAE451 /* topmenu_bg2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topmenu_bg2@2x.png"; sourceTree = "<group>"; };
 		EAEADCC716785FDF00E70748 /* UIViewController+Travel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Travel.h"; sourceTree = "<group>"; };
 		EAEADCC816785FDF00E70748 /* UIViewController+Travel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Travel.m"; sourceTree = "<group>"; };
+		EAEF3D4B16AD79E500FDE3FF /* UPPayEntitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UPPayEntitlements.plist; sourceTree = "<group>"; };
+		EAEF3D6116AE406600FDE3FF /* libUPPayPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUPPayPlugin.a; sourceTree = "<group>"; };
+		EAEF3D6216AE406600FDE3FF /* UPPayPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPPayPlugin.h; sourceTree = "<group>"; };
+		EAEF3D6316AE406600FDE3FF /* UPPayPluginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPPayPluginDelegate.h; sourceTree = "<group>"; };
+		EAEF3D6D16AE4B4C00FDE3FF /* UPPayPluginUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UPPayPluginUtil.h; sourceTree = "<group>"; };
+		EAEF3D6E16AE4B4C00FDE3FF /* UPPayPluginUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UPPayPluginUtil.mm; sourceTree = "<group>"; };
 		EAF5B20516719FA200DF8570 /* SelectFlightController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFlightController.h; sourceTree = "<group>"; };
 		EAF5B20616719FA200DF8570 /* SelectFlightController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFlightController.m; sourceTree = "<group>"; };
 		EAF5B20716719FA300DF8570 /* SelectFlightController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFlightController.xib; sourceTree = "<group>"; };
@@ -2176,7 +2166,6 @@
 				CA4906FD14F5F05B00228C37 /* CoreGraphics.framework in Frameworks */,
 				A387DE1D15C7D78100507F95 /* CoreText.framework in Frameworks */,
 				A48E05EF15354BC100B2695E /* CoreTelephony.framework in Frameworks */,
-				A31334DF152FFB260047D013 /* libQWeiboSDK4iOS.a in Frameworks */,
 				A3EB740E152E96E4003BA8B8 /* Security.framework in Frameworks */,
 				CA238F9D14FB566800114175 /* libProtocolBuffers.a in Frameworks */,
 				CA4560D614F6715400DA085D /* libz.1.1.3.dylib in Frameworks */,
@@ -2193,6 +2182,7 @@
 				CA4906F914F5F05B00228C37 /* UIKit.framework in Frameworks */,
 				CA4906FB14F5F05B00228C37 /* Foundation.framework in Frameworks */,
 				A3CD5AE7152803A80049D2F3 /* libMobClickLibrary.a in Frameworks */,
+				EAEF3D6516AE406600FDE3FF /* libUPPayPlugin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2223,14 +2213,6 @@
 				A31115151532DBEB00E33BB2 /* QWeiboSDK4iOS_Prefix.pch */,
 			);
 			name = Src;
-			sourceTree = "<group>";
-		};
-		A31334D5152FFA6F0047D013 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A31334DC152FFA6F0047D013 /* libQWeiboSDK4iOS.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		A31334E0152FFB460047D013 /* QQWeiboEngine */ = {
@@ -2328,6 +2310,7 @@
 		A3CD5AEA152803F80049D2F3 /* Component-Service */ = {
 			isa = PBXGroup;
 			children = (
+				EAEF3D6016AE406600FDE3FF /* UPPayPlugin */,
 				A485783E1516DE7B00FDFE5B /* ssziparchive */,
 			);
 			name = "Component-Service";
@@ -3645,8 +3628,6 @@
 				EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */,
 				CA455EB414F66EDD00DA085D /* NSDictionary+TKCategory.h */,
 				CA455EB514F66EDD00DA085D /* NSDictionary+TKCategory.m */,
-				CA455EB614F66EDD00DA085D /* NSMutableURLRequest+TKCategory.h */,
-				CA455EB714F66EDD00DA085D /* NSMutableURLRequest+TKCategory.m */,
 				CA455EB814F66EDD00DA085D /* NSString+TKCategory.h */,
 				CA455EB914F66EDD00DA085D /* NSString+TKCategory.m */,
 				CA455EBA14F66EDD00DA085D /* TapDetectingView.h */,
@@ -4366,9 +4347,6 @@
 		CA4906E914F5F05B00228C37 = {
 			isa = PBXGroup;
 			children = (
-				A4FB53E816895C9400102CF6 /* ImageIO.framework */,
-				A4FB53E616895B0300102CF6 /* CoreImage.framework */,
-				A406BB911581A94F00257DED /* libdyld.dylib */,
 				A3CD5AE0152803830049D2F3 /* 3PP-SDK */,
 				A3CD5AE9152803AF0049D2F3 /* Components */,
 				CA455E7314F66EDD00DA085D /* Core */,
@@ -4389,9 +4367,11 @@
 		CA4906F714F5F05B00228C37 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A4FB53E816895C9400102CF6 /* ImageIO.framework */,
+				A4FB53E616895B0300102CF6 /* CoreImage.framework */,
+				A406BB911581A94F00257DED /* libdyld.dylib */,
 				A387DE1C15C7D78100507F95 /* CoreText.framework */,
 				A48E05EE15354BC100B2695E /* CoreTelephony.framework */,
-				A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */,
 				A3EB740D152E96E4003BA8B8 /* Security.framework */,
 				CA238F8D14FB562400114175 /* ProtocolBuffers.xcodeproj */,
 				CA4560D514F6715400DA085D /* libz.1.1.3.dylib */,
@@ -4436,6 +4416,7 @@
 				CA49070114F5F05B00228C37 /* InfoPlist.strings */,
 				CA49070414F5F05B00228C37 /* main.m */,
 				CA49070614F5F05B00228C37 /* Travel-Prefix.pch */,
+				EAEF3D4B16AD79E500FDE3FF /* UPPayEntitlements.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -4962,6 +4943,19 @@
 			path = Person;
 			sourceTree = "<group>";
 		};
+		EAEF3D6016AE406600FDE3FF /* UPPayPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				EAEF3D6116AE406600FDE3FF /* libUPPayPlugin.a */,
+				EAEF3D6216AE406600FDE3FF /* UPPayPlugin.h */,
+				EAEF3D6316AE406600FDE3FF /* UPPayPluginDelegate.h */,
+				EAEF3D6D16AE4B4C00FDE3FF /* UPPayPluginUtil.h */,
+				EAEF3D6E16AE4B4C00FDE3FF /* UPPayPluginUtil.mm */,
+			);
+			name = UPPayPlugin;
+			path = "../Common_iPhone_20/Components/Component-Service/UPPayPlugin";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4976,7 +4970,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				A31334DE152FFB160047D013 /* PBXTargetDependency */,
 				CA238F9F14FB567100114175 /* PBXTargetDependency */,
 			);
 			name = Travel;
@@ -5012,10 +5005,6 @@
 					ProductGroup = CA238F8E14FB562400114175 /* Products */;
 					ProjectRef = CA238F8D14FB562400114175 /* ProtocolBuffers.xcodeproj */;
 				},
-				{
-					ProductGroup = A31334D5152FFA6F0047D013 /* Products */;
-					ProjectRef = A31334D4152FFA6F0047D013 /* QWeiboSDK4iOS.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -5025,13 +5014,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		A31334DC152FFA6F0047D013 /* libQWeiboSDK4iOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQWeiboSDK4iOS.a;
-			remoteRef = A31334DB152FFA6F0047D013 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CA238F9814FB562500114175 /* libProtocolBuffers.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -5527,6 +5509,7 @@
 				A4A46A63169560BF00D78681 /* date_t_bg2@2x.png in Resources */,
 				A4A46A64169560BF00D78681 /* date_t_no_bg@2x.png in Resources */,
 				A4A46A65169560BF00D78681 /* date_top_bg@2x.png in Resources */,
+				EAEF3D4C16AD79E500FDE3FF /* UPPayEntitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5560,7 +5543,6 @@
 				CA45602B14F66EDD00DA085D /* NSArray+TKCategory.m in Sources */,
 				CA45602C14F66EDD00DA085D /* NSDate+TKCategory.m in Sources */,
 				CA45602D14F66EDD00DA085D /* NSDictionary+TKCategory.m in Sources */,
-				CA45602E14F66EDD00DA085D /* NSMutableURLRequest+TKCategory.m in Sources */,
 				CA45602F14F66EDD00DA085D /* NSString+TKCategory.m in Sources */,
 				CA45603014F66EDD00DA085D /* TapDetectingView.m in Sources */,
 				CA45603114F66EDD00DA085D /* TKAlertCenter.m in Sources */,
@@ -5904,17 +5886,13 @@
 				EA04C2F5169569D300E6922A /* GoogleAddressComponent.m in Sources */,
 				EA154B5C169FD49D00B98CB1 /* RegexKitLite.m in Sources */,
 				EA154B60169FD5D300B98CB1 /* IdCardUtil.m in Sources */,
+				EAEF3D6F16AE4B4C00FDE3FF /* UPPayPluginUtil.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A31334DE152FFB160047D013 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = QWeiboSDK4iOS;
-			targetProxy = A31334DD152FFB160047D013 /* PBXContainerItemProxy */;
-		};
 		CA238F9F14FB567100114175 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ProtocolBuffers;
@@ -5981,11 +5959,13 @@
 					armv7,
 					armv6,
 				);
+				CODE_SIGN_ENTITLEMENTS = /gitdata/Damuzhi_iPhone/Travel/UPPayEntitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -6013,10 +5993,12 @@
 					armv7,
 					armv6,
 				);
+				CODE_SIGN_ENTITLEMENTS = /gitdata/Damuzhi_iPhone/Travel/UPPayEntitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -6035,8 +6017,10 @@
 		CA49071314F5F05B00228C37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = /gitdata/Damuzhi_iPhone/Travel/UPPayEntitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -6045,6 +6029,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Common_iPhone_20/3PP-SDK/MobClick\"",
 					"\"$(SDKROOT)/usr/lib/system\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin/real\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin/simulator\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin\"",
+				);
+				OTHER_LDFLAGS = (
+					"-licucore",
+					"-ObjC++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "DD23DC00-0C13-4736-9DED-9B323450B934";
@@ -6058,8 +6049,10 @@
 		CA49071414F5F05B00228C37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = /gitdata/Damuzhi_iPhone/Travel/UPPayEntitlements.plist;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
 				INFOPLIST_FILE = "Travel/Travel-Info.plist";
@@ -6068,6 +6061,13 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../Common_iPhone_20/3PP-SDK/MobClick\"",
 					"\"$(SDKROOT)/usr/lib/system\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin/real\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin/simulator\"",
+					"\"$(SRCROOT)/../Common_iPhone_20/Components/Component-Service/UPPayPlugin\"",
+				);
+				OTHER_LDFLAGS = (
+					"-licucore",
+					"-ObjC++",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "DD23DC00-0C13-4736-9DED-9B323450B934";

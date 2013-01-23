@@ -16,6 +16,8 @@
 
 @interface AirHotelOrderDetailController : PPTableViewController <OrderHotelViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate>
 
+@property (assign, nonatomic) BOOL isPopToRoot;
+
 - (id)initWithOrder:(AirHotelOrder *)airHotelOrder;
 
 @end

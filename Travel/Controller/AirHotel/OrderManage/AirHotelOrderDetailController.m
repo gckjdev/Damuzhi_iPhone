@@ -61,6 +61,15 @@
     self.dataList = mutableArray;
 }
 
+- (void)clickBack:(id)sender
+{
+    if (_isPopToRoot) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 - (BOOL)hasAir:(AirHotelOrder *)order
 {
     if ([[order airOrdersList] count] > 0)
