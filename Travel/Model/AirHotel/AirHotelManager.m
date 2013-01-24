@@ -211,6 +211,14 @@ static AirHotelManager *_airHotelManager = nil;
             }
             totalPrice += each;
         }
+        
+        if (builder.insurance) {
+            totalPrice += builder.flight.insuranceFee * [builder.passengerList count];
+        }
+        
+        if (builder.sendTicket) {
+            totalPrice += builder.flight.sendTicketFee * [builder.passengerList count];
+        }
     }
     
     return [PriceUtils priceToStringCNY:totalPrice];
@@ -249,14 +257,26 @@ static AirHotelManager *_airHotelManager = nil;
 {
     NSString *statusName = nil;
     switch (status) {
-        case 5:
+        case StatusUnknow:
+            statusName = @"未知";
+            break;
+        case StatusPrepaid:
+            statusName = @"已支付";
+            break;
+        case StatusUnpaid:
+            statusName = @"未支付";
+            break;
+        case StatusFinish:
+            statusName = @"已完成";
+            break;
+        case StatusCancel:
+            statusName = @"已取消";
+            break;
+        case StatusAdd:
             statusName = @"意向订单";
             break;
-        case 15:
-            statusName = @"已确认订单";
-            break;
-        case 25:
-            statusName = @"取消订单";
+        case StatusConfirm:
+            statusName = @"已确认";
             break;
         default:
             break;

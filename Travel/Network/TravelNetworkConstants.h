@@ -11,9 +11,13 @@
 
 #define OS_IOS 1
 
+//test
+#define UNION_PAY_SYSTEM_PROVIDE    @"00000001"  //系统支持代码，由商户向银联申请。
+#define UNION_PAY_AP_ID             @"0001"      //服务提供商代码，由商户向银联申请。
+
+
 // for test service
 #define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
-
 
 // for formal service
 //#define URL_SERVICE                 @"http://api.trip8888.com/service/"

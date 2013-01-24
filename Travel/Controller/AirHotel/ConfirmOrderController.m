@@ -20,6 +20,7 @@
 #import "PersonManager.h"
 #import "UPPayPluginUtil.h"
 #import "AirHotelOrderDetailController.h"
+#import "TravelNetworkConstants.h"
 
 @interface ConfirmOrderController ()
 
@@ -49,6 +50,7 @@
     [_hotelPriceHolderView release];
     [_shouldPayPriceLabel release];
     [_resultOrder release];
+    [_hotelPayModeLabel release];
     [super dealloc];
 }
 
@@ -122,13 +124,6 @@
     if ([airOrderList count] > 0) {
         [_airHotelOrderBuilder setAirPaymentMode:PaymentModeOnline];
     }
-    
-//    if ([hotelOrderList count] > 0) {
-//        if (condition) {
-//            statements
-//        }
-//        [];
-//    }
 }
 
 #define SECTION_AIR 0
@@ -211,13 +206,6 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle: NSLS(@"取消")otherButtonTitles:NSLS(@"确定"),nil];
     [alert show];
     [alert release];
-    
-    //for test
-//    AirHotelOrderListController *controller = [[[AirHotelOrderListController alloc] init] autorelease];
-//    controller.isPopToRoot = YES;
-//    controller.delegate = self;
-//    [self.navigationController pushViewController:controller animated:YES];
-    //controller.dataList = [NSArray arrayWithObjects:order, nil];
 }
 
 - (void)clearPersons
@@ -246,7 +234,7 @@
 #pragma mark AirHotelServiceDelegate methods
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo
-          orderId:(NSString *)orderId
+          orderId:(int)orderId
 {
     PPDebug(@"orderDone result:%d, resultInfo:%@, orderId:%d", result, resultInfo, orderId);
     [self hideActivity];
@@ -257,7 +245,6 @@
         [_hotelOrderBuilders removeAllObjects];
         [self clearPersons];
         
-        [self showActivity];
         [[AirHotelService defaultService] findOrder:orderId delegate:self];
     } else {
         [self setOrderData];
@@ -268,7 +255,6 @@
 - (void)findOrderDone:(int)result order:(AirHotelOrder *)order
 {
     self.resultOrder = order;
-    [self hideActivity];
     if (result == 0) {
         if (order.orderStatus == StatusUnpaid) {//未支付
             [self showActivity];
@@ -286,7 +272,7 @@
 {
     [self hideActivity];
     if (result == 0) {
-        [UPPayPluginUtil test:paymentInfo SystemProvide:@"00000001" SPID:@"0001" withViewController:self Delegate:self];
+        [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
     } else {
         [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
     }
@@ -403,7 +389,13 @@
     self.airPirceLabel.text = [manager calculateAirTotalPrice:_airOrderBuilders];
     self.hotelPriceLabel.text = [manager calculateHotelTotalPrice:_hotelOrderBuilders];
     
-    self.shouldPayPriceLabel.text = self.airPirceLabel.text;
+    if ([[AppManager defaultManager] isChinaCity:[[AppManager defaultManager] getCurrentCityId]]) {
+        self.hotelPayModeLabel.text = NSLS(@"到店支付");
+    } else {
+        self.hotelPayModeLabel.text = NSLS(@"在线支付");
+    }
+    
+    //self.shouldPayPriceLabel.text = self.airPirceLabel.text;
 }
 
 
@@ -414,6 +406,7 @@
     for (AirOrder_Builder *builder in _airOrderBuilders) {
         [builder setInsurance:isSelected];
     }
+    [self updatePrice];
 }
 
 - (void)didClickSendTicketButton:(NSIndexPath *)indexPath isSelected:(BOOL)isSelected
@@ -421,6 +414,7 @@
     for (AirOrder_Builder *builder in _airOrderBuilders) {
         [builder setSendTicket:isSelected];
     }
+    [self updatePrice];
 }
 
 - (void)didClickPassengerButton:(NSIndexPath *)indexPath
@@ -521,21 +515,24 @@
     [self setAirPriceHolderView:nil];
     [self setHotelPriceHolderView:nil];
     [self setShouldPayPriceLabel:nil];
+    [self setHotelPayModeLabel:nil];
     [super viewDidUnload];
 }
-
-- (IBAction)clickOnlinePay:(id)sender {
-    [[AirHotelService defaultService] findOrderPaymentInfo:100162 delegate:self];
-}
-
 
 #pragma mark - 
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
 {
+    //success、fail、cancel
     PPDebug(@"UPPayPluginResult:%@", result);
-    if (result) {
-        [self popupMessage:result title:nil];
+    
+    if ([result isEqualToString:@"success"]) {
+        [[AirHotelService defaultService] findOrder:_resultOrder.orderId delegate:self];
+    } else {
+        AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:_resultOrder];
+        controller.isPopToRoot = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
     }
 }
 

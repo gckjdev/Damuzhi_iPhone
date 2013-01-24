@@ -13,6 +13,9 @@
 #import "PlaceService.h"
 #import "CommonPlaceDetailController.h"
 #import "CommonWebController.h"
+#import "UPPayPluginUtil.h"
+#import "TravelNetworkConstants.h"
+#import "AirHotelManager.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -23,6 +26,7 @@
 - (void)dealloc
 {
     [_airHotelOrder release];
+    [_footerView release];
     [super dealloc];
 }
 
@@ -48,6 +52,11 @@
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
+    
+    if (_airHotelOrder.orderStatus != StatusUnpaid) {
+        self.footerView.hidden = YES;
+        self.footerView.frame = CGRectZero;
+    }
     
     //set dataList
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
@@ -190,6 +199,39 @@
     controller.navigationItem.title = NSLS(@"退改签详情");
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
+}
+
+- (void)viewDidUnload {
+    [self setFooterView:nil];
+    [super viewDidUnload];
+}
+
+- (IBAction)clickPayButton:(id)sender {
+    [self showActivity];
+    [[AirHotelService defaultService] findOrderPaymentInfo:_airHotelOrder.orderId
+                                                  delegate:self];
+}
+
+#pragma mark -
+#pragma mark AirHotelServiceDelegate method
+- (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo
+{
+    [self hideActivity];
+    if (result == 0) {
+        [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
+    } else {
+        [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
+    }
+}
+
+#pragma mark -
+#pragma mark UPPayPluginDelegate
+-(void)UPPayPluginResult:(NSString*)result
+{
+    PPDebug(@"UPPayPluginResult:%@", result);
+    if (result) {
+        [self popupMessage:result title:nil];
+    }
 }
 
 @end

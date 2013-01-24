@@ -99,7 +99,8 @@ static AirHotelService *_airHotelService = nil;
         
         //NSDictionary *dic = [output.textData JSONValue];
         NSString *reultInfo = [output.jsonDataDict objectForKey:PARA_TRAVEL_RESULT_INFO];
-        NSString *orderId = [output.jsonDataDict objectForKey:PARA_TRAVEL_ID];
+        NSString *orderIdStr = [output.jsonDataDict objectForKey:PARA_TRAVEL_ID];
+        int orderId = [orderIdStr intValue];
         PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -225,10 +226,10 @@ static AirHotelService *_airHotelService = nil;
     });
 }
 
-- (void)findOrder:(NSString *)orderId delegate:(id<AirHotelServiceDelegate>)delegate
+- (void)findOrder:(int)orderId delegate:(id<AirHotelServiceDelegate>)delegate
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        CommonNetworkOutput *output = [TravelNetworkRequest queryObject:OBJECT_TYPE_AIR_HOTEL_ORDER objStringId:orderId lang:LanguageTypeZhHans];
+        CommonNetworkOutput *output = [TravelNetworkRequest queryObject:OBJECT_TYPE_AIR_HOTEL_ORDER objId:orderId lang:LanguageTypeZhHans];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             AirHotelOrder *order;

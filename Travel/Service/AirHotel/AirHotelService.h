@@ -24,7 +24,7 @@
 
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo
-          orderId:(NSString *)orderId;
+          orderId:(int)orderId;
 
 - (void)findFlightsDone:(int)resultCode
                  result:(int)result
@@ -70,8 +70,7 @@
                         token:(NSString *)token
                      delegate:(id<AirHotelServiceDelegate>)delegate;
 
-- (void)findOrder:(NSString *)orderId
-         delegate:(id<AirHotelServiceDelegate>)delegate;
+- (void)findOrder:(int)orderId delegate:(id<AirHotelServiceDelegate>)delegate;
 
 - (void)findOrderPaymentInfo:(int)orderId
                     delegate:(id<AirHotelServiceDelegate>)delegate;

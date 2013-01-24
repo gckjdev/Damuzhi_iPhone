@@ -36,6 +36,12 @@
 
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde
 {
+    if (airHotelOrde.hotelPaymentMode == PaymentModeOnline) {
+        self.paymentModeLabel.text = @"在线支付";
+    } else {
+        self.paymentModeLabel.text = @"到店支付";
+    }
+    
     CGFloat y = HEIGHT_TOP;
     for (HotelOrder *order in airHotelOrde.hotelOrdersList) {
         OrderHotelView *view = [OrderHotelView createOrderHotelView:delegate];
@@ -62,6 +68,7 @@
     [_priceLabel release];
     [_priceHolderView release];
     [_holderView release];
+    [_paymentModeLabel release];
     [super dealloc];
 }
 @end

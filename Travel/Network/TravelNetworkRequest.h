@@ -60,10 +60,6 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                          distance:(double)distance
                              lang:(int)lang;
 
-+ (CommonNetworkOutput*)queryObject:(int)type
-                        objStringId:(NSString *)objStringId
-                               lang:(int)lang;
-
 + (CommonNetworkOutput*)queryObject:(int)type 
                               objId:(int)objId 
                                lang:(int)lang;

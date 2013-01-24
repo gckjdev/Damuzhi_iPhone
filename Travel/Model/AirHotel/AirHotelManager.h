@@ -16,15 +16,15 @@ typedef enum{
     FlightTypeBackOfDouble = 4
 } FlightType;
 
-typedef enum{
+enum AirHotelOrderStatus{
     StatusUnknow = 0,   //未知
     StatusPrepaid = 1,  //已支付
-    StatusUnpaid = 2,  //未支付
+    StatusUnpaid = 2,   //未支付
     StatusFinish = 3,   //已完成
     StatusCancel = 4,   //已取消
     StatusAdd = 5,      //意向订单
     StatusConfirm = 6   //已确认
-} AirHotelOrderStatus;
+};
 
 @interface AirHotelManager : NSObject
 

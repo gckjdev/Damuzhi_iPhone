@@ -65,11 +65,11 @@
         PPDebug(@"*********************");
         PPDebug(@"orderId:%d", order.orderId);
         PPDebug(@"orderStatus:%d", order.orderStatus);
-        PPDebug(@"depart cityId:%d", order.departCityId);
-        PPDebug(@"arrive cityId:%d", order.arriveCityId);
-        PPDebug(@"contactPerson name:%@", order.contactPerson.name);
-        PPDebug(@"contactPerson phone:%@", order.contactPerson.phone);
-        PPDebug(@"airOrders count:%d", [order.airOrdersList count]);
+//        PPDebug(@"depart cityId:%d", order.departCityId);
+//        PPDebug(@"arrive cityId:%d", order.arriveCityId);
+//        PPDebug(@"contactPerson name:%@", order.contactPerson.name);
+//        PPDebug(@"contactPerson phone:%@", order.contactPerson.phone);
+//        PPDebug(@"airOrders count:%d", [order.airOrdersList count]);
 //        PPDebug(@"hotelOrders count:%d", [order.hotelOrdersList count]);
 //        PPDebug(@"hotel totalPrice:%@", [PriceUtils priceToStringCNY:order.hotelPrice]);
 //        
@@ -109,7 +109,7 @@
         self.dataList  = orderList;
         [dataTableView reloadData];
         
-        //[self debugData];
+        [self debugData];
     }
 }
 

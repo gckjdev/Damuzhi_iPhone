@@ -407,7 +407,7 @@
 }
 
 + (CommonNetworkOutput*)queryObject:(int)type
-                        objStringId:(NSString *)objStringId
+                              objId:(int)objId 
                                lang:(int)lang
 {
     CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
@@ -418,7 +418,7 @@
         NSString* str = [NSString stringWithString:baseURL];
         
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
-        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID value:objStringId];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:objId];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_LANG intValue:lang];
         
         return str;
@@ -433,13 +433,6 @@
                              responseHandler:responseHandler
                                 outputFormat:FORMAT_TRAVEL_PB
                                       output:output];
-}
-
-+ (CommonNetworkOutput*)queryObject:(int)type
-                              objId:(int)objId 
-                               lang:(int)lang
-{
-    return [TravelNetworkRequest queryObject:type objStringId:[NSString stringWithFormat:@"%d", objId] lang:lang];
 }
 
 + (CommonNetworkOutput*)queryObject:(int)type

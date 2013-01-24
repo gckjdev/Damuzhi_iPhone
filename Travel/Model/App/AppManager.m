@@ -1479,4 +1479,12 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+- (BOOL)isChinaCity:(int)cityId
+{
+    City *city = [self getCity:cityId];
+    return ([city.countryName isEqualToString:@"中国"] ||
+            [city.countryName isEqualToString:@"中國"] ||
+            [city.countryName isEqualToString:@"China"]);
+}
+
 @end

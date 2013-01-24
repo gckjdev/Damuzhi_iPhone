@@ -134,4 +134,6 @@
 - (NSString *)getNationalityName:(int)nationalityId;
 - (NSString *)getBankName:(int)bankId;
 
+- (BOOL)isChinaCity:(int)cityId;
+
 @end
