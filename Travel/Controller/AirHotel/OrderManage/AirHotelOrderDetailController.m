@@ -16,6 +16,7 @@
 #import "UPPayPluginUtil.h"
 #import "TravelNetworkConstants.h"
 #import "AirHotelManager.h"
+#import "PriceUtils.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -27,6 +28,7 @@
 {
     [_airHotelOrder release];
     [_footerView release];
+    [_shouldPayPriceLabel release];
     [super dealloc];
 }
 
@@ -56,6 +58,17 @@
     if (_airHotelOrder.orderStatus != StatusUnpaid) {
         self.footerView.hidden = YES;
         self.footerView.frame = CGRectZero;
+    } else {
+        double totalPrice = 0;
+        if ([self hasAir:_airHotelOrder]) {
+            totalPrice += _airHotelOrder.airPrice;
+        }
+        
+        if (_airHotelOrder.hotelPaymentMode == PaymentModeOnline) {
+            totalPrice += _airHotelOrder.hotelPrice;
+        }
+        
+        self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:totalPrice];
     }
     
     //set dataList
@@ -203,10 +216,17 @@
 
 - (void)viewDidUnload {
     [self setFooterView:nil];
+    [self setShouldPayPriceLabel:nil];
     [super viewDidUnload];
 }
 
 - (IBAction)clickPayButton:(id)sender {
+    NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+    if (nowTimeInterval - _airHotelOrder.orderDate > 30 * 60) {
+        [self popupMessage:NSLS(@"订单超过30分钟未支付，已失效") title:nil];
+        return;
+    }
+    
     [self showActivity];
     [[AirHotelService defaultService] findOrderPaymentInfo:_airHotelOrder.orderId
                                                   delegate:self];
@@ -229,7 +249,9 @@
 -(void)UPPayPluginResult:(NSString*)result
 {
     PPDebug(@"UPPayPluginResult:%@", result);
-    if (result) {
+    if ([result isEqualToString:@"success"]) {
+        [self popupMessage:NSLS(@"已经完成支付") title:nil];
+    } else{
         [self popupMessage:result title:nil];
     }
 }

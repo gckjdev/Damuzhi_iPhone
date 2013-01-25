@@ -51,6 +51,7 @@
     [_shouldPayPriceLabel release];
     [_resultOrder release];
     [_hotelPayModeLabel release];
+    [_shouldPayPriceHolderView release];
     [super dealloc];
 }
 
@@ -271,11 +272,24 @@
 - (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo
 {
     [self hideActivity];
+    
     if (result == 0) {
-        [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
+        [self showActivityWithText:NSLS(@"请在30分钟内完成支付，正在跳转支付页面")];
+        [NSTimer scheduledTimerWithTimeInterval: 2.0
+                                         target: self
+                                       selector: @selector(handleTimer:)
+                                       userInfo: paymentInfo
+                                        repeats: NO];
     } else {
         [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
     }
+}
+
+- (void)handleTimer:(NSTimer *)aTimer
+{
+    [self hideActivity];
+    NSString *paymentInfo = (NSString *)[aTimer userInfo];
+    [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
 }
 
 #pragma mark - 
@@ -385,17 +399,25 @@
 - (void)updatePrice
 {
     AirHotelManager *manager = [AirHotelManager defaultManager];
+    double airPrice = [manager calculateAirTotalPrice:_airOrderBuilders];
+    double hotelPrice = [manager calculateHotelTotalPrice:_hotelOrderBuilders];
+    self.airPirceLabel.text = [PriceUtils priceToStringCNY:airPrice];
+    self.hotelPriceLabel.text = [PriceUtils priceToStringCNY:hotelPrice];
     
-    self.airPirceLabel.text = [manager calculateAirTotalPrice:_airOrderBuilders];
-    self.hotelPriceLabel.text = [manager calculateHotelTotalPrice:_hotelOrderBuilders];
-    
+    double shouldPayPrice = airPrice;
     if ([[AppManager defaultManager] isChinaCity:[[AppManager defaultManager] getCurrentCityId]]) {
         self.hotelPayModeLabel.text = NSLS(@"到店支付");
     } else {
+        shouldPayPrice += hotelPrice;
         self.hotelPayModeLabel.text = NSLS(@"在线支付");
     }
     
-    //self.shouldPayPriceLabel.text = self.airPirceLabel.text;
+    if (shouldPayPrice == 0) {
+        self.shouldPayPriceHolderView.hidden = YES;
+    } else {
+        self.shouldPayPriceHolderView.hidden = NO;
+    }
+    self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:shouldPayPrice];
 }
 
 
@@ -516,6 +538,7 @@
     [self setHotelPriceHolderView:nil];
     [self setShouldPayPriceLabel:nil];
     [self setHotelPayModeLabel:nil];
+    [self setShouldPayPriceHolderView:nil];
     [super viewDidUnload];
 }
 

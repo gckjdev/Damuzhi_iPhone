@@ -197,7 +197,7 @@ static AirHotelManager *_airHotelManager = nil;
     return resultArray;
 }
 
-- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList
+- (double)calculateAirTotalPrice:(NSArray *)airOrderBuilderList
 {
     double totalPrice = 0;
     
@@ -221,7 +221,9 @@ static AirHotelManager *_airHotelManager = nil;
         }
     }
     
-    return [PriceUtils priceToStringCNY:totalPrice];
+    return totalPrice;
+    
+    //return [PriceUtils priceToStringCNY:totalPrice];
 }
 
 - (HotelRoom *)getRoomWithRoomId:(int)roomId hotel:(Place *)hotel
@@ -235,7 +237,7 @@ static AirHotelManager *_airHotelManager = nil;
     return nil;
 }
 
-- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList
+- (double)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList
 {
     double totalPrice = 0;
     
@@ -246,11 +248,7 @@ static AirHotelManager *_airHotelManager = nil;
         }
     }
     
-    AppManager *manager = [AppManager defaultManager];
-    int currentCiytId = [manager getCurrentCityId];
-    NSString *currency = [manager getCurrencySymbol:currentCiytId];
-    
-    return [PriceUtils priceToString:totalPrice currency:currency];
+    return totalPrice;
 }
 
 - (NSString *)orderStatusName:(int)status

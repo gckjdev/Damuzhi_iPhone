@@ -55,10 +55,7 @@
     
     self.holderView.frame = CGRectMake(self.holderView.frame.origin.x, self.holderView.frame.origin.y, self.holderView.frame.size.width, y + self.priceHolderView.frame.size.height);
     
-    AppManager *manager = [AppManager defaultManager];
-    int currentCiytId = [manager getCurrentCityId];
-    NSString *currency = [manager getCurrencySymbol:currentCiytId];
-    self.priceLabel.text= [PriceUtils priceToString:airHotelOrde.hotelPrice currency:currency];
+    self.priceLabel.text= [PriceUtils priceToStringCNY:airHotelOrde.hotelPrice ];
 }
 
 

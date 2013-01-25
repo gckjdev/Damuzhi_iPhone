@@ -97,11 +97,7 @@
                 roomName = room.name;
                 breakfast = room.breakfast;
                 bed = room.bed;
-                
-                AppManager *manager = [AppManager defaultManager];
-                int currentCiytId = [manager getCurrentCityId];
-                NSString *currency = [manager getCurrencySymbol:currentCiytId];
-                price = [PriceUtils priceToString:room.price currency:currency];
+                price = [PriceUtils priceToStringCNY:room.price];
             }
         }
         

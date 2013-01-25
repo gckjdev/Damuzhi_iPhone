@@ -18,6 +18,7 @@
 
 @interface AirHotelOrderDetailController : PPTableViewController <OrderHotelViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate, AirHotelServiceDelegate,UPPayPluginDelegate>
 @property (retain, nonatomic) IBOutlet UIView *footerView;
+@property (retain, nonatomic) IBOutlet UILabel *shouldPayPriceLabel;
 
 @property (assign, nonatomic) BOOL isPopToRoot;
 

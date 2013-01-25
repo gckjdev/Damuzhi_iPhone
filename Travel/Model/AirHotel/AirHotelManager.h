@@ -56,8 +56,8 @@ enum AirHotelOrderStatus{
 - (NSArray *)validAirOrderBuilders:(NSArray *)builders;
 - (NSArray *)validHotelOrderBuilders:(NSArray *)builders;
 
-- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
-- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
+- (double)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
+- (double)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
 
 - (NSString *)orderStatusName:(int)status;
 - (UIColor *)orderStatusColor:(int)status;

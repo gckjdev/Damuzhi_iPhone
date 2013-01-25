@@ -88,10 +88,7 @@
     self.breakfastLabel.text = [NSString stringWithFormat:@"%@/%@", room.bed, room.breakfast];
     self.selectRoomButton.selected = isSelected;
     
-    AppManager *manager = [AppManager defaultManager];
-    int currentCiytId = [manager getCurrentCityId];
-    NSString *currency = [manager getCurrencySymbol:currentCiytId];
-    self.priceLabel.text = [PriceUtils priceToString:room.price currency:currency];
+    self.priceLabel.text = [PriceUtils priceToStringCNY:room.price];
     
     [self updateCountLabel];
     [self updateSite:roomCellSite];
