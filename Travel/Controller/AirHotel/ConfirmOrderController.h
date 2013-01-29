@@ -26,6 +26,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *shouldPayPriceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *hotelPayModeLabel;
 @property (retain, nonatomic) IBOutlet UIView *shouldPayPriceHolderView;
+@property (retain, nonatomic) IBOutlet UIButton *orderButton;
 
 - (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
             hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders

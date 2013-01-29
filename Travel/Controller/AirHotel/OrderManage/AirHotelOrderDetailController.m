@@ -13,8 +13,7 @@
 #import "PlaceService.h"
 #import "CommonPlaceDetailController.h"
 #import "CommonWebController.h"
-#import "UPPayPluginUtil.h"
-#import "TravelNetworkConstants.h"
+#import "PayView.h"
 #import "AirHotelManager.h"
 #import "PriceUtils.h"
 
@@ -223,11 +222,13 @@
 - (IBAction)clickPayButton:(id)sender {
     NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
     if (nowTimeInterval - _airHotelOrder.orderDate > 30 * 60) {
-        [self popupMessage:NSLS(@"订单超过30分钟未支付，已失效") title:nil];
+        UIAlertView *theAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLS(@"订单已取消，请重新提交订单") delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+        [theAlertView show];
+        [theAlertView release];
         return;
     }
     
-    [self showActivity];
+    [self showActivityWithText:NSLS(@"正在获取支付信息...")];
     [[AirHotelService defaultService] findOrderPaymentInfo:_airHotelOrder.orderId
                                                   delegate:self];
 }
@@ -238,7 +239,19 @@
 {
     [self hideActivity];
     if (result == 0) {
-        [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
+        NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+        int remainMinute = (30 * 60 - (nowTimeInterval - _airHotelOrder.orderDate) ) / 60;
+        if (remainMinute == 0) {
+            remainMinute = 1;
+        } else if (remainMinute > 30) {
+            remainMinute = 30;
+        }
+        
+        PayView *payView = [PayView createPayView];
+        [payView show:[NSString stringWithFormat:@"请在%d分钟内完成支付", remainMinute]
+          paymentInfo:paymentInfo
+           controller:self
+             delegate:self];
     } else {
         [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
     }

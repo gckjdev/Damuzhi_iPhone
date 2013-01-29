@@ -286,17 +286,26 @@ static AirHotelManager *_airHotelManager = nil;
 {
     UIColor *statusColor = [UIColor blackColor];
     switch (status) {
-        case 5:
-            //statusColor = [UIColor colorWithRed:0x00/0xFF green:0x99/0xFF blue:0x00/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:0.0/255.0 alpha:1];
+        case StatusUnknow:
+
             break;
-        case 15:
-            //statusColor = [UIColor colorWithRed:0xC6/0xFF green:0x00/0xFF blue:0x00/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:198.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1];
+        case StatusPrepaid:
+
             break;
-        case 25:
-            //statusColor = [UIColor colorWithRed:0x67/0xFF green:0x67/0xFF blue:0x67/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:103.0/255.0 green:103.0/255.0 blue:103.0/255.0 alpha:1];
+        case StatusUnpaid:
+            statusColor = [UIColor colorWithRed:0.0/255.0 green:176.0/255.0 blue:52.0/255.0 alpha:1.0];
+            break;
+        case StatusFinish:
+
+            break;
+        case StatusCancel:
+
+            break;
+        case StatusAdd:
+
+            break;
+        case StatusConfirm:
+
             break;
         default:
             break;

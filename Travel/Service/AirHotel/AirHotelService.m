@@ -279,7 +279,7 @@ static AirHotelService *_airHotelService = nil;
             }
         }
         
-        NSString* paymentInfo;
+        NSString* paymentInfo = nil;
         if (isSucc) {
            paymentInfo = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
         }

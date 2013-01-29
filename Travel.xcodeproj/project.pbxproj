@@ -814,6 +814,11 @@
 		EAC88FA015A441510068C3C0 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9B15A441510068C3C0 /* UserInfoCell.xib */; };
 		EAC88FA115A441510068C3C0 /* UserInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAC88F9D15A441510068C3C0 /* UserInfoController.m */; };
 		EAC88FA215A441510068C3C0 /* UserInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAC88F9E15A441510068C3C0 /* UserInfoController.xib */; };
+		EAD38C2016B636770072D045 /* loading_bg_960@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EAD38C1D16B636760072D045 /* loading_bg_960@2x.jpg */; };
+		EAD38C2116B636770072D045 /* loading_bg_1136@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EAD38C1E16B636770072D045 /* loading_bg_1136@2x.jpg */; };
+		EAD38C2216B636770072D045 /* pay_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAD38C1F16B636770072D045 /* pay_btn@2x.png */; };
+		EAD38C3516B7AEB20072D045 /* PayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD38C3416B7AEB20072D045 /* PayView.m */; };
+		EAD38C3716B7AED40072D045 /* PayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAD38C3616B7AED40072D045 /* PayView.xib */; };
 		EAD83398166C859F003DE6B2 /* ConfirmAirCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */; };
 		EAD8339A166C85B1003DE6B2 /* ConfirmAirCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */; };
 		EAD88349165CBCA4006947E4 /* NSDate+TKCategory.strings in Resources */ = {isa = PBXBuildFile; fileRef = EAD8834B165CBCA4006947E4 /* NSDate+TKCategory.strings */; };
@@ -2079,6 +2084,12 @@
 		EAC88F9C15A441510068C3C0 /* UserInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoController.h; sourceTree = "<group>"; };
 		EAC88F9D15A441510068C3C0 /* UserInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoController.m; sourceTree = "<group>"; };
 		EAC88F9E15A441510068C3C0 /* UserInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoController.xib; sourceTree = "<group>"; };
+		EAD38C1D16B636760072D045 /* loading_bg_960@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "loading_bg_960@2x.jpg"; sourceTree = "<group>"; };
+		EAD38C1E16B636770072D045 /* loading_bg_1136@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "loading_bg_1136@2x.jpg"; sourceTree = "<group>"; };
+		EAD38C1F16B636770072D045 /* pay_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pay_btn@2x.png"; sourceTree = "<group>"; };
+		EAD38C3316B7AEB10072D045 /* PayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayView.h; sourceTree = "<group>"; };
+		EAD38C3416B7AEB20072D045 /* PayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PayView.m; sourceTree = "<group>"; };
+		EAD38C3616B7AED40072D045 /* PayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PayView.xib; sourceTree = "<group>"; };
 		EAD83396166C859E003DE6B2 /* ConfirmAirCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmAirCell.h; sourceTree = "<group>"; };
 		EAD83397166C859F003DE6B2 /* ConfirmAirCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmAirCell.m; sourceTree = "<group>"; };
 		EAD83399166C85B0003DE6B2 /* ConfirmAirCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmAirCell.xib; sourceTree = "<group>"; };
@@ -4634,6 +4645,9 @@
 		EA05F1DA166E01CC008685DA /* confirm_order */ = {
 			isa = PBXGroup;
 			children = (
+				EAD38C1D16B636760072D045 /* loading_bg_960@2x.jpg */,
+				EAD38C1E16B636770072D045 /* loading_bg_1136@2x.jpg */,
+				EAD38C1F16B636770072D045 /* pay_btn@2x.png */,
 				EA05F1DB166E01CC008685DA /* reserve_btn1@2x.png */,
 				EA05F1DC166E01CC008685DA /* reserve_btn2@2x.png */,
 				EA05F1DD166E01CC008685DA /* reserve_btn3@2x.png */,
@@ -4699,6 +4713,9 @@
 				EA116AD7168F01F1004C3B4B /* RoomInfoView.m */,
 				EA116AD9168F33D4004C3B4B /* PersonsView.h */,
 				EA116ADA168F33D6004C3B4B /* PersonsView.m */,
+				EAD38C3316B7AEB10072D045 /* PayView.h */,
+				EAD38C3416B7AEB20072D045 /* PayView.m */,
+				EAD38C3616B7AED40072D045 /* PayView.xib */,
 				EA1CE04C169188D300895AB4 /* AirHotelColorConstants.h */,
 			);
 			path = CommonView;
@@ -5510,6 +5527,10 @@
 				A4A46A64169560BF00D78681 /* date_t_no_bg@2x.png in Resources */,
 				A4A46A65169560BF00D78681 /* date_top_bg@2x.png in Resources */,
 				EAEF3D4C16AD79E500FDE3FF /* UPPayEntitlements.plist in Resources */,
+				EAD38C2016B636770072D045 /* loading_bg_960@2x.jpg in Resources */,
+				EAD38C2116B636770072D045 /* loading_bg_1136@2x.jpg in Resources */,
+				EAD38C2216B636770072D045 /* pay_btn@2x.png in Resources */,
+				EAD38C3716B7AED40072D045 /* PayView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5887,6 +5908,7 @@
 				EA154B5C169FD49D00B98CB1 /* RegexKitLite.m in Sources */,
 				EA154B60169FD5D300B98CB1 /* IdCardUtil.m in Sources */,
 				EAEF3D6F16AE4B4C00FDE3FF /* UPPayPluginUtil.mm in Sources */,
+				EAD38C3516B7AEB20072D045 /* PayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

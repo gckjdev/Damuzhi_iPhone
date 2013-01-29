@@ -18,9 +18,8 @@
 #import "AppManager.h"
 #import "CommonPlaceDetailController.h"
 #import "PersonManager.h"
-#import "UPPayPluginUtil.h"
 #import "AirHotelOrderDetailController.h"
-#import "TravelNetworkConstants.h"
+#import "PayView.h"
 
 @interface ConfirmOrderController ()
 
@@ -52,6 +51,7 @@
     [_resultOrder release];
     [_hotelPayModeLabel release];
     [_shouldPayPriceHolderView release];
+    [_orderButton release];
     [super dealloc];
 }
 
@@ -149,6 +149,21 @@
         self.hotelPriceHolderView.hidden = YES;
     }
 }
+
+-(void)updateOrderButton
+{
+    if ([_airOrderBuilders count] > 0 ||
+        ([_hotelOrderBuilders count] > 0 && [self isChinaHotel] == NO)) {
+        [self.orderButton setTitle:NSLS(@"提交订单并支付") forState:UIControlStateNormal];
+    } else {
+        [self.orderButton setTitle:NSLS(@"确认提交订单") forState:UIControlStateNormal];
+    }
+    
+    if ([_hotelOrderBuilders count] == 0) {
+        self.airPriceHolderView.frame = FRAME_PRICE_HOLDER_VIEW
+        self.hotelPriceHolderView.hidden = YES;
+    }
+}
  
 - (void)viewDidLoad
 {
@@ -161,6 +176,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
     
     [self updateSite];
+    [self updateOrderButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -239,13 +255,12 @@
 {
     PPDebug(@"orderDone result:%d, resultInfo:%@, orderId:%d", result, resultInfo, orderId);
     [self hideActivity];
-    if (result == 0) {
-        [self popupMessage:NSLS(@"预订成功") title:nil];
-        
+    if (result == 0) {        
         [_airOrderBuilders removeAllObjects];
         [_hotelOrderBuilders removeAllObjects];
         [self clearPersons];
         
+        [self showActivityWithText:NSLS(@"正在生成订单...")];
         [[AirHotelService defaultService] findOrder:orderId delegate:self];
     } else {
         [self setOrderData];
@@ -255,10 +270,11 @@
 
 - (void)findOrderDone:(int)result order:(AirHotelOrder *)order
 {
+    [self hideActivity];
     self.resultOrder = order;
     if (result == 0) {
         if (order.orderStatus == StatusUnpaid) {//未支付
-            [self showActivity];
+            [self showActivityWithText:NSLS(@"正在获取支付信息...")];
             [[AirHotelService defaultService] findOrderPaymentInfo:order.orderId delegate:self];
         } else {
             AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:order];
@@ -274,22 +290,14 @@
     [self hideActivity];
     
     if (result == 0) {
-        [self showActivityWithText:NSLS(@"请在30分钟内完成支付，正在跳转支付页面")];
-        [NSTimer scheduledTimerWithTimeInterval: 2.0
-                                         target: self
-                                       selector: @selector(handleTimer:)
-                                       userInfo: paymentInfo
-                                        repeats: NO];
+        PayView *payView = [PayView createPayView];
+        [payView show:NSLS(@"订单提交成功，请在30分钟内完成支付")
+          paymentInfo:paymentInfo
+           controller:self
+             delegate:self];
     } else {
         [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
     }
-}
-
-- (void)handleTimer:(NSTimer *)aTimer
-{
-    [self hideActivity];
-    NSString *paymentInfo = (NSString *)[aTimer userInfo];
-    [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:self Delegate:self];
 }
 
 #pragma mark - 
@@ -396,6 +404,11 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (BOOL)isChinaHotel
+{
+    return [[AppManager defaultManager] isChinaCity:[[AppManager defaultManager] getCurrentCityId]];
+}
+
 - (void)updatePrice
 {
     AirHotelManager *manager = [AirHotelManager defaultManager];
@@ -405,7 +418,7 @@
     self.hotelPriceLabel.text = [PriceUtils priceToStringCNY:hotelPrice];
     
     double shouldPayPrice = airPrice;
-    if ([[AppManager defaultManager] isChinaCity:[[AppManager defaultManager] getCurrentCityId]]) {
+    if ([self isChinaHotel]) {
         self.hotelPayModeLabel.text = NSLS(@"到店支付");
     } else {
         shouldPayPrice += hotelPrice;
@@ -539,6 +552,7 @@
     [self setShouldPayPriceLabel:nil];
     [self setHotelPayModeLabel:nil];
     [self setShouldPayPriceHolderView:nil];
+    [self setOrderButton:nil];
     [super viewDidUnload];
 }
 
