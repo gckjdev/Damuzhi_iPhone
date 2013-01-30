@@ -274,33 +274,41 @@
     self.resultOrder = order;
     if (result == 0) {
         if (order.orderStatus == StatusUnpaid) {//未支付
-            [self showActivityWithText:NSLS(@"正在获取支付信息...")];
-            [[AirHotelService defaultService] findOrderPaymentInfo:order.orderId delegate:self];
+            [self showActivityWithText:NSLS(@"正在获取交易流水号...")];
+            [[AirHotelService defaultService] findPaySerialNumber:order.orderId delegate:self];
         } else {
-            AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:order];
-            controller.isPopToRoot = YES;
-            [self.navigationController pushViewController:controller animated:YES];
-            [controller release];
+            [self pushOrderDetail];
         }
     }
 }
 
-- (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo
+- (void)findPaySerialNumberDone:(int)result
+                     resultInfo:(NSString *)resultInfo
+                   serialNumber:(NSString *)serialNumber
 {
     [self hideActivity];
     
     if (result == 0) {
         PayView *payView = [PayView createPayView];
         [payView show:NSLS(@"订单提交成功，请在30分钟内完成支付")
-          paymentInfo:paymentInfo
+         serialNumber:serialNumber
            controller:self
              delegate:self];
     } else {
-        [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
+        [self popupMessage:NSLS(@"获取交易流水号失败") title:nil];
+        [self pushOrderDetail];
     }
 }
 
-#pragma mark - 
+- (void)pushOrderDetail
+{
+    AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:_resultOrder];
+    controller.isPopToRoot = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+#pragma mark -
 #pragma mark UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -566,10 +574,7 @@
     if ([result isEqualToString:@"success"]) {
         [[AirHotelService defaultService] findOrder:_resultOrder.orderId delegate:self];
     } else {
-        AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:_resultOrder];
-        controller.isPopToRoot = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
+        [self pushOrderDetail];
     }
 }
 

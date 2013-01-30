@@ -228,13 +228,37 @@
         return;
     }
     
-    [self showActivityWithText:NSLS(@"正在获取支付信息...")];
-    [[AirHotelService defaultService] findOrderPaymentInfo:_airHotelOrder.orderId
+    [self showActivityWithText:NSLS(@"正在获取交易流水号...")];
+    [[AirHotelService defaultService] findPaySerialNumber:_airHotelOrder.orderId
                                                   delegate:self];
 }
 
 #pragma mark -
 #pragma mark AirHotelServiceDelegate method
+- (void)findPaySerialNumberDone:(int)result
+                     resultInfo:(NSString *)resultInfo
+                   serialNumber:(NSString *)serialNumber
+{
+    [self hideActivity];
+    if (result == 0) {
+        NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+        int remainMinute = (30 * 60 - (nowTimeInterval - _airHotelOrder.orderDate) ) / 60;
+        if (remainMinute == 0) {
+            remainMinute = 1;
+        } else if (remainMinute > 30) {
+            remainMinute = 30;
+        }
+        
+        PayView *payView = [PayView createPayView];
+        [payView show:[NSString stringWithFormat:@"请在%d分钟内完成支付", remainMinute]
+         serialNumber:serialNumber
+           controller:self
+             delegate:self];
+    } else {
+        [self popupMessage:NSLS(@"获取交易流水号错误") title:nil];
+    }
+}
+
 - (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo
 {
     [self hideActivity];

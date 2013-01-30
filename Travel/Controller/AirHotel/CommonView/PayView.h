@@ -16,7 +16,7 @@
 + (id)createPayView;
 
 - (void)show:(NSString *)tips
- paymentInfo:(NSString *)paymentInfo
+serialNumber:(NSString *)serialNumber
   controller:(UIViewController *)controller
     delegate:(id<UPPayPluginDelegate>)delegate;
 

@@ -1403,4 +1403,25 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)querySerialNumber:(int)orderId
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        NSString* str = [NSString stringWithString:baseURL];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:orderId];
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_SERIAL_NUMBER
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
 @end

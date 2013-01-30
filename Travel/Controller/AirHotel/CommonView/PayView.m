@@ -11,7 +11,7 @@
 #import "TravelNetworkConstants.h"
 
 @interface PayView()
-@property (retain, nonatomic) NSString *paymentInfo;
+@property (retain, nonatomic) NSString *serialNumber;
 @property (retain, nonatomic) UIViewController *controller;
 @property (assign, nonatomic) id<UPPayPluginDelegate> delegate;
 
@@ -22,7 +22,7 @@
 - (void)dealloc {
     [_activityView release];
     [_tipsLabel release];
-    [_paymentInfo release];
+    [_serialNumber release];
     [_controller release];
     [super dealloc];
 }
@@ -39,21 +39,21 @@
 }
 
 - (void)show:(NSString *)tips
- paymentInfo:(NSString *)paymentInfo
+serialNumber:(NSString *)serialNumber
   controller:(UIViewController *)controller
     delegate:(id<UPPayPluginDelegate>)delegate
 {
-    self.paymentInfo = paymentInfo;
+    self.serialNumber = serialNumber;
     self.controller = controller;
     self.delegate = delegate;
-    
     self.tipsLabel.text = tips;
+
     [self.activityView startAnimating];
     [controller.view addSubview:self];
     [NSTimer scheduledTimerWithTimeInterval: 3.0
                                      target: self
                                    selector: @selector(handleTimer:)
-                                   userInfo: paymentInfo
+                                   userInfo: serialNumber
                                     repeats: NO];
 }
 
@@ -61,8 +61,14 @@
 {
     [self.activityView stopAnimating];
     [self removeFromSuperview];
-    NSString *paymentInfo = (NSString *)[aTimer userInfo];
-    [UPPayPluginUtil test:paymentInfo SystemProvide:UNION_PAY_SYSTEM_PROVIDE SPID:UNION_PAY_AP_ID withViewController:_controller Delegate:_delegate];
+    NSString *serialNumber = (NSString *)[aTimer userInfo];
+    
+    [UPPayPluginUtil startPay:serialNumber
+                   sysProvide:UNION_PAY_SYSTEM_PROVIDE
+                         spId:UNION_PAY_AP_ID
+                         mode:@"01"
+               viewController:_controller
+                     delegate:_delegate];
 }
 
 @end

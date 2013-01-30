@@ -252,43 +252,67 @@ static AirHotelService *_airHotelService = nil;
     });
 }
 
-- (void)findOrderPaymentInfo:(int)orderId
-                    delegate:(id<AirHotelServiceDelegate>)delegate
+//- (void)findOrderPaymentInfo:(int)orderId
+//                    delegate:(id<AirHotelServiceDelegate>)delegate
+//{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+//        NSError *requestError;
+//        NSURLResponse *urlResponse = nil;
+//        NSMutableURLRequest * requestm=[[NSMutableURLRequest alloc] init];
+//        [requestm setTimeoutInterval:60];
+//        NSString* urlAddress = [NSString stringWithFormat:@"%@%@=%d", URL_TRAVEL_ORDER_PAYMENT_INFO,PARA_TRAVEL_ID,orderId];
+//        
+//        PPDebug(@"<findOrderPaymentInfo> url:%@",urlAddress);
+//        
+//        NSURL* url = [NSURL URLWithString:urlAddress];
+//        [requestm setURL:url];
+//        NSData *returnData = [NSURLConnection sendSynchronousRequest:requestm returningResponse:&urlResponse error:&requestError];
+//        [requestm release];
+//        
+//        int result = 0;
+//        BOOL isSucc = YES;
+//        if (!urlResponse) {
+//            if (requestError) {
+//                result = 1;
+//                isSucc = NO;
+//                PPDebug(@"<findOrderPaymentInfo> error");
+//            }
+//        }
+//        
+//        NSString* paymentInfo = nil;
+//        if (isSucc) {
+//           paymentInfo = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
+//        }
+//        
+//        PPDebug(@"<findOrderPaymentInfo> paymentInfo:%@",paymentInfo);
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if ([delegate respondsToSelector:@selector(findOrderPaymentInfoDone:paymentInfo:)]) {
+//                [delegate findOrderPaymentInfoDone:result paymentInfo:paymentInfo];
+//            }
+//        });
+//    });
+//}
+
+- (void)findPaySerialNumber:(int)orderId
+                   delegate:(id<AirHotelServiceDelegate>)delegate
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        NSError *requestError;
-        NSURLResponse *urlResponse = nil;
-        NSMutableURLRequest * requestm=[[NSMutableURLRequest alloc] init];
-        [requestm setTimeoutInterval:60];
-        NSString* urlAddress = [NSString stringWithFormat:@"%@%@=%d", URL_TRAVEL_ORDER_PAYMENT_INFO,PARA_TRAVEL_ID,orderId];
+        CommonNetworkOutput *output = [TravelNetworkRequest querySerialNumber:orderId];
         
-        PPDebug(@"<findOrderPaymentInfo> url:%@",urlAddress);
-        
-        NSURL* url = [NSURL URLWithString:urlAddress];
-        [requestm setURL:url];
-        NSData *returnData = [NSURLConnection sendSynchronousRequest:requestm returningResponse:&urlResponse error:&requestError];
-        [requestm release];
-        
-        int result = 0;
-        BOOL isSucc = YES;
-        if (!urlResponse) {
-            if (requestError) {
-                result = 1;
-                isSucc = NO;
-                PPDebug(@"<findOrderPaymentInfo> error");
-            }
-        }
-        
-        NSString* paymentInfo = nil;
-        if (isSucc) {
-           paymentInfo = [[[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding] autorelease];
-        }
-        
-        PPDebug(@"<findOrderPaymentInfo> paymentInfo:%@",paymentInfo);
+        int result = -1;
+        NSString *resultInfo = nil;
+        NSString *serialNumber = nil;
+        if (output.resultCode == ERROR_SUCCESS) {
+            NSDictionary* jsonDict = [output.textData JSONValue];
+            result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
+            resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
+            serialNumber = [jsonDict objectForKey:PARA_TRAVEL_SERIAL_NUMBER];
+        } 
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(findOrderPaymentInfoDone:paymentInfo:)]) {
-                [delegate findOrderPaymentInfoDone:result paymentInfo:paymentInfo];
+            if ([delegate respondsToSelector:@selector(findPaySerialNumberDone:resultInfo:serialNumber:)]) {
+                [delegate findPaySerialNumberDone:result resultInfo:resultInfo serialNumber:serialNumber];
             }
         });
     });

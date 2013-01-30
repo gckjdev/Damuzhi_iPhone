@@ -37,6 +37,10 @@
 
 - (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo;
 
+- (void)findPaySerialNumberDone:(int)result
+                     resultInfo:(NSString *)resultInfo
+                   serialNumber:(NSString *)serialNumber;
+
 @end
 
 
@@ -72,7 +76,10 @@
 
 - (void)findOrder:(int)orderId delegate:(id<AirHotelServiceDelegate>)delegate;
 
-- (void)findOrderPaymentInfo:(int)orderId
-                    delegate:(id<AirHotelServiceDelegate>)delegate;
+//- (void)findOrderPaymentInfo:(int)orderId
+//                    delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findPaySerialNumber:(int)orderId
+                   delegate:(id<AirHotelServiceDelegate>)delegate;
 
 @end

@@ -221,4 +221,6 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                                        longitude:(double)longitude
                                         language:(NSString *)language;
 
++ (CommonNetworkOutput*)querySerialNumber:(int)orderId;
+
 @end
