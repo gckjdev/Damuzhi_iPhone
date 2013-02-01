@@ -11,10 +11,8 @@
 
 #define OS_IOS 1
 
-//test
-#define UNION_PAY_SYSTEM_PROVIDE    @"12345678"  //系统支持代码，由商户向银联申请。
-#define UNION_PAY_AP_ID             @"1234"      //服务提供商代码，由商户向银联申请。
-
+#define UNION_PAY_MODE_FORMAL   @"00"
+#define UNION_PAY_MODE_TEST     @"01"
 
 // for test service
 #define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
@@ -60,6 +58,9 @@
 #define URL_TRAVEL_ORDER_PAYMENT_INFO   (URL_SERVICE@"orderPaymentInfo.aspx?")
 
 #define URL_TRAVEL_SERIAL_NUMBER        (URL_SERVICE@"serialNumber.aspx?")
+
+//just for test
+#define URL_TRAVEL_QUERY_PAY_ORDER      (URL_SERVICE@"QueryPayOrder.aspx?")
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -150,6 +151,7 @@
 #define PARA_TRAVEL_FLIGHT_NUMBER           @"flightNumber"
 
 #define PARA_TRAVEL_SERIAL_NUMBER           @"serialNumber"
+#define PARA_TRAVEL_ORDER_NUMBER            @"orderNumber"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
@@ -212,7 +214,7 @@
 #define OBJECT_TYPE_ROUTE_DETAIL                50
 #define OBJECT_TYPE_LOCAL_ROUTE_DETAIL          51
 #define OBJECT_TYPE_AIR_HOTEL_ORDER             60
-
+#define OBJECT_TYPE_HOTEL_ROOM                  61
 
 #define STRING_SEPARATOR    @","
 

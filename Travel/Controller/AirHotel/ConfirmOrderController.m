@@ -31,6 +31,7 @@
 @property (retain, nonatomic) Person *contactPerson;
 @property (assign, nonatomic) int departCityId;
 @property (retain, nonatomic) AirHotelOrder *resultOrder;
+@property (assign, nonatomic) int unionPayOrderNumber;
 @end
 
 @implementation ConfirmOrderController
@@ -285,10 +286,12 @@
 - (void)findPaySerialNumberDone:(int)result
                      resultInfo:(NSString *)resultInfo
                    serialNumber:(NSString *)serialNumber
+                    orderNumber:(int)orderNumber
 {
     [self hideActivity];
     
     if (result == 0) {
+        self.unionPayOrderNumber = orderNumber;
         PayView *payView = [PayView createPayView];
         [payView show:NSLS(@"订单提交成功，请在30分钟内完成支付")
          serialNumber:serialNumber
@@ -572,6 +575,7 @@
     PPDebug(@"UPPayPluginResult:%@", result);
     
     if ([result isEqualToString:@"success"]) {
+        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
         [[AirHotelService defaultService] findOrder:_resultOrder.orderId delegate:self];
     } else {
         [self pushOrderDetail];

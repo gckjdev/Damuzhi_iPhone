@@ -78,7 +78,6 @@ static AirHotelService *_airHotelService = nil;
     });
 }
 
-
 - (void)order:(AirHotelOrder *)order
      delegate:(id<AirHotelServiceDelegate>)delegate
 {
@@ -303,19 +302,32 @@ static AirHotelService *_airHotelService = nil;
         int result = -1;
         NSString *resultInfo = nil;
         NSString *serialNumber = nil;
+        int orderNumber = 0;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];
             resultInfo = [jsonDict objectForKey:PARA_TRAVEL_RESULT_INFO];
             serialNumber = [jsonDict objectForKey:PARA_TRAVEL_SERIAL_NUMBER];
+            orderNumber = [[jsonDict objectForKey:PARA_TRAVEL_ORDER_NUMBER] intValue];
         } 
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(findPaySerialNumberDone:resultInfo:serialNumber:)]) {
-                [delegate findPaySerialNumberDone:result resultInfo:resultInfo serialNumber:serialNumber];
+            if ([delegate respondsToSelector:@selector(findPaySerialNumberDone:resultInfo:serialNumber:orderNumber:)]) {
+                [delegate findPaySerialNumberDone:result resultInfo:resultInfo serialNumber:serialNumber orderNumber:orderNumber];
             }
         });
     });
+}
+
+- (void)queryPayOrder:(int)orderNumber
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        CommonNetworkOutput *output = [TravelNetworkRequest queryPayOrder:orderNumber];
+        if (output.resultCode == ERROR_SUCCESS) {
+            //PPDebug(@"<queryPayOrder>");
+        }
+    });
+
 }
 
 @end

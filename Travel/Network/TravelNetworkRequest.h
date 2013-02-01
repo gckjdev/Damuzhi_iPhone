@@ -223,4 +223,7 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
 
 + (CommonNetworkOutput*)querySerialNumber:(int)orderId;
 
+//queryPayOrder just for test
++ (CommonNetworkOutput*)queryPayOrder:(int)orderNumber;
+
 @end

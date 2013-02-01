@@ -19,6 +19,7 @@
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
+@property (assign, nonatomic) int unionPayOrderNumber;
 @end
 
 @implementation AirHotelOrderDetailController
@@ -80,6 +81,32 @@
         [mutableArray addObject:MARK_HOTEL_SECTION];
     }
     self.dataList = mutableArray;
+    
+//    //NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
+//    NSDate *orderDate = [NSDate date];
+//    
+//    NSString *dateStr = [self dateToSring:orderDate timeZoneName:nil];
+//    PPDebug(@"orderDate:%@",dateStr);
+//    
+//    NSString *dateStr1 = [self dateToSring:orderDate timeZoneName:@"Asia/Shanghai"];
+//    PPDebug(@"orderDate:%@",dateStr1);
+//    
+//    NSString *dateStr2 = [self dateToSring:orderDate timeZoneName:@"US/Eastern"];
+//    PPDebug(@"orderDate:%@",dateStr2);
+}
+
+- (NSString *)dateToSring:(NSDate *)date
+             timeZoneName:(NSString *)timeZoneName
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    
+    if (timeZoneName != nil) {
+        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
+        [formatter setTimeZone:tzGMT];
+    }
+    
+    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
+    return [formatter stringFromDate:date];
 }
 
 - (void)clickBack:(id)sender
@@ -238,6 +265,7 @@
 - (void)findPaySerialNumberDone:(int)result
                      resultInfo:(NSString *)resultInfo
                    serialNumber:(NSString *)serialNumber
+                    orderNumber:(int)orderNumber
 {
     [self hideActivity];
     if (result == 0) {
@@ -249,6 +277,7 @@
             remainMinute = 30;
         }
         
+        self.unionPayOrderNumber = orderNumber;
         PayView *payView = [PayView createPayView];
         [payView show:[NSString stringWithFormat:@"请在%d分钟内完成支付", remainMinute]
          serialNumber:serialNumber
@@ -259,28 +288,6 @@
     }
 }
 
-- (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo
-{
-    [self hideActivity];
-    if (result == 0) {
-        NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
-        int remainMinute = (30 * 60 - (nowTimeInterval - _airHotelOrder.orderDate) ) / 60;
-        if (remainMinute == 0) {
-            remainMinute = 1;
-        } else if (remainMinute > 30) {
-            remainMinute = 30;
-        }
-        
-        PayView *payView = [PayView createPayView];
-        [payView show:[NSString stringWithFormat:@"请在%d分钟内完成支付", remainMinute]
-          paymentInfo:paymentInfo
-           controller:self
-             delegate:self];
-    } else {
-        [self popupMessage:NSLS(@"查找支付信息错误") title:nil];
-    }
-}
-
 #pragma mark -
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
@@ -288,6 +295,7 @@
     PPDebug(@"UPPayPluginResult:%@", result);
     if ([result isEqualToString:@"success"]) {
         [self popupMessage:NSLS(@"已经完成支付") title:nil];
+        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
     } else{
         [self popupMessage:result title:nil];
     }

@@ -1424,4 +1424,24 @@
                                       output:output];
 }
 
++ (CommonNetworkOutput*)queryPayOrder:(int)orderNumber
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        NSString* str = [NSString stringWithString:baseURL];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:orderNumber];
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_PAY_ORDER
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
 @end

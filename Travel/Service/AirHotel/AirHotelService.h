@@ -39,7 +39,8 @@
 
 - (void)findPaySerialNumberDone:(int)result
                      resultInfo:(NSString *)resultInfo
-                   serialNumber:(NSString *)serialNumber;
+                   serialNumber:(NSString *)serialNumber
+                    orderNumber:(int)orderNumber;
 
 @end
 
@@ -81,5 +82,8 @@
 
 - (void)findPaySerialNumber:(int)orderId
                    delegate:(id<AirHotelServiceDelegate>)delegate;
+
+//queryPayOrder just for test
+- (void)queryPayOrder:(int)orderNumber;
 
 @end

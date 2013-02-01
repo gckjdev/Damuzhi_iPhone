@@ -109,7 +109,7 @@
         self.dataList  = orderList;
         [dataTableView reloadData];
         
-        [self debugData];
+        //[self debugData];
     }
 }
 

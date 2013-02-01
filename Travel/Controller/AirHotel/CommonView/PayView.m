@@ -50,23 +50,22 @@ serialNumber:(NSString *)serialNumber
 
     [self.activityView startAnimating];
     [controller.view addSubview:self];
-    [NSTimer scheduledTimerWithTimeInterval: 3.0
-                                     target: self
-                                   selector: @selector(handleTimer:)
-                                   userInfo: serialNumber
-                                    repeats: NO];
+    [NSTimer scheduledTimerWithTimeInterval:2.0
+                                     target:self
+                                   selector:@selector(handleTimer:)
+                                   userInfo:nil
+                                    repeats:NO];
 }
 
 - (void)handleTimer:(NSTimer *)aTimer
 {
     [self.activityView stopAnimating];
     [self removeFromSuperview];
-    NSString *serialNumber = (NSString *)[aTimer userInfo];
     
-    [UPPayPluginUtil startPay:serialNumber
-                   sysProvide:UNION_PAY_SYSTEM_PROVIDE
-                         spId:UNION_PAY_AP_ID
-                         mode:@"01"
+    [UPPayPluginUtil startPay:_serialNumber
+                   sysProvide:nil
+                         spId:nil
+                         mode:UNION_PAY_MODE_TEST
                viewController:_controller
                      delegate:_delegate];
 }
