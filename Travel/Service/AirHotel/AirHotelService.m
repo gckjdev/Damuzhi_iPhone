@@ -96,15 +96,17 @@ static AirHotelService *_airHotelService = nil;
             PPDebug(@"<AirHotelService> order failed");
         }
         
-        //NSDictionary *dic = [output.textData JSONValue];
         NSString *reultInfo = [output.jsonDataDict objectForKey:PARA_TRAVEL_RESULT_INFO];
         NSString *orderIdStr = [output.jsonDataDict objectForKey:PARA_TRAVEL_ID];
         int orderId = [orderIdStr intValue];
+        NSString *needPayStr = [output.jsonDataDict objectForKey:PARA_TRAVEL_NEED_PAY];
+        BOOL needPay = ([needPayStr isEqualToString:@"1"] ? YES : NO);
+        
         PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(orderDone:resultInfo:orderId:)]) {
-                [delegate orderDone:output.resultCode resultInfo:reultInfo orderId:orderId];
+            if ([delegate respondsToSelector:@selector(orderDone:resultInfo:orderId:needPay:)]) {
+                [delegate orderDone:output.resultCode resultInfo:reultInfo orderId:orderId needPay:needPay];
             }
         });
     });

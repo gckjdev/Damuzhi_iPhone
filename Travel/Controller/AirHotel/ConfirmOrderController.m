@@ -31,6 +31,8 @@
 @property (retain, nonatomic) Person *contactPerson;
 @property (assign, nonatomic) int departCityId;
 @property (retain, nonatomic) AirHotelOrder *resultOrder;
+@property (assign, nonatomic) int resultOrderId;
+
 @property (assign, nonatomic) int unionPayOrderNumber;
 @end
 
@@ -253,16 +255,24 @@
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo
           orderId:(int)orderId
+          needPay:(BOOL)needPay
 {
     PPDebug(@"orderDone result:%d, resultInfo:%@, orderId:%d", result, resultInfo, orderId);
     [self hideActivity];
+    
+    self.resultOrderId = orderId;
     if (result == 0) {        
         [_airOrderBuilders removeAllObjects];
         [_hotelOrderBuilders removeAllObjects];
         [self clearPersons];
         
-        [self showActivityWithText:NSLS(@"正在生成订单...")];
-        [[AirHotelService defaultService] findOrder:orderId delegate:self];
+        if (needPay) {
+            [self showActivityWithText:NSLS(@"正在获取交易流水号...")];
+            [[AirHotelService defaultService] findPaySerialNumber:orderId delegate:self];
+        } else {
+            [self showActivityWithText:NSLS(@"正在生成订单...")];
+            [[AirHotelService defaultService] findOrder:orderId delegate:self];
+        }
     } else {
         [self setOrderData];
         [self popupMessage:NSLS(@"预订失败") title:nil];
@@ -274,12 +284,10 @@
     [self hideActivity];
     self.resultOrder = order;
     if (result == 0) {
-        if (order.orderStatus == StatusUnpaid) {//未支付
-            [self showActivityWithText:NSLS(@"正在获取交易流水号...")];
-            [[AirHotelService defaultService] findPaySerialNumber:order.orderId delegate:self];
-        } else {
-            [self pushOrderDetail];
-        }
+        AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:_resultOrder];
+        controller.isPopToRoot = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
     }
 }
 
@@ -299,16 +307,9 @@
              delegate:self];
     } else {
         [self popupMessage:NSLS(@"获取交易流水号失败") title:nil];
-        [self pushOrderDetail];
+        [self showActivityWithText:NSLS(@"正在生成订单...")];
+        [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
     }
-}
-
-- (void)pushOrderDetail
-{
-    AirHotelOrderDetailController *controller = [[AirHotelOrderDetailController alloc] initWithOrder:_resultOrder];
-    controller.isPopToRoot = YES;
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
 }
 
 #pragma mark -
@@ -571,15 +572,13 @@
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
 {
+    //for test query pay result
+    [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+    
     //success、fail、cancel
     PPDebug(@"UPPayPluginResult:%@", result);
-    
-    if ([result isEqualToString:@"success"]) {
-        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
-        [[AirHotelService defaultService] findOrder:_resultOrder.orderId delegate:self];
-    } else {
-        [self pushOrderDetail];
-    }
+    [self showActivityWithText:NSLS(@"正在生成订单...")];
+    [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
 }
 
 @end

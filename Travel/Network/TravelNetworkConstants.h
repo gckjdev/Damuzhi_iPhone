@@ -153,6 +153,8 @@
 #define PARA_TRAVEL_SERIAL_NUMBER           @"serialNumber"
 #define PARA_TRAVEL_ORDER_NUMBER            @"orderNumber"
 
+#define PARA_TRAVEL_NEED_PAY                @"needPay"
+
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
 #define OBJECT_LIST_TYPE_SPOT            21

@@ -24,7 +24,8 @@
 
 - (void)orderDone:(int)result
        resultInfo:(NSString *)resultInfo
-          orderId:(int)orderId;
+          orderId:(int)orderId
+          needPay:(BOOL)needPay;
 
 - (void)findFlightsDone:(int)resultCode
                  result:(int)result

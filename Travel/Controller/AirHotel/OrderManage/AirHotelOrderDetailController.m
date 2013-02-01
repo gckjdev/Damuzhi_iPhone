@@ -44,17 +44,8 @@
 #define MARK_TOP_SECTON     @"top"
 #define MARK_AIR_SECTION    @"air"
 #define MARK_HOTEL_SECTION  @"hotel"
-
-- (void)viewDidLoad
+- (void)setDefaultData
 {
-    [super viewDidLoad];
-    self.title = NSLS(@"机+酒订单");
-    [self setNavigationLeftButton:NSLS(@" 返回")
-                         fontSize:FONT_SIZE
-                        imageName:@"back.png"
-                           action:@selector(clickBack:)];
-    self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
-    
     if (_airHotelOrder.orderStatus != StatusUnpaid) {
         self.footerView.hidden = YES;
         self.footerView.frame = CGRectZero;
@@ -81,6 +72,19 @@
         [mutableArray addObject:MARK_HOTEL_SECTION];
     }
     self.dataList = mutableArray;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = NSLS(@"机+酒订单");
+    [self setNavigationLeftButton:NSLS(@" 返回")
+                         fontSize:FONT_SIZE
+                        imageName:@"back.png"
+                           action:@selector(clickBack:)];
+    self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
+    
+    [self setDefaultData];
     
 //    //NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
 //    NSDate *orderDate = [NSDate date];
@@ -95,19 +99,19 @@
 //    PPDebug(@"orderDate:%@",dateStr2);
 }
 
-- (NSString *)dateToSring:(NSDate *)date
-             timeZoneName:(NSString *)timeZoneName
-{
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    
-    if (timeZoneName != nil) {
-        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
-        [formatter setTimeZone:tzGMT];
-    }
-    
-    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
-    return [formatter stringFromDate:date];
-}
+//- (NSString *)dateToSring:(NSDate *)date
+//             timeZoneName:(NSString *)timeZoneName
+//{
+//    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+//    
+//    if (timeZoneName != nil) {
+//        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
+//        [formatter setTimeZone:tzGMT];
+//    }
+//    
+//    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
+//    return [formatter stringFromDate:date];
+//}
 
 - (void)clickBack:(id)sender
 {
@@ -288,6 +292,16 @@
     }
 }
 
+- (void)findOrderDone:(int)result order:(AirHotelOrder *)order
+{
+    [self hideActivity];
+    if (result == 0) {
+        self.airHotelOrder = order;
+        [self setDefaultData];
+        [self.dataTableView reloadData];
+    }
+}
+
 #pragma mark -
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
@@ -296,6 +310,9 @@
     if ([result isEqualToString:@"success"]) {
         [self popupMessage:NSLS(@"已经完成支付") title:nil];
         [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+        
+        [self showActivityWithText:NSLS(@"正在刷新订单...")];
+        [[AirHotelService defaultService] findOrder:_airHotelOrder.orderId delegate:self];
     } else{
         [self popupMessage:result title:nil];
     }
