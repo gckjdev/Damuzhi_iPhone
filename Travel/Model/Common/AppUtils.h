@@ -154,4 +154,6 @@
 + (NSString*)getAbsolutePath:(NSString*)absoluteDir string:(NSString*)string;
 + (NSURL*)getNSURLFromHtmlFileOrURL:(NSString*)fileOrURL;
 
++ (NSTimeInterval)standardTimeFromBeijingTime:(NSTimeInterval)secs;
+
 @end

@@ -498,5 +498,9 @@ static BOOL _showUserLocateDenyAlert = YES;
     _showUserLocateDenyAlert = isShow;
 }
 
++ (NSTimeInterval)standardTimeFromBeijingTime:(NSTimeInterval)secs
+{
+    return secs - 8 * 3600;
+}
 
 @end

@@ -11,6 +11,7 @@
 #import "AirHotel.pb.h"
 #import "TimeUtils.h"
 #import "AppManager.h"
+#import "AppUtils.h"
 
 @interface FlightDetailController ()
 
@@ -105,8 +106,8 @@
         self.flightTypeLabel.text = NSLS(@"回程");
     }
     
-    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:_flight.departDate];
-    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:_flight.arriveDate];
+    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:_flight.departDate]];
+    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:_flight.arriveDate]];
     
     self.flightDateLabel.text = dateToChineseStringByFormat(departDate, @"yyyy-MM-dd");
     
