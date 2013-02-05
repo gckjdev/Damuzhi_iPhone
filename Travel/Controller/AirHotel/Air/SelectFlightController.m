@@ -175,9 +175,9 @@
     
     self.allDataList = flightList;
     self.dataList = flightList;
-    self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
     [dataTableView reloadData];
-    
+    self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
+
     if ([self.dataList count] == 0) {
         self.noMoreData = YES;
         [self showTipsOnTableView:NSLS(@"未找到相关信息")];
@@ -332,6 +332,7 @@
     }
     
     [dataTableView reloadData];
+    self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
 }
 
 @end

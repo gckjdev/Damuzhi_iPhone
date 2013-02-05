@@ -18,6 +18,8 @@
     [_noteLabel release];
     [_selectButton release];
     [_editButton release];
+    [_detailImageView release];
+    [_deleteButton release];
     [super dealloc];
 }
 
@@ -29,6 +31,18 @@
 + (CGFloat)getCellHeight
 {
     return 58;
+}
+
+- (void)showDeleteButton
+{
+    self.deleteButton.hidden = NO;
+    self.detailImageView.hidden = YES;
+}
+
+- (void)showNormalAppearance
+{
+    self.deleteButton.hidden = YES;
+    self.detailImageView.hidden = NO;
 }
 
 - (void)setCellWithType:(SelectPersonViewType)type
@@ -108,5 +122,10 @@
     }
 }
 
+- (IBAction)clickDeleteButton:(id)sender {
+    if ([delegate respondsToSelector:@selector(didClickDeleteButton:)]) {
+        [delegate didClickDeleteButton:indexPath];
+    }
+}
 
 @end
