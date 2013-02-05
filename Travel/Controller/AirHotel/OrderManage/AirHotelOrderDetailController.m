@@ -16,6 +16,7 @@
 #import "PayView.h"
 #import "AirHotelManager.h"
 #import "PriceUtils.h"
+#import "TimeUtils.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -86,12 +87,12 @@
     
     [self setDefaultData];
     
-//    //NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
-//    NSDate *orderDate = [NSDate date];
-//    
-//    NSString *dateStr = [self dateToSring:orderDate timeZoneName:nil];
-//    PPDebug(@"orderDate:%@",dateStr);
-//    
+    NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
+    
+    NSString *dateStr = [self dateToSring:orderDate timeZoneName:nil];
+    PPDebug(@"orderDate:%@",dateStr);
+    
+    PPDebug(@"de orderDate:%@",dateToChineseStringByFormat(orderDate, @"yy-MM-dd HH:mm"));
 //    NSString *dateStr1 = [self dateToSring:orderDate timeZoneName:@"Asia/Shanghai"];
 //    PPDebug(@"orderDate:%@",dateStr1);
 //    
@@ -99,19 +100,19 @@
 //    PPDebug(@"orderDate:%@",dateStr2);
 }
 
-//- (NSString *)dateToSring:(NSDate *)date
-//             timeZoneName:(NSString *)timeZoneName
-//{
-//    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-//    
-//    if (timeZoneName != nil) {
-//        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
-//        [formatter setTimeZone:tzGMT];
-//    }
-//    
-//    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
-//    return [formatter stringFromDate:date];
-//}
+- (NSString *)dateToSring:(NSDate *)date
+             timeZoneName:(NSString *)timeZoneName
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    
+    if (timeZoneName != nil) {
+        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
+        [formatter setTimeZone:tzGMT];
+    }
+    
+    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
+    return [formatter stringFromDate:date];
+}
 
 - (void)clickBack:(id)sender
 {
@@ -299,6 +300,10 @@
         self.airHotelOrder = order;
         [self setDefaultData];
         [self.dataTableView reloadData];
+        
+        if ([_delegate respondsToSelector:@selector(didUpdateOrder:)]) {
+            [_delegate didUpdateOrder:order];
+        }
     }
 }
 
@@ -312,10 +317,19 @@
         [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
         
         [self showActivityWithText:NSLS(@"正在刷新订单...")];
-        [[AirHotelService defaultService] findOrder:_airHotelOrder.orderId delegate:self];
+        [NSTimer scheduledTimerWithTimeInterval:1.0
+                                         target:self
+                                       selector:@selector(handleTimer:)
+                                       userInfo:nil
+                                        repeats:NO];
     } else{
         [self popupMessage:result title:nil];
     }
+}
+
+- (void)handleTimer:(id)sender
+{
+    [[AirHotelService defaultService] findOrder:_airHotelOrder.orderId delegate:self];
 }
 
 @end

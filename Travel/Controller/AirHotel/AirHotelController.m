@@ -673,8 +673,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:[self getGoDate] customEndDate:nil monthCount:12 title:NSLS(@"回程日期")] autorelease];
-    controller.suggestEndDate = suggestDate;
-    controller.suggestEndTips = suggestTips;
+    controller.suggestStartDate = suggestDate;
+    controller.suggestStartTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

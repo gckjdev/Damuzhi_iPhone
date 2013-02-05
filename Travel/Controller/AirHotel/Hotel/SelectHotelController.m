@@ -425,9 +425,12 @@
 {
     [self hideActivity];
     
-    if (result != ERROR_SUCCESS) {
+    if (resultCode == ERROR_NETWORK) {
+        [self popupMessage:NSLS(@"暂无法查询相关内容，请重试") title:nil];
+    }
+    
+    if (result != 0 || resultCode != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
-        return;
     }
     
     if (_start == 0) {

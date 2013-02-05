@@ -113,11 +113,11 @@
     self.arriveAirportLabel.text = _airOrder.flight.arriveAirport;
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:_airOrder.flight.departDate];
-    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"hh:mm");
+    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"HH:mm");
     self.departTimeLabel.text = departDateStr;
     
     NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:_airOrder.flight.arriveDate];
-    NSString *arriveDateStr =  dateToChineseStringByFormat(arriveDate, @"hh:mm");
+    NSString *arriveDateStr =  dateToChineseStringByFormat(arriveDate, @"HH:mm");
     self.arriveTimeLabel.text = arriveDateStr;
 }
 
@@ -199,6 +199,10 @@
     } else {
         CGFloat totalHeight = [AirHotelOrderListCell getCellHeight:order];
         self.arrowImageView.frame = [self updateOriginY:self.arrowImageView originY:HEIGHT_TOP + 0.5 * (totalHeight - HEIGHT_TOP) - 10];
+    }
+    
+    if ([[order hotelOrdersList] count] == 0 && [[order airOrdersList] count] == 0) {
+        self.arrowImageView.hidden = YES;
     }
 }
 

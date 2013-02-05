@@ -12,6 +12,7 @@
 @interface PayView : UIView
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
 @property (retain, nonatomic) IBOutlet UILabel *tipsLabel;
+@property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 + (id)createPayView;
 

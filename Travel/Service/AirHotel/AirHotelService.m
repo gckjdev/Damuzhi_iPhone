@@ -52,6 +52,8 @@ static AirHotelService *_airHotelService = nil;
         NSString *resultInfo = nil;
         NSArray *hotelList = nil;
         
+        PPDebug(@"<findHotelsWithCityId> resultCode:%d", output.resultCode);
+        
         if (output.resultCode == ERROR_SUCCESS){
             @try{
                 TravelResponse *travelResponse = [TravelResponse parseFromData:output.responseData];
@@ -99,10 +101,10 @@ static AirHotelService *_airHotelService = nil;
         NSString *reultInfo = [output.jsonDataDict objectForKey:PARA_TRAVEL_RESULT_INFO];
         NSString *orderIdStr = [output.jsonDataDict objectForKey:PARA_TRAVEL_ID];
         int orderId = [orderIdStr intValue];
-        NSString *needPayStr = [output.jsonDataDict objectForKey:PARA_TRAVEL_NEED_PAY];
-        BOOL needPay = ([needPayStr isEqualToString:@"1"] ? YES : NO);
+        int needPayInt = [[output.jsonDataDict objectForKey:PARA_TRAVEL_NEED_PAY] intValue];
+        BOOL needPay = (needPayInt == 1 ? YES : NO);
         
-        PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
+        //PPDebug(@"<AirHotelService> order reultInfo:%@", reultInfo);
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([delegate respondsToSelector:@selector(orderDone:resultInfo:orderId:needPay:)]) {

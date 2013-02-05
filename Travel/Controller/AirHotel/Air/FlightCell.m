@@ -47,7 +47,7 @@
     return 63;
 }
 
-#define FLIGHT_TIME_FORMAT @"hh:mm"
+#define FLIGHT_TIME_FORMAT @"HH:mm"
 
 - (void)setCellWithFlight:(Flight *)flight
 {

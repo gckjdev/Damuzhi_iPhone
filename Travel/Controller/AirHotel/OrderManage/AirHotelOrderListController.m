@@ -11,16 +11,21 @@
 #import "AirHotel.pb.h"
 #import "AirHotelOrderListCell.h"
 #import "FontSize.h"
-#import "AirHotelOrderDetailController.h"
 
 #import "PriceUtils.h"
 #import "TimeUtils.h"
 
 @interface AirHotelOrderListController ()
-
+@property (retain, nonatomic) NSMutableArray *orderList;
 @end
 
 @implementation AirHotelOrderListController
+
+- (void)dealloc
+{
+    [_orderList release];
+    [super dealloc];
+}
 
 - (void)viewDidLoad
 {
@@ -61,7 +66,7 @@
 
 - (void)debugData
 {
-    for (AirHotelOrder *order in dataList) {
+    for (AirHotelOrder *order in _orderList) {
         PPDebug(@"*********************");
         PPDebug(@"orderId:%d", order.orderId);
         PPDebug(@"orderStatus:%d", order.orderStatus);
@@ -95,7 +100,7 @@
 //        }
         
         for (AirOrder *airOrder in order.airOrdersList) {
-            
+
         }
     }
 }
@@ -106,7 +111,7 @@
 {
     [self hideActivity];
     if (result == 0) {        
-        self.dataList  = orderList;
+        self.orderList = [NSMutableArray arrayWithArray:orderList];
         [dataTableView reloadData];
         
         //[self debugData];
@@ -117,7 +122,7 @@
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataList count];
+    return [_orderList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -127,7 +132,7 @@
     if (cell == nil) {
         cell = [AirHotelOrderListCell createCell:self];
     }
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     
     [cell setCellWithOrder:order];
     
@@ -138,16 +143,33 @@
 #pragma UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     return [AirHotelOrderListCell getCellHeight:order] + 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     AirHotelOrderDetailController *controller = [[[AirHotelOrderDetailController alloc] initWithOrder:order] autorelease];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#pragma mark -
+#pragma AirHotelOrderDetailControllerDelegate methods
+- (void)didUpdateOrder:(AirHotelOrder *)order
+{
+    int index = 0;
+    for (AirHotelOrder *oneOrder in _orderList) {
+        if (order.orderId == oneOrder.orderId) {
+            break;
+        }
+        index ++;
+    }
+    
+    [_orderList removeObjectAtIndex:index];
+    [_orderList insertObject:order atIndex:index];
+    [dataTableView reloadData];
+}
 
 @end

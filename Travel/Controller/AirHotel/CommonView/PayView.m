@@ -9,6 +9,7 @@
 #import "PayView.h"
 #import "UPPayPluginUtil.h"
 #import "TravelNetworkConstants.h"
+#import "ImageManager.h"
 
 @interface PayView()
 @property (retain, nonatomic) NSString *serialNumber;
@@ -24,6 +25,7 @@
     [_tipsLabel release];
     [_serialNumber release];
     [_controller release];
+    [_backgroundImageView release];
     [super dealloc];
 }
 
@@ -43,6 +45,9 @@ serialNumber:(NSString *)serialNumber
   controller:(UIViewController *)controller
     delegate:(id<UPPayPluginDelegate>)delegate
 {
+    UIImage *image = [[ImageManager defaultManager] waitForPayBgImage];
+    self.backgroundImageView.image = image;
+    
     self.serialNumber = serialNumber;
     self.controller = controller;
     self.delegate = delegate;

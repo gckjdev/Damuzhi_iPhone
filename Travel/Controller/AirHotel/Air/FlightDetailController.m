@@ -95,7 +95,7 @@
     [self setHeaderContent];
 }
 
-#define FLIGHT_TIME_FORMAT @"hh:mm"
+#define FLIGHT_TIME_FORMAT @"HH:mm"
 
 - (void)setHeaderContent
 {

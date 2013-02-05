@@ -105,10 +105,10 @@
     
     //set airport and time
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:airOrderBuilder.flight.departDate];
-    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"hh:mm");
+    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"HH:mm");
     
     NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:airOrderBuilder.flight.arriveDate];
-    NSString *arriveDateStr = dateToChineseStringByFormat(arriveDate, @"hh:mm");
+    NSString *arriveDateStr = dateToChineseStringByFormat(arriveDate, @"HH:mm");
     self.departTimeLabel.text = departDateStr;
     self.arriveTimeLabel.text = arriveDateStr;
     

@@ -578,6 +578,15 @@
     //success、fail、cancel
     PPDebug(@"UPPayPluginResult:%@", result);
     [self showActivityWithText:NSLS(@"正在生成订单...")];
+    [NSTimer scheduledTimerWithTimeInterval:1.0
+                                     target:self
+                                   selector:@selector(handleTimer:)
+                                   userInfo:nil
+                                    repeats:NO];
+}
+
+- (void)handleTimer:(id)sender
+{
     [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
 }
 

@@ -44,10 +44,10 @@
     self.flightNumberLabel.text = flight.flightNumber;
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];
-    self.departDateLabel.text =  dateToChineseStringByFormat(departDate, @"hh:mm");
+    self.departDateLabel.text =  dateToChineseStringByFormat(departDate, @"HH:mm");
     
     NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:flight.arriveDate];
-    self.arriveDateLabel.text = dateToChineseStringByFormat(arriveDate, @"hh:mm");
+    self.arriveDateLabel.text = dateToChineseStringByFormat(arriveDate, @"HH:mm");
     
     self.departAirportLabel.text = flight.departAirport;
     self.arriveAirportLabel.text = flight.arriveAirport;
