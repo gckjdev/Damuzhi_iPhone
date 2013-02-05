@@ -173,16 +173,14 @@
                                   fontSize:FONT_SIZE
                                  imageName:@"topmenu_btn_right.png"
                                     action:@selector(clickFinish:)];
-            [self moveHeaderToRight];
         } else {
             [self setNavigationRightButton:NSLS(@"管理")
                                   fontSize:FONT_SIZE
                                  imageName:@"topmenu_btn_right.png"
                                     action:@selector(clickFinish:)];
-            [self resetHeader];
         }
         
-        [dataTableView setEditing:_isEidtingTable animated:YES];
+        [dataTableView reloadData];
     }
 }
 
@@ -246,41 +244,14 @@
                    isMultiple:_isMultipleChoice];
     }
     
+    if (_isEidtingTable) {
+        [cell showDeleteButton];
+    }else{
+        [cell showNormalAppearance];
+    }
+    
     return cell;
 }
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        if (_type == ViewTypeCreditCard) {
-            CreditCard *creditCard = (CreditCard *)[dataList objectAtIndex:indexPath.row];
-            if (_isMember) {
-                [[CreditCardManager defaultManager] deleteCreditCard:creditCard];
-            } else {
-               [[CreditCardManager defaultManager] deleteTempCreditCard:creditCard];
-            }
-        } else {
-            PersonType storeType;
-            if (_type == ViewTypeCheckIn) {
-                storeType = PersonTypeCheckIn;
-            } else if (_type == ViewTypeContact) {
-                storeType = PersonTypeContact;
-            } if (_type == ViewTypePassenger) {
-                storeType = PersonTypePassenger;
-            }
-            
-            Person *person = (Person *)[dataList objectAtIndex:indexPath.row];
-            [[PersonManager defaultManager:storeType isMember:_isMember] deletePerson:person];
-        }
-        
-        NSMutableArray *mutableDataList = [NSMutableArray arrayWithArray:dataList];
-        [mutableDataList removeObjectAtIndex:indexPath.row];
-        self.dataList = mutableDataList;
-        
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
 
 - (BOOL)isChoose:(NSIndexPath *)indexPath
 {
@@ -391,6 +362,36 @@
         default:
             break;
     }
+}
+
+- (void)didClickDeleteButton:(NSIndexPath *)indexPath
+{
+    if (_type == ViewTypeCreditCard) {
+        CreditCard *creditCard = (CreditCard *)[dataList objectAtIndex:indexPath.row];
+        if (_isMember) {
+            [[CreditCardManager defaultManager] deleteCreditCard:creditCard];
+        } else {
+            [[CreditCardManager defaultManager] deleteTempCreditCard:creditCard];
+        }
+    } else {
+        PersonType storeType;
+        if (_type == ViewTypeCheckIn) {
+            storeType = PersonTypeCheckIn;
+        } else if (_type == ViewTypeContact) {
+            storeType = PersonTypeContact;
+        } if (_type == ViewTypePassenger) {
+            storeType = PersonTypePassenger;
+        }
+        
+        Person *person = (Person *)[dataList objectAtIndex:indexPath.row];
+        [[PersonManager defaultManager:storeType isMember:_isMember] deletePerson:person];
+    }
+    
+    NSMutableArray *mutableDataList = [NSMutableArray arrayWithArray:dataList];
+    [mutableDataList removeObjectAtIndex:indexPath.row];
+    self.dataList = mutableDataList;
+    
+    [self.dataTableView reloadData];
 }
 
 - (void)viewDidUnload {

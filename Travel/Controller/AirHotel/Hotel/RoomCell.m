@@ -35,8 +35,8 @@
     return @"RoomCell";
 }
 
-#define HEIGH_TOP       49
-#define HEIGH_MIDDLE    40
+#define HEIGH_TOP       59
+#define HEIGH_MIDDLE    50
 
 + (CGFloat)getCellHeight:(RoomCellSite)roomCellSite;
 {

@@ -354,11 +354,23 @@
     
     if (_selectedSection == section) {
         _selectedSection = SELECTED_SECTION_NONE;
+        [self.dataTableView reloadData];
+
     } else {
         _selectedSection = section;
+        [self.dataTableView reloadData];
+        
+        Place *Hotel = [_hotelList objectAtIndex:section];
+        NSArray *roomsList = [Hotel roomsList];
+        
+        if ([roomsList count] == 0) {
+            return;
+        }
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+        [self.dataTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
     }
-    
-    [self.dataTableView reloadData];
 }
 
 - (void)didClickHotel:(int)placeId

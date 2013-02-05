@@ -110,11 +110,12 @@
 - (void)findOrdersDone:(int)result orderList:(NSArray *)orderList
 {
     [self hideActivity];
-    if (result == 0) {        
+    [self hideTipsOnTableView];
+    if (result == 0 && [self.orderList count] > 0) {
         self.orderList = [NSMutableArray arrayWithArray:orderList];
         [dataTableView reloadData];
-        
-        //[self debugData];
+    }else{
+        [self showTipsOnTableView:@"没有找到您预订的机+酒订单"];
     }
 }
 
