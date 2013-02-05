@@ -55,11 +55,11 @@ typedef enum {
 BOOL PersonGenderIsValidValue(PersonGender value);
 
 typedef enum {
-  AirPaymentStatusAirPaymentNotPaid = 1,
-  AirPaymentStatusAirPaymentFinish = 2,
-} AirPaymentStatus;
+  PaymentModeOnline = 1,
+  PaymentModeShopEx = 2,
+} PaymentMode;
 
-BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
+BOOL PaymentModeIsValidValue(PaymentMode value);
 
 
 @interface AirHotelRoot : NSObject {
@@ -1031,7 +1031,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   BOOL hasToken_:1;
   BOOL hasPaymentInfo_:1;
   BOOL hasContactPerson_:1;
-  BOOL hasAirPaymentStatus_:1;
+  BOOL hasAirPaymentMode_:1;
+  BOOL hasHotelPaymentMode_:1;
   Float64 hotelPrice;
   Float64 airPrice;
   int32_t departCityId;
@@ -1044,7 +1045,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
   NSString* token;
   PaymentInfo* paymentInfo;
   Person* contactPerson;
-  AirPaymentStatus airPaymentStatus;
+  PaymentMode airPaymentMode;
+  PaymentMode hotelPaymentMode;
   NSMutableArray* mutableAirOrdersList;
   NSMutableArray* mutableHotelOrdersList;
 }
@@ -1060,7 +1062,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (BOOL) hasOrderStatus;
 - (BOOL) hasHotelPrice;
 - (BOOL) hasAirPrice;
-- (BOOL) hasAirPaymentStatus;
+- (BOOL) hasAirPaymentMode;
+- (BOOL) hasHotelPaymentMode;
 @property (readonly, retain) NSString* userId;
 @property (readonly, retain) NSString* loginId;
 @property (readonly, retain) NSString* token;
@@ -1073,7 +1076,8 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 @property (readonly) int32_t orderStatus;
 @property (readonly) Float64 hotelPrice;
 @property (readonly) Float64 airPrice;
-@property (readonly) AirPaymentStatus airPaymentStatus;
+@property (readonly) PaymentMode airPaymentMode;
+@property (readonly) PaymentMode hotelPaymentMode;
 - (NSArray*) airOrdersList;
 - (AirOrder*) airOrdersAtIndex:(int32_t) index;
 - (NSArray*) hotelOrdersList;
@@ -1191,10 +1195,15 @@ BOOL AirPaymentStatusIsValidValue(AirPaymentStatus value);
 - (AirHotelOrder_Builder*) setAirPrice:(Float64) value;
 - (AirHotelOrder_Builder*) clearAirPrice;
 
-- (BOOL) hasAirPaymentStatus;
-- (AirPaymentStatus) airPaymentStatus;
-- (AirHotelOrder_Builder*) setAirPaymentStatus:(AirPaymentStatus) value;
-- (AirHotelOrder_Builder*) clearAirPaymentStatus;
+- (BOOL) hasAirPaymentMode;
+- (PaymentMode) airPaymentMode;
+- (AirHotelOrder_Builder*) setAirPaymentMode:(PaymentMode) value;
+- (AirHotelOrder_Builder*) clearAirPaymentMode;
+
+- (BOOL) hasHotelPaymentMode;
+- (PaymentMode) hotelPaymentMode;
+- (AirHotelOrder_Builder*) setHotelPaymentMode:(PaymentMode) value;
+- (AirHotelOrder_Builder*) clearHotelPaymentMode;
 @end
 
 @interface AirHotelOrderList : PBGeneratedMessage {

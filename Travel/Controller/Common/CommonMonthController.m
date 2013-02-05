@@ -22,7 +22,9 @@
 @property (assign, nonatomic) NSUInteger monthCount;
 @property (assign, nonatomic) id<CommonMonthControllerDelegate> delegate;
 @property (retain, nonatomic) NSString *navigationTitle;
-
+@property (retain, nonatomic) NSDate *customStartDate;
+@property (retain, nonatomic) NSDate *customEndDate;
+@property (retain, nonatomic) NSDate *selectedDate;
 @end
 
 @implementation CommonMonthController
@@ -36,20 +38,39 @@
 	self.monthView.dataSource = nil;
     [_monthView release];
     [_navigationTitle release];
+    [_customStartDate release];
+    [_customEndDate release];
+    [_suggestStartDate release];
+    [_suggestEndDate release];
+    [_suggestStartTips release];
+    [_suggestEndTips release];
+    [_selectedDate release];
     [super dealloc];
 }
 
 - (id)initWithDelegate:(id<CommonMonthControllerDelegate>)delegate
+       customStartDate:(NSDate *)customStartDate
+         customEndDate:(NSDate *)customEndDate
             monthCount:(NSUInteger)monthCount
                  title:(NSString *)title
 {
     self = [super init];
     if (self) {
         self.delegate = delegate;
+        self.customStartDate = customStartDate;
+        self.customEndDate = customEndDate;
         self.monthCount = monthCount;
         self.navigationTitle = title;
         
-        self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:YES] autorelease];
+        if (_customStartDate == nil) {
+            self.customStartDate = [NSDate date];
+        }
+        
+        if (_customEndDate == nil) {
+            self.customEndDate = [NSDate dateWithTimeInterval:(monthCount * 31 * 24 * 60 * 60) sinceDate:_customStartDate];
+        }
+        
+        self.monthView = [[[TKCalendarMonthView alloc] initWithSundayAsFirst:YES date:_customStartDate] autorelease];
         _monthView.delegate = self;
         _monthView.dataSource = self;
 
@@ -77,10 +98,12 @@
     if (_monthCount == 0) {
         _monthCount = 12; //default value
     }
-    //[self.monthView selectDate:[NSDate date]];
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.monthView hideLeftArrow:YES];
+    if ([_customStartDate isSameYearMonth:_customEndDate]) {
+        [self.monthView hideRightArrow:YES];
+    }
 }
 
 - (void) viewDidUnload {
@@ -95,22 +118,24 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 #pragma mark -
 #pragma TKCalendarMonthViewDelegate methods
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView monthDidChange:(NSDate*)month animated:(BOOL)animated
 {
-    if ([[NSDate date] isSameYearMonth:month]) {
+    if ([_customStartDate isSameYearMonth:month]) {
         [self.monthView hideLeftArrow:YES];
     } else {
         [self.monthView hideLeftArrow:NO];
     }
     
-    if ([[NSDate date] monthsBetweenDate:month] >= _monthCount - 1) {
+    if ([_customStartDate monthsBetweenDate:month] >= _monthCount - 1 || [_customEndDate isSameYearMonth:month]) {
         [self.monthView hideRightArrow:YES];
     } else {
         [self.monthView hideRightArrow:NO];
     }
 }
+
 
 - (void) calendarMonthView:(TKCalendarMonthView*)monthView didSelectDate:(NSDate*)date
 {
@@ -121,12 +146,30 @@
         return;
     }
     
-    PPDebug(@"calendarMonthView:didSelectDate%@", date);
-    if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
-        [_delegate didSelectDate:date];
-    }
+    self.selectedDate = date;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    if (_suggestStartDate && [date isBeforeDay:_suggestStartDate]) {
+        UIAlertView *tipsAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:_suggestStartTips
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLS(@"取消")
+                                                  otherButtonTitles:NSLS(@"确定"), nil];
+        [tipsAlertView show];
+        [tipsAlertView release];
+    } else if (_suggestEndDate && [date isAfterDay:_suggestEndDate]){
+        UIAlertView *tipsAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:_suggestEndTips
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLS(@"取消")
+                                                      otherButtonTitles:NSLS(@"确定"), nil];
+        [tipsAlertView show];
+        [tipsAlertView release];
+    } else {
+        if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
+            [_delegate didSelectDate:date];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 
@@ -136,9 +179,11 @@
     
     // 计算这个时间离1970年1月1日0时0分0秒过去的天数。
     NSDate *d = startDate;
-        
+    
     while(YES){
-        if ([d isBeforeDay:[NSDate date]]) {
+        if ([d isBeforeDay:_customStartDate]) {
+            [images addObject:@"date_t_no_bg@2x.png"];
+        }else if ([d isAfterDay:_customEndDate]){
             [images addObject:@"date_t_no_bg@2x.png"];
         }else if ([d isToday]){
             [images addObject:USER_UIIMAGE_NAME_DATE_TILE];
@@ -187,11 +232,12 @@
     NSDate *d = startDate;
     
     while(YES){
-        PPDebug(@"%@", monthView);
-        
-        PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
-        PPDebug(@"%@", dateToChineseString(d));
-        if ([d isBeforeDay:[NSDate date]]) {
+        //PPDebug(@"%@", monthView);
+        //PPDebug(@"%@", dateToChineseString(monthView.selectedMonth));
+        //PPDebug(@"%@", dateToChineseString(d));
+        if ([d isBeforeDay:_customStartDate]) {
+            [touchDisableds addObject:@(YES)];
+        }else if ([d isAfterDay:_customEndDate]){
             [touchDisableds addObject:@(YES)];
         }else if([d isSameYearMonth:monthView.selectedMonth]) {
             [touchDisableds addObject:@(NO)];
@@ -206,6 +252,21 @@
 	}
     
     return touchDisableds;
+}
+
+#pragma mark - 
+#pragma mark UIAlertViewDelegate method
+- (void)alertView:(UIAlertView *)theAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [theAlertView cancelButtonIndex]) {
+        [_monthView unselectDate];
+        return;
+    } else {
+        if ([_delegate respondsToSelector:@selector(didSelectDate:)]) {
+            [_delegate didSelectDate:_selectedDate];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

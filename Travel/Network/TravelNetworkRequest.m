@@ -406,7 +406,7 @@
                                       output:output];
 }
 
-+ (CommonNetworkOutput*)queryObject:(int)type 
++ (CommonNetworkOutput*)queryObject:(int)type
                               objId:(int)objId 
                                lang:(int)lang
 {
@@ -415,7 +415,7 @@
     ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
         
         //set input parameters
-        NSString* str = [NSString stringWithString:baseURL];        
+        NSString* str = [NSString stringWithString:baseURL];
         
         str = [str stringByAddQueryParameter:PARA_TRAVEL_TYPE intValue:type];
         str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:objId];
@@ -424,17 +424,16 @@
         return str;
     };
     
-    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {  
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
         return;
     };
     
     return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_OBJECT
-                         constructURLHandler:constructURLHandler                         
-                             responseHandler:responseHandler         
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
                                 outputFormat:FORMAT_TRAVEL_PB
                                       output:output];
 }
-
 
 + (CommonNetworkOutput*)queryObject:(int)type
                                lang:(int)lang
@@ -1329,7 +1328,7 @@
     PPNetworkResponseBlock responseHandler = ^(NSDictionary *dict, CommonNetworkOutput *output) {
         
         output.resultCode = [[dict objectForKey:PARA_TRAVEL_RESULT] intValue];
-        
+        output.jsonDataDict = dict;
         return;
     };
     
@@ -1375,6 +1374,73 @@
                          constructURLHandler:constructURLHandler
                              responseHandler:responseHandler
                                 outputFormat:FORMAT_TRAVEL_PB
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)queryGeocodeWithLatitude:(double)latitude
+                                       longitude:(double)longitude
+                                        language:(NSString *)language
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        NSString* str = [NSString stringWithString:baseURL];
+        NSString *latLngStr = [NSString stringWithFormat:@"%f,%f", latitude, longitude];
+        str = [str stringByAddQueryParameter:PARA_GOOGLE_LATLNG value:latLngStr];
+        str = [str stringByAddQueryParameter:PARA_GOOGLE_LANGUAGE value:language];
+        str = [str stringByAddQueryParameter:PARA_GOOGLE_SENSOR value:@"true"];
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_GOOGLE_GEOCODE_JSON
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)querySerialNumber:(int)orderId
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        NSString* str = [NSString stringWithString:baseURL];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:orderId];
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_SERIAL_NUMBER
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
+                                      output:output];
+}
+
++ (CommonNetworkOutput*)queryPayOrder:(int)orderNumber
+{
+    CommonNetworkOutput* output = [[[CommonNetworkOutput alloc] init] autorelease];
+    ConstructURLBlock constructURLHandler = ^NSString *(NSString *baseURL)  {
+        NSString* str = [NSString stringWithString:baseURL];
+        str = [str stringByAddQueryParameter:PARA_TRAVEL_ID intValue:orderNumber];
+        return str;
+    };
+    
+    TravelNetworkResponseBlock responseHandler = ^(NSDictionary* jsonDictionary, NSData* data, int resultCode) {
+        return;
+    };
+    
+    return [TravelNetworkRequest sendRequest:URL_TRAVEL_QUERY_PAY_ORDER
+                         constructURLHandler:constructURLHandler
+                             responseHandler:responseHandler
+                                outputFormat:FORMAT_TRAVEL_JSON
                                       output:output];
 }
 

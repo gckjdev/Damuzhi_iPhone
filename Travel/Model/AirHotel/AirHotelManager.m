@@ -110,7 +110,7 @@ static AirHotelManager *_airHotelManager = nil;
     return reArray;
 }
 
-- (void)clearAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder
+- (void)clearFlight:(AirOrder_Builder *)airOrderBuilder
 {
     [airOrderBuilder clearFlightNumber];
     [airOrderBuilder clearFlight];
@@ -118,11 +118,21 @@ static AirHotelManager *_airHotelManager = nil;
     [airOrderBuilder clearFlightSeat];
 }
 
-- (void)clearHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
+- (void)clearAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder
+{
+    [airOrderBuilder clear];
+}
+
+- (void)clearHotel:(HotelOrder_Builder *)hotelOrderBuilder
 {
     [hotelOrderBuilder clearHotelId];
     [hotelOrderBuilder clearHotel];
     [hotelOrderBuilder clearRoomInfosList];
+}
+
+- (void)clearHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
+{
+    [hotelOrderBuilder clear];
 }
 
 - (NSString *)dateIntToYearMonthDayWeekString:(int)dateInt
@@ -187,7 +197,7 @@ static AirHotelManager *_airHotelManager = nil;
     return resultArray;
 }
 
-- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList
+- (double)calculateAirTotalPrice:(NSArray *)airOrderBuilderList
 {
     double totalPrice = 0;
     
@@ -201,9 +211,19 @@ static AirHotelManager *_airHotelManager = nil;
             }
             totalPrice += each;
         }
+        
+        if (builder.insurance) {
+            totalPrice += builder.flight.insuranceFee * [builder.passengerList count];
+        }
+        
+        if (builder.sendTicket) {
+            totalPrice += builder.flight.sendTicketFee * [builder.passengerList count];
+        }
     }
     
-    return [PriceUtils priceToStringCNY:totalPrice];
+    return totalPrice;
+    
+    //return [PriceUtils priceToStringCNY:totalPrice];
 }
 
 - (HotelRoom *)getRoomWithRoomId:(int)roomId hotel:(Place *)hotel
@@ -217,7 +237,7 @@ static AirHotelManager *_airHotelManager = nil;
     return nil;
 }
 
-- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList
+- (double)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList
 {
     double totalPrice = 0;
     
@@ -228,25 +248,33 @@ static AirHotelManager *_airHotelManager = nil;
         }
     }
     
-    AppManager *manager = [AppManager defaultManager];
-    int currentCiytId = [manager getCurrentCityId];
-    NSString *currency = [manager getCurrencySymbol:currentCiytId];
-    
-    return [PriceUtils priceToString:totalPrice currency:currency];
+    return totalPrice;
 }
 
 - (NSString *)orderStatusName:(int)status
 {
     NSString *statusName = nil;
     switch (status) {
-        case 5:
+        case StatusUnknow:
+            statusName = @"未知";
+            break;
+        case StatusPrepaid:
+            statusName = @"已支付";
+            break;
+        case StatusUnpaid:
+            statusName = @"未支付";
+            break;
+        case StatusFinish:
+            statusName = @"已完成";
+            break;
+        case StatusCancel:
+            statusName = @"已取消";
+            break;
+        case StatusAdd:
             statusName = @"意向订单";
             break;
-        case 15:
-            statusName = @"已确认订单";
-            break;
-        case 25:
-            statusName = @"取消订单";
+        case StatusConfirm:
+            statusName = @"已确认";
             break;
         default:
             break;
@@ -258,17 +286,26 @@ static AirHotelManager *_airHotelManager = nil;
 {
     UIColor *statusColor = [UIColor blackColor];
     switch (status) {
-        case 5:
-            //statusColor = [UIColor colorWithRed:0x00/0xFF green:0x99/0xFF blue:0x00/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:0.0/255.0 alpha:1];
+        case StatusUnknow:
+
             break;
-        case 15:
-            //statusColor = [UIColor colorWithRed:0xC6/0xFF green:0x00/0xFF blue:0x00/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:198.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1];
+        case StatusPrepaid:
+
             break;
-        case 25:
-            //statusColor = [UIColor colorWithRed:0x67/0xFF green:0x67/0xFF blue:0x67/0xFF alpha:1];
-            statusColor = [UIColor colorWithRed:103.0/255.0 green:103.0/255.0 blue:103.0/255.0 alpha:1];
+        case StatusUnpaid:
+            statusColor = [UIColor colorWithRed:0.0/255.0 green:176.0/255.0 blue:52.0/255.0 alpha:1.0];
+            break;
+        case StatusFinish:
+
+            break;
+        case StatusCancel:
+
+            break;
+        case StatusAdd:
+
+            break;
+        case StatusConfirm:
+
             break;
         default:
             break;

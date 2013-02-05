@@ -16,6 +16,7 @@
 @property (assign, nonatomic) BOOL isAdd;
 @property (retain, nonatomic) Person *person;
 @property (retain, nonatomic) Person_Builder *personBuilder;
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 @implementation AddContactPersonController
@@ -31,11 +32,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         
         if (isAdd == NO) {
@@ -81,18 +83,26 @@
         return;
     }
     
-    if ([_phoneTextField.text length] == 0) {
-        [self popupMessage:NSLS(@"请输入联系电话") title:nil];
+    NSUInteger phoneLen = [_phoneTextField.text length];
+    if (phoneLen != 11) {
+        if (phoneLen == 0) {
+            [self popupMessage:NSLS(@"请输入联系电话") title:nil];
+        } else {
+            [self popupMessage:NSLS(@"请输入11位的电话号码") title:nil];
+        }
         return;
     }
     
     [_personBuilder setName:_nameTextField.text];
     [_personBuilder setPhone:_phoneTextField.text];
+    
+    PersonManager *manager = [PersonManager defaultManager:PersonTypeContact isMember:_isMember];
+    
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypeContact] deletePerson:_person];
+        [manager deletePerson:_person];
     }
     Person *person = [_personBuilder build];
-    [[PersonManager defaultManager:PersonTypeContact] savePerson:person];
+    [manager savePerson:person];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -18,10 +18,13 @@ typedef enum{
 
 @interface PersonManager : NSObject
 
-+ (PersonManager *)defaultManager:(PersonType)personType;
++ (PersonManager *)defaultManager:(PersonType)personType isMember:(BOOL)isMember;
 
 - (NSArray*)findAllPersons;
 - (void)deletePerson:(Person *)person;
 - (void)savePerson:(Person *)person;
+- (void)deleteAllPersons;
+- (BOOL)isExistName:(NSString *)name;
+- (BOOL)isExistCardTypeId:(int)cardTypeId cardNumber:(NSString *)cardNumber;
 
 @end

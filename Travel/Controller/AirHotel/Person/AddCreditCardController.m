@@ -14,6 +14,7 @@
 #import "AppManager.h"
 #import "UIViewUtils.h"
 #import "TimeUtils.h"
+#import "IdCardUtil.h"
 
 @interface AddCreditCardController ()
 @property (assign, nonatomic) BOOL isAdd;
@@ -23,6 +24,7 @@
 @property (assign, nonatomic) int validMonth;
 @property (retain, nonatomic) NSMutableArray *bankSelectedItemIds;
 @property (retain, nonatomic) NSMutableArray *idCardSelectedItemIds;
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 @implementation AddCreditCardController
@@ -46,11 +48,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard
+- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard isMember:(BOOL)isMember;
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.creditCardBuilder = [[[CreditCard_Builder alloc] init] autorelease];
         self.bankSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
         self.idCardSelectedItemIds = [[[NSMutableArray alloc] init] autorelease];
@@ -112,6 +115,8 @@
 
 - (void)clickFinish:(id)sender
 {
+    [self resetViewSite];
+    
     if ([_creditCardBuilder hasBankId] == NO) {
         [self popupMessage:NSLS(@"请选择发卡银行") title:nil];
         return;
@@ -147,13 +152,32 @@
         return;
     }
     
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_creditCardBuilder.idCardTypeId];
+    if ([cardTypeName isEqualToString:@"身份证"]) {
+        NSString *resultTips = @"";
+        if ([IdCardUtil checkIdcard:_creditCardBuilder.idCardNumber resultTips:&resultTips] == NO) {
+            [self popupMessage:resultTips title:nil];
+            return;
+        }
+    }
+    
+    
+    CreditCardManager *manager = [CreditCardManager defaultManager];
+    
     if (self.isAdd == NO) {
-        [[CreditCardManager defaultManager] deleteCreditCard:_creditCard];
+        if (_isMember) {
+            [manager deleteCreditCard:_creditCard];
+        } else {
+            [manager deleteTempCreditCard:_creditCard];
+        }
     }
     CreditCard *creditCard = [self.creditCardBuilder build];
-    [[CreditCardManager defaultManager] saveCreditCard:creditCard];
+    if (_isMember) {
+        [manager saveCreditCard:creditCard];
+    } else {
+        [manager addTempCreditCard:creditCard];
+    }
     
-    [self resetViewSite];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

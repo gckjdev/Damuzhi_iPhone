@@ -37,6 +37,7 @@
 - (NSArray*)getCityNameList;
 
 - (NSString*)getCityName:(int)cityId;
+- (NSArray *)getCityLocationInfo:(int)cityId;
 - (NSString*)getCityLatestVersion:(int)cityId;
 - (NSString*)getCountryName:(int)cityId;
 - (int)getCityDataSize:(int)cityId;
@@ -53,6 +54,7 @@
 
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
+- (NSArray*)getCurrentCityLocationInfo;
 - (void)setCurrentCityId:(int)newCityId delegate:(id<AppManagerProtocol>)delegate;
 
 // Get item list for select controller.
@@ -114,7 +116,8 @@
 - (NSArray *)buildDepartPlaceItemList:(NSArray *)departPlaceList;
 
 - (NSArray *)getAirDepartCitySectionTitles;
-- (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter;
+- (NSArray *)getAirDepartHotCitys;
+- (NSArray *)getAirDepartCitys:(NSString *)sectionTitle;
 - (NSString *)getAirCityName:(int)cityId;
 - (NSString *)getAirlineName:(int)airlineId;
 - (NSString *)getAirlineLogo:(int)airlineId;
@@ -130,5 +133,7 @@
 - (NSString *)getCardName:(int)cardId;
 - (NSString *)getNationalityName:(int)nationalityId;
 - (NSString *)getBankName:(int)bankId;
+
+- (BOOL)isChinaCity:(int)cityId;
 
 @end

@@ -11,16 +11,21 @@
 #import "AirHotel.pb.h"
 #import "AirHotelOrderListCell.h"
 #import "FontSize.h"
-#import "AirHotelOrderDetailController.h"
 
 #import "PriceUtils.h"
 #import "TimeUtils.h"
 
 @interface AirHotelOrderListController ()
-
+@property (retain, nonatomic) NSMutableArray *orderList;
 @end
 
 @implementation AirHotelOrderListController
+
+- (void)dealloc
+{
+    [_orderList release];
+    [super dealloc];
+}
 
 - (void)viewDidLoad
 {
@@ -32,48 +37,70 @@
                            action:@selector(clickBack:)];
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
     
-    //self.dataList = nil;
     [self findOrderList];
+}
+
+- (void)clickBack:(id)sender
+{
+    if ([_delegate respondsToSelector:@selector(didClickBackButton)]) {
+        [_delegate didClickBackButton];
+    }
+    
+    if (_isPopToRoot) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)findOrderList
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
-    [[AirHotelService defaultService] findOrderUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        [[AirHotelService defaultService] findOrdersUsingLoginId:[[UserManager defaultManager] loginId] token:[[UserManager defaultManager] token] delegate:self];
+    } else {
+        [[AirHotelService defaultService] findOrdersUsingUserId:[[UserManager defaultManager] getUserId] delegate:self];
+    }
 }
 
 - (void)debugData
 {
-    for (AirHotelOrder *order in dataList) {
+    for (AirHotelOrder *order in _orderList) {
+        PPDebug(@"*********************");
         PPDebug(@"orderId:%d", order.orderId);
         PPDebug(@"orderStatus:%d", order.orderStatus);
-        PPDebug(@"arrive cityId:%d", order.arriveCityId);
-        PPDebug(@"contactPerson name:%@", order.contactPerson.name);
-        PPDebug(@"contactPerson phone:%@", order.contactPerson.phone);
-        PPDebug(@"airOrders count:%d", [order.airOrdersList count]);
-        PPDebug(@"hotelOrders count:%d", [order.hotelOrdersList count]);
-        PPDebug(@"hotel totalPrice:%@", [PriceUtils priceToStringCNY:order.hotelPrice]);
+//        PPDebug(@"depart cityId:%d", order.departCityId);
+//        PPDebug(@"arrive cityId:%d", order.arriveCityId);
+//        PPDebug(@"contactPerson name:%@", order.contactPerson.name);
+//        PPDebug(@"contactPerson phone:%@", order.contactPerson.phone);
+//        PPDebug(@"airOrders count:%d", [order.airOrdersList count]);
+//        PPDebug(@"hotelOrders count:%d", [order.hotelOrdersList count]);
+//        PPDebug(@"hotel totalPrice:%@", [PriceUtils priceToStringCNY:order.hotelPrice]);
+//        
+//        for (HotelOrder *hotelOrder in order.hotelOrdersList) {
+//            NSDate *checkIndDate = [NSDate dateWithTimeIntervalSince1970:hotelOrder.checkInDate];
+//            NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:hotelOrder.checkOutDate];
+//            PPDebug(@"hotel checkIn:%@", dateToChineseStringByFormat(checkIndDate, @"yyyy-MM-dd"));
+//            PPDebug(@"hotel checkOut:%@", dateToChineseStringByFormat(checkOutDate, @"yyyy-MM-dd"));
+//            
+//            PPDebug(@"hotel hotelId:%d", hotelOrder.hotelId);
+//            PPDebug(@"hotel name:%@", hotelOrder.hotel.name);
+//            PPDebug(@"hotel roomInfosCount:%d", [hotelOrder.roomInfosList count]);
+//            
+//            for (HotelRoom *room in hotelOrder.hotel.roomsList) {
+//                PPDebug(@"roomId:%d", room.roomId);
+//                PPDebug(@"roomName:%@", room.name);
+//            }
+//            
+//            for (HotelOrderRoomInfo *info in hotelOrder.roomInfosList) {
+//                PPDebug(@"selectedRoomId:%d", info.roomId);
+//                PPDebug(@"selectedRoomCount:%d", info.count);
+//            }
+//        }
         
-        for (HotelOrder *hotelOrder in order.hotelOrdersList) {
-            NSDate *checkIndDate = [NSDate dateWithTimeIntervalSince1970:hotelOrder.checkInDate];
-            NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:hotelOrder.checkOutDate];
-            PPDebug(@"hotel checkIn:%@", dateToChineseStringByFormat(checkIndDate, @"yyyy-MM-dd"));
-            PPDebug(@"hotel checkOut:%@", dateToChineseStringByFormat(checkOutDate, @"yyyy-MM-dd"));
-            
-            PPDebug(@"hotel hotelId:%d", hotelOrder.hotelId);
-            PPDebug(@"hotel name:%@", hotelOrder.hotel.name);
-            PPDebug(@"hotel roomInfosCount:%d", [hotelOrder.roomInfosList count]);
-            
-            for (HotelRoom *room in hotelOrder.hotel.roomsList) {
-                PPDebug(@"roomId:%d", room.roomId);
-                PPDebug(@"roomName:%@", room.name);
-            }
-            
-            for (HotelOrderRoomInfo *info in hotelOrder.roomInfosList) {
-                PPDebug(@"selectedRoomId:%d", info.roomId);
-                PPDebug(@"selectedRoomCount:%d", info.count);
-            }
-            
+        for (AirOrder *airOrder in order.airOrdersList) {
+
         }
     }
 }
@@ -84,7 +111,7 @@
 {
     [self hideActivity];
     if (result == 0) {        
-        self.dataList  = orderList;
+        self.orderList = [NSMutableArray arrayWithArray:orderList];
         [dataTableView reloadData];
         
         //[self debugData];
@@ -95,7 +122,7 @@
 #pragma UITableViewDataSource methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [dataList count];
+    return [_orderList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -105,7 +132,7 @@
     if (cell == nil) {
         cell = [AirHotelOrderListCell createCell:self];
     }
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     
     [cell setCellWithOrder:order];
     
@@ -116,16 +143,33 @@
 #pragma UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     return [AirHotelOrderListCell getCellHeight:order] + 10;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AirHotelOrder *order = [dataList objectAtIndex:indexPath.row];
+    AirHotelOrder *order = [_orderList objectAtIndex:indexPath.row];
     AirHotelOrderDetailController *controller = [[[AirHotelOrderDetailController alloc] initWithOrder:order] autorelease];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#pragma mark -
+#pragma AirHotelOrderDetailControllerDelegate methods
+- (void)didUpdateOrder:(AirHotelOrder *)order
+{
+    int index = 0;
+    for (AirHotelOrder *oneOrder in _orderList) {
+        if (order.orderId == oneOrder.orderId) {
+            break;
+        }
+        index ++;
+    }
+    
+    [_orderList removeObjectAtIndex:index];
+    [_orderList insertObject:order atIndex:index];
+    [dataTableView reloadData];
+}
 
 @end

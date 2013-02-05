@@ -217,4 +217,13 @@ typedef void (^TravelNetworkResponseBlock)(NSDictionary* jsonDictionary, NSData*
                      flightNumber:(NSString *)flightNumber
                              lang:(int)lang;
 
++ (CommonNetworkOutput*)queryGeocodeWithLatitude:(double)latitude
+                                       longitude:(double)longitude
+                                        language:(NSString *)language;
+
++ (CommonNetworkOutput*)querySerialNumber:(int)orderId;
+
+//queryPayOrder just for test
++ (CommonNetworkOutput*)queryPayOrder:(int)orderNumber;
+
 @end

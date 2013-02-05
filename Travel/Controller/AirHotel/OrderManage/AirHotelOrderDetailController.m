@@ -8,15 +8,19 @@
 
 #import "AirHotelOrderDetailController.h"
 #import "AirHotelOrderDetailTopCell.h"
-#import "AirOrderDetailCell.h"
-#import "HotelOrderDetailCell.h"
 #import "AirHotel.pb.h"
 #import "FontSize.h"
 #import "PlaceService.h"
 #import "CommonPlaceDetailController.h"
+#import "CommonWebController.h"
+#import "PayView.h"
+#import "AirHotelManager.h"
+#import "PriceUtils.h"
+#import "TimeUtils.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
+@property (assign, nonatomic) int unionPayOrderNumber;
 @end
 
 @implementation AirHotelOrderDetailController
@@ -24,6 +28,8 @@
 - (void)dealloc
 {
     [_airHotelOrder release];
+    [_footerView release];
+    [_shouldPayPriceLabel release];
     [super dealloc];
 }
 
@@ -39,6 +45,35 @@
 #define MARK_TOP_SECTON     @"top"
 #define MARK_AIR_SECTION    @"air"
 #define MARK_HOTEL_SECTION  @"hotel"
+- (void)setDefaultData
+{
+    if (_airHotelOrder.orderStatus != StatusUnpaid) {
+        self.footerView.hidden = YES;
+        self.footerView.frame = CGRectZero;
+    } else {
+        double totalPrice = 0;
+        if ([self hasAir:_airHotelOrder]) {
+            totalPrice += _airHotelOrder.airPrice;
+        }
+        
+        if (_airHotelOrder.hotelPaymentMode == PaymentModeOnline) {
+            totalPrice += _airHotelOrder.hotelPrice;
+        }
+        
+        self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:totalPrice];
+    }
+    
+    //set dataList
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    [mutableArray addObject:MARK_TOP_SECTON];
+    if ([self hasAir:_airHotelOrder]) {
+        [mutableArray addObject:MARK_AIR_SECTION];
+    }
+    if ([self hasHotel:_airHotelOrder]) {
+        [mutableArray addObject:MARK_HOTEL_SECTION];
+    }
+    self.dataList = mutableArray;
+}
 
 - (void)viewDidLoad
 {
@@ -50,16 +85,42 @@
                            action:@selector(clickBack:)];
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
     
-    //set dataList
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    [mutableArray addObject:MARK_TOP_SECTON];
-    if ([self hasAir:_airHotelOrder]) {
-        [mutableArray addObject:MARK_TOP_SECTON];
+    [self setDefaultData];
+    
+    NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
+    
+    NSString *dateStr = [self dateToSring:orderDate timeZoneName:nil];
+    PPDebug(@"orderDate:%@",dateStr);
+    
+    PPDebug(@"de orderDate:%@",dateToChineseStringByFormat(orderDate, @"yy-MM-dd HH:mm"));
+//    NSString *dateStr1 = [self dateToSring:orderDate timeZoneName:@"Asia/Shanghai"];
+//    PPDebug(@"orderDate:%@",dateStr1);
+//    
+//    NSString *dateStr2 = [self dateToSring:orderDate timeZoneName:@"US/Eastern"];
+//    PPDebug(@"orderDate:%@",dateStr2);
+}
+
+- (NSString *)dateToSring:(NSDate *)date
+             timeZoneName:(NSString *)timeZoneName
+{
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    
+    if (timeZoneName != nil) {
+        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
+        [formatter setTimeZone:tzGMT];
     }
-    if ([self hasHotel:_airHotelOrder]) {
-        [mutableArray addObject:MARK_HOTEL_SECTION];
+    
+    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
+    return [formatter stringFromDate:date];
+}
+
+- (void)clickBack:(id)sender
+{
+    if (_isPopToRoot) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    self.dataList = mutableArray;
 }
 
 - (BOOL)hasAir:(AirHotelOrder *)order
@@ -135,7 +196,7 @@
     }
     
     else if ([mark isEqualToString:MARK_AIR_SECTION]){
-        return [AirOrderDetailCell getCellHeight] + 10;
+        return [AirOrderDetailCell getCellHeight:_airHotelOrder] + 10;
     }
     
     else if ([mark isEqualToString:MARK_HOTEL_SECTION]){
@@ -172,6 +233,103 @@
     
     CommonPlaceDetailController *controller = [[[CommonPlaceDetailController alloc] initWithPlace:place] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark -
+#pragma mark OrderFlightViewDelegate method
+- (void)didClickRescheduleButton:(NSString *)url
+{
+    CommonWebController *controller = [[CommonWebController alloc] initWithWebUrl:url];
+    controller.navigationItem.title = NSLS(@"退改签详情");
+    [self.navigationController pushViewController:controller animated:YES];
+    [controller release];
+}
+
+- (void)viewDidUnload {
+    [self setFooterView:nil];
+    [self setShouldPayPriceLabel:nil];
+    [super viewDidUnload];
+}
+
+- (IBAction)clickPayButton:(id)sender {
+    NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+    if (nowTimeInterval - _airHotelOrder.orderDate > 30 * 60) {
+        UIAlertView *theAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLS(@"订单已取消，请重新提交订单") delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+        [theAlertView show];
+        [theAlertView release];
+        return;
+    }
+    
+    [self showActivityWithText:NSLS(@"正在获取交易流水号...")];
+    [[AirHotelService defaultService] findPaySerialNumber:_airHotelOrder.orderId
+                                                  delegate:self];
+}
+
+#pragma mark -
+#pragma mark AirHotelServiceDelegate method
+- (void)findPaySerialNumberDone:(int)result
+                     resultInfo:(NSString *)resultInfo
+                   serialNumber:(NSString *)serialNumber
+                    orderNumber:(int)orderNumber
+{
+    [self hideActivity];
+    if (result == 0) {
+        NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
+        int remainMinute = (30 * 60 - (nowTimeInterval - _airHotelOrder.orderDate) ) / 60;
+        if (remainMinute == 0) {
+            remainMinute = 1;
+        } else if (remainMinute > 30) {
+            remainMinute = 30;
+        }
+        
+        self.unionPayOrderNumber = orderNumber;
+        PayView *payView = [PayView createPayView];
+        [payView show:[NSString stringWithFormat:@"请在%d分钟内完成支付", remainMinute]
+         serialNumber:serialNumber
+           controller:self
+             delegate:self];
+    } else {
+        [self popupMessage:NSLS(@"获取交易流水号错误") title:nil];
+    }
+}
+
+- (void)findOrderDone:(int)result order:(AirHotelOrder *)order
+{
+    [self hideActivity];
+    if (result == 0) {
+        self.airHotelOrder = order;
+        [self setDefaultData];
+        [self.dataTableView reloadData];
+        
+        if ([_delegate respondsToSelector:@selector(didUpdateOrder:)]) {
+            [_delegate didUpdateOrder:order];
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark UPPayPluginDelegate
+-(void)UPPayPluginResult:(NSString*)result
+{
+    PPDebug(@"UPPayPluginResult:%@", result);
+    if ([result isEqualToString:@"success"]) {
+        [self popupMessage:NSLS(@"已经完成支付") title:nil];
+        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+        
+        [self showActivityWithText:NSLS(@"正在刷新订单...")];
+        [NSTimer scheduledTimerWithTimeInterval:1.0
+                                         target:self
+                                       selector:@selector(handleTimer:)
+                                       userInfo:nil
+                                        repeats:NO];
+    } else{
+        [self popupMessage:result title:nil];
+    }
+}
+
+- (void)handleTimer:(id)sender
+{
+    [[AirHotelService defaultService] findOrder:_airHotelOrder.orderId delegate:self];
 }
 
 @end

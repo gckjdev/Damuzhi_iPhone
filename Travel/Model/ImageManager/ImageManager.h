@@ -84,4 +84,6 @@
 - (UIImage *)flightListTopBgImage;
 - (UIImage *)flightListBottomBgImage;
 
+- (UIImage *)waitForPayBgImage;
+
 @end

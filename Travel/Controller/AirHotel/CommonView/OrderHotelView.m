@@ -66,7 +66,7 @@
 //holder view height is 44 (look at xib), so 44 = 25 + 11 + 8
 - (void)createCheckInPersonView:(NSArray *)personList
 {
-    PersonsView *personsView = [PersonsView createCheckInPersonLabels:personList];
+    PersonsView *personsView = [PersonsView createCheckInPersonLabels:personList type:PersonListTypeCheckIn];
     
     personsView.frame = [self updateOriginY:personsView originY:PACE_PERSONSVIEW_TOP];
     
@@ -123,7 +123,7 @@
         [self.checkInPersonButton setTitle:@"一间房一位入住人    添加入住人" forState:UIControlStateNormal];
     }
     
-    PPDebug(@"OrderHotelView height:%f", self.frame.size.height);
+    //PPDebug(@"OrderHotelView height:%f", self.frame.size.height);
 }
 
 - (IBAction)clickHoltelButton:(id)sender {

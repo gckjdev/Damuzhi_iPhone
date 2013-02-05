@@ -11,12 +11,14 @@
 
 #define OS_IOS 1
 
-// for test service
-//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+#define UNION_PAY_MODE_FORMAL   @"00"
+#define UNION_PAY_MODE_TEST     @"01"
 
+// for test service
+#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
-#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
 // URL
 #define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
@@ -52,6 +54,13 @@
 #define URL_TRAVEL_NEARBY               (URL_SERVICE@"nearby.aspx?")
 
 #define URL_TRAVEL_AIR_HOTEL_ORDER      (URL_SERVICE@"airHotelOrder.aspx?")
+
+#define URL_TRAVEL_ORDER_PAYMENT_INFO   (URL_SERVICE@"orderPaymentInfo.aspx?")
+
+#define URL_TRAVEL_SERIAL_NUMBER        (URL_SERVICE@"serialNumber.aspx?")
+
+//just for test
+#define URL_TRAVEL_QUERY_PAY_ORDER      (URL_SERVICE@"QueryPayOrder.aspx?")
 
 // Output Format
 #define FORMAT_TRAVEL_JSON          1
@@ -141,7 +150,10 @@
 #define PARA_TRAVEL_FLIGHT_TYPE             @"flightType"
 #define PARA_TRAVEL_FLIGHT_NUMBER           @"flightNumber"
 
+#define PARA_TRAVEL_SERIAL_NUMBER           @"serialNumber"
+#define PARA_TRAVEL_ORDER_NUMBER            @"orderNumber"
 
+#define PARA_TRAVEL_NEED_PAY                @"needPay"
 
 // For object list
 #define OBJECT_LIST_TYPE_ALL_PLACE       1
@@ -197,15 +209,24 @@
 #define OBJECT_TYPE_PLACE                       1
 #define OBJECT_TYPE_CITY_BASIC                  2
 #define OBJECT_TYPE_TRAVEL_PREPARATION          3
-#define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4     
+#define OBJECT_TYPE_TRAVEL_TRANSPORTATION       4
 #define OBJECT_TYPE_TRAVEL_UTILITY              5
 #define OBJECT_TYPE_HELP_INOF                   8
 #define OBJECT_TYPE_APP_DATA                    10
 #define OBJECT_TYPE_ROUTE_DETAIL                50
 #define OBJECT_TYPE_LOCAL_ROUTE_DETAIL          51
-
+#define OBJECT_TYPE_AIR_HOTEL_ORDER             60
+#define OBJECT_TYPE_HOTEL_ROOM                  61
 
 #define STRING_SEPARATOR    @","
 
+
+//google geocode
+#define URL_GOOGLE_GEOCODE_JSON     @"http://maps.googleapis.com/maps/api/geocode/json?"
+#define PARA_GOOGLE_LATLNG          @"latlng"
+#define PARA_GOOGLE_SENSOR          @"sensor"
+#define PARA_GOOGLE_LANGUAGE        @"language"
+
+#define GOOGLE_LANGUAGE_EN                 @"en"
 
 #endif

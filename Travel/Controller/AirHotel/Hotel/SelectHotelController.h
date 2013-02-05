@@ -22,8 +22,7 @@
 
 @interface SelectHotelController : PPTableViewController<AirHotelServiceDelegate,HotelHeaderViewDelegate,RoomCellDelegate, PlaceServiceDelegate>
 
-- (id)initWithCheckInDate:(NSDate *)checkInDate
-             checkOutDate:(NSDate *)checkOutDate
-                 delegate:(id<SelectHotelControllerDelegate>)delegate;
+- (id)initWithHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder
+                       delegate:(id<SelectHotelControllerDelegate>)delegate;
 
 @end

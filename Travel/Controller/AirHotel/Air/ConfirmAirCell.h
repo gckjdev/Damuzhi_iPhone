@@ -7,6 +7,7 @@
 //
 
 #import "PPTableViewCell.h"
+#import "OrderFlightView.h"
 
 @protocol ConfirmAirCellDelegate <NSObject>
 @optional
@@ -21,32 +22,17 @@
 
 
 @interface ConfirmAirCell : PPTableViewCell
-
 @property (retain, nonatomic) IBOutlet UIView *holderView;
-@property (retain, nonatomic) IBOutlet UILabel *flightTypeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *flightDateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *airLineAndFlightNumberLabel;
-@property (retain, nonatomic) IBOutlet UILabel *planeTypeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *seatLabel;
-@property (retain, nonatomic) IBOutlet UILabel *departAirportAndTimeLabel;
-@property (retain, nonatomic) IBOutlet UILabel *arriveAirportAndTimeLabel;
-
-@property (retain, nonatomic) IBOutlet UILabel *adultPriceLabel;
-@property (retain, nonatomic) IBOutlet UILabel *childPriceLabel;
-
-@property (retain, nonatomic) IBOutlet UILabel *adultAirportFuelTax;
-@property (retain, nonatomic) IBOutlet UILabel *childAirportFuelTax;
+@property (retain, nonatomic) IBOutlet UIView *passengerHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *passengerButton;
-
 @property (retain, nonatomic) IBOutlet UIButton *insuranceButton;
 @property (retain, nonatomic) IBOutlet UIButton *sendTicketButton;
 @property (retain, nonatomic) IBOutlet UIView *footerView;
-@property (retain, nonatomic) IBOutlet UIView *personHolderView;
 @property (retain, nonatomic) IBOutlet UILabel *insuranceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *sendTicketLabel;
 
-+ (CGFloat)getCellHeight:(NSUInteger)personListCount;
++ (CGFloat)getCellHeight:(NSArray *)airOrderBuilders;
 
-- (void)setCellWithAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder indexPath:(NSIndexPath *)aInadexPath;
+- (void)setCellWithAirOrderBuilders:(NSArray *)airOrderBuilders indexPath:(NSIndexPath *)aInadexPath;
 
 @end

@@ -30,6 +30,9 @@
 #import "LocalRouteListController.h"
 #import "UserManager.h"
 
+
+#import "PlaceService.h"
+
 typedef enum{
     NotificationTypeNone = 0,
     NotificationTypeNormal,
@@ -153,6 +156,15 @@ typedef enum{
     [_tabBarController selectedTab:button];
 }
 
+- (void)umTrack
+{
+    NSString * appKey = @"0bf8bb4ece934d0b65ace8b6018cfe43";
+    NSString * deviceName = [[[UIDevice currentDevice] name] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString * udid = [[UIDevice currentDevice] uniqueIdentifier];
+    NSString * urlString = [NSString stringWithFormat:@"http://log.umtrack.com/ping/%@/?devicename=%@&udid=%@", appKey,deviceName,udid];
+    [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL: [NSURL URLWithString:urlString]] delegate:nil];
+}
+
 #define EVER_LAUNCHED @"everLaunched"
 #define FIRST_LAUNCH @"firstLaunch"
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -162,6 +174,7 @@ typedef enum{
     application.applicationIconBadgeNumber = 0;
     //[MobClick startWithAppkey:UMENG_KEY];
     
+    [self umTrack];
     [MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:nil];
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"PP"];

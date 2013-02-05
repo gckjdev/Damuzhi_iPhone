@@ -13,6 +13,7 @@
 #import "TimeUtils.h"
 #import "AppManager.h"
 #import "PersonManager.h"
+#import "IdCardUtil.h"
 
 @interface AddPassengerController ()
 
@@ -21,7 +22,7 @@
 @property (retain, nonatomic) Person_Builder *personBuilder;
 @property (retain, nonatomic) NSDate *birthday;
 @property (retain, nonatomic) NSMutableArray *selectedItemIds;
-
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 #define TITLE_PASSENGE_TYPE     @"登机人类型:"
@@ -45,11 +46,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         self.selectedItemIds = [[[NSMutableArray alloc] init] autorelease];
         
@@ -95,29 +97,31 @@
     self.datePickerView.date = _birthday;
 }
 
-- (void)moveView:(NSIndexPath *)indexPath
-{
-    if (indexPath.row > 2) {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.25];
-        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
-        [UIImageView commitAnimations];
-    } else {
-        [self resetViewSite];
-    }
-}
+//- (void)moveView:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.row > 2) {
+//        [UIView beginAnimations:nil context:nil];
+//        [UIView setAnimationDuration:0.25];
+//        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
+//        [UIImageView commitAnimations];
+//    } else {
+//        [self resetViewSite];
+//    }
+//}
 
-- (void)resetViewSite
-{
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [UIImageView commitAnimations];
-}
+//- (void)resetViewSite
+//{
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.25];
+//    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//    [UIImageView commitAnimations];
+//}
 
 
 - (void)clickFinish:(id)sender
 {
+    [self.dataTableView reloadData];
+    
     if ([_personBuilder hasAgeType] == NO) {
         [self popupMessage:NSLS(@"请选择登机人类型") title:nil];
         return;
@@ -147,13 +151,36 @@
         [self popupMessage:NSLS(@"请选择出生日期") title:nil];
         return;
     }
-    [self resetViewSite];
     
-    if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypePassenger] deletePerson:_person];
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
+    if ([cardTypeName isEqualToString:@"身份证"]) {
+        NSString *resultTips = @"";
+        if ([IdCardUtil checkIdcard:_personBuilder.cardNumber resultTips:&resultTips] == NO) {
+            [self popupMessage:resultTips title:nil];
+            return;
+        }
     }
+    
+    PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger isMember:_isMember];
+    
+    if (_isAdd) {
+        if ([manager isExistName:_personBuilder.name]) {
+            [self popupMessage:NSLS(@"已经存在此姓名") title:nil];
+            return;
+        }
+        
+        if ([manager isExistCardTypeId:_personBuilder.cardTypeId cardNumber:_personBuilder.cardNumber]) {
+            [self popupMessage:NSLS(@"已经存在此证件号码") title:nil];
+            return;
+        }
+        
+    } else {
+        [manager deletePerson:_person];
+    }
+    
     Person *person = [self.personBuilder build];
-    [[PersonManager defaultManager:PersonTypePassenger] savePerson:person];
+    [manager savePerson:person];
+
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -301,7 +328,7 @@
     } else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderMale];
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -313,7 +340,7 @@
     }else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderFemale];
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -329,7 +356,7 @@
     } else if ([title isEqualToString:TITLE_BIRTHDAY]) {
         self.datePickerHolderView.hidden = NO;
     }
-    [self resetViewSite];
+    //[self resetViewSite];
     [dataTableView reloadData];
 }
 
@@ -348,12 +375,14 @@
 
 - (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text
 {
-    [self moveView:indexPath];
 }
 
 - (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text
 {
-    [self resetViewSite];
+}
+
+- (void)inputTextFieldshouldChange:(NSIndexPath *)indexPath text:(NSString *)text
+{
 }
 
 #pragma mark - 
@@ -386,4 +415,16 @@
     [self setDatePickerHolderView:nil];
     [super viewDidUnload];
 }
+
+#pragma mark Keyboard Methods
+- (void)keyboardDidShowWithRect:(CGRect)keyboardRect
+{
+    self.dataTableView.frame = CGRectMake(self.dataTableView.frame.origin.x, self.dataTableView.frame.origin.y, self.dataTableView.frame.size.width, self.view.frame.size.height - keyboardRect.size.height - 10);
+}
+
+- (void)keyboardWillHideWithRect:(CGRect)keyboardRect
+{
+    self.dataTableView.frame = CGRectMake(self.dataTableView.frame.origin.x, self.dataTableView.frame.origin.y, self.dataTableView.frame.size.width, self.view.frame.size.height);
+}
+
 @end

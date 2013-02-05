@@ -16,7 +16,8 @@
 #import "SelectFlightController.h"
 #import "SelectAirCityController.h"
 #import "UIViewController+Travel.h"
+#import "LoginController.h"
 
-@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate>
+@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate, LoginControllerDelegate>
 
 @end

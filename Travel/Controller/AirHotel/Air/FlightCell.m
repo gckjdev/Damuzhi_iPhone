@@ -13,7 +13,7 @@
 #import "AppManager.h"
 #import "PriceUtils.h"
 #import "UIImageView+WebCache.h"
-
+#import "AnimationManager.h"
 @implementation FlightCell
 
 - (void)dealloc {
@@ -47,7 +47,7 @@
     return 63;
 }
 
-#define FLIGHT_TIME_FORMAT @"hh:mm"
+#define FLIGHT_TIME_FORMAT @"HH:mm"
 
 - (void)setCellWithFlight:(Flight *)flight
 {
@@ -62,7 +62,11 @@
     }
     
     [self.areLineLogo setImageWithURL:[NSURL URLWithString:[[AppManager defaultManager] getAirlineLogo:flight.airlineId]] placeholderImage:nil success:^(UIImage *image, BOOL cached) {
-    } failure:^(NSError *error) {
+        if (!cached) {
+            self.areLineLogo.alpha = 0;
+            [AnimationManager appearAnimationFrom:0 to:1 delay:0 duration:0.3];
+            }
+        } failure:^(NSError *error) {
     }];
     
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];

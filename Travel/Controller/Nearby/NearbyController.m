@@ -22,6 +22,7 @@
 #import "PlaceUtils.h"
 #import "AppUtils.h"
 #import "FontSize.h"
+#import "MobClickUtils.h"
 
 //#define TEST_FOR_SIMULATE__LOCATION
 
@@ -495,13 +496,85 @@ UITextField * alertTextField;
 {
     [self hideActivity];
     _start = 0;
-    [self findNearbyPlaces];
+    
+    
+    if ([self isNearbyFromCityCenter] == NO) {
+        [self findCity];
+    } else {
+        [self findNearbyPlaces];
+    }
 }
 
 - (void)didFailUpdateLocation
 {
     [self hideActivity];
     [self popupMessage:NSLS(@"未能获取当前地理位置！") title:nil];
+}
+
+#define DISTANCE_NEARBY 10000
+- (BOOL)isNearbyFromCityCenter
+{
+    NSArray *infoList = [[AppManager defaultManager] getCurrentCityLocationInfo];
+    CLLocation *userCurrentLocation =  [[AppService defaultService] currentLocation];
+    for (CityLocationInfo *info in infoList) {
+        CLLocation *lotation = [[[CLLocation alloc] initWithLatitude:info.latitude longitude:info.longitude] autorelease];
+        
+        CLLocationDistance distance = [userCurrentLocation distanceFromLocation:lotation];
+        if (distance < DISTANCE_NEARBY) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)findCity
+{
+    CLLocation *userCurrentLocation =  [[AppService defaultService] currentLocation];
+    [[PlaceService defaultService] findCityWithLatitude:userCurrentLocation.coordinate.latitude
+                                              longitude:userCurrentLocation.coordinate.longitude
+                                               delegate:self];
+}
+
+- (BOOL)isChina:(NSString *)countryCode
+{
+    if ([countryCode isEqualToString:@"CN"]
+        || [countryCode isEqualToString:@"Hk"]
+        || [countryCode isEqualToString:@"MO"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)findCityDone:(int)result
+            cityName:(NSString *)cityName
+         countryCode:(NSString *)countryCode
+{
+    if (result == 0){
+        
+        int isCheckLocationInChina = [MobClickUtils getIntValueByKey:@"is_check_location_in_china" defaultValue:1];
+        int isCheckLocationInForeign = [MobClickUtils getIntValueByKey:@"is_check_location_in_foreign" defaultValue:1];
+        
+        if (isCheckLocationInChina == 1 && [self isChina:countryCode]) {
+            return;
+        }
+        
+        if (isCheckLocationInForeign == 1 && [self isChina:countryCode] == NO) {
+            return;
+        }
+        
+        NSArray *infoList = [[AppManager defaultManager] getCurrentCityLocationInfo];
+        BOOL found = NO;
+        PPDebug(@"find cityName:%@", cityName);
+        for (CityLocationInfo *info in infoList) {
+            PPDebug(@"cityName:%@", info.cityName);
+            if ([info.cityName isEqualToString:cityName]) {
+                found = YES;
+            }
+        }
+        if (found == NO) {
+            [self popupMessage:NSLS(@"你所在的位置不属于当前所选的城市") title:nil];
+        }
+    }
 }
 
 - (void)findNearbyPlaces

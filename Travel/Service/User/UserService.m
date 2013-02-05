@@ -112,7 +112,7 @@ static UserService* _defaultUserService = nil;
         CommonNetworkOutput *output = [TravelNetworkRequest login:loginId password:password];   
         
         int result = -1;
-        NSString *resultInfo;
+        NSString *resultInfo = @"";
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];
             result = [[jsonDict objectForKey:PARA_TRAVEL_RESULT] intValue];

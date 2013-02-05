@@ -16,6 +16,16 @@ typedef enum{
     FlightTypeBackOfDouble = 4
 } FlightType;
 
+enum AirHotelOrderStatus{
+    StatusUnknow = 0,   //未知
+    StatusPrepaid = 1,  //已支付
+    StatusUnpaid = 2,   //未支付
+    StatusFinish = 3,   //已完成
+    StatusCancel = 4,   //已取消
+    StatusAdd = 5,      //意向订单
+    StatusConfirm = 6   //已确认
+};
+
 @interface AirHotelManager : NSObject
 
 + (AirHotelManager *)defaultManager;
@@ -31,6 +41,9 @@ typedef enum{
 - (NSArray *)airOrderListFromBuilderList:(NSArray *)builderList;
 - (NSArray *)airOrderBuilderListFromOrderList:(NSArray *)orderList;
 
+- (void)clearFlight:(AirOrder_Builder *)airOrderBuilder;
+- (void)clearHotel:(HotelOrder_Builder *)hotelOrderBuilder;
+
 - (void)clearAirOrderBuilder:(AirOrder_Builder *)airOrderBuilder;
 - (void)clearHotelOrderBuilder:(HotelOrder_Builder *)hotelOrderBuilder;
 
@@ -43,8 +56,8 @@ typedef enum{
 - (NSArray *)validAirOrderBuilders:(NSArray *)builders;
 - (NSArray *)validHotelOrderBuilders:(NSArray *)builders;
 
-- (NSString *)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
-- (NSString *)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
+- (double)calculateAirTotalPrice:(NSArray *)airOrderBuilderList;
+- (double)calculateHotelTotalPrice:(NSArray *)hotelOrderBuilderList;
 
 - (NSString *)orderStatusName:(int)status;
 - (UIColor *)orderStatusColor:(int)status;

@@ -16,6 +16,7 @@
 @property (assign, nonatomic) BOOL isAdd;
 @property (retain, nonatomic) Person *person;
 @property (retain, nonatomic) Person_Builder *personBuilder;
+@property (assign, nonatomic) BOOL isMember;
 @end
 
 @implementation AddCheckInPersonController
@@ -28,11 +29,12 @@
     [super dealloc];
 }
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember
 {
     self = [super init];
     if (self) {
         self.isAdd = isAdd;
+        self.isMember = isMember;
         self.personBuilder = [[[Person_Builder alloc] init] autorelease];
         
         if (isAdd == NO) {
@@ -98,11 +100,14 @@
     
     [_personBuilder setName:_chineseNameTextField.text];
     [_personBuilder setNameEnglish:_englishNameTextField.text];
+    
+    PersonManager *manager = [PersonManager defaultManager:PersonTypeCheckIn isMember:_isMember];
+    
     if (self.isAdd == NO) {
-        [[PersonManager defaultManager:PersonTypeCheckIn] deletePerson:_person];
+        [manager deletePerson:_person];
     }
     Person *person = [_personBuilder build];
-    [[PersonManager defaultManager:PersonTypeCheckIn] savePerson:person];
+    [manager savePerson:person];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -238,9 +238,20 @@ static AppManager* _defaultAppManager = nil;
     return cityName;
 }
 
+- (NSArray *)getCityLocationInfo:(int)cityId
+{
+    for (City *city in CITY_LIST) {
+        if (city.cityId == cityId) {
+            return city.locationInfoList;
+            break;
+        }
+    }
+    return nil;
+}
+
 - (NSString*)getCityLatestVersion:(int)cityId
 {
-    NSString *cityName = NSLS(@"");;
+    NSString *cityName = NSLS(@"");
     for (City *city in CITY_LIST) {
         if (city.cityId == cityId) {
             cityName = city.cityName;
@@ -439,6 +450,12 @@ static AppManager* _defaultAppManager = nil;
 {
     int cityId = [self getCurrentCityId];
     return [self getCityName:cityId];
+}
+
+- (NSArray*)getCurrentCityLocationInfo
+{
+    int cityId = [self getCurrentCityId];
+    return [self getCityLocationInfo:cityId];
 }
 
 //- (void)setCurrentCityId:(int)newCityId 
@@ -1253,11 +1270,13 @@ static AppManager* _defaultAppManager = nil;
     return items;
 }
 
+#define AIR_HOT_CITY    @"热门"
 - (NSArray *)getAirDepartCitySectionTitles
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (AirCity *city in _app.airDepartCitiesList) {
+        PPDebug(@"depart city:%@", city.cityName);
         NSString *pinyin = [city.cityName pinyinFirstLetter];
         NSString *pinyinUpper = [pinyin uppercaseString];
         
@@ -1273,18 +1292,36 @@ static AppManager* _defaultAppManager = nil;
         return [py1 compare:py2 options:NSCaseInsensitiveSearch];
     }];
     
-    return sortedList;
+    NSMutableArray *resultArray = [NSMutableArray arrayWithArray:sortedList];
+    [resultArray insertObject:AIR_HOT_CITY atIndex:0];
+    
+    return resultArray;
 }
 
-- (NSArray *)getAirDepartCitys:(NSString *)pinyinFirstLetter
+- (NSArray *)getAirDepartHotCitys
 {
+    NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
+     for (AirCity *city in _app.airDepartCitiesList) {
+         if (city.hotCity) {
+             [resultArray addObject:city];
+         }
+     }
+    return resultArray;
+}
+
+- (NSArray *)getAirDepartCitys:(NSString *)sectionTitle
+{
+    if ([sectionTitle isEqualToString:AIR_HOT_CITY]) {
+        return [self getAirDepartHotCitys];
+    }
+    
     NSMutableArray *resultArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (AirCity *city in _app.airDepartCitiesList) {
         NSString *pinyin = [city.cityName pinyinFirstLetter];
         NSString *pinyinUpper = [pinyin uppercaseString];
         
-        if ([pinyinUpper isEqualToString:pinyinFirstLetter]) {
+        if ([pinyinUpper isEqualToString:sectionTitle]) {
             [resultArray addObject:city];
         }
     }
@@ -1440,6 +1477,14 @@ static AppManager* _defaultAppManager = nil;
     }
     
     return nil;
+}
+
+- (BOOL)isChinaCity:(int)cityId
+{
+    City *city = [self getCity:cityId];
+    return ([city.countryName isEqualToString:@"中国"] ||
+            [city.countryName isEqualToString:@"中國"] ||
+            [city.countryName isEqualToString:@"China"]);
 }
 
 @end

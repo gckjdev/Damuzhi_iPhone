@@ -23,7 +23,7 @@
     return HEIGHT_PERSON_LABEL;
 }
 
-+ (PersonsView *)createCheckInPersonLabels:(NSArray *)personList
++ (PersonsView *)createCheckInPersonLabels:(NSArray *)personList type:(PersonListType)type
 {
     PersonsView *returnPersonsView = [[[PersonsView alloc] init] autorelease];
     
@@ -31,7 +31,11 @@
     for (Person *person in personList) {
         UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(X_PERSON_LABEL, index * HEIGHT_PERSON_LABEL, 208, HEIGHT_PERSON_LABEL)] autorelease];
         label.textColor = [UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1];
-        label.text = [NSString stringWithFormat:@"%@", person.name];
+        if (type == PersonListTypePassenger) {
+            label.text = [NSString stringWithFormat:@"%@ , %@", person.name, person.cardNumber];
+        } else {
+            label.text = [NSString stringWithFormat:@"%@", person.name];
+        }
         label.font = [UIFont systemFontOfSize:13];
         label.backgroundColor = [UIColor clearColor];
         [returnPersonsView addSubview:label];

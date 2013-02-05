@@ -113,6 +113,7 @@ message TravelResponse{
   
   optional FlightList flightList = 50;                  //航班列表
   optional AirHotelOrderList airHotelOrderList = 55;    //机+酒订单列表
+  optional AirHotelOrder airHotelOrder = 56;            //机+酒订单详情
 }
 
 // 目前用于下订单请求

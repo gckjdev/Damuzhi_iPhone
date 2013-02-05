@@ -17,6 +17,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *statusLabel;
 @property (retain, nonatomic) IBOutlet UIView *priceHolderView;
 @property (retain, nonatomic) IBOutlet UILabel *priceLabel;
+@property (retain, nonatomic) IBOutlet UILabel *paymentModeLabel;
 
 + (CGFloat)getCellHeight:(AirHotelOrder *)airHotelOrde;
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde;

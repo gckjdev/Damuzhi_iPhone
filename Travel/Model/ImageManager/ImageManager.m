@@ -415,4 +415,13 @@ static ImageManager *_defaultManager = nil;
     return [UIImage strectchableImageName:@"flight_bottom_bg.png"];
 }
 
+- (UIImage *)waitForPayBgImage
+{
+    if ([DeviceDetection isIPhone5]) {
+        return [UIImage imageNamed:@"loading_bg_1136@2x.jpg"];
+    } else {
+        return [UIImage imageNamed:@"loading_bg_960@2x.jpg"];
+    }
+}
+
 @end

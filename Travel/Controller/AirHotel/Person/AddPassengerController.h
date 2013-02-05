@@ -17,6 +17,6 @@
 @property (retain, nonatomic) IBOutlet UIView *datePickerHolderView;
 @property (retain, nonatomic) IBOutlet UIDatePicker *datePickerView;
 
-- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person;
+- (id)initWithIsAdd:(BOOL)isAdd person:(Person *)person isMember:(BOOL)isMember;
 
 @end

@@ -34,6 +34,8 @@
 @property (retain, nonatomic) IBOutlet UIView *roomInfoHolderView;
 
 @property (retain, nonatomic) IBOutlet UIImageView *arrowImageView;
+@property (retain, nonatomic) IBOutlet UIView *middleSolidLineView;
+@property (retain, nonatomic) IBOutlet UIImageView *middleDottedLineImageView;
 
 
 

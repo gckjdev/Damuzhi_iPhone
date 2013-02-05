@@ -16,11 +16,12 @@ enum PersonGender {
     PERSON_GENDER_FEMALE = 2;   //女
 }
 
-//机票支付状态（注：可能还有更多状态）
-enum AirPaymentStatus {
-    AIR_PAYMENT_NOT_PAID = 1;        //未支付
-    AIR_PAYMENT_FINISH =2;           //已支付
+//支付方式
+enum PaymentMode{
+    ONLINE = 1;                     //在线支付
+    SHOP_EX = 2;                    //到店支付
 }
+
 
 //入住人 / 联系人 / 登机人
 message Person {
@@ -155,11 +156,12 @@ message AirHotelOrder {
 
     optional int32 orderId = 20;                //订单编号 (仅用于订单查询)
     optional int32 orderDate = 21;              //订单日期 (仅用于订单查询)
-    optional int32 orderStatus = 22;            //订单状态 (仅用于订单查询),取值参见本地游？
+    optional int32 orderStatus = 22;            //订单状态 (仅用于订单查询)
 
     optional double hotelPrice = 30;            //酒店总价格 (仅用于订单查询)
     optional double airPrice = 31;              //机票总价格 (仅用于订单查询)
-    optional AirPaymentStatus airPaymentStatus = 33;   //机票支付状态 (仅用于订单查询)
+    optional PaymentMode airPaymentMode = 32;         //机票支付方式 （取值：在线支付）
+    optional PaymentMode hotelPaymentMode = 33;       //酒店支付方式 （取值：在线支付、到店支付）
 }
 
 // 用于查询订单列表

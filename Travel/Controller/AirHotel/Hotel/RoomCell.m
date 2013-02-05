@@ -8,7 +8,8 @@
 
 #import "RoomCell.h"
 #import "Place.pb.h"
-
+#import "AppManager.h"
+#import "PriceUtils.h"
 
 @interface RoomCell()
 
@@ -34,8 +35,8 @@
     return @"RoomCell";
 }
 
-#define HEIGH_TOP       42
-#define HEIGH_MIDDLE    33
+#define HEIGH_TOP       49
+#define HEIGH_MIDDLE    40
 
 + (CGFloat)getCellHeight:(RoomCellSite)roomCellSite;
 {
@@ -87,8 +88,20 @@
     self.breakfastLabel.text = [NSString stringWithFormat:@"%@/%@", room.bed, room.breakfast];
     self.selectRoomButton.selected = isSelected;
     
+    self.priceLabel.text = [PriceUtils priceToStringCNY:room.price];
+    
     [self updateCountLabel];
     [self updateSite:roomCellSite];
+    
+    if (self.selectRoomButton.selected) {
+        self.plusButton.enabled = YES;
+        self.minusButton.enabled = YES;
+        self.countLabel.enabled = YES;
+    } else {
+        self.plusButton.enabled = NO;
+        self.minusButton.enabled = NO;
+        self.countLabel.enabled = NO;
+    }
 }
 
 - (void)updateCountLabel
@@ -114,6 +127,9 @@
 
 - (IBAction)clickSelectRoomButton:(id)sender {
     self.selectRoomButton.selected = !self.selectRoomButton.selected;
+    if (self.selectRoomButton.selected) {
+        _roomCount = 1;
+    }
     
     if ([delegate respondsToSelector:@selector(didClickSelectRoomButton:isSelected:count:indexPath:)]) {
         [delegate didClickSelectRoomButton:_roomId isSelected:self.selectRoomButton.selected count:_roomCount indexPath:indexPath];
@@ -143,6 +159,9 @@
     [_selectRoomButton release];
     [_backgroundImageView release];
     [_holderView release];
+    [_minusButton release];
+    [_plusButton release];
+    [_priceLabel release];
     [super dealloc];
 }
 

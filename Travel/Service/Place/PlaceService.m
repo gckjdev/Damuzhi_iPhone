@@ -18,6 +18,7 @@
 #import "JSON.h"
 #import "PlaceStorage.h"
 #import "ResendManager.h"
+#import "GoogleAddressComponent.h"
 
 @implementation PlaceService
 
@@ -624,5 +625,32 @@ typedef NSArray* (^RemoteRequestHandler)(int* resultCode);
 
 }
 
+- (void)findCityWithLatitude:(double)latitude
+                   longitude:(double)longitude
+                    delegate:(id<PlaceServiceDelegate>)delegate
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        CommonNetworkOutput *output = [TravelNetworkRequest queryGeocodeWithLatitude:latitude longitude:longitude language:GOOGLE_LANGUAGE_EN];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *countryCode = nil;
+            NSString *cityName = nil;
+            
+            if (output.resultCode == ERROR_SUCCESS) {
+                countryCode = [[GACManager defaultManager] countryCode:output.textData];
+                cityName = [[GACManager defaultManager] cityName:output.textData];
+                
+                PPDebug(@"findCity city:%@ country:%@", cityName, countryCode);
+            } else {
+                PPDebug(@"findCity failed");
+            }
+            
+            if ([delegate respondsToSelector:@selector(findCityDone:cityName:countryCode:)]){
+                [delegate findCityDone:output.resultCode cityName:cityName countryCode:cityName];
+            }
+        });
+    });
+}
 
 @end

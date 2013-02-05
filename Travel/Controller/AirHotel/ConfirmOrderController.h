@@ -12,19 +12,25 @@
 #import "ConfirmAirCell.h"
 #import "SelectPersonController.h"
 #import "PlaceService.h"
+#import "UPPayPluginDelegate.h"
 
 @class AirHotelOrder_Builder;
 
-@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate>
+@interface ConfirmOrderController : PPTableViewController<AirHotelServiceDelegate, SelectPersonControllerDelegate, ConfirmAirCellDelegate,ConfirmHotelCellDelegate, UIAlertViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate, UPPayPluginDelegate>
 
 @property (retain, nonatomic) IBOutlet UIButton *contactPersonButton;
-@property (retain, nonatomic) IBOutlet UIButton *paymentButton;
-
 @property (retain, nonatomic) IBOutlet UILabel *airPirceLabel;
 @property (retain, nonatomic) IBOutlet UILabel *hotelPriceLabel;
+@property (retain, nonatomic) IBOutlet UIView *airPriceHolderView;
+@property (retain, nonatomic) IBOutlet UIView *hotelPriceHolderView;
+@property (retain, nonatomic) IBOutlet UILabel *shouldPayPriceLabel;
+@property (retain, nonatomic) IBOutlet UILabel *hotelPayModeLabel;
+@property (retain, nonatomic) IBOutlet UIView *shouldPayPriceHolderView;
+@property (retain, nonatomic) IBOutlet UIButton *orderButton;
 
-- (id)initWithAirOrderBuilders:(NSArray *)airOrderBuilders
-            hotelOrderBuilders:(NSArray *)hotelOrderBuilders
+- (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
+            hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders
+                  departCityId:(int)departCityId
                       isMember:(BOOL)isMember;
 
 @end

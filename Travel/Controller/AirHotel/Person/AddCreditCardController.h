@@ -17,6 +17,6 @@
 @property (retain, nonatomic) IBOutlet UIView *datePickerHolderView;
 @property (retain, nonatomic) IBOutlet SRMonthPicker *monthPicker;
 
-- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard;
+- (id)initWithIsAdd:(BOOL)isAdd creditCard:(CreditCard *)creditCard isMember:(BOOL)isMember;
 
 @end

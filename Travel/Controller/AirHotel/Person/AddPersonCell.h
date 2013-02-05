@@ -16,6 +16,8 @@
 - (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text;
 - (void)inputTextFieldDidEndEditing:(NSIndexPath *)indexPath text:(NSString *)text;
 - (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text;
+- (void)inputTextFieldshouldChange:(NSIndexPath *)indexPath text:(NSString *)text;
+
 @end
 
 

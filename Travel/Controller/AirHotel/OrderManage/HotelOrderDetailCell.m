@@ -28,7 +28,7 @@
     for (HotelOrder *order in airHotelOrde.hotelOrdersList) {
         height += [OrderHotelView getCellHeightWithOrder:order];
         
-        PPDebug(@"OrderHotelView getCellHeight:%f", [OrderHotelView getCellHeightWithOrder:order]);
+        //PPDebug(@"OrderHotelView getCellHeight:%f", [OrderHotelView getCellHeightWithOrder:order]);
     }
     
     return height;
@@ -36,6 +36,12 @@
 
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde
 {
+    if (airHotelOrde.hotelPaymentMode == PaymentModeOnline) {
+        self.paymentModeLabel.text = @"在线支付";
+    } else {
+        self.paymentModeLabel.text = @"到店支付";
+    }
+    
     CGFloat y = HEIGHT_TOP;
     for (HotelOrder *order in airHotelOrde.hotelOrdersList) {
         OrderHotelView *view = [OrderHotelView createOrderHotelView:delegate];
@@ -49,10 +55,7 @@
     
     self.holderView.frame = CGRectMake(self.holderView.frame.origin.x, self.holderView.frame.origin.y, self.holderView.frame.size.width, y + self.priceHolderView.frame.size.height);
     
-    AppManager *manager = [AppManager defaultManager];
-    int currentCiytId = [manager getCurrentCityId];
-    NSString *currency = [manager getCurrencySymbol:currentCiytId];
-    self.priceLabel.text= [PriceUtils priceToString:airHotelOrde.hotelPrice currency:currency];
+    self.priceLabel.text= [PriceUtils priceToStringCNY:airHotelOrde.hotelPrice ];
 }
 
 
@@ -62,6 +65,7 @@
     [_priceLabel release];
     [_priceHolderView release];
     [_holderView release];
+    [_paymentModeLabel release];
     [super dealloc];
 }
 @end

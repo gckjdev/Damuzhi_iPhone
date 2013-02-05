@@ -7,6 +7,7 @@
 //
 
 #import "AddPersonCell.h"
+#import "LogUtil.h"
 
 @interface AddPersonCell()
 @property (assign, nonatomic) AddPersonCellType type;
@@ -115,6 +116,16 @@
     if ([delegate respondsToSelector:@selector(didClickSelectButton:)]) {
         [delegate didClickSelectButton:indexPath];
     }
+}
+
+
+#pragma mark -
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([delegate respondsToSelector:@selector(inputTextFieldshouldChange:text:)]) {
+        [delegate inputTextFieldshouldChange:indexPath text:textField.text];
+    }
+    return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField

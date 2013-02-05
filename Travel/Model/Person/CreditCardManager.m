@@ -11,9 +11,29 @@
 #import "AirHotel.pb.h"
 #import "LogUtil.h"
 
+@interface CreditCardManager()
+@property (retain, nonatomic) NSMutableArray *creditCards;
+@end
+
+
 static CreditCardManager *_creditCardManager = nil;
 
 @implementation CreditCardManager
+
+- (void)dealloc
+{
+    [_creditCards release];
+    [super dealloc];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.creditCards = [[[NSMutableArray alloc] init] autorelease];
+    }
+    return self;
+}
 
 + (CreditCardManager *)defaultManager
 {
@@ -99,6 +119,33 @@ static CreditCardManager *_creditCardManager = nil;
     NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:[self findAllCreditCards]];
     [mutableArray addObject:creditCard];
     [self writeToFileWithList:mutableArray];
+}
+
+/************非会员*************/
+- (NSArray *)findAllTempCreditCards
+{
+    return _creditCards;
+}
+
+- (void)deleteTempCreditCard:(CreditCard *)creditCard
+{
+    for (CreditCard *oneCreditCard in _creditCards) {
+        if ([self isEqual:oneCreditCard anotherCreditCard:creditCard]) {
+            [_creditCards removeObject:oneCreditCard];
+            break;
+        }
+    }
+}
+
+- (void)addTempCreditCard:(CreditCard *)creditCard
+{
+    [self deleteTempCreditCard:creditCard];
+    [_creditCards addObject:creditCard];
+}
+
+- (void)deleteAllTempCreditCards
+{
+    [_creditCards removeAllObjects];
 }
 
 @end

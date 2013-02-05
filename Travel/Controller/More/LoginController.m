@@ -170,7 +170,7 @@
     [self.navigationController pushViewController:controller animated:YES];
     [controller release];
     
-    
+
 }
 
 - (IBAction)clickCheckOrdersButton:(id)sender {
@@ -224,8 +224,14 @@
     }
     
     [self popupMessage:NSLS(@"登录成功") title:nil];
-    [self.navigationController popViewControllerAnimated:YES];
     
+    if (_isAutoPop) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+    if ([_delegate respondsToSelector:@selector(didLogin)]) {
+        [_delegate didLogin];
+    }
 }
 
 

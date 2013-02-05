@@ -35,11 +35,15 @@
     [_arriveAirportLabel release];
     [_arriveTimeLabel release];
     [_adultPriceLabel release];
-    [_adultPriceLabel release];
     [_childPriceLabel release];
     [_adultAirportFuelTax release];
     [_childAirportFuelTax release];
     [super dealloc];
+}
+
++ (CGFloat)getViewHeight
+{
+    return 144;
 }
 
 + (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate
@@ -61,6 +65,12 @@
 {
     AirOrder_Builder *builder = [[AirHotelManager defaultManager] airOrderBuilder:airOrder];
     [self setViewWithOrderBuilder:builder];
+    
+    UIColor *color = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
+    self.departAirportLabel.textColor = color;
+    self.departTimeLabel.textColor = color;
+    self.arriveAirportLabel.textColor = color;
+    self.arriveTimeLabel.textColor = color;
 }
 
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder
@@ -83,11 +93,9 @@
     
     
     //set seatname
-    NSString *seatName = nil;
     NSString *reUrl = nil;
     for (FlightSeat *seat in airOrderBuilder.flight.flightSeatsList) {
         if ([seat.code isEqualToString:airOrderBuilder.flightSeatCode]) {
-            seatName = seat.name;
             reUrl = seat.reschedule;
             break;
         }
@@ -97,10 +105,10 @@
     
     //set airport and time
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:airOrderBuilder.flight.departDate];
-    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"hh:mm");
+    NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"HH:mm");
     
     NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:airOrderBuilder.flight.arriveDate];
-    NSString *arriveDateStr = dateToChineseStringByFormat(arriveDate, @"hh:mm");
+    NSString *arriveDateStr = dateToChineseStringByFormat(arriveDate, @"HH:mm");
     self.departTimeLabel.text = departDateStr;
     self.arriveTimeLabel.text = arriveDateStr;
     

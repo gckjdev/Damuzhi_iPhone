@@ -8,7 +8,15 @@
 
 #import "PPTableViewController.h"
 #import "AirHotelService.h"
+#import "AirHotelOrderDetailController.h"
 
-@interface AirHotelOrderListController : PPTableViewController<AirHotelServiceDelegate>
+@protocol AirHotelOrderListControllerDelegate <NSObject>
+@optional
+- (void)didClickBackButton;
+@end
+
+@interface AirHotelOrderListController : PPTableViewController<AirHotelServiceDelegate, AirHotelOrderDetailControllerDelegate>
+@property (assign, nonatomic) id<AirHotelOrderListControllerDelegate> delegate;
+@property (assign, nonatomic) BOOL isPopToRoot;
 
 @end

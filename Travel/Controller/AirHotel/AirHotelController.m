@@ -18,7 +18,6 @@
 #import "SelectCityController.h"
 #import "AppManager.h"
 #import "UserManager.h"
-#import "LoginController.h"
 #import "CommonWebController.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
@@ -72,7 +71,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
-    self.navigationItem.title = NSLS(@"机+酒");
     
     [self changeAirType:AirGoAndBack];
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
@@ -117,7 +115,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [appDelegate hideTabBar:isHide];
 }
 
-
+//创建默认数据
 - (void)createDefaultData
 {
     if ([_hotelOrderBuilderList count] == 0) {
@@ -188,13 +186,24 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     if (_airType != airType) {
         _airType = airType;
-        if (airType == AirGoAndBack) {
-            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
-        }
-        [self.dataTableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        [self.dataTableView reloadData];
     }
     
     [self updateAirTypeToBuilder];
+}
+
+#pragma mark -
+- (void)currentCityDidChange:(int)newCityId
+{
+    for (AirOrder_Builder *builder in _airOrderBuilderList) {
+        [_manager clearAirOrderBuilder:builder];
+    }
+    
+    for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
+        [_manager clearHotelOrderBuilder:builder];
+    }
+    
+    self.departCity = nil;
 }
 
 #pragma mark -
@@ -270,7 +279,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1 * [[_sectionStat objectAtIndex:section] boolValue];;
+    return 1 * [self isSectionOpen:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -317,43 +326,52 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
-- (void)order:(BOOL)isMember
+- (BOOL)isCanOrder
 {
-    if (_airType == AirGo) {
-        [_airOrderBuilderList removeObject:_backAirOrderBuiler];
-    } else if (_airType == AirBack) {
-        [_airOrderBuilderList removeObject:_goAirOrderBuiler];
-    }
-    
     //取出有效的订单
-    NSArray *validAirList = [_manager validAirOrderBuilders:_airOrderBuilderList];
+    NSArray *validAirList = nil;
+    if (_airType == AirGo) {
+        validAirList = [_manager validAirOrderBuilders:[NSArray arrayWithObject:_goAirOrderBuiler]];
+    } else if (_airType == AirBack) {
+        validAirList = [_manager validAirOrderBuilders:[NSArray arrayWithObject:_backAirOrderBuiler]];
+    } else {
+        validAirList = [_manager validAirOrderBuilders:_airOrderBuilderList];
+    }
     NSArray *validHotelList = [_manager validHotelOrderBuilders:_hotelOrderBuilderList];
-    
     if ([validAirList count] == 0 && [validHotelList count] == 0) {
         [self popupMessage:NSLS(@"未选择任何航班或酒店") title:nil];
-        return;
+        return NO;
+    } else {
+        self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];
+        self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:validHotelList];
+        return YES;
     }
-    
-    self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];
-    self.hotelOrderBuilderList = [NSMutableArray arrayWithArray:validHotelList];
-    
-    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:_airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList isMember:isMember] autorelease];
+}
+
+- (void)order:(BOOL)isMember
+{
+    ConfirmOrderController *controller = [[[ConfirmOrderController alloc] initWithAirOrderBuilders:_airOrderBuilderList hotelOrderBuilders:_hotelOrderBuilderList departCityId:_departCity.cityId isMember:isMember] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)clickNonMemberButton:(id)sender {
-    [self order:NO];
+    if ([self isCanOrder]) {
+        [self order:NO];
+    }
 }
 
 - (IBAction)clickMemberButton:(id)sender {
-    if (![[UserManager defaultManager] isLogin]) {
-        LoginController *controller = [[LoginController alloc] init];
-        [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
-        return;
+    if ([self isCanOrder]) {
+        if (![[UserManager defaultManager] isLogin]) {
+            LoginController *controller = [[LoginController alloc] init];
+            controller.delegate = self;
+            controller.isAutoPop = NO;
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
+        } else {
+            [self order:YES];
+        }
     }
-    
-    [self order:YES];
 }
 
 - (IBAction)clickAddHotelButton:(id)sender {
@@ -364,14 +382,115 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [dataTableView reloadData];
 }
 
+- (NSDate *)getGoDate
+{
+    if ([_goAirOrderBuiler hasFlightDate]) {
+        return [NSDate dateWithTimeIntervalSince1970:_goAirOrderBuiler.flightDate];
+    }
+    return nil;
+}
+
+- (NSDate *)getBackDate
+{
+    if ([_backAirOrderBuiler hasFlightDate]) {
+        return [NSDate dateWithTimeIntervalSince1970:_backAirOrderBuiler.flightDate];
+    }
+    return nil;
+}
+
+//获取最早的入住时间
+- (NSDate *)getCheckInDate
+{
+    int timeInterval = 0;
+    for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
+        if (timeInterval == 0 && [builder hasCheckInDate]) {
+            timeInterval = builder.checkInDate;
+        }
+        
+        if (builder.checkInDate < timeInterval ) {
+            timeInterval = builder.checkInDate;
+        }
+    }
+    
+    if (timeInterval > 0) {
+        return [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    } else{
+        return nil;
+    }
+}
+
+//获取最迟的退房时间
+- (NSDate *)getCheckOutDate
+{
+    int timeInterval = 0;
+    for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
+        if (timeInterval == 0 && [builder hasCheckOutDate]) {
+            timeInterval = builder.checkOutDate;
+        }
+        
+        if (builder.hasCheckOutDate > timeInterval ) {
+            timeInterval = builder.checkOutDate;
+        }
+    }
+    
+    if (timeInterval > 0) {
+        return [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    } else{
+        return nil;
+    }
+}
+
+- (NSDate *)maxDate:(NSArray *)dateList
+{
+    if ([dateList count] == 0) {
+        return nil;
+    }
+    
+    NSDate *maxDate = [dateList objectAtIndex:0];
+    
+    for (NSDate *oneDate in dateList) {
+        if ([maxDate compare:oneDate] == NSOrderedAscending) {
+            maxDate = oneDate;
+        }
+    }
+    
+    return maxDate;
+}
+
+- (NSDate *)minDate:(NSArray *)dateList
+{
+    if ([dateList count] == 0) {
+        return nil;
+    }
+    
+    NSDate *minDate = [dateList objectAtIndex:0];
+    for (NSDate *oneDate in dateList) {
+        if ([minDate compare:oneDate] == NSOrderedDescending) {
+            minDate = oneDate;
+        }
+    }
+    
+    return minDate;
+}
+
 #pragma mark -
 #pragma MakeHotelOrderCellDelegate methods
 - (void)didClickCheckInButton:(NSIndexPath *)indexPath
 {
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_IN_DATE;
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    //入住时间一定要在退房时间之前，超出去程和返程的时间段要给出提示
+    NSDate *checkOutDate = (builder.hasCheckOutDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate] : nil);
+    NSDate *endDate = (builder.hasCheckOutDate ? [checkOutDate dateByAddingTimeInterval:-24 * 60 * 60]: nil);
+    
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:endDate monthCount:12 title:NSLS(@"入住日期")] autorelease];
+    controller.suggestStartDate = [self getGoDate];
+    controller.suggestEndDate = [self getBackDate];
+    controller.suggestStartTips = NSLS(@"确定入住日期要早于去程日期？");
+    controller.suggestEndTips = NSLS(@"确定入住日期要迟于回程日期？");
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -379,8 +498,18 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     self.currentIndexPath = indexPath;
     self.currentDateTag = CHECK_OUT_DATE;
+    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:indexPath.section - 1];
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    //退房时间一定要在入住时间之后，超出去程和返程的时间段要给出提示
+    NSDate *checkInDate = (builder.hasCheckInDate ? [NSDate dateWithTimeIntervalSince1970:builder.checkInDate] : nil);
+    NSDate *startDate = (builder.hasCheckInDate ? [checkInDate dateByAddingTimeInterval:24 * 60 * 60] : [NSDate dateWithTimeIntervalSinceNow:24*60*60]);
+    
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:startDate customEndDate:nil monthCount:12 title:NSLS(@"退房日期")] autorelease];
+    controller.suggestStartDate = [self getGoDate];
+    controller.suggestEndDate = [self getBackDate];
+    controller.suggestStartTips = NSLS(@"确定退房日期要早于去程日期？");
+    controller.suggestEndTips = NSLS(@"确定退房日期要迟于回程日期？");
+    
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -398,10 +527,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
-    NSDate *checkInDate = [NSDate dateWithTimeIntervalSince1970:builder.checkInDate];
-    NSDate *checkOutDate = [NSDate dateWithTimeIntervalSince1970:builder.checkOutDate];
-    
-    SelectHotelController *controller =[[[SelectHotelController alloc] initWithCheckInDate:checkInDate checkOutDate:checkOutDate delegate:self] autorelease];
+    SelectHotelController *controller =[[[SelectHotelController alloc] initWithHotelOrderBuilder:builder delegate:self] autorelease];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -411,14 +537,18 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     if (_currentDateTag == GO_DATE) {
         if ([date timeIntervalSince1970] != _goAirOrderBuiler.flightDate) {
-            [_manager clearAirOrderBuilder:_goAirOrderBuiler];
+            [_manager clearFlight:_goAirOrderBuiler];
         }
         [_goAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
+        
+        if ([_backAirOrderBuiler hasFlightDate] && _backAirOrderBuiler.flightDate < _goAirOrderBuiler.flightDate) {
+            [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970] + 24 * 60 * 60];
+        }
         return;
         
     } else if (_currentDateTag == BACK_DATE) {
         if ([date timeIntervalSince1970] != _backAirOrderBuiler.flightDate) {
-            [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+            [_manager clearFlight:_backAirOrderBuiler];
         }
         [_backAirOrderBuiler setFlightDate:[date timeIntervalSince1970]];
         return;
@@ -430,17 +560,19 @@ enum HOTEL_FLIGHT_DATE_TAG{
         if (_currentDateTag == CHECK_IN_DATE) {
             
             if ([date timeIntervalSince1970] != builder.checkInDate) {
-                [_manager clearHotelOrderBuilder:builder];
+                [_manager clearHotel:builder];
             }
             [builder setCheckInDate:[date timeIntervalSince1970]];
+            if ([builder hasCheckOutDate] && builder.checkOutDate < builder.checkInDate) {
+                [builder setCheckOutDate:[date timeIntervalSince1970] + 24 * 60 * 60];
+            }
             
         } else if (_currentDateTag == CHECK_OUT_DATE) {
             
             if ([date timeIntervalSince1970] != builder.checkOutDate) {
-                [_manager clearHotelOrderBuilder:builder];
+                [_manager clearHotel:builder];
             }
             [builder setCheckOutDate:[date timeIntervalSince1970]];
-            
         }
         
         [dataTableView reloadData];
@@ -451,12 +583,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma SelectHotelControllerDelegate methods
 - (void)didClickFinish:(Place *)hotel roomInfos:(NSArray *)roomInfos
 {
-    HotelOrder_Builder *builder = [_hotelOrderBuilderList objectAtIndex:_currentIndexPath.section - 1];
-    [builder setHotelId:hotel.placeId];
-    [builder setHotel:hotel];
-    [builder clearRoomInfosList];
-    [builder addAllRoomInfos:roomInfos];
-    
     [dataTableView reloadData];
 }
 
@@ -511,16 +637,44 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didClickGoDateButton
 {
     self.currentDateTag = GO_DATE;
+    //去程时间必须在回程时间之前
+    NSDate *checkInDate = [self getCheckInDate];
+    NSDate *checkOutDate = [self getCheckOutDate];
+    NSDate *suggestDate = nil;
+    NSString *suggestTips = nil;
+    if (checkInDate) {
+        suggestDate = checkInDate;
+        suggestTips = NSLS(@"确定去程日期在酒店入住日期之后？");
+    } else if (checkOutDate) {
+        suggestDate  = checkOutDate;
+        suggestTips =  NSLS(@"确定去程日期在酒店退房日期之后？");
+    }
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:[self getBackDate] monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    controller.suggestEndDate = suggestDate;
+    controller.suggestEndTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didClickBackDateButton
 {
     self.currentDateTag = BACK_DATE;
+    //回程时间必须去程时间之后
+    NSDate *checkInDate = [self getCheckInDate];
+    NSDate *checkOutDate = [self getCheckOutDate];
+    NSDate *suggestDate = nil;
+    NSString *suggestTips = nil;
+    if (checkOutDate) {
+        suggestDate  = checkOutDate;
+        suggestTips =  NSLS(@"确定回程日期在酒店退房日期之前？");
+    } else if (checkInDate) {
+        suggestDate = checkInDate;
+        suggestTips = NSLS(@"确定回程日期在酒店入住日期之前？");
+    }
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self monthCount:12 title:NSLS(@"回程日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:[self getGoDate] customEndDate:nil monthCount:12 title:NSLS(@"回程日期")] autorelease];
+    controller.suggestStartDate = suggestDate;
+    controller.suggestStartTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -590,8 +744,9 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didSelectCity:(AirCity *)city
 {
     if (_departCity.cityId != city.cityId) {
-        [_manager clearAirOrderBuilder:_goAirOrderBuiler];
-        [_manager clearAirOrderBuilder:_backAirOrderBuiler];
+        for (AirOrder_Builder *builder in _airOrderBuilderList) {
+            [_manager clearAirOrderBuilder:builder];
+        }
         
         for (HotelOrder_Builder *builder in _hotelOrderBuilderList) {
             [_manager clearHotelOrderBuilder:builder];
@@ -654,6 +809,13 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     NSString *phone = [[[AppManager defaultManager] getServicePhoneList] objectAtIndex:buttonIndex];
     [UIUtils makeCall:phone];
+}
+
+#pragma mark -
+#pragma mark LoginControllerDelegate methods
+- (void)didLogin
+{
+    [self order:YES];
 }
 
 @end

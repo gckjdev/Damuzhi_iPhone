@@ -7,8 +7,12 @@
 //
 
 #import "CommonService.h"
+#import "UPPayPluginDelegate.h"
 
 #define ERROR_NO_FLIGHT_DATA            10001
+#define TIME_OUT                        10002
+
+@class AirHotelOrder;
 
 @protocol AirHotelServiceDelegate <NSObject>
 
@@ -20,7 +24,9 @@
              hotelList:(NSArray*)hotelList;
 
 - (void)orderDone:(int)result
-       resultInfo:(NSString *)resultInfo;
+       resultInfo:(NSString *)resultInfo
+          orderId:(int)orderId
+          needPay:(BOOL)needPay;
 
 - (void)findFlightsDone:(int)resultCode
                  result:(int)result
@@ -28,6 +34,15 @@
              flightList:(NSArray *)flightList;
 
 - (void)findOrdersDone:(int)result orderList:(NSArray *)orderList;
+
+- (void)findOrderDone:(int)result order:(AirHotelOrder *)order;
+
+- (void)findOrderPaymentInfoDone:(int)result paymentInfo:(NSString *)paymentInfo;
+
+- (void)findPaySerialNumberDone:(int)result
+                     resultInfo:(NSString *)resultInfo
+                   serialNumber:(NSString *)serialNumber
+                    orderNumber:(int)orderNumber;
 
 @end
 
@@ -55,11 +70,22 @@
                        flightNumber:(NSString *)flightNumber
                            delegate:(id<AirHotelServiceDelegate>)delegate;
 
-- (void)findOrderUsingUserId:(NSString *)userId
+- (void)findOrdersUsingUserId:(NSString *)userId
                     delegate:(id<AirHotelServiceDelegate>)delegate;
 
-- (void)findOrderUsingLoginId:(NSString *)loginId
+- (void)findOrdersUsingLoginId:(NSString *)loginId
                         token:(NSString *)token
                      delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findOrder:(int)orderId delegate:(id<AirHotelServiceDelegate>)delegate;
+
+//- (void)findOrderPaymentInfo:(int)orderId
+//                    delegate:(id<AirHotelServiceDelegate>)delegate;
+
+- (void)findPaySerialNumber:(int)orderId
+                   delegate:(id<AirHotelServiceDelegate>)delegate;
+
+//queryPayOrder just for test
+- (void)queryPayOrder:(int)orderNumber;
 
 @end
