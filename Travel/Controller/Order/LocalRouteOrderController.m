@@ -208,7 +208,13 @@
         [cell.rightButton setTitleColor:DEPARTDATA_TEXT_COLOR forState:UIControlStateNormal];
         
         [cell.leftButton setTitle:[NSString stringWithFormat:NSLS(@"成人%d位"), _adult] forState:UIControlStateNormal];
-        [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal]; 
+        [cell.rightButton setTitle:[NSString stringWithFormat:NSLS(@"儿童%d位"), _children] forState:UIControlStateNormal];
+        
+        if (_selectedBooking.childrenPrice == 0) {
+            cell.rightButton.hidden = YES;
+        } else {
+            cell.rightButton.hidden = NO;
+        }
     }
     else if ([cellTitle isEqualToString:TITLE_PRICE]){
         if (_selectedBooking == nil && [_route.bookingsList count] > 0 ) {

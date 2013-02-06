@@ -54,6 +54,8 @@ serialNumber:(NSString *)serialNumber
     self.tipsLabel.text = tips;
 
     [self.activityView startAnimating];
+    self.frame = controller.view.frame;
+    self.backgroundImageView.frame = self.frame;
     [controller.view addSubview:self];
     [NSTimer scheduledTimerWithTimeInterval:2.0
                                      target:self

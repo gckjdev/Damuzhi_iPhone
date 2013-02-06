@@ -111,7 +111,7 @@
 {
     [self hideActivity];
     [self hideTipsOnTableView];
-    if (result == 0 && [self.orderList count] > 0) {
+    if (result == 0 && [orderList count] > 0) {
         self.orderList = [NSMutableArray arrayWithArray:orderList];
         [dataTableView reloadData];
     }else{
