@@ -572,9 +572,6 @@
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
 {
-    //for test query pay result
-    [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
-    
     //success、fail、cancel
     PPDebug(@"UPPayPluginResult:%@", result);
     [self showActivityWithText:NSLS(@"正在生成订单...")];

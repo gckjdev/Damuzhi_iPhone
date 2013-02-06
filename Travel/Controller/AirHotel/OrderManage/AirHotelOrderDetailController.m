@@ -289,7 +289,6 @@
     PPDebug(@"UPPayPluginResult:%@", result);
     if ([result isEqualToString:@"success"]) {
         [self popupMessage:NSLS(@"已经完成支付") title:nil];
-        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
         
         [self showActivityWithText:NSLS(@"正在刷新订单...")];
         [NSTimer scheduledTimerWithTimeInterval:1.0

@@ -16,14 +16,28 @@
 #import "UIDevice+IdentifierAddition.h"
 
 @implementation TravelNetworkRequest
++ (CommonNetworkOutput*)sendRequest:(NSString*)baseURL
+                constructURLHandler:(ConstructURLBlock)constructURLHandler
+                    responseHandler:(TravelNetworkResponseBlock)responseHandler
+                       outputFormat:(int)outputFormat
+                             output:(CommonNetworkOutput*)output
+{
+    return [self sendRequest:baseURL
+         constructURLHandler:constructURLHandler
+             responseHandler:responseHandler
+                outputFormat:outputFormat
+                      output:output
+                     timeOut:NETWORK_TIMEOUT];
+}
 
 + (CommonNetworkOutput*)sendRequest:(NSString*)baseURL
                 constructURLHandler:(ConstructURLBlock)constructURLHandler
                     responseHandler:(TravelNetworkResponseBlock)responseHandler
                        outputFormat:(int)outputFormat
                              output:(CommonNetworkOutput*)output
-{  
-    NSURL* url = nil;    
+                            timeOut:(int)timeOut
+{
+    NSURL* url = nil;
     if (constructURLHandler != NULL)
         url = [NSURL URLWithString:[constructURLHandler(baseURL) stringByURLEncode]];
     else
@@ -36,7 +50,7 @@
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setAllowCompressedResponse:YES];
-    [request setTimeOutSeconds:NETWORK_TIMEOUT];
+    [request setTimeOutSeconds:timeOut];
     
     
 #ifdef DEBUG    
@@ -1280,6 +1294,7 @@
                                       output:output];
 }
 
+#define QUERY_HOTELS_TIME_OUT   10
 + (CommonNetworkOutput*)queryList:(int)type
                            cityId:(int)cityId
                       checkInDate:(NSString *)checkInDate
@@ -1314,7 +1329,8 @@
                          constructURLHandler:constructURLHandler
                              responseHandler:responseHandler
                                 outputFormat:FORMAT_TRAVEL_PB
-                                      output:output];
+                                      output:output
+                                     timeOut:QUERY_HOTELS_TIME_OUT];
 }
 
 + (CommonNetworkOutput*)orderAirHotel:(NSData *)data
