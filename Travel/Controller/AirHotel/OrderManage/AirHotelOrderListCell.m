@@ -15,6 +15,7 @@
 #import "AppManager.h"
 #import "TimeUtils.h"
 #import "RoomInfoView.h"
+#import "AppUtils.h"
 
 @interface AirHotelOrderListCell()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -112,11 +113,11 @@
     self.departAirportLabel.text = _airOrder.flight.departAirport;
     self.arriveAirportLabel.text = _airOrder.flight.arriveAirport;
     
-    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:_airOrder.flight.departDate];
+    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:_airOrder.flight.departDate]];
     NSString *departDateStr =  dateToChineseStringByFormat(departDate, @"HH:mm");
     self.departTimeLabel.text = departDateStr;
     
-    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:_airOrder.flight.arriveDate];
+    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:_airOrder.flight.arriveDate]];
     NSString *arriveDateStr =  dateToChineseStringByFormat(arriveDate, @"HH:mm");
     self.arriveTimeLabel.text = arriveDateStr;
 }

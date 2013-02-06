@@ -9,6 +9,7 @@
 #import "FlightSimpleView.h"
 #import "AppManager.h"
 #import "TimeUtils.h"
+#import "AppUtils.h"
 
 @implementation FlightSimpleView
 
@@ -43,10 +44,10 @@
     self.airlineNameLabel.text = [[AppManager defaultManager] getAirlineName:flight.airlineId];
     self.flightNumberLabel.text = flight.flightNumber;
     
-    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];
+    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:flight.departDate]];
     self.departDateLabel.text =  dateToChineseStringByFormat(departDate, @"HH:mm");
     
-    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:flight.arriveDate];
+    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:flight.arriveDate]];
     self.arriveDateLabel.text = dateToChineseStringByFormat(arriveDate, @"HH:mm");
     
     self.departAirportLabel.text = flight.departAirport;

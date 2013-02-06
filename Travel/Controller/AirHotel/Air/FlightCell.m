@@ -14,6 +14,8 @@
 #import "PriceUtils.h"
 #import "UIImageView+WebCache.h"
 #import "AnimationManager.h"
+#import "AppUtils.h"
+
 @implementation FlightCell
 
 - (void)dealloc {
@@ -69,10 +71,10 @@
         } failure:^(NSError *error) {
     }];
     
-    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:flight.departDate];
+    NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:flight.departDate]];
     self.departDateLabel.text = dateToChineseStringByFormat(departDate, FLIGHT_TIME_FORMAT);
     
-    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:flight.arriveDate];
+    NSDate *arriveDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:flight.arriveDate]];
     self.arriveDateLabel.text = dateToChineseStringByFormat(arriveDate, FLIGHT_TIME_FORMAT);
     
     self.departAirportLabel.text = flight.departAirport;

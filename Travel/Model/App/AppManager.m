@@ -1339,10 +1339,6 @@ static AppManager* _defaultAppManager = nil;
         }
     }
     
-    if (cityName == nil) {
-        cityName = [self getCityName:cityId];
-    }
-    
     return cityName;
 }
 

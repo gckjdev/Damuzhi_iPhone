@@ -76,9 +76,9 @@
         
         if (_flightType == FlightTypeGo || _flightType == FlightTypeGoOfDouble) {
             self.leftName = [[AppManager defaultManager] getAirCityName:_departCityId];
-            self.rightName = [[AppManager defaultManager] getAirCityName:_destinationCityId];
+            self.rightName = [[AppManager defaultManager] getCityName:_destinationCityId];
         } else {
-            self.leftName = [[AppManager defaultManager] getAirCityName:_destinationCityId];
+            self.leftName = [[AppManager defaultManager] getCityName:_destinationCityId];
             self.rightName = [[AppManager defaultManager] getAirCityName:_departCityId];
         }
         

@@ -666,7 +666,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     NSString *suggestTips = nil;
     if (checkOutDate) {
         suggestDate  = checkOutDate;
-        suggestTips =  NSLS(@"确定回程日期在酒店退房日期之前？");
+        suggestTips =  NSLS(@"确定回程日期要早于退房日期之前？");
     } else if (checkInDate) {
         suggestDate = checkInDate;
         suggestTips = NSLS(@"确定回程日期在酒店入住日期之前？");

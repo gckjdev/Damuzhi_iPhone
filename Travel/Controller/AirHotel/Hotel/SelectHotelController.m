@@ -441,7 +441,7 @@
         [self popupMessage:NSLS(@"暂无法查询相关内容，请重试") title:nil];
     }
     
-    if (result != 0 || resultCode != ERROR_SUCCESS) {
+    if (result != 0) {
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
     }
     

@@ -17,6 +17,7 @@
 #import "AirHotelManager.h"
 #import "PriceUtils.h"
 #import "TimeUtils.h"
+#import "AppUtils.h"
 
 @interface AirHotelOrderDetailController ()
 @property (retain, nonatomic) AirHotelOrder *airHotelOrder;
@@ -86,32 +87,6 @@
     self.view.backgroundColor = [UIColor colorWithRed:221.0/255.0 green:239.0/255.0 blue:247.0/255.0 alpha:1];
     
     [self setDefaultData];
-    
-    NSDate *orderDate = [NSDate dateWithTimeIntervalSince1970:_airHotelOrder.orderDate];
-    
-    NSString *dateStr = [self dateToSring:orderDate timeZoneName:nil];
-    PPDebug(@"orderDate:%@",dateStr);
-    
-    PPDebug(@"de orderDate:%@",dateToChineseStringByFormat(orderDate, @"yy-MM-dd HH:mm"));
-//    NSString *dateStr1 = [self dateToSring:orderDate timeZoneName:@"Asia/Shanghai"];
-//    PPDebug(@"orderDate:%@",dateStr1);
-//    
-//    NSString *dateStr2 = [self dateToSring:orderDate timeZoneName:@"US/Eastern"];
-//    PPDebug(@"orderDate:%@",dateStr2);
-}
-
-- (NSString *)dateToSring:(NSDate *)date
-             timeZoneName:(NSString *)timeZoneName
-{
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    
-    if (timeZoneName != nil) {
-        NSTimeZone *tzGMT = [NSTimeZone timeZoneWithName:timeZoneName];
-        [formatter setTimeZone:tzGMT];
-    }
-    
-    [formatter setDateFormat:@"yy-MM-dd HH:mm"];
-    return [formatter stringFromDate:date];
 }
 
 - (void)clickBack:(id)sender
@@ -253,7 +228,7 @@
 
 - (IBAction)clickPayButton:(id)sender {
     NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
-    if (nowTimeInterval - _airHotelOrder.orderDate > 30 * 60) {
+    if (nowTimeInterval - [AppUtils standardTimeFromBeijingTime:_airHotelOrder.orderDate] > 30 * 60) {
         UIAlertView *theAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLS(@"订单已取消，请重新提交订单") delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
         [theAlertView show];
         [theAlertView release];
@@ -275,7 +250,7 @@
     [self hideActivity];
     if (result == 0) {
         NSTimeInterval nowTimeInterval = [[NSDate date] timeIntervalSince1970];
-        int remainMinute = (30 * 60 - (nowTimeInterval - _airHotelOrder.orderDate) ) / 60;
+        int remainMinute = (30 * 60 - (nowTimeInterval - [AppUtils standardTimeFromBeijingTime:_airHotelOrder.orderDate]) ) / 60;
         if (remainMinute == 0) {
             remainMinute = 1;
         } else if (remainMinute > 30) {

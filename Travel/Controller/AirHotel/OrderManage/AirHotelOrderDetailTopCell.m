@@ -11,6 +11,7 @@
 #import "AirHotelManager.h"
 #import "AppManager.h"
 #import "TimeUtils.h"
+#import "AppUtils.h"
 
 @implementation AirHotelOrderDetailTopCell
 
@@ -70,8 +71,10 @@
     if ([AirHotelOrderDetailTopCell hasAirOrder:order]) {
         AirOrder *goAirOrder = [AirHotelOrderDetailTopCell getGoAirOrder:order];
         if (goAirOrder) {
-            NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:goAirOrder.flightDate];
+            NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:goAirOrder.flightDate]];
             self.departDateLabel.text = dateToChineseStringByFormat(departDate, @"yyyy-MM-dd");
+        } else {
+            self.departDateLabel.text = @"";
         }
         self.departCityHolderView.frame = FRAME_HOLDER_1;
         self.arrvieCityHolderView.frame = FRAME_HOLDER_2;
