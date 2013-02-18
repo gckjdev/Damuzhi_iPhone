@@ -26,7 +26,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "242"
          endingLineNumber = "242"
-         landmarkName = "-getCityLatestVersion:"
+         landmarkName = "-getCityLocationInfo:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
