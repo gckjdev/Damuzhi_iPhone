@@ -27,6 +27,7 @@
 @property (assign, nonatomic) BOOL isEidtingTable;
 @property (assign, nonatomic) NSUInteger selectCount;
 @property (assign, nonatomic) BOOL isMember;
+@property (retain, nonatomic) NSIndexPath *deleteIndexPath;
 
 @end
 
@@ -42,6 +43,7 @@
     [_selectedIndexList release];
     [_headeTitleLabel release];
     [_headerHolderView release];
+    [_deleteIndexPath release];
     [super dealloc];
 }
 
@@ -67,26 +69,49 @@
     return self;
 }
 
-- (void)updateTitleAndDataSource
+- (NSString *)personTypeName:(int)type
 {
+    NSString *name = @"";
     switch (_type) {
         case ViewTypePassenger:
-            self.headeTitleLabel.text = NSLS(@"添加航班登机人");
+            name = NSLS(@"航班登机人");
+            break;
+            
+        case ViewTypeCheckIn:
+            name = NSLS(@"入住人");
+            break;
+            
+        case ViewTypeContact:
+            name = NSLS(@"联系人");
+            break;
+            
+        case ViewTypeCreditCard:
+            name = NSLS(@"用信用卡");
+            break;
+        default:
+            break;
+    }
+    
+    return name;
+}
+
+- (void)updateTitleAndDataSource
+{
+    self.headeTitleLabel.text = [NSString stringWithFormat:@"添加%@", [self personTypeName:_type]];
+    switch (_type) {
+        case ViewTypePassenger:
             self.dataList = [[PersonManager defaultManager:PersonTypePassenger isMember:_isMember] findAllPersons];
             break;
             
         case ViewTypeCheckIn:
-            self.headeTitleLabel.text = NSLS(@"添加入住人");
             self.dataList = [[PersonManager defaultManager:PersonTypeCheckIn isMember:_isMember] findAllPersons];
             break;
             
         case ViewTypeContact:
-            self.headeTitleLabel.text = NSLS(@"添加联系人");
             self.dataList = [[PersonManager defaultManager:PersonTypeContact isMember:_isMember] findAllPersons];
             break;
             
         case ViewTypeCreditCard:
-            self.headeTitleLabel.text = NSLS(@"添加常用信用卡");
             if (_isMember) {
                 self.dataList = [[CreditCardManager defaultManager] findAllCreditCards];
             } else {
@@ -365,6 +390,28 @@
 }
 
 - (void)didClickDeleteButton:(NSIndexPath *)indexPath
+{
+    self.deleteIndexPath = indexPath;
+    NSString *message = [NSString stringWithFormat:@"确定删除%@?", [self personTypeName:_type]];
+    UIAlertView *oneAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                           message:message
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLS(@"取消")
+                                                 otherButtonTitles:NSLS(@"确定"), nil];
+    [oneAlertView show];
+    [oneAlertView release];
+}
+
+- (void)alertView:(UIAlertView *)oneAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == oneAlertView.cancelButtonIndex) {
+        return;
+    } else {
+        [self deletePerson:_deleteIndexPath];
+    }
+}
+
+- (void)deletePerson:(NSIndexPath *)indexPath
 {
     if (_type == ViewTypeCreditCard) {
         CreditCard *creditCard = (CreditCard *)[dataList objectAtIndex:indexPath.row];

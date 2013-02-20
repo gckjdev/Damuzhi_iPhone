@@ -247,7 +247,11 @@ static AirHotelManager *_airHotelManager = nil;
     for (HotelOrder_Builder *builder in hotelOrderBuilderList) {
         for (HotelOrderRoomInfo *info in builder.roomInfosList) {
             HotelRoom *room = [self getRoomWithRoomId:info.roomId hotel:builder.hotel];
-            totalPrice += info.count * room.price;
+            int days = (builder.checkOutDate - builder.checkInDate) / (60 * 60 * 24);
+            if (days <= 0) {
+                days = 1;
+            }
+            totalPrice += info.count * room.price * days;
         }
     }
     

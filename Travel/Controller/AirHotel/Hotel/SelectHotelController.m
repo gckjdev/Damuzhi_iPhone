@@ -471,6 +471,12 @@
     
     [self dataSourceDidFinishLoadingNewData];
     [self dataSourceDidFinishLoadingMoreData];
+    
+    if ( self.noMoreData) {
+        PPDebug(@"YES");
+    } else {
+        PPDebug(@"NO");
+    }
 }
 
 - (void)loadMoreTableViewDataSource

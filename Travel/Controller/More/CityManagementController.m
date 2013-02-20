@@ -125,6 +125,7 @@ static CityManagementController *_instance;
     
     self.promptLabel.backgroundColor = [UIColor colorWithRed:121.0/255.0 green:164.0/255.0 blue:180.0/255.0 alpha:1]; 
     dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
+    
     [self.view addSubview:self.promptLabel];
     
     self.downloadTableView.frame = CGRectMake(0, 0, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT);
@@ -141,7 +142,7 @@ static CityManagementController *_instance;
     
     [self setNavigationRightButton:@"" 
                           fontSize:FONT_SIZE
-                         imageName:@"search_btn.png" 
+                         imageName:@"search_btn.png"
                             action:@selector(clickSearch:)];
     
     UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)] autorelease];
@@ -162,8 +163,6 @@ static CityManagementController *_instance;
     }else {
         dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
     }
-    
-    
 }
 
 
@@ -475,10 +474,7 @@ static CityManagementController *_instance;
             city = [_filteredListContent objectAtIndex:indexPath.row];
         }
         
-        [[AppManager defaultManager] setCurrentCityId:city.cityId delegate:_delegate];
-        self.searchDisplayController.active = NO;
-        [self.navigationController popToRootViewControllerAnimated:YES];
-        [self didSelectCurrendCity:city];
+        [self finishSelectCity:city];
     }
     
 }
@@ -578,16 +574,23 @@ static CityManagementController *_instance;
     [_downloadTableView reloadData];
 }
 
-#pragma mark -
-#pragma mark: implementation of CityListCellDelegate
-- (void)didSelectCurrendCity:(City*)city
+- (void)finishSelectCity:(City*)city
 {
     [[AppManager defaultManager] setCurrentCityId:city.cityId delegate:_delegate];
     
     NSString *message = [NSString stringWithFormat:NSLS(@"%@%@"), city.countryName, city.cityName];
     [self popupMessage:message title:NSLS(@"提示")];
+    self.searchDisplayController.active = NO;
     [self.dataTableView reloadData];
     [self.searchDisplayController.searchResultsTableView reloadData];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark -
+#pragma mark: implementation of CityListCellDelegate
+- (void)didSelectCurrendCity:(City*)city
+{
+    [self finishSelectCity:city];
 }
 
 - (void)didStartDownload:(City*)city

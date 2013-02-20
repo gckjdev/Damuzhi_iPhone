@@ -20,7 +20,7 @@
 
 
 
-@interface SelectPersonController : PPTableViewController <SelectPersonCellDelegate>
+@interface SelectPersonController : PPTableViewController <SelectPersonCellDelegate, UIAlertViewDelegate>
 @property (retain, nonatomic) IBOutlet UIView *headerHolderView;
 @property (retain, nonatomic) IBOutlet UILabel *headeTitleLabel;
 

@@ -274,7 +274,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1 + [_hotelOrderBuilderList count];
+    //return 1 + [_hotelOrderBuilderList count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
