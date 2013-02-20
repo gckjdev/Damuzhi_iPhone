@@ -739,6 +739,36 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [controller release];
 }
 
+- (void)didClickClearDepartCity
+{
+    self.departCity = nil;
+    [dataTableView reloadData];
+}
+
+- (void)didClickClearGoDate
+{
+    [_goAirOrderBuiler clearFlightDate];
+    [dataTableView reloadData];
+}
+
+- (void)didClickClearBackDate
+{
+    [_backAirOrderBuiler clearFlightDate];
+    [dataTableView reloadData];
+}
+
+- (void)didClickClearGoFlight
+{
+    [_goAirOrderBuiler clearFlight];
+    [dataTableView reloadData];
+}
+
+- (void)didClickClearBackFlight
+{
+    [_backAirOrderBuiler clearFlight];
+    [dataTableView reloadData];
+}
+
 #pragma mark -
 #pragma SelectAirCityControllerDelegate methods
 - (void)didSelectCity:(AirCity *)city

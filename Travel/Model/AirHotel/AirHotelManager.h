@@ -62,4 +62,6 @@ enum AirHotelOrderStatus{
 - (NSString *)orderStatusName:(int)status;
 - (UIColor *)orderStatusColor:(int)status;
 
+- (NSArray *)getStatusItemList:(NSArray *)airHotelOrderList;
+
 @end

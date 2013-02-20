@@ -32,6 +32,12 @@ typedef enum{
 - (void)didClickBackDateButton;
 - (void)didClickGoFlightButton;
 - (void)didClickBackFlightButton;
+
+- (void)didClickClearDepartCity;
+- (void)didClickClearGoDate;
+- (void)didClickClearBackDate;
+- (void)didClickClearGoFlight;
+- (void)didClickClearBackFlight;
 @end
 
 

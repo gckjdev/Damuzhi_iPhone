@@ -11,6 +11,9 @@
 #import "PriceUtils.h"
 #import "AppManager.h"
 #import "LogUtil.h"
+#import "Item.h"
+#import "AppConstants.h"
+#import "LocaleUtils.h"
 
 static AirHotelManager *_airHotelManager = nil;
 
@@ -311,6 +314,34 @@ static AirHotelManager *_airHotelManager = nil;
             break;
     }
     return statusColor;
+}
+
+- (BOOL)isHasItem:(NSArray *)itemList status:(int)status
+{
+    for (Item *item in itemList) {
+        if (item.itemId == status) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSArray *)getStatusItemList:(NSArray *)airHotelOrderList
+{
+    NSMutableArray *statusList = [[[NSMutableArray alloc] init] autorelease];
+    
+    [statusList addObject:[Item itemWithId:ALL_CATEGORY
+                                  itemName:NSLS(@"全部")
+                                     count:0]];
+    
+    for (AirHotelOrder * order in airHotelOrderList) {
+        if ([self isHasItem:statusList status:order.orderStatus] == NO) {
+            NSString *statusName = [self orderStatusName:order.orderStatus];
+            [statusList addObject:[Item itemWithId:order.orderStatus itemName:statusName count:0]];
+        }
+    }
+    
+    return statusList;
 }
 
 @end

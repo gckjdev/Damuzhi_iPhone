@@ -163,6 +163,12 @@
         city = [citys objectAtIndex:indexPath.row];
     }
     
+    if ([city.cityName isEqualToString:[[AppManager defaultManager] getCurrentCityName]])
+    {
+        [self popupMessage:NSLS(@"您选择的出发城市和目的地一样，请重选") title:nil];
+        return;
+    }
+    
     if ([_delegate respondsToSelector:@selector(didSelectCity:)]) {
         [_delegate didSelectCity:city];
     }

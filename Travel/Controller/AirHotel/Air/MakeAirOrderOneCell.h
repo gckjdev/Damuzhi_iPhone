@@ -22,6 +22,10 @@
 @property (retain, nonatomic) IBOutlet UIButton *flightButton;
 @property (retain, nonatomic) IBOutlet UIView *flightHolderView;
 
+@property (retain, nonatomic) IBOutlet UIButton *clearDepartCityButton;
+@property (retain, nonatomic) IBOutlet UIButton *clearFlightDateButton;
+@property (retain, nonatomic) IBOutlet UIButton *clearFlightButton;
+@property (retain, nonatomic) IBOutlet UIControl *clearButtonsHolderView;
 
 
 - (void)setCellWithType:(AirType)airType

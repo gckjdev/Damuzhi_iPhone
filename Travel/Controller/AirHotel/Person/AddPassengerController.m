@@ -95,6 +95,7 @@
     self.datePickerHolderView.hidden = YES;
     self.birthday = [NSDate date];
     self.datePickerView.date = _birthday;
+    self.datePickerView.maximumDate = [NSDate date];
 }
 
 //- (void)moveView:(NSIndexPath *)indexPath

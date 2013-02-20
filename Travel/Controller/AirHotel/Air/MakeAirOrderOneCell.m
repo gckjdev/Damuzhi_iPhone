@@ -29,6 +29,10 @@
     [_flightButton release];
     [_flightDateButton release];
     [_flightHolderView release];
+    [_clearDepartCityButton release];
+    [_clearFlightDateButton release];
+    [_clearFlightButton release];
+    [_clearButtonsHolderView release];
     [super dealloc];
 }
 
@@ -42,12 +46,49 @@
     return 120.0f;
 }
 
-#define TAG_FLIGHT_SIMPLE   2012121701
+- (void)createRecognizerOnView:(UIView *)view action:(SEL)action
+{
+    UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:action];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [view addGestureRecognizer:recognizer];
+    [recognizer release];
+}
 
+- (void)addRecognizer
+{
+    [self createRecognizerOnView:self.departCityButton action:@selector(swipeDepartCity:)];
+    [self createRecognizerOnView:self.flightDateButton action:@selector(swipeFlightDate:)];
+    [self createRecognizerOnView:self.flightButton action:@selector(swipeFlight:)];
+}
+
+- (void)swipeDepartCity:(UISwipeGestureRecognizer *)recognizer
+{
+    self.clearButtonsHolderView.hidden = NO;
+    self.clearDepartCityButton.hidden = NO;
+}
+
+- (void)swipeFlightDate:(UISwipeGestureRecognizer *)recognizer
+{
+    self.clearButtonsHolderView.hidden = NO;
+    self.clearFlightDateButton.hidden = NO;
+}
+
+- (void)swipeFlight:(UISwipeGestureRecognizer *)recognizer
+{
+    self.clearButtonsHolderView.hidden = NO;
+    self.clearFlightButton.hidden = NO;
+}
+
+#define TAG_FLIGHT_SIMPLE   2012121701
 - (void)setCellWithType:(AirType)airType
          departCityName:(NSString *)departCityName
                 builder:(AirOrder_Builder *)builder
 {
+    self.clearButtonsHolderView.hidden = YES;
+    self.clearDepartCityButton.hidden = YES;
+    self.clearFlightDateButton.hidden = YES;
+    self.clearFlightButton.hidden = YES;
+    
     self.airType = airType;
     AirHotelManager *_manager = [AirHotelManager defaultManager];
     NSString *defaultTips = NSLS(@"请选择");
@@ -98,6 +139,8 @@
         [self.flightButton setTitle:defaultTips forState:UIControlStateNormal];
         self.flightHolderView.hidden = YES;
     }
+    
+    //[self addRecognizer];
 }
 
 - (IBAction)clickDepartCityButton:(id)sender {
@@ -130,5 +173,56 @@
         }
     }
 }
+
+- (IBAction)clickClearDepartCityButton:(id)sender
+{
+    self.clearDepartCityButton.hidden = YES;
+    self.clearButtonsHolderView.hidden = YES;
+
+    if ([delegate respondsToSelector:@selector(didClickClearDepartCity)]) {
+        [delegate didClickClearDepartCity];
+    }
+}
+
+- (IBAction)clickClearFlightDateButton:(id)sender
+{
+    self.clearFlightDateButton.hidden = YES;
+    self.clearButtonsHolderView.hidden = YES;
+    
+    if (_airType == AirGo) {
+        if ([delegate respondsToSelector:@selector(didClickClearGoDate)]) {
+            [delegate didClickClearGoDate];
+        }
+    } else if (_airType == AirBack) {
+        if ([delegate respondsToSelector:@selector(didClickClearBackDate)]) {
+            [delegate didClickClearGoDate];
+        }
+    }
+}
+
+- (IBAction)clickClearFlightButton:(id)sender
+{
+    self.clearFlightButton.hidden = YES;
+    self.clearButtonsHolderView.hidden = YES;
+    
+    if (_airType == AirGo) {
+        if ([delegate respondsToSelector:@selector(didClickClearGoFlight)]) {
+            [delegate didClickClearGoFlight];
+        }
+        
+    } else if (_airType == AirBack) {
+        if ([delegate respondsToSelector:@selector(didClickClearBackFlight)]) {
+            [delegate didClickClearBackFlight];
+        }
+    }
+}
+
+- (IBAction)touchDownClearHolderView:(id)sender {
+    self.clearButtonsHolderView.hidden = YES;
+    self.clearDepartCityButton.hidden = YES;
+    self.clearFlightDateButton.hidden = YES;
+    self.clearFlightButton.hidden = YES;
+}
+
 
 @end
