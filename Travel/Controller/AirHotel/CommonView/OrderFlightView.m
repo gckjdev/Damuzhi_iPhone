@@ -44,7 +44,7 @@
 
 + (CGFloat)getViewHeight
 {
-    return 144;
+    return 150;
 }
 
 + (id)createOrderFlightView:(id<OrderFlightViewDelegate>)delegate
@@ -66,12 +66,6 @@
 {
     AirOrder_Builder *builder = [[AirHotelManager defaultManager] airOrderBuilder:airOrder];
     [self setViewWithOrderBuilder:builder];
-    
-    UIColor *color = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
-    self.departAirportLabel.textColor = color;
-    self.departTimeLabel.textColor = color;
-    self.arriveAirportLabel.textColor = color;
-    self.arriveTimeLabel.textColor = color;
 }
 
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder
@@ -126,6 +120,12 @@
     self.adultAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", [PriceUtils priceToString:airOrderBuilder.flight.adultAirportTax], [PriceUtils priceToString:airOrderBuilder.flight.adultFuelTax]];
     
     self.childAirportFuelTax.text = [NSString stringWithFormat:@"(机建/燃油: %@/%@)", [PriceUtils priceToString:airOrderBuilder.flight.childAirportTax], [PriceUtils priceToString:airOrderBuilder.flight.childFuelTax]];
+    
+    UIColor *color = [UIColor colorWithRed:34.0/255.0 green:139.0/255.0 blue:197.0/255.0 alpha:1];
+    self.departAirportLabel.textColor = color;
+    self.departTimeLabel.textColor = color;
+    self.arriveAirportLabel.textColor = color;
+    self.arriveTimeLabel.textColor = color;
 }
 
 - (IBAction)clickRescheduleButton:(id)sender {

@@ -72,7 +72,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:222.0/255.0 green:239.0/255.0 blue:248.0/255.0 alpha:1]];
     
-    [self changeAirType:AirGoAndBack];
+    [self clickGoAndBackButton:nil];
     [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
 }
 
@@ -152,7 +152,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
     
-    [self createTitleView:NSLS(@"机+酒")];
+    [self createTitleView:NSLS(@"机票")];
     [self createDefaultData];
 }
 
@@ -222,42 +222,42 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == SECTION_AIR) {
-        return [MakeOrderHeader getHeaderViewHeight];
-    } else {
-        return [MakeOrderHeader getHeaderViewHeight];
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];;
-    if (section == SECTION_AIR) {
-        [header setViewWithDelegate:self
-                            section:section
-                 airHotelHeaderType:AirHeader
-                 isHideFilterButton:NO
-                selectedButtonIndex:_airType
-                  isHideCloseButton:NO
-                            isClose:![self isSectionOpen:section]
-                 isHideDeleteButton:YES];
-    } else {
-        BOOL isHideDelete = ([_hotelOrderBuilderList count] > 1 ? NO : YES );
-        
-        [header setViewWithDelegate:self
-                            section:section
-                 airHotelHeaderType:HotelHeader
-                 isHideFilterButton:YES
-                selectedButtonIndex:AirNone
-                  isHideCloseButton:!isHideDelete
-                            isClose:![self isSectionOpen:section]
-                 isHideDeleteButton:isHideDelete];
-    }
-    
-    return header;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    if (section == SECTION_AIR) {
+//        return [MakeOrderHeader getHeaderViewHeight];
+//    } else {
+//        return [MakeOrderHeader getHeaderViewHeight];
+//    }
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];;
+//    if (section == SECTION_AIR) {
+//        [header setViewWithDelegate:self
+//                            section:section
+//                 airHotelHeaderType:AirHeader
+//                 isHideFilterButton:NO
+//                selectedButtonIndex:_airType
+//                  isHideCloseButton:NO
+//                            isClose:![self isSectionOpen:section]
+//                 isHideDeleteButton:YES];
+//    } else {
+//        BOOL isHideDelete = ([_hotelOrderBuilderList count] > 1 ? NO : YES );
+//        
+//        [header setViewWithDelegate:self
+//                            section:section
+//                 airHotelHeaderType:HotelHeader
+//                 isHideFilterButton:YES
+//                selectedButtonIndex:AirNone
+//                  isHideCloseButton:!isHideDelete
+//                            isClose:![self isSectionOpen:section]
+//                 isHideDeleteButton:isHideDelete];
+//    }
+//    
+//    return header;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -274,7 +274,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
 #pragma UITableViewDataSource methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    //return 1 + [_hotelOrderBuilderList count];
     return 1;
 }
 
@@ -589,35 +588,35 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 #pragma mark -
 #pragma MakeOrderHeaderDelegate methods
-- (void)didClickCloseButton:(NSInteger)section
-{
-    BOOL isOpen = [self isSectionOpen:section];
-    [self setSection:section Open:!isOpen];
-}
-
-- (void)didClickGoButton
-{
-    [self changeAirType:AirGo];
-}
-
-- (void)didClickGoAndBackButton
-{
-    [self changeAirType:AirGoAndBack];
-}
-
-- (void)didClickBackButton
-{
-    [self changeAirType:AirBack];
-}
-
-- (void)didClickDeleteButton:(NSInteger)section
-{
-    if (section > 0 ) {
-        [_hotelOrderBuilderList removeObjectAtIndex:section - 1];
-        [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
-        [dataTableView reloadData];
-    }
-}
+//- (void)didClickCloseButton:(NSInteger)section
+//{
+//    BOOL isOpen = [self isSectionOpen:section];
+//    [self setSection:section Open:!isOpen];
+//}
+//
+//- (void)didClickGoButton
+//{
+//    [self changeAirType:AirGo];
+//}
+//
+//- (void)didClickGoAndBackButton
+//{
+//    [self changeAirType:AirGoAndBack];
+//}
+//
+//- (void)didClickBackButton
+//{
+//    [self changeAirType:AirBack];
+//}
+//
+//- (void)didClickDeleteButton:(NSInteger)section
+//{
+//    if (section > 0 ) {
+//        [_hotelOrderBuilderList removeObjectAtIndex:section - 1];
+//        [self updateSectionStatWithSectionCount:1+[_hotelOrderBuilderList count]];
+//        [dataTableView reloadData];
+//    }
+//}
 
 #pragma mark -
 #pragma MakeAirOrderCellDelegate methods
@@ -847,6 +846,34 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (void)didLogin
 {
     [self order:YES];
+}
+
+
+- (void)updateSelectedButton:(int)index
+{
+    for (int tag = 1; tag <= 3; tag ++) {
+        UIButton *button = (UIButton *)[dataTableView.tableHeaderView viewWithTag:tag];
+        if (tag == index) {
+            button.selected = YES;
+        } else {
+            button.selected = NO;
+        }
+    }
+}
+
+- (IBAction)clickGoButton:(id)sender {
+    [self updateSelectedButton:1];
+        [self changeAirType:AirGo];
+}
+
+- (IBAction)clickGoAndBackButton:(id)sender {
+    [self updateSelectedButton:2];
+    [self changeAirType:AirGoAndBack];
+}
+
+- (IBAction)clickBackButton:(id)sender {
+    [self updateSelectedButton:3];
+    [self changeAirType:AirBack];
 }
 
 @end

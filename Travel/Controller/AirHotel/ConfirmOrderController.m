@@ -20,6 +20,7 @@
 #import "PersonManager.h"
 #import "AirHotelOrderDetailController.h"
 #import "PayView.h"
+#import "PersonsView.h"
 
 @interface ConfirmOrderController ()
 
@@ -55,6 +56,14 @@
     [_hotelPayModeLabel release];
     [_shouldPayPriceHolderView release];
     [_orderButton release];
+    [_passengerHolderView release];
+    [_passengerButton release];
+    [_contactHolderView release];
+    [_footerView release];
+    [_insuranceLabel release];
+    [_sendTicketLabel release];
+    [_insuranceButton release];
+    [_sendTicketButton release];
     [super dealloc];
 }
 
@@ -326,46 +335,46 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [MakeOrderHeader getHeaderViewHeight];
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return [MakeOrderHeader getHeaderViewHeight];
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
+//    if (section == SECTION_AIR && [_airOrderBuilders count] > 0) {
+//        [header setViewWithDelegate:nil
+//                            section:section
+//                 airHotelHeaderType:AirHeader
+//                 isHideFilterButton:YES
+//                selectedButtonIndex:0
+//                  isHideCloseButton:YES
+//                            isClose:YES
+//                 isHideDeleteButton:YES];
+//    } else {
+//        [header setViewWithDelegate:nil
+//                            section:section
+//                 airHotelHeaderType:HotelHeader
+//                 isHideFilterButton:YES
+//                selectedButtonIndex:0
+//                  isHideCloseButton:YES
+//                            isClose:YES
+//                 isHideDeleteButton:YES];
+//    }
+//    return header;
+//}
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    MakeOrderHeader *header = [MakeOrderHeader createHeaderView];
-    if (section == SECTION_AIR && [_airOrderBuilders count] > 0) {
-        [header setViewWithDelegate:nil
-                            section:section
-                 airHotelHeaderType:AirHeader
-                 isHideFilterButton:YES
-                selectedButtonIndex:0
-                  isHideCloseButton:YES
-                            isClose:YES
-                 isHideDeleteButton:YES];
-    } else {
-        [header setViewWithDelegate:nil
-                            section:section
-                 airHotelHeaderType:HotelHeader
-                 isHideFilterButton:YES
-                selectedButtonIndex:0
-                  isHideCloseButton:YES
-                            isClose:YES
-                 isHideDeleteButton:YES];
-    }
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 10;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    return footer;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 10;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    UIView *footer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+//    return footer;
+//}
 
 #pragma mark - 
 #pragma mark UITableViewDataSource methods
@@ -552,6 +561,7 @@
             [builder clearPassengerList];
             [builder addAllPassenger:objectList];
         }
+        [self updateFooterView];
     }
 }
 
@@ -565,6 +575,14 @@
     [self setHotelPayModeLabel:nil];
     [self setShouldPayPriceHolderView:nil];
     [self setOrderButton:nil];
+    [self setPassengerHolderView:nil];
+    [self setPassengerButton:nil];
+    [self setContactHolderView:nil];
+    [self setFooterView:nil];
+    [self setInsuranceLabel:nil];
+    [self setSendTicketLabel:nil];
+    [self setInsuranceButton:nil];
+    [self setSendTicketButton:nil];
     [super viewDidUnload];
 }
 
@@ -588,6 +606,77 @@
 - (void)handleTimer:(id)sender
 {
     [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
+}
+
+#define PLACE_TOP_PERSONS   8
+- (void)updateFooterView
+{
+    //set persons
+    for(UIView *subview in [self.passengerHolderView subviews]) {
+        if ([subview isKindOfClass:[PersonsView class]]) {
+            [subview removeFromSuperview];
+        }
+    }
+    
+    AirOrder_Builder *oneBuilder = nil;
+    if ([_airOrderBuilders count] > 0) {
+        oneBuilder = [_airOrderBuilders objectAtIndex:0];
+    }
+    
+    PersonsView *personsView = [PersonsView createCheckInPersonLabels:oneBuilder.passengerList type:PersonListTypePassenger];
+    personsView.frame = CGRectMake(0, PLACE_TOP_PERSONS, personsView.frame.size.width, personsView.frame.size.height);
+    
+    [self.passengerHolderView insertSubview:personsView belowSubview:_passengerButton];
+    
+    //set frame
+    CGFloat y = 10;
+    self.passengerHolderView.frame = CGRectMake(_passengerHolderView.frame.origin.x, y, _passengerHolderView.frame.size.width, personsView.frame.size.height + 2*PLACE_TOP_PERSONS);
+    y += _passengerHolderView.frame.size.height;
+    self.contactHolderView.frame = CGRectMake(_contactHolderView.frame.origin.x, y, _contactHolderView.frame.size.width, _contactHolderView.frame.size.height);
+    
+    self.footerView.frame = CGRectMake(_footerView.frame.origin.x, _footerView.frame.origin.y, _footerView.frame.size.width, y + _contactHolderView.frame.size.height + 10);
+    self.dataTableView.tableFooterView = _footerView;
+    
+    //set value
+    if ([oneBuilder.passengerList count] > 0) {
+        [self.passengerButton setTitle:@"" forState:UIControlStateNormal];
+    } else {
+        [self.passengerButton setTitle:@"添加登机人" forState:UIControlStateNormal];
+    }
+    
+    self.insuranceLabel.text = [NSString stringWithFormat:@"%@/份", [PriceUtils priceToStringCNY:oneBuilder.flight.insuranceFee]];
+    self.sendTicketLabel.text = [NSString stringWithFormat:@"报销凭证(快递费%@元)",[PriceUtils priceToString:oneBuilder.flight.sendTicketFee]];
+    
+    self.insuranceButton.selected = oneBuilder.insurance;
+    self.sendTicketButton.selected = oneBuilder.sendTicket;
+}
+
+- (IBAction)clickPassengerButton:(id)sender {
+    
+    SelectPersonController *controller = [[[SelectPersonController alloc] initWithType:ViewTypePassenger selectCount:100 delegate:self title:NSLS(@"选择登机人") isSelect:YES isMember:_isMember] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (IBAction)clickInsuranceButton:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
+    for (AirOrder_Builder *builder in _airOrderBuilders) {
+        [builder setInsurance:button.selected];
+    }
+    [self updatePrice];
+}
+
+- (IBAction)clicksendTicketButton:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
+    for (AirOrder_Builder *builder in _airOrderBuilders) {
+        [builder setSendTicket:button.selected];
+    }
+    [self updatePrice];
 }
 
 @end

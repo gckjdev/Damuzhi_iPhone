@@ -27,6 +27,14 @@
 @property (retain, nonatomic) IBOutlet UILabel *hotelPayModeLabel;
 @property (retain, nonatomic) IBOutlet UIView *shouldPayPriceHolderView;
 @property (retain, nonatomic) IBOutlet UIButton *orderButton;
+@property (retain, nonatomic) IBOutlet UIView *passengerHolderView;
+@property (retain, nonatomic) IBOutlet UIButton *passengerButton;
+@property (retain, nonatomic) IBOutlet UIView *contactHolderView;
+@property (retain, nonatomic) IBOutlet UIView *footerView;
+@property (retain, nonatomic) IBOutlet UILabel *insuranceLabel;
+@property (retain, nonatomic) IBOutlet UILabel *sendTicketLabel;
+@property (retain, nonatomic) IBOutlet UIButton *insuranceButton;
+@property (retain, nonatomic) IBOutlet UIButton *sendTicketButton;
 
 - (id)initWithAirOrderBuilders:(NSMutableArray *)airOrderBuilders
             hotelOrderBuilders:(NSMutableArray *)hotelOrderBuilders
