@@ -61,6 +61,13 @@ typedef enum {
 
 BOOL PaymentModeIsValidValue(PaymentMode value);
 
+typedef enum {
+  OrderTypeAir = 1,
+  OrderTypeHotel = 2,
+} OrderType;
+
+BOOL OrderTypeIsValidValue(OrderType value);
+
 
 @interface AirHotelRoot : NSObject {
 }
@@ -1019,36 +1026,38 @@ BOOL PaymentModeIsValidValue(PaymentMode value);
 
 @interface AirHotelOrder : PBGeneratedMessage {
 @private
-  BOOL hasHotelPrice_:1;
   BOOL hasAirPrice_:1;
+  BOOL hasHotelPrice_:1;
   BOOL hasDepartCityId_:1;
   BOOL hasArriveCityId_:1;
-  BOOL hasOrderId_:1;
-  BOOL hasOrderDate_:1;
   BOOL hasOrderStatus_:1;
+  BOOL hasOrderDate_:1;
+  BOOL hasOrderId_:1;
   BOOL hasUserId_:1;
   BOOL hasLoginId_:1;
   BOOL hasToken_:1;
-  BOOL hasPaymentInfo_:1;
   BOOL hasContactPerson_:1;
+  BOOL hasPaymentInfo_:1;
+  BOOL hasOrderType_:1;
   BOOL hasAirPaymentMode_:1;
   BOOL hasHotelPaymentMode_:1;
-  Float64 hotelPrice;
   Float64 airPrice;
+  Float64 hotelPrice;
   int32_t departCityId;
   int32_t arriveCityId;
-  int32_t orderId;
-  int32_t orderDate;
   int32_t orderStatus;
+  int32_t orderDate;
+  int32_t orderId;
   NSString* userId;
   NSString* loginId;
   NSString* token;
-  PaymentInfo* paymentInfo;
   Person* contactPerson;
+  PaymentInfo* paymentInfo;
+  OrderType orderType;
   PaymentMode airPaymentMode;
   PaymentMode hotelPaymentMode;
-  NSMutableArray* mutableAirOrdersList;
   NSMutableArray* mutableHotelOrdersList;
+  NSMutableArray* mutableAirOrdersList;
 }
 - (BOOL) hasUserId;
 - (BOOL) hasLoginId;
@@ -1060,6 +1069,7 @@ BOOL PaymentModeIsValidValue(PaymentMode value);
 - (BOOL) hasOrderId;
 - (BOOL) hasOrderDate;
 - (BOOL) hasOrderStatus;
+- (BOOL) hasOrderType;
 - (BOOL) hasHotelPrice;
 - (BOOL) hasAirPrice;
 - (BOOL) hasAirPaymentMode;
@@ -1074,6 +1084,7 @@ BOOL PaymentModeIsValidValue(PaymentMode value);
 @property (readonly) int32_t orderId;
 @property (readonly) int32_t orderDate;
 @property (readonly) int32_t orderStatus;
+@property (readonly) OrderType orderType;
 @property (readonly) Float64 hotelPrice;
 @property (readonly) Float64 airPrice;
 @property (readonly) PaymentMode airPaymentMode;
@@ -1184,6 +1195,11 @@ BOOL PaymentModeIsValidValue(PaymentMode value);
 - (int32_t) orderStatus;
 - (AirHotelOrder_Builder*) setOrderStatus:(int32_t) value;
 - (AirHotelOrder_Builder*) clearOrderStatus;
+
+- (BOOL) hasOrderType;
+- (OrderType) orderType;
+- (AirHotelOrder_Builder*) setOrderType:(OrderType) value;
+- (AirHotelOrder_Builder*) clearOrderType;
 
 - (BOOL) hasHotelPrice;
 - (Float64) hotelPrice;

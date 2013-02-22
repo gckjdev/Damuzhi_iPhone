@@ -343,6 +343,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 @interface City : PBGeneratedMessage {
 @private
   BOOL hasHotCity_:1;
+  BOOL hasHasAirport_:1;
   BOOL hasCityId_:1;
   BOOL hasDataSize_:1;
   BOOL hasPriceRank_:1;
@@ -355,6 +356,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
   BOOL hasCurrencyId_:1;
   BOOL hasCurrencyName_:1;
   BOOL hotCity_:1;
+  BOOL hasAirport_:1;
   int32_t cityId;
   int32_t dataSize;
   int32_t priceRank;
@@ -381,6 +383,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (BOOL) hasPriceRank;
 - (BOOL) hasGroupId;
 - (BOOL) hasHotCity;
+- (BOOL) hasHasAirport;
 @property (readonly) int32_t cityId;
 @property (readonly, retain) NSString* cityName;
 @property (readonly, retain) NSString* latestVersion;
@@ -393,6 +396,7 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 @property (readonly) int32_t priceRank;
 @property (readonly) int32_t groupId;
 - (BOOL) hotCity;
+- (BOOL) hasAirport;
 - (NSArray*) areaListList;
 - (CityArea*) areaListAtIndex:(int32_t) index;
 - (NSArray*) locationInfoList;
@@ -505,6 +509,11 @@ BOOL PlaceCategoryTypeIsValidValue(PlaceCategoryType value);
 - (City_Builder*) addLocationInfo:(CityLocationInfo*) value;
 - (City_Builder*) addAllLocationInfo:(NSArray*) values;
 - (City_Builder*) clearLocationInfoList;
+
+- (BOOL) hasHasAirport;
+- (BOOL) hasAirport;
+- (City_Builder*) setHasAirport:(BOOL) value;
+- (City_Builder*) clearHasAirport;
 @end
 
 @interface CityList : PBGeneratedMessage {

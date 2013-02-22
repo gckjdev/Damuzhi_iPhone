@@ -31,6 +31,7 @@
     [_airHotelOrder release];
     [_footerView release];
     [_shouldPayPriceLabel release];
+    [_payButton release];
     [super dealloc];
 }
 
@@ -48,20 +49,23 @@
 #define MARK_HOTEL_SECTION  @"hotel"
 - (void)setDefaultData
 {
+    double totalPrice = 0;
+    if ([self hasAir:_airHotelOrder]) {
+        totalPrice += _airHotelOrder.airPrice;
+    }
+    
+    if (_airHotelOrder.hotelPaymentMode == PaymentModeOnline) {
+        totalPrice += _airHotelOrder.hotelPrice;
+    }
+    
+    self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:totalPrice];
+    
+    
+    
     if (_airHotelOrder.orderStatus != StatusUnpaid) {
-        self.footerView.hidden = YES;
-        self.footerView.frame = CGRectZero;
+        self.payButton.hidden = YES;
     } else {
-        double totalPrice = 0;
-        if ([self hasAir:_airHotelOrder]) {
-            totalPrice += _airHotelOrder.airPrice;
-        }
-        
-        if (_airHotelOrder.hotelPaymentMode == PaymentModeOnline) {
-            totalPrice += _airHotelOrder.hotelPrice;
-        }
-        
-        self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:totalPrice];
+        self.payButton.hidden = NO;
     }
     
     //set dataList
@@ -167,15 +171,15 @@
 {
     NSString *mark = [dataList objectAtIndex:indexPath.row];
     if ([mark isEqualToString:MARK_TOP_SECTON]) {
-        return [AirHotelOrderDetailTopCell getCellHeight:_airHotelOrder] + 10;
+        return [AirHotelOrderDetailTopCell getCellHeight:_airHotelOrder];
     }
     
     else if ([mark isEqualToString:MARK_AIR_SECTION]){
-        return [AirOrderDetailCell getCellHeight:_airHotelOrder] + 10;
+        return [AirOrderDetailCell getCellHeight:_airHotelOrder];
     }
     
     else if ([mark isEqualToString:MARK_HOTEL_SECTION]){
-        return [HotelOrderDetailCell getCellHeight:_airHotelOrder] + 10;
+        return [HotelOrderDetailCell getCellHeight:_airHotelOrder];
     }
     
     return 0;
@@ -223,6 +227,7 @@
 - (void)viewDidUnload {
     [self setFooterView:nil];
     [self setShouldPayPriceLabel:nil];
+    [self setPayButton:nil];
     [super viewDidUnload];
 }
 

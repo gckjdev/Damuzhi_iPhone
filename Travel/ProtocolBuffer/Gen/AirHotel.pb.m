@@ -47,6 +47,15 @@ BOOL PaymentModeIsValidValue(PaymentMode value) {
       return NO;
   }
 }
+BOOL OrderTypeIsValidValue(OrderType value) {
+  switch (value) {
+    case OrderTypeAir:
+    case OrderTypeHotel:
+      return YES;
+    default:
+      return NO;
+  }
+}
 @interface Person ()
 @property (retain) NSString* name;
 @property (retain) NSString* nameEnglish;
@@ -4080,6 +4089,7 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
 @property int32_t orderId;
 @property int32_t orderDate;
 @property int32_t orderStatus;
+@property OrderType orderType;
 @property Float64 hotelPrice;
 @property Float64 airPrice;
 @property PaymentMode airPaymentMode;
@@ -4160,6 +4170,13 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
   hasOrderStatus_ = !!value;
 }
 @synthesize orderStatus;
+- (BOOL) hasOrderType {
+  return !!hasOrderType_;
+}
+- (void) setHasOrderType:(BOOL) value {
+  hasOrderType_ = !!value;
+}
+@synthesize orderType;
 - (BOOL) hasHotelPrice {
   return !!hasHotelPrice_;
 }
@@ -4210,6 +4227,7 @@ static PaymentInfo* defaultPaymentInfoInstance = nil;
     self.orderId = 0;
     self.orderDate = 0;
     self.orderStatus = 0;
+    self.orderType = OrderTypeAir;
     self.hotelPrice = 0;
     self.airPrice = 0;
     self.airPaymentMode = PaymentModeOnline;
@@ -4298,6 +4316,9 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   if (self.hasOrderStatus) {
     [output writeInt32:22 value:self.orderStatus];
   }
+  if (self.hasOrderType) {
+    [output writeEnum:23 value:self.orderType];
+  }
   if (self.hasHotelPrice) {
     [output writeDouble:30 value:self.hotelPrice];
   }
@@ -4354,6 +4375,9 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   }
   if (self.hasOrderStatus) {
     size += computeInt32Size(22, self.orderStatus);
+  }
+  if (self.hasOrderType) {
+    size += computeEnumSize(23, self.orderType);
   }
   if (self.hasHotelPrice) {
     size += computeDoubleSize(30, self.hotelPrice);
@@ -4484,6 +4508,9 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
   if (other.hasOrderStatus) {
     [self setOrderStatus:other.orderStatus];
   }
+  if (other.hasOrderType) {
+    [self setOrderType:other.orderType];
+  }
   if (other.hasHotelPrice) {
     [self setHotelPrice:other.hotelPrice];
   }
@@ -4577,6 +4604,15 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
       }
       case 176: {
         [self setOrderStatus:[input readInt32]];
+        break;
+      }
+      case 184: {
+        int32_t value = [input readEnum];
+        if (OrderTypeIsValidValue(value)) {
+          [self setOrderType:value];
+        } else {
+          [unknownFields mergeVarintField:23 value:value];
+        }
         break;
       }
       case 241: {
@@ -4852,6 +4888,22 @@ static AirHotelOrder* defaultAirHotelOrderInstance = nil;
 - (AirHotelOrder_Builder*) clearOrderStatus {
   result.hasOrderStatus = NO;
   result.orderStatus = 0;
+  return self;
+}
+- (BOOL) hasOrderType {
+  return result.hasOrderType;
+}
+- (OrderType) orderType {
+  return result.orderType;
+}
+- (AirHotelOrder_Builder*) setOrderType:(OrderType) value {
+  result.hasOrderType = YES;
+  result.orderType = value;
+  return self;
+}
+- (AirHotelOrder_Builder*) clearOrderType {
+  result.hasOrderType = NO;
+  result.orderType = OrderTypeAir;
   return self;
 }
 - (BOOL) hasHotelPrice {

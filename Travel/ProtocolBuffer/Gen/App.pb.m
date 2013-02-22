@@ -1136,6 +1136,7 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
 @property int32_t groupId;
 @property BOOL hotCity;
 @property (retain) NSMutableArray* mutableLocationInfoList;
+@property BOOL hasAirport;
 @end
 
 @implementation City
@@ -1231,6 +1232,18 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
   hotCity_ = !!value;
 }
 @synthesize mutableLocationInfoList;
+- (BOOL) hasHasAirport {
+  return !!hasHasAirport_;
+}
+- (void) setHasHasAirport:(BOOL) value {
+  hasHasAirport_ = !!value;
+}
+- (BOOL) hasAirport {
+  return !!hasAirport_;
+}
+- (void) setHasAirport:(BOOL) value {
+  hasAirport_ = !!value;
+}
 - (void) dealloc {
   self.cityName = nil;
   self.latestVersion = nil;
@@ -1257,6 +1270,7 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
     self.priceRank = 3;
     self.groupId = 0;
     self.hotCity = NO;
+    self.hasAirport = NO;
   }
   return self;
 }
@@ -1352,6 +1366,9 @@ static City* defaultCityInstance = nil;
   for (CityLocationInfo* element in self.locationInfoList) {
     [output writeMessage:55 value:element];
   }
+  if (self.hasHasAirport) {
+    [output writeBool:60 value:self.hasAirport];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -1402,6 +1419,9 @@ static City* defaultCityInstance = nil;
   }
   for (CityLocationInfo* element in self.locationInfoList) {
     size += computeMessageSize(55, element);
+  }
+  if (self.hasHasAirport) {
+    size += computeBoolSize(60, self.hasAirport);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1526,6 +1546,9 @@ static City* defaultCityInstance = nil;
     }
     [result.mutableLocationInfoList addObjectsFromArray:other.mutableLocationInfoList];
   }
+  if (other.hasHasAirport) {
+    [self setHasAirport:other.hasAirport];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1605,6 +1628,10 @@ static City* defaultCityInstance = nil;
         CityLocationInfo_Builder* subBuilder = [CityLocationInfo builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addLocationInfo:[subBuilder buildPartial]];
+        break;
+      }
+      case 480: {
+        [self setHasAirport:[input readBool]];
         break;
       }
     }
@@ -1858,6 +1885,22 @@ static City* defaultCityInstance = nil;
     result.mutableLocationInfoList = [NSMutableArray array];
   }
   [result.mutableLocationInfoList addObject:value];
+  return self;
+}
+- (BOOL) hasHasAirport {
+  return result.hasHasAirport;
+}
+- (BOOL) hasAirport {
+  return result.hasAirport;
+}
+- (City_Builder*) setHasAirport:(BOOL) value {
+  result.hasHasAirport = YES;
+  result.hasAirport = value;
+  return self;
+}
+- (City_Builder*) clearHasAirport {
+  result.hasHasAirport = NO;
+  result.hasAirport = NO;
   return self;
 }
 @end

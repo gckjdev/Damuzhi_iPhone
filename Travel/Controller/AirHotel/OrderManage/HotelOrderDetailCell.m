@@ -21,7 +21,7 @@
 
 #define HEIGHT_BASIC    80
 #define HEIGHT_TOP      40
-
+#define PLACE           10.0
 + (CGFloat)getCellHeight:(AirHotelOrder *)airHotelOrde
 {
     CGFloat height = HEIGHT_BASIC;
@@ -31,7 +31,7 @@
         //PPDebug(@"OrderHotelView getCellHeight:%f", [OrderHotelView getCellHeightWithOrder:order]);
     }
     
-    return height;
+    return height + PLACE;
 }
 
 - (void)setCellWithOrther:(AirHotelOrder *)airHotelOrde

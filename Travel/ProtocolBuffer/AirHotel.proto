@@ -22,6 +22,11 @@ enum PaymentMode{
     SHOP_EX = 2;                    //到店支付
 }
 
+//订单类型
+enum OrderType{
+    AIR = 1;                //机票订单
+    HOTEL = 2;              //酒店订单
+}
 
 //入住人 / 联系人 / 登机人
 message Person {
@@ -157,6 +162,7 @@ message AirHotelOrder {
     optional int32 orderId = 20;                //订单编号 (仅用于订单查询)
     optional int32 orderDate = 21;              //订单日期 (仅用于订单查询)
     optional int32 orderStatus = 22;            //订单状态 (仅用于订单查询)
+    optional OrderType orderType = 23;          //订单类型
 
     optional double hotelPrice = 30;            //酒店总价格 (仅用于订单查询)
     optional double airPrice = 31;              //机票总价格 (仅用于订单查询)

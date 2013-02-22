@@ -22,13 +22,14 @@
 
 #define HEIGHT_BAISC    140.0
 #define HEIGHT_HOLDER_VIEW  22.0
+#define PLACE           10.0
 
 + (CGFloat)getCellHeight:(AirHotelOrder *)order
 {
     if ([AirHotelOrderDetailTopCell hasAirOrder:order]) {
-        return HEIGHT_BAISC;
+        return HEIGHT_BAISC + PLACE;
     }
-    return HEIGHT_BAISC - 2 * HEIGHT_HOLDER_VIEW;
+    return HEIGHT_BAISC - 2 * HEIGHT_HOLDER_VIEW + PLACE;
 }
 
 + (BOOL)hasAirOrder:(AirHotelOrder *)order
