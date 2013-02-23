@@ -52,6 +52,7 @@
 - (NSString*)getProvidedServiceIcon:(int)categoryId providedServiceId:(int)providedServiceId;
 - (NSArray *)getProvidedServiceList:(int)categoryId;
 
+- (City *)getCurrentCity;
 - (int)getCurrentCityId;
 - (NSString*)getCurrentCityName;
 - (NSArray*)getCurrentCityLocationInfo;

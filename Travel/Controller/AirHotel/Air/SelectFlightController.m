@@ -184,6 +184,20 @@
     }else {
         [self hideTipsOnTableView];
     }
+    
+    if ([flightList count] == 0) {
+        City *city  = [[AppManager defaultManager] getCurrentCity];
+        if (city.hasAirport == NO)
+        {
+            UIAlertView *oneAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:NSLS(@"暂无可预订机票")
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLS(@"确定")
+                                                      otherButtonTitles: nil];
+            [oneAlertView show];
+            [oneAlertView release];
+        }
+    }
 }
 
 

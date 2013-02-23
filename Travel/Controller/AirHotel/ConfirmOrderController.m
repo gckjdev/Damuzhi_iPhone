@@ -117,6 +117,7 @@
     [_airHotelOrderBuilder clearContactPerson];
     [_airHotelOrderBuilder clearAirPaymentMode];
     [_airHotelOrderBuilder clearHotelPaymentMode];
+    [_airHotelOrderBuilder clearOrderType];
     
     //set value
     [_airHotelOrderBuilder addAllAirOrders:airOrderList];
@@ -137,6 +138,9 @@
     if ([airOrderList count] > 0) {
         [_airHotelOrderBuilder setAirPaymentMode:PaymentModeOnline];
     }
+    
+    //机票
+    [_airHotelOrderBuilder setOrderType:OrderTypeAir];
 }
 
 #define SECTION_AIR 0

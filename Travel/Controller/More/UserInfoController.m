@@ -25,8 +25,8 @@ enum{
 #define ROW_LOGINID   0
 #define ROW_MODIFY_PASSWORD   1
 #define ROW_PASSENGER         2
-#define ROW_CHECKIN_PERSON   3
-#define ROW_CONTACT_PERSON    4
+#define ROW_CHECKIN_PERSON   4
+#define ROW_CONTACT_PERSON    3
 
 
 #define ROW_NICKNAME   0
@@ -108,7 +108,7 @@ enum{
     [section0TitleDic setObject:TITLE_MODIFY_PASSWORD forKey:[NSNumber numberWithInt:ROW_MODIFY_PASSWORD]];
     
     [section0TitleDic setObject:TITLE_PASSENGER forKey:[NSNumber numberWithInt:ROW_PASSENGER]];
-    [section0TitleDic setObject:TITLE_CHECKIN_PERSON forKey:[NSNumber numberWithInt:ROW_CHECKIN_PERSON]];
+//    [section0TitleDic setObject:TITLE_CHECKIN_PERSON forKey:[NSNumber numberWithInt:ROW_CHECKIN_PERSON]];
     [section0TitleDic setObject:TITLE_CONTACT_PERSON forKey:[NSNumber numberWithInt:ROW_CONTACT_PERSON]];
     
 

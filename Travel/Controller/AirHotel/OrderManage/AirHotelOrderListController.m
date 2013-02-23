@@ -34,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLS(@"机+酒订单");
+    self.title = NSLS(@"机票订单");
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"

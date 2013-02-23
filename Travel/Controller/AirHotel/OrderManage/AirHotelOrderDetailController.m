@@ -32,6 +32,7 @@
     [_footerView release];
     [_shouldPayPriceLabel release];
     [_payButton release];
+    [_priceTitleLabel release];
     [super dealloc];
 }
 
@@ -64,8 +65,12 @@
     
     if (_airHotelOrder.orderStatus != StatusUnpaid) {
         self.payButton.hidden = YES;
+        self.priceTitleLabel.textAlignment = NSTextAlignmentRight;
+        self.shouldPayPriceLabel.textAlignment = NSTextAlignmentRight;
     } else {
         self.payButton.hidden = NO;
+        self.priceTitleLabel.textAlignment = NSTextAlignmentLeft;
+        self.shouldPayPriceLabel.textAlignment = NSTextAlignmentLeft;
     }
     
     //set dataList
@@ -83,7 +88,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLS(@"机+酒订单");
+    self.title = NSLS(@"机票订单详情");
     [self setNavigationLeftButton:NSLS(@" 返回")
                          fontSize:FONT_SIZE
                         imageName:@"back.png"
@@ -228,6 +233,7 @@
     [self setFooterView:nil];
     [self setShouldPayPriceLabel:nil];
     [self setPayButton:nil];
+    [self setPriceTitleLabel:nil];
     [super viewDidUnload];
 }
 

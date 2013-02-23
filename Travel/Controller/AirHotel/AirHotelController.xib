@@ -48,7 +48,7 @@
 									<object class="IBUIButton" id="827997310">
 										<reference key="NSNextResponder" ref="285640039"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{61, 2}, {66, 30}}</string>
+										<string key="NSFrame">{{48, 2}, {75, 30}}</string>
 										<reference key="NSSuperview" ref="285640039"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="356063373"/>
@@ -97,7 +97,7 @@
 									<object class="IBUIButton" id="356063373">
 										<reference key="NSNextResponder" ref="285640039"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{127, 2}, {66, 30}}</string>
+										<string key="NSFrame">{{123, 2}, {75, 30}}</string>
 										<reference key="NSSuperview" ref="285640039"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="490513278"/>
@@ -130,7 +130,7 @@
 									<object class="IBUIButton" id="490513278">
 										<reference key="NSNextResponder" ref="285640039"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{193, 2}, {66, 30}}</string>
+										<string key="NSFrame">{{198, 2}, {75, 30}}</string>
 										<reference key="NSSuperview" ref="285640039"/>
 										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -750,12 +750,12 @@
 			<string key="reserve_m@2x.png">{242, 78}</string>
 			<string key="reserve_n@2x.png">{242, 78}</string>
 			<string key="ticket_p10@2x.png">{30, 30}</string>
-			<string key="ticket_t1_off@2x.png">{96, 56}</string>
-			<string key="ticket_t1_on@2x.png">{96, 56}</string>
-			<string key="ticket_t2_off@2x.png">{96, 56}</string>
-			<string key="ticket_t2_on@2x.png">{96, 56}</string>
-			<string key="ticket_t3_off@2x.png">{96, 56}</string>
-			<string key="ticket_t3_on@2x.png">{96, 56}</string>
+			<string key="ticket_t1_off@2x.png">{150, 60}</string>
+			<string key="ticket_t1_on@2x.png">{150, 60}</string>
+			<string key="ticket_t2_off@2x.png">{150, 60}</string>
+			<string key="ticket_t2_on@2x.png">{150, 60}</string>
+			<string key="ticket_t3_off@2x.png">{150, 60}</string>
+			<string key="ticket_t3_on@2x.png">{150, 60}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1926</string>
 	</data>

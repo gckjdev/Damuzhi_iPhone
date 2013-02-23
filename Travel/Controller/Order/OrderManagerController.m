@@ -54,7 +54,7 @@
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[[ImageManager defaultManager] allBackgroundImage]]];
 
     [self updateNavButtons];
-    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机+酒订单管理"),nil];
+    self.dataList = [NSArray arrayWithObjects:NSLS(@"本地游订单管理"), NSLS(@"机票订单管理"),nil];
 }
 
 - (void)updateNavButtons

@@ -434,6 +434,12 @@ static AppManager* _defaultAppManager = nil;
     return nil;
 }
 
+- (City *)getCurrentCity
+{
+    int cityId = [self getCurrentCityId];
+    return [self getCity:cityId];
+}
+
 - (int)getCurrentCityId
 {
     NSUserDefaults* userDefault = [NSUserDefaults standardUserDefaults];
