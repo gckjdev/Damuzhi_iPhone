@@ -54,7 +54,6 @@
 												<int key="NSvFlags">292</int>
 												<string key="NSFrame">{{8, 16}, {200, 21}}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -85,7 +84,6 @@
 												<int key="NSvFlags">292</int>
 												<string key="NSFrame">{{79, 16}, {203, 21}}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -108,7 +106,6 @@
 												<int key="NSvFlags">276</int>
 												<string key="NSFrameSize">{1, 54}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<object class="NSColor" key="IBUIBackgroundColor">
 													<int key="NSColorSpace">1</int>
@@ -121,7 +118,6 @@
 												<int key="NSvFlags">276</int>
 												<string key="NSFrame">{{301, 0}, {1, 54}}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<object class="NSColor" key="IBUIBackgroundColor">
 													<int key="NSColorSpace">1</int>
@@ -134,7 +130,6 @@
 												<int key="NSvFlags">288</int>
 												<string key="NSFrameSize">{302, 1}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<object class="NSColor" key="IBUIBackgroundColor">
 													<int key="NSColorSpace">1</int>
@@ -147,7 +142,6 @@
 												<int key="NSvFlags">264</int>
 												<string key="NSFrame">{{0, 53}, {302, 1}}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<object class="NSColor" key="IBUIBackgroundColor">
 													<int key="NSColorSpace">1</int>
@@ -160,7 +154,6 @@
 												<int key="NSvFlags">292</int>
 												<string key="NSFrame">{{166, 11}, {124, 31}}</string>
 												<reference key="NSSuperview" ref="881651867"/>
-												<reference key="NSWindow"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -194,7 +187,6 @@
 										</array>
 										<string key="NSFrame">{{9, 0}, {302, 54}}</string>
 										<reference key="NSSuperview" ref="495945459"/>
-										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
@@ -205,7 +197,6 @@
 								</array>
 								<string key="NSFrame">{{0, 476}, {320, 64}}</string>
 								<reference key="NSSuperview" ref="330829559"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -216,7 +207,6 @@
 						</array>
 						<string key="NSFrame">{{0, 8}, {320, 540}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="578291970"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -232,7 +222,6 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>

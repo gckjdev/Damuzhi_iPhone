@@ -305,7 +305,7 @@ static RouteService *_defaultRouteService = nil;
                                                                   orderId:orderId 
                                                                      rank:rank 
                                                             content:content];
-        int result;
+        int result = -1;
         NSString *resultInfo = nil;
         if (output.resultCode == ERROR_SUCCESS) {
             NSDictionary* jsonDict = [output.textData JSONValue];

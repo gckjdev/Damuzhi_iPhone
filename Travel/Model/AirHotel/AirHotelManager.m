@@ -220,7 +220,7 @@ static AirHotelManager *_airHotelManager = nil;
         }
         
         if (builder.sendTicket) {
-            totalPrice += builder.flight.sendTicketFee * [builder.passengerList count];
+            totalPrice += builder.flight.sendTicketFee;
         }
     }
     

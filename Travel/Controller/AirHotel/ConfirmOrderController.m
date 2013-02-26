@@ -193,6 +193,7 @@
     
     [self updateSite];
     [self updateOrderButton];
+    [self updateFooterView];
 }
 
 - (void)viewDidAppear:(BOOL)animated

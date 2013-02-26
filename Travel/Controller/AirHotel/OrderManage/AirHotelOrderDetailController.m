@@ -203,8 +203,7 @@
                  result:(int)result
              resultInfo:(NSString *)resultInfo
                   place:(Place *)place
-{
-    [self hideActivity];
+{    [self hideActivity];
     if (resultCode != 0) {
         [self popupMessage:@"网络弱，数据加载失败" title:nil];
         return;
@@ -297,20 +296,23 @@
 #pragma mark UPPayPluginDelegate
 -(void)UPPayPluginResult:(NSString*)result
 {
+    //value is @"success" or @"fail" or @"cancel"
+    
     PPDebug(@"UPPayPluginResult:%@", result);
     if ([result isEqualToString:@"success"]) {
         //for test query pay result
         [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
         
-        [self popupMessage:NSLS(@"已经完成支付") title:nil];
-        [self showActivityWithText:NSLS(@"正在刷新订单...")];
+        [self showActivityWithText:NSLS(@"已经完成支付，正在刷新订单...")];
         [NSTimer scheduledTimerWithTimeInterval:1.0
                                          target:self
                                        selector:@selector(handleTimer:)
                                        userInfo:nil
                                         repeats:NO];
-    } else{
-        [self popupMessage:result title:nil];
+    } else if ([result isEqualToString:@"fail"]){
+        [self popupMessage:NSLS(@"支付失败") title:nil];
+    } else if ([result isEqualToString:@"cancel"]){
+        [self popupMessage:NSLS(@"已取消支付") title:nil];
     }
 }
 
