@@ -138,7 +138,7 @@
         return;
     }
     
-    if ([_personBuilder hasCardNumber] == NO) {
+    if ([_personBuilder hasCardNumber] == NO || [[_personBuilder cardNumber] length] == 0) {
         [self popupMessage:NSLS(@"请输入证件号码") title:nil];
         return;
     }
@@ -153,14 +153,23 @@
         return;
     }
     
+    NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
+    [mutableSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+    
+    if ([_personBuilder.name rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
+        [self popupMessage:NSLS(@"姓名含有非法字符") title:nil];
+        return;
+    }
+    
     NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
     if ([cardTypeName isEqualToString:@"身份证"]) {
         NSString *resultTips = @"";
         if ([IdCardUtil checkIdcard:_personBuilder.cardNumber resultTips:&resultTips] == NO) {
-            [self popupMessage:resultTips title:nil];
+            [self popupMessage:NSLS(@"输入身份证号码不正确，请重新输入") title:nil];
             return;
         }
     }
+    
     
     PersonManager *manager = [PersonManager defaultManager:PersonTypePassenger isMember:_isMember];
     

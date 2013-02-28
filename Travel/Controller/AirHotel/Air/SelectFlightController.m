@@ -84,8 +84,15 @@
         
         self.selectedItemList = [[[NSMutableArray alloc] init] autorelease];
         [_selectedItemList addObject:[NSNumber numberWithInt:ALL_CATEGORY]];
+        
+        self.supportRefreshHeader = YES;
     }
     return self;
+}
+
+- (void)reloadTableViewDataSource
+{
+    [self findFlights];
 }
 
 
@@ -167,6 +174,7 @@
 - (void)findFlightsDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo flightList:(NSArray *)flightList
 {
     [self hideActivity];
+    [self dataSourceDidFinishLoadingNewData];
     
     if (result != ERROR_SUCCESS) {
         [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
@@ -191,7 +199,7 @@
         {
             UIAlertView *oneAlertView = [[UIAlertView alloc] initWithTitle:nil
                                                                 message:NSLS(@"暂无可预订机票")
-                                                               delegate:nil
+                                                               delegate:self
                                                       cancelButtonTitle:NSLS(@"确定")
                                                       otherButtonTitles: nil];
             [oneAlertView show];
@@ -200,6 +208,10 @@
     }
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 #pragma mark -
 #pragma UITableViewDataSource methods

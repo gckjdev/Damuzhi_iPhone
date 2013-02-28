@@ -19,5 +19,7 @@
 #import "LoginController.h"
 
 @interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate, LoginControllerDelegate>
+@property (retain, nonatomic) IBOutlet UIButton *memberButton;
+@property (retain, nonatomic) IBOutlet UIButton *nonMemberButton;
 
 @end

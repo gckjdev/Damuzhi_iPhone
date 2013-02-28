@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1536</int>
+		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">11G63</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1138.51</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1926</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -56,7 +56,6 @@
 												<string key="NSFrame">{{12, 13}, {58, 15}}</string>
 												<reference key="NSSuperview" ref="834801229"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<bool key="IBUIClipsSubviews">YES</bool>
@@ -229,13 +228,12 @@
 												<reference key="IBUIBackgroundColor" ref="26253612"/>
 												<bool key="IBUIOpaque">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-												<int key="IBUIContentHorizontalAlignment">2</int>
 												<int key="IBUIContentVerticalAlignment">0</int>
 												<double key="IBUIContentEdgeInsets.top">0.0</double>
 												<double key="IBUIContentEdgeInsets.bottom">0.0</double>
-												<double key="IBUIContentEdgeInsets.left">0.0</double>
-												<double key="IBUIContentEdgeInsets.right">30</double>
-												<string key="IBUINormalTitle">添加联系人</string>
+												<double key="IBUIContentEdgeInsets.left">60</double>
+												<double key="IBUIContentEdgeInsets.right">0.0</double>
+												<string key="IBUINormalTitle">                                     添加联系人</string>
 												<reference key="IBUIHighlightedTitleColor" ref="763898941"/>
 												<object class="NSColor" key="IBUINormalTitleColor">
 													<int key="NSColorSpace">1</int>
@@ -251,7 +249,6 @@
 												<string key="NSFrame">{{277, 12}, {20, 20}}</string>
 												<reference key="NSSuperview" ref="305900079"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIUserInteractionEnabled">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -309,7 +306,6 @@
 												<string key="NSFrame">{{206, 49}, {85, 28}}</string>
 												<reference key="NSSuperview" ref="305900079"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<bool key="IBUIOpaque">NO</bool>
 												<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -550,7 +546,6 @@
 												<string key="NSFrameSize">{302, 1}</string>
 												<reference key="NSSuperview" ref="305900079"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<object class="NSColor" key="IBUIBackgroundColor">
 													<int key="NSColorSpace">1</int>
@@ -615,7 +610,6 @@
 										<string key="NSFrame">{{9, 52}, {302, 192}}</string>
 										<reference key="NSSuperview" ref="260111246"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">3</int>
@@ -628,7 +622,6 @@
 								<string key="NSFrame">{{0, 285}, {320, 254}}</string>
 								<reference key="NSSuperview" ref="376875396"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="26253612"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -912,7 +905,6 @@
 							<reference ref="609133325"/>
 							<reference ref="270907675"/>
 							<reference ref="886944511"/>
-							<reference ref="470349903"/>
 							<reference ref="431311101"/>
 							<reference ref="905039482"/>
 							<reference ref="784955868"/>
@@ -925,6 +917,7 @@
 							<reference ref="103740610"/>
 							<reference ref="1073063588"/>
 							<reference ref="35912386"/>
+							<reference ref="470349903"/>
 						</array>
 						<reference key="parent" ref="260111246"/>
 					</object>
@@ -1267,6 +1260,6 @@
 			<string key="reserve_btn2@2x.png">{170, 56}</string>
 			<string key="reserve_btn3@2x.png">{170, 56}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1926</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

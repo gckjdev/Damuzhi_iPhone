@@ -165,7 +165,7 @@
     
     if ([city.cityName isEqualToString:[[AppManager defaultManager] getCurrentCityName]])
     {
-        [self popupMessage:NSLS(@"您选择的出发城市和目的地一样，请重选") title:nil];
+        [self popupMessage:NSLS(@"您选择的出发城市和目的地一样，请重选") showSeconds:3];
         return;
     }
     
@@ -184,6 +184,16 @@
     }
 }
 
+- (BOOL)isInSearchResulList:(AirCity *)city
+{
+    for (AirCity *oneCity in self.searchResultList) {
+        if (oneCity.cityId == city.cityId) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 #pragma mark -
 #pragma mark Content Filtering
@@ -197,13 +207,17 @@
             
             if ([searchText isEqualToString:@"x"] && [city.cityName isEqualToString:@"厦门"])
             {
-                [self.searchResultList addObject:city.cityName];
+                if ([self isInSearchResulList:city] == NO) {
+                    [self.searchResultList addObject:city];
+                }
                 continue;
             }
             
             int cityLocation = [city.cityName rangeOfString:searchText].location;
             if (cityLocation < [city.cityName length] || [searchText isEqualToString:city.cityName.pinyinFirstLetter]) {
-                [self.searchResultList addObject:city];
+                if ([self isInSearchResulList:city] == NO) {
+                    [self.searchResultList addObject:city];
+                }
             }
         }
     }

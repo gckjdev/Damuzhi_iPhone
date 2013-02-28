@@ -12,7 +12,7 @@
 #import "FlightDetailController.h"
 #import "SelectController.h"
 
-@interface SelectFlightController : PPTableViewController <AirHotelServiceDelegate, SelectControllerDelegate>
+@interface SelectFlightController : PPTableViewController <AirHotelServiceDelegate, SelectControllerDelegate, UIAlertViewDelegate>
 
 @property (retain, nonatomic) IBOutlet UIImageView *topImageView;
 

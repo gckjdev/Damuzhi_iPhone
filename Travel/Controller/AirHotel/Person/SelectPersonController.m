@@ -74,7 +74,7 @@
     NSString *name = @"";
     switch (_type) {
         case ViewTypePassenger:
-            name = NSLS(@"航班登机人");
+            name = NSLS(@"登机人");
             break;
             
         case ViewTypeCheckIn:
@@ -171,6 +171,11 @@
 - (void)clickFinish:(id)sender
 {
     if (_isSelect) {
+        if ([dataList count] == 0) {
+            [self popupMessage:[NSString stringWithFormat:NSLS(@"请先添加%@") ,[self personTypeName:_type]]title:nil];
+            return;
+        }
+        
         if ([_selectedIndexList count] == 0) {
             [self popupMessage:NSLS(@"请选择") title:nil];
             return;

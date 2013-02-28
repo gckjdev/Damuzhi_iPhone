@@ -8,6 +8,7 @@
 
 #import "PersonsView.h"
 #import "AirHotel.pb.h"
+#import "LocaleUtils.h"
 
 @implementation PersonsView
 
@@ -32,7 +33,8 @@
         UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(X_PERSON_LABEL, index * HEIGHT_PERSON_LABEL, 208, HEIGHT_PERSON_LABEL)] autorelease];
         label.textColor = [UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1];
         if (type == PersonListTypePassenger) {
-            label.text = [NSString stringWithFormat:@"%@ , %@", person.name, person.cardNumber];
+            NSString *ageType = person.ageType == PersonAgeTypePersonAgeChild ? NSLS(@"儿童") : NSLS(@"成人");
+            label.text = [NSString stringWithFormat:@"%@ (%@) , %@", person.name, ageType, person.cardNumber];
         } else {
             label.text = [NSString stringWithFormat:@"%@", person.name];
         }

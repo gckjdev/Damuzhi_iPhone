@@ -51,6 +51,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [_sectionStat release];
     [_manager release];
     [_departCity release];
+    [_memberButton release];
+    [_nonMemberButton release];
     [super dealloc];
 }
 
@@ -106,6 +108,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (void)viewDidUnload
 {
+    [self setMemberButton:nil];
+    [self setNonMemberButton:nil];
     [super viewDidUnload];
 }
 
@@ -147,6 +151,10 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self updateAirTypeToBuilder];
 }
 
+
+#define MEMBER_BUTTON_FRAME CGRectMake(26, 8, 121, 38)
+#define MEMBER_BUTTON_CENTER_FRAME CGRectMake(100, 8, 121, 38)
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [self hideTabBar:NO];
@@ -154,6 +162,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     [self createTitleView:NSLS(@"机票")];
     [self createDefaultData];
+    
+    if ([[UserManager defaultManager] isLogin]) {
+        self.nonMemberButton.hidden = YES;
+        self.memberButton.frame = MEMBER_BUTTON_CENTER_FRAME;
+    } else {
+        self.nonMemberButton.hidden = NO;
+        self.memberButton.frame = MEMBER_BUTTON_FRAME;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,6 +220,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     self.departCity = nil;
+    
+    [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
 
 #pragma mark -
@@ -339,7 +357,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     NSArray *validHotelList = [_manager validHotelOrderBuilders:_hotelOrderBuilderList];
     if ([validAirList count] == 0 && [validHotelList count] == 0) {
-        [self popupMessage:NSLS(@"未选择任何航班或酒店") title:nil];
+        [self popupMessage:NSLS(@"请先选择机票") title:nil];
         return NO;
     } else {
         self.airOrderBuilderList = [NSMutableArray arrayWithArray:validAirList];

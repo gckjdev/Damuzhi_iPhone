@@ -451,11 +451,11 @@
         self.hotelPayModeLabel.text = NSLS(@"在线支付");
     }
     
-    if (shouldPayPrice == 0) {
-        self.shouldPayPriceHolderView.hidden = YES;
-    } else {
-        self.shouldPayPriceHolderView.hidden = NO;
-    }
+//    if (shouldPayPrice == 0) {
+//        self.shouldPayPriceHolderView.hidden = YES;
+//    } else {
+//        self.shouldPayPriceHolderView.hidden = NO;
+//    }
     self.shouldPayPriceLabel.text = [PriceUtils priceToStringCNY:shouldPayPrice];
 }
 
@@ -553,7 +553,7 @@
             self.contactPerson = person;
             
             [_contactPersonButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1] forState:UIControlStateNormal];
-            [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@，%@",_contactPerson.name,_contactPerson.phone] forState:UIControlStateNormal];
+            [_contactPersonButton setTitle:[NSString stringWithFormat:@"%@ , %@",_contactPerson.name,_contactPerson.phone] forState:UIControlStateNormal];
         }
     } else if (personType == ViewTypeCreditCard) {
         
