@@ -53,6 +53,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [_departCity release];
     [_memberButton release];
     [_nonMemberButton release];
+    [_tipsView release];
     [super dealloc];
 }
 
@@ -110,6 +111,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
 {
     [self setMemberButton:nil];
     [self setNonMemberButton:nil];
+    [self setTipsView:nil];
     [super viewDidUnload];
 }
 
@@ -169,6 +171,12 @@ enum HOTEL_FLIGHT_DATE_TAG{
     } else {
         self.nonMemberButton.hidden = NO;
         self.memberButton.frame = MEMBER_BUTTON_FRAME;
+    }
+    
+    if ([[AppManager defaultManager] getCurrentCity].hasAirport == NO) {
+        self.tipsView.hidden = NO;
+    } else {
+        self.tipsView.hidden = YES;
     }
 }
 

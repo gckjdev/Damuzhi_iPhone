@@ -21,5 +21,6 @@
 @interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate, LoginControllerDelegate>
 @property (retain, nonatomic) IBOutlet UIButton *memberButton;
 @property (retain, nonatomic) IBOutlet UIButton *nonMemberButton;
+@property (retain, nonatomic) IBOutlet UIView *tipsView;
 
 @end

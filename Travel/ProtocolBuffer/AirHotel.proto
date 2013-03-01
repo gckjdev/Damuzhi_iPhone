@@ -115,7 +115,7 @@ message FlightList{
 message AirOrder {
     required string flightNumber = 1;           //航班编号
     required string flightSeatCode = 2;         //舱位类型
-    optional int32 flightType = 3;              //1: 去程 2: 返程
+    optional int32 flightType = 3;              //1: 去程 2: 返程 3: 双程中的去程 4:双程中的返程
     optional int32 flightDate = 4;              //航班日期
     optional bool insurance = 5;                //是否购买保险
     optional bool sendTicket = 6;               //是否快递机票

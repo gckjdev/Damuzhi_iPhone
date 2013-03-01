@@ -204,6 +204,8 @@ static AirHotelManager *_airHotelManager = nil;
 {
     double totalPrice = 0;
     
+    double sendTicketFee = 0;
+    
     for (AirOrder_Builder *builder in airOrderBuilderList) {
         for (Person *person in builder.passengerList) {
             double each = 0;
@@ -220,9 +222,11 @@ static AirHotelManager *_airHotelManager = nil;
         }
         
         if (builder.sendTicket) {
-            totalPrice += builder.flight.sendTicketFee;
+            sendTicketFee = builder.flight.sendTicketFee;
         }
     }
+    
+    totalPrice += sendTicketFee;
     
     return totalPrice;
     
@@ -297,7 +301,7 @@ static AirHotelManager *_airHotelManager = nil;
 
             break;
         case StatusPrepaid:
-
+            statusColor = [UIColor colorWithRed:0xff/0xff green:0x66/0xff blue:0x00/0xff alpha:1.0];
             break;
         case StatusUnpaid:
             statusColor = [UIColor colorWithRed:0.0/255.0 green:176.0/255.0 blue:52.0/255.0 alpha:1.0];

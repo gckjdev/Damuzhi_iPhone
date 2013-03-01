@@ -206,6 +206,8 @@
             [oneAlertView release];
         }
     }
+    
+    [self reloadDataWithAirlineFilter];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -326,9 +328,7 @@
     [controller release];
 }
 
-#pragma mark -
-#pragma SelectControllerDelegate
-- (void)didSelectFinish:(NSArray*)selectedItems
+- (void)reloadDataWithAirlineFilter
 {
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
     BOOL isAll = NO;
@@ -359,6 +359,13 @@
     
     [dataTableView reloadData];
     self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
+}
+
+#pragma mark -
+#pragma SelectControllerDelegate
+- (void)didSelectFinish:(NSArray*)selectedItems
+{
+    [self reloadDataWithAirlineFilter];
 }
 
 @end

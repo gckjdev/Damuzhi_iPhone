@@ -14,6 +14,7 @@
 #import "TimeUtils.h"
 #import "PriceUtils.h"
 #import "AppUtils.h"
+#import "LogUtil.h"
 
 @interface OrderFlightView()
 @property (assign, nonatomic) id<OrderFlightViewDelegate> delegate;
@@ -70,6 +71,8 @@
 
 - (void)setViewWithOrderBuilder:(AirOrder_Builder *)airOrderBuilder
 {
+    PPDebug(@"flightType:%d", airOrderBuilder.flightType);
+    
     if (airOrderBuilder.flightType == FlightTypeGo || airOrderBuilder.flightType == FlightTypeGoOfDouble) {
         self.flightTypeLabel.text = NSLS(@"去程");
     } else {
@@ -88,15 +91,15 @@
     
     
     //set seatname
-    NSString *reUrl = nil;
-    for (FlightSeat *seat in airOrderBuilder.flight.flightSeatsList) {
-        if ([seat.code isEqualToString:airOrderBuilder.flightSeatCode]) {
-            reUrl = seat.reschedule;
-            break;
-        }
-    }
+//    NSString *reUrl = nil;
+//    for (FlightSeat *seat in airOrderBuilder.flight.flightSeatsList) {
+//        if ([seat.code isEqualToString:airOrderBuilder.flightSeatCode]) {
+//            reUrl = seat.reschedule;
+//            break;
+//        }
+//    }
     self.seatLabel.text = airOrderBuilder.flightSeat.name;
-    self.rescheduleUrl = reUrl;
+    self.rescheduleUrl = airOrderBuilder.flightSeat.reschedule;
     
     //set airport and time
     NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:airOrderBuilder.flight.departDate]];
@@ -112,6 +115,8 @@
     
     
     //set price
+    PPDebug(@"childTicketPrice:%f",  airOrderBuilder.flightSeat.childTicketPrice);
+    
     double adultPrice = airOrderBuilder.flightSeat.adultTicketPrice + airOrderBuilder.flight.adultAirportTax + airOrderBuilder.flight.adultFuelTax;
     double childPrice = airOrderBuilder.flightSeat.childTicketPrice + airOrderBuilder.flight.childAirportTax + airOrderBuilder.flight.childFuelTax;
     self.adultPriceLabel.text = [PriceUtils priceToStringCNY:adultPrice];

@@ -63,6 +63,7 @@
             self.personBuilder.cardNumber = person.cardNumber;
             self.personBuilder.gender = person.gender;
             self.personBuilder.birthday = person.birthday;
+            self.birthday = [NSDate dateWithTimeIntervalSince1970:_personBuilder.birthday];
             
             [_selectedItemIds addObject:[NSNumber numberWithInt:person.cardTypeId]];
         }
@@ -93,7 +94,9 @@
     self.dataList = [NSArray arrayWithObjects:TITLE_PASSENGE_TYPE, TITLE_NAME, TITLE_CARD_TYPE, TITLE_CARD_NUMBER, TITLE_GENDER, TITLE_BIRTHDAY, nil];
     
     self.datePickerHolderView.hidden = YES;
-    self.birthday = [NSDate date];
+    if (self.birthday == nil) {
+        self.birthday = [NSDate date];
+    }
     self.datePickerView.date = _birthday;
     self.datePickerView.maximumDate = [NSDate date];
 }
@@ -118,6 +121,49 @@
 //    [UIImageView commitAnimations];
 //}
 
+- (NSInteger)age
+{
+    NSDate *today = [NSDate date];
+    
+    NSInteger age = getYear(today) - getYear(_birthday);
+    
+    if (age <= 0) {
+        return 0;
+    }
+    
+    if (getMonth(today) < getMonth(_birthday)){
+        age -- ;
+    } else if (getMonth(today) == getMonth(_birthday)){
+        if (getDay(today) < getDay(_birthday)) {
+            age --;
+        }
+    }
+    
+    PPDebug(@"year:%d",getYear(today));
+    PPDebug(@"month:%d",getMonth(today));
+    PPDebug(@"day:%d",getDay(today));
+    PPDebug(@"b_year:%d",getYear(_birthday));
+    PPDebug(@"b_month:%d",getMonth(_birthday));
+    PPDebug(@"b_day:%d",getDay(_birthday));
+    
+    PPDebug(@"age:%d", age);
+    return age;
+}
+
+- (BOOL)isRightAgeTypeAndBirthday
+{
+    if ([self age] >= 12 && _personBuilder.ageType == PersonAgeTypePersonAgeChild) {
+        [self popupMessage:NSLS(@"年满12周岁儿童视为成人登机人，请更改为成人") title:nil];
+        return NO;
+    }
+    
+    if ([self age] < 12 && _personBuilder.ageType == PersonAgeTypePersonAgeAdult) {
+        [self popupMessage:NSLS(@"未满12周岁视为儿童，请更改为儿童")  title:nil];
+        return NO;
+    }
+    
+    return YES;
+}
 
 - (void)clickFinish:(id)sender
 {
@@ -150,6 +196,10 @@
     
     if ([_personBuilder hasBirthday] == NO) {
         [self popupMessage:NSLS(@"请选择出生日期") title:nil];
+        return;
+    }
+    
+    if ([self isRightAgeTypeAndBirthday] == NO) {
         return;
     }
     

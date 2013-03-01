@@ -139,7 +139,7 @@
         self.dataList = orderList;
         [dataTableView reloadData];
     }else{
-        [self showTipsOnTableView:@"没有找到您预订的机+酒订单"];
+        [self showTipsOnTableView:@"没有找到您预订的机票订单"];
     }
 }
 
