@@ -227,8 +227,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
         [_manager clearHotelOrderBuilder:builder];
     }
     
-    self.departCity = nil;
-    
     [((AppDelegate *)[UIApplication sharedApplication].delegate) setSeletedTabbarIndex:0];
 }
 
@@ -900,6 +898,10 @@ enum HOTEL_FLIGHT_DATE_TAG{
 - (IBAction)clickBackButton:(id)sender {
     [self updateSelectedButton:3];
     [self changeAirType:AirBack];
+}
+
+- (IBAction)clickSwitchCityButton:(id)sender {
+    [self clickTitleView:nil];
 }
 
 @end

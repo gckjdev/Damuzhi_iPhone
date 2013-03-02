@@ -89,15 +89,6 @@
     
     self.planeTypeLabel.text = [NSString stringWithFormat:@"机型:%@",airOrderBuilder.flight.planeType] ;
     
-    
-    //set seatname
-//    NSString *reUrl = nil;
-//    for (FlightSeat *seat in airOrderBuilder.flight.flightSeatsList) {
-//        if ([seat.code isEqualToString:airOrderBuilder.flightSeatCode]) {
-//            reUrl = seat.reschedule;
-//            break;
-//        }
-//    }
     self.seatLabel.text = airOrderBuilder.flightSeat.name;
     self.rescheduleUrl = airOrderBuilder.flightSeat.reschedule;
     

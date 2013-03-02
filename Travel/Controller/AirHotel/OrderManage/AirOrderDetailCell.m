@@ -89,7 +89,7 @@
     self.statusLabel.text = NSLS(@"在线支付");
     
     if (airOrder.insurance) {
-        int count = [airOrder.passengerList count];
+        int count = [airOrder.passengerList count] * [airHotelOrde.airOrdersList count];
         NSString *onePrce = [PriceUtils priceToStringCNY:airOrder.flight.insuranceFee];
         self.insuranceLabel.text = [NSString stringWithFormat:@"%d份，%@/份",count, onePrce];
     } else {

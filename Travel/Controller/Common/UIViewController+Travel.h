@@ -13,5 +13,6 @@
 @interface UIViewController (Travel)<AppManagerProtocol>
 
 - (void)createTitleView:(NSString *)titlePrefix;
+- (void)clickTitleView:(id)sender;
 
 @end

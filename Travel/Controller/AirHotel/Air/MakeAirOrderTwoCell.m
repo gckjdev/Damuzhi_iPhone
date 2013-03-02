@@ -85,7 +85,7 @@
         [simpleView setViewWith:goBuilder.flight flightSeatCode:goBuilder.flightSeatCode];
     } else {
         [self.goFlightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
-        [self.goFlightButton setTitle:defaultTips forState:UIControlStateNormal];
+        [self.goFlightButton setTitle:NSLS(@"请选择航班") forState:UIControlStateNormal];
         self.goFlightHolderView.hidden = YES;
     }
     
@@ -103,7 +103,7 @@
         [simpleView setViewWith:backBuilder.flight flightSeatCode:backBuilder.flightSeatCode];
     } else {
         [self.backFlightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
-        [self.backFlightButton setTitle:defaultTips forState:UIControlStateNormal];
+        [self.backFlightButton setTitle:NSLS(@"请选择航班") forState:UIControlStateNormal];
         self.backFlightHolderView.hidden = YES;
     }
     

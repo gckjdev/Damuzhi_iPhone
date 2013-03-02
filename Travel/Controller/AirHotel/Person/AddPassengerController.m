@@ -71,6 +71,29 @@
     return self;
 }
 
+- (void)updateCellTitles
+{
+    NSMutableArray *mutableArray = [NSMutableArray arrayWithObjects:TITLE_PASSENGE_TYPE, TITLE_NAME, TITLE_GENDER, TITLE_CARD_TYPE, nil];
+    
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
+    BOOL isOther = [cardTypeName isEqualToString:@"其他"];
+    
+    if (!(_personBuilder.ageType == PersonAgeTypePersonAgeChild && isOther)) {
+        [mutableArray addObject:TITLE_CARD_NUMBER];
+    } else {
+        [_personBuilder clearCardNumber];
+    }
+    
+    if (_personBuilder.ageType == PersonAgeTypePersonAgeChild) {
+        [mutableArray addObject:TITLE_BIRTHDAY];
+    } else {
+        [_personBuilder clearBirthday];
+    }
+    
+    
+    self.dataList = mutableArray;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -91,7 +114,7 @@
                          imageName:@"topmenu_btn_right.png"
                             action:@selector(clickFinish:)];
     
-    self.dataList = [NSArray arrayWithObjects:TITLE_PASSENGE_TYPE, TITLE_NAME, TITLE_CARD_TYPE, TITLE_CARD_NUMBER, TITLE_GENDER, TITLE_BIRTHDAY, nil];
+    [self updateCellTitles];
     
     self.datePickerHolderView.hidden = YES;
     if (self.birthday == nil) {
@@ -100,26 +123,6 @@
     self.datePickerView.date = _birthday;
     self.datePickerView.maximumDate = [NSDate date];
 }
-
-//- (void)moveView:(NSIndexPath *)indexPath
-//{
-//    if (indexPath.row > 2) {
-//        [UIView beginAnimations:nil context:nil];
-//        [UIView setAnimationDuration:0.25];
-//        self.view.frame = CGRectMake(0, - (40 + indexPath.row * 20), self.view.frame.size.width, self.view.frame.size.height);
-//        [UIImageView commitAnimations];
-//    } else {
-//        [self resetViewSite];
-//    }
-//}
-
-//- (void)resetViewSite
-//{
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.25];
-//    self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-//    [UIImageView commitAnimations];
-//}
 
 - (NSInteger)age
 {
@@ -139,26 +142,18 @@
         }
     }
     
-    PPDebug(@"year:%d",getYear(today));
-    PPDebug(@"month:%d",getMonth(today));
-    PPDebug(@"day:%d",getDay(today));
-    PPDebug(@"b_year:%d",getYear(_birthday));
-    PPDebug(@"b_month:%d",getMonth(_birthday));
-    PPDebug(@"b_day:%d",getDay(_birthday));
-    
-    PPDebug(@"age:%d", age);
     return age;
 }
 
 - (BOOL)isRightAgeTypeAndBirthday
 {
     if ([self age] >= 12 && _personBuilder.ageType == PersonAgeTypePersonAgeChild) {
-        [self popupMessage:NSLS(@"年满12周岁儿童视为成人登机人，请更改为成人") title:nil];
+        [self popupMessage:NSLS(@"年满12周岁儿童视为成人登机人，请更改为成人") showSeconds:3];
         return NO;
     }
     
     if ([self age] < 12 && _personBuilder.ageType == PersonAgeTypePersonAgeAdult) {
-        [self popupMessage:NSLS(@"未满12周岁视为儿童，请更改为儿童")  title:nil];
+        [self popupMessage:NSLS(@"未满12周岁视为儿童，请更改为儿童")  showSeconds:3];
         return NO;
     }
     
@@ -184,23 +179,32 @@
         return;
     }
     
-    if ([_personBuilder hasCardNumber] == NO || [[_personBuilder cardNumber] length] == 0) {
-        [self popupMessage:NSLS(@"请输入证件号码") title:nil];
-        return;
+    
+    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
+    BOOL isOther = [cardTypeName isEqualToString:@"其他"];
+    if (!(_personBuilder.ageType == PersonAgeTypePersonAgeChild && isOther)) {
+        if ([_personBuilder hasCardNumber] == NO || [[_personBuilder cardNumber] length] == 0) {
+            [self popupMessage:NSLS(@"请输入证件号码") title:nil];
+            return;
+        }
     }
+    
     
     if ([_personBuilder hasGender] == NO) {
         [self popupMessage:NSLS(@"请选择性别") title:nil];
         return;
     }
+
     
-    if ([_personBuilder hasBirthday] == NO) {
-        [self popupMessage:NSLS(@"请选择出生日期") title:nil];
-        return;
-    }
-    
-    if ([self isRightAgeTypeAndBirthday] == NO) {
-        return;
+    if (_personBuilder.ageType == PersonAgeTypePersonAgeChild) {
+        if ([_personBuilder hasBirthday] == NO) {
+            [self popupMessage:NSLS(@"请选择出生日期") title:nil];
+            return;
+        }
+        
+        if ([self isRightAgeTypeAndBirthday] == NO) {
+            return;
+        }
     }
     
     NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
@@ -211,7 +215,6 @@
         return;
     }
     
-    NSString *cardTypeName = [[AppManager defaultManager] getCardName:_personBuilder.cardTypeId];
     if ([cardTypeName isEqualToString:@"身份证"]) {
         NSString *resultTips = @"";
         if ([IdCardUtil checkIdcard:_personBuilder.cardNumber resultTips:&resultTips] == NO) {
@@ -378,13 +381,14 @@
     return cell;
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma AddPersonCellDelegate methods
 - (void)didClickRadio1Button:(NSIndexPath *)indexPath
 {
     NSString *title = [dataList objectAtIndex:indexPath.row];
     if ([title isEqualToString:TITLE_PASSENGE_TYPE]) {
         [_personBuilder setAgeType:PersonAgeTypePersonAgeAdult];
+        [self updateCellTitles];
     } else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderMale];
     }
@@ -397,6 +401,7 @@
     NSString *title = [dataList objectAtIndex:indexPath.row];
     if ([title isEqualToString:TITLE_PASSENGE_TYPE]) {
         [_personBuilder setAgeType:PersonAgeTypePersonAgeChild];
+        [self updateCellTitles];
     }else if ([title isEqualToString:TITLE_GENDER]) {
         [_personBuilder setGender:PersonGenderPersonGenderFemale];
     }
@@ -452,6 +457,7 @@
     if ([_selectedItemIds count] > 0) {
         int cardTypeId = [[_selectedItemIds objectAtIndex:0] intValue];
         [_personBuilder setCardTypeId:cardTypeId];
+        [self updateCellTitles];
     }
     [dataTableView reloadData];
 }

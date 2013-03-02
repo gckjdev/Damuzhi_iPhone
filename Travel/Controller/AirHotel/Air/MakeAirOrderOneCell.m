@@ -136,7 +136,7 @@
         [simpleView setViewWith:builder.flight flightSeatCode:builder.flightSeatCode];
     } else {
         [self.flightButton setTitleColor:COLOR_NO_VALUE forState:UIControlStateNormal];
-        [self.flightButton setTitle:defaultTips forState:UIControlStateNormal];
+        [self.flightButton setTitle:NSLS(@"请选择航班") forState:UIControlStateNormal];
         self.flightHolderView.hidden = YES;
     }
     

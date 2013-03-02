@@ -83,6 +83,18 @@
     webView.backgroundColor = [UIColor colorWithRed:211/255.0 green:215/255.0 blue:218/255.0 alpha:1];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self startObservingContentSizeChangesInWebView:webView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self stopObservingContentSizeChangesInWebView:webView];
+}
+
 - (void)viewDidUnload
 {
     [self setWebView:nil];
@@ -110,19 +122,44 @@
 
 #pragma mark -
 #pragma mark: implementation of web view delegate.
-//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-//{
-//    return YES;
-//}
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    PPDebug(@"<LocalRouteIntroductionController> url:%@", request.URL);
+    
+    NSURL *URL = request.URL;
+    NSString *scheme = URL.scheme;
+    NSString *host = URL.host;
+    
+    if ([scheme isEqualToString:WEB_SCHEME_DMZ] &&
+        [host isEqualToString:WEB_MAKE_CALL])
+    {
+        NSString *phone = [URL.queryComponents objectForKey:WEB_PHONE_NUM];
+        
+        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+        
+        [actionSheet addButtonWithTitle:phone];
+        [actionSheet addButtonWithTitle:NSLS(@"返回")];
+        [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+        [actionSheet release];
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)webView1
 {
     [self showActivityWithText:NSLS(@"数据加载中...")];
 }
 
+#define TAG_FOOTER_BACKGROUND   2013030201
 - (void)webViewDidFinishLoad:(UIWebView *)webView1
 {
     if ([DeviceDetection isOS5]) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView1.scrollView.contentSize.height, 320, 250)];
+        imageView.tag = TAG_FOOTER_BACKGROUND;
         [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
         [webView1.scrollView addSubview:imageView];
         [imageView release];
@@ -175,32 +212,6 @@
 }
 
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    PPDebug(@"<LocalRouteIntroductionController> url:%@", request.URL);
-    
-    NSURL *URL = request.URL;
-    NSString *scheme = URL.scheme;
-    NSString *host = URL.host;
-    
-    if ([scheme isEqualToString:WEB_SCHEME_DMZ] &&
-        [host isEqualToString:WEB_MAKE_CALL])
-    {
-        NSString *phone = [URL.queryComponents objectForKey:WEB_PHONE_NUM];
-        
-        UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:NSLS(@"是否拨打以下电话") delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
-        
-        [actionSheet addButtonWithTitle:phone];
-        [actionSheet addButtonWithTitle:NSLS(@"返回")];
-        [actionSheet setCancelButtonIndex:[[[AppManager defaultManager] getServicePhoneList] count]];
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-        [actionSheet release];
-        
-        return NO;
-    }
-    
-    return YES;
-}
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -213,6 +224,38 @@
     //    phone = [phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
     [UIUtils makeCall:phone];
 }
+
+
+
+static int kObservingContentSizeChangesContext;
+
+- (void)startObservingContentSizeChangesInWebView:(UIWebView *)ontWebView {
+    [ontWebView.scrollView addObserver:self forKeyPath:@"contentSize" options:0 context:&kObservingContentSizeChangesContext];
+}
+
+- (void)stopObservingContentSizeChangesInWebView:(UIWebView *)ontWebView {
+    [ontWebView.scrollView removeObserver:self forKeyPath:@"contentSize" context:&kObservingContentSizeChangesContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == &kObservingContentSizeChangesContext) {
+        
+        UIImageView *subView = (UIImageView *)[webView.scrollView viewWithTag:TAG_FOOTER_BACKGROUND];
+        [subView removeFromSuperview];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView.scrollView.contentSize.height, 320, 250)];
+        imageView.tag = TAG_FOOTER_BACKGROUND;
+        [imageView setImage:[UIImage imageNamed:@"detail_bg_down.png"]];
+        [webView.scrollView addSubview:imageView];
+        [imageView release];
+        
+//        UIScrollView *scrollView = object;
+//        NSLog(@"%@ contentSize changed to %@", scrollView, NSStringFromCGSize(scrollView.contentSize));
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 @end
 
 
