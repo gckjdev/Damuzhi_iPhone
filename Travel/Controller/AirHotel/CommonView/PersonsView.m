@@ -34,7 +34,13 @@
         label.textColor = [UIColor colorWithRed:18.0/255.0 green:140.0/255.0 blue:192.0/255.0 alpha:1];
         if (type == PersonListTypePassenger) {
             NSString *ageType = person.ageType == PersonAgeTypePersonAgeChild ? NSLS(@"儿童") : NSLS(@"成人");
-            label.text = [NSString stringWithFormat:@"%@ (%@) , %@", person.name, ageType, person.cardNumber];
+            
+            if ([person hasCardNumber] && person.cardNumber != nil && [person.cardNumber length] != 0) {
+                label.text = [NSString stringWithFormat:@"%@ (%@) , %@", person.name, ageType, person.cardNumber];
+            } else {
+                label.text = [NSString stringWithFormat:@"%@ (%@)", person.name, ageType];
+            }
+
         } else {
             label.text = [NSString stringWithFormat:@"%@", person.name];
         }

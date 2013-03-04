@@ -58,10 +58,14 @@
             self.titleLabel.text = person.name;
             NSString *ageType = nil;
             if ([person hasAgeType]) {
-                ageType = (person.ageType == PersonAgeTypePersonAgeAdult ? @"成人" : @"儿童");
+                ageType = (person.ageType == PersonAgeTypePersonAgeChild ? @"儿童" : @"成人");
             }
             self.noteLabel.text = ageType;
-            self.subTitleLabel.text = [NSString stringWithFormat:@"%@/%@",[[AppManager defaultManager] getCardName:person.cardTypeId], person.cardNumber];
+            if ([person hasCardNumber] && person.cardNumber != nil && [person.cardNumber length] != 0) {
+                self.subTitleLabel.text = [NSString stringWithFormat:@"%@/%@",[[AppManager defaultManager] getCardName:person.cardTypeId], person.cardNumber];
+            } else {
+                self.subTitleLabel.text = [[AppManager defaultManager] getCardName:person.cardTypeId];
+            }
             break;
         }
             
