@@ -83,6 +83,14 @@
         return;
     }
     
+    NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
+    [mutableSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+    [mutableSet removeCharactersInString:@"/"];
+    if ([_nameTextField.text rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
+        [self popupMessage:NSLS(@"姓名含有非法字符") title:nil];
+        return;
+    }
+    
     NSUInteger phoneLen = [_phoneTextField.text length];
     if (phoneLen != 11) {
         if (phoneLen == 0) {

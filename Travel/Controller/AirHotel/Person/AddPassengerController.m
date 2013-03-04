@@ -209,11 +209,17 @@
     
     NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
     [mutableSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
+    if ([_personBuilder.cardNumber rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
+        [self popupMessage:NSLS(@"证件号码含有非法字符") title:nil];
+        return;
+    }
     
+    [mutableSet removeCharactersInString:@"/"];
     if ([_personBuilder.name rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
         [self popupMessage:NSLS(@"姓名含有非法字符") title:nil];
         return;
     }
+    
     
     if ([cardTypeName isEqualToString:@"身份证"]) {
         NSString *resultTips = @"";

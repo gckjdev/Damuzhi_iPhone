@@ -72,7 +72,7 @@ serialNumber:(NSString *)serialNumber
     [UPPayPluginUtil startPay:_serialNumber
                    sysProvide:nil
                          spId:nil
-                         mode:UNION_PAY_MODE_TEST
+                         mode:UNION_PAY_MODE
                viewController:_controller
                      delegate:_delegate];
 }

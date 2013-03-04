@@ -11,8 +11,13 @@
 
 #define OS_IOS 1
 
-#define UNION_PAY_MODE_FORMAL   @"00"
-#define UNION_PAY_MODE_TEST     @"01"
+
+// 手机支付测试环境
+//#define UNION_PAY_MODE      @"01"
+
+// 手机支付生产环境
+#define UNION_PAY_MODE      @"00"
+
 
 // for test service
 //#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
