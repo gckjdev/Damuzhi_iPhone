@@ -433,9 +433,20 @@
 - (void)clickLogout:(id)sender
 {
     self.loginoutButton = (UIButton *)sender;
-    _loginoutButton.enabled = NO;
     
-    [[UserService defaultService] logout:self];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:nil message:NSLS(@"确定要退出登陆？") delegate:self cancelButtonTitle:NSLS(@"取消") otherButtonTitles:(@"确定"), nil];
+    [myAlertView show];
+    [myAlertView release];
+}
+
+- (void)alertView:(UIAlertView *)oneAlertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == oneAlertView.cancelButtonIndex) {
+        return;
+    } else {
+        _loginoutButton.enabled = NO;
+        [[UserService defaultService] logout:self];
+    }
 }
 
 - (void)loginoutDidFinish:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo

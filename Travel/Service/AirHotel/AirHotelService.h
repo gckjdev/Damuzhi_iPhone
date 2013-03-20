@@ -31,7 +31,9 @@
 - (void)findFlightsDone:(int)resultCode
                  result:(int)result
              resultInfo:(NSString *)resultInfo
-             flightList:(NSArray *)flightList;
+             flightList:(NSArray *)flightList
+             flightDate:(NSDate *)flightDate
+             flightType:(int)flightType;
 
 - (void)findOrdersDone:(int)result orderList:(NSArray *)orderList;
 

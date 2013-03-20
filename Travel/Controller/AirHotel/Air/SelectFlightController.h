@@ -30,6 +30,7 @@
                 flightDate:(NSDate *)flightDate
                 flightType:(FlightType)flightType
               flightNumber:(NSString *)flightNumber
-                  delegate:(id<FlightDetailControllerDelegate>)delegate;
+                  delegate:(id<FlightDetailControllerDelegate>)delegate
+                flightList:(NSArray *)flightList;
 
 @end

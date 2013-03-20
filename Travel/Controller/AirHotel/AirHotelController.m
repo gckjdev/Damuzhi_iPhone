@@ -151,8 +151,20 @@ enum HOTEL_FLIGHT_DATE_TAG{
     self.backAirOrderBuiler = [_airOrderBuilderList objectAtIndex:1];
     
     [self updateAirTypeToBuilder];
+    
+    [self setDefaultFlightDate];
 }
 
+- (void)setDefaultFlightDate
+{
+    if ([_goAirOrderBuiler hasFlightDate] == NO) {
+        [_goAirOrderBuiler setFlightDate:[[NSDate date] timeIntervalSince1970] + 24 * 60 * 60];
+    }
+    
+    if ([_backAirOrderBuiler hasFlightDate] == NO) {
+        [_backAirOrderBuiler setFlightDate:[[NSDate date] timeIntervalSince1970] + 2 * 24 * 60 * 60];
+    }
+}
 
 #define MEMBER_BUTTON_FRAME CGRectMake(26, 8, 121, 38)
 #define MEMBER_BUTTON_CENTER_FRAME CGRectMake(100, 8, 121, 38)
@@ -674,7 +686,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         suggestTips =  NSLS(@"确定去程日期在酒店退房日期之后？");
     }
     
-    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:[self getBackDate] monthCount:12 title:NSLS(@"出发日期")] autorelease];
+    CommonMonthController *controller = [[[CommonMonthController alloc] initWithDelegate:self customStartDate:nil customEndDate:nil monthCount:12 title:NSLS(@"出发日期")] autorelease];
     controller.suggestEndDate = suggestDate;
     controller.suggestEndTips = suggestTips;
     [self.navigationController pushViewController:controller animated:YES];
@@ -723,9 +735,14 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:nil delegate:self];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    [self addActivityBackgroundView];
+    [self showActivityWithText:NSLS(@"数据加载中......")];
+    [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
+                                                destinationCityId:destinationCityId
+                                                       departDate:flightDate
+                                                       flightType:flightType
+                                                     flightNumber:nil
+                                                         delegate:self];
 }
 
 - (void)didClickBackFlightButton
@@ -757,10 +774,31 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    
-    SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:_goAirOrderBuiler.flightNumber delegate:self];
-    [self.navigationController pushViewController:controller animated:YES];
-    [controller release];
+    [self addActivityBackgroundView];
+    [self showActivityWithText:NSLS(@"数据加载中......")];
+    [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
+                                                destinationCityId:destinationCityId
+                                                       departDate:flightDate
+                                                       flightType:flightType
+                                                     flightNumber:nil
+                                                         delegate:self];
+}
+
+#define TAG_ACTIVITY_BACKGROUND_VIEW    2013032001
+- (void)addActivityBackgroundView
+{
+    UIView *bgView = [[UIView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.frame];
+    bgView.backgroundColor = [UIColor blackColor];
+    bgView.alpha = 0.5;
+    bgView.tag = TAG_ACTIVITY_BACKGROUND_VIEW;
+    [[UIApplication sharedApplication].keyWindow addSubview:bgView];
+    [bgView release];
+}
+
+- (void)removeActivityBackgroundView
+{
+    UIView *bgView = [[UIApplication sharedApplication].keyWindow viewWithTag:TAG_ACTIVITY_BACKGROUND_VIEW];
+    [bgView removeFromSuperview];
 }
 
 - (void)didClickClearDepartCity
@@ -902,6 +940,32 @@ enum HOTEL_FLIGHT_DATE_TAG{
 
 - (IBAction)clickSwitchCityButton:(id)sender {
     [self clickTitleView:nil];
+}
+
+#pragma mark -
+#pragma AirHotelServiceDelegate methods
+- (void)findFlightsDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+             flightList:(NSArray *)flightList
+             flightDate:(NSDate *)flightDate
+             flightType:(int)flightType
+{
+    [self removeActivityBackgroundView];
+    [self hideActivity];
+    
+    if (resultCode == 0 ) {
+        if ([flightList count] > 0) {
+            int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
+            SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:_goAirOrderBuiler.flightNumber delegate:self flightList:flightList];
+            [self.navigationController pushViewController:controller animated:YES];
+            [controller release];
+        } else {
+            [self popupMessage:NSLS(@"暂无可预订机票") title:nil];
+        }
+    } else {
+        [self popupMessage:NSLS(@"网络弱，数据加载失败") title:nil];
+    }
 }
 
 @end

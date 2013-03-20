@@ -13,6 +13,7 @@
 - (void)didClickRadio1Button:(NSIndexPath *)indexPath;
 - (void)didClickRadio2Button:(NSIndexPath *)indexPath;
 - (void)didClickSelectButton:(NSIndexPath *)indexPath;
+- (void)didClickInputTipsButton:(NSIndexPath *)indexPath;
 - (void)inputTextFieldDidBeginEditing:(NSIndexPath *)indexPath text:(NSString *)text;
 - (void)inputTextFieldDidEndEditing:(NSIndexPath *)indexPath text:(NSString *)text;
 - (void)inputTextFieldShouldReturn:(NSIndexPath *)indexPath text:(NSString *)text;
@@ -41,12 +42,14 @@ typedef enum{
 @property (retain, nonatomic) IBOutlet UIButton *radio2Button;
 @property (retain, nonatomic) IBOutlet UIButton *selectButton;
 @property (retain, nonatomic) IBOutlet UIView *topLineView;
+@property (retain, nonatomic) IBOutlet UIButton *inputTipsButton;
 
 - (void)setCellWithType:(AddPersonCellType)type
               indexPath:(NSIndexPath *)aIndexPath
                   title:(NSString *)title
               inputText:(NSString *)inputText
        inputPlaceholder:(NSString *)inputPlaceholder
+           hasInputTips:(BOOL)hasInputTips
             radio1Title:(NSString *)radio1Title
             radio2Title:(NSString *)radio2Title
          radio1Selected:(BOOL)radio1Selected

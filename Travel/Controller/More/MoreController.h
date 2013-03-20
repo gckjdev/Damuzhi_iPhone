@@ -13,7 +13,7 @@
 
 #import "CommonDialog.h"
 
-@interface MoreController : PPTableViewController <UIActionSheetDelegate,UserServiceDelegate, CommonDialogDelegate>
+@interface MoreController : PPTableViewController <UIActionSheetDelegate,UserServiceDelegate, CommonDialogDelegate, UIAlertViewDelegate>
 
 
 @end

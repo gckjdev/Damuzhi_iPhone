@@ -301,12 +301,13 @@
     dataTableView.hidden = NO;
     _mapView.hidden = YES;
     
-    [self reloadTableView];
+    [self.dataTableView reloadData];
 }
 
 - (void)setPlaceList:(NSArray*)placeList
 {
     if (placeList == self.dataList) {
+        [self reloadTableView];
         return;
     }
     
@@ -426,7 +427,8 @@
     if (_showMap) {
         [MapUtils gotoLocation:mapView latitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude span:_span];
     }else {
-        [self reloadTableView];
+        [dataTableView reloadData];
+        //[self reloadTableView];
     }
     
     if ([_aDelegate respondsToSelector:@selector(didUpdateToLocation)]) {
@@ -442,7 +444,8 @@
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error
 {
     [[AppService defaultService] setCurrentLocation:nil];
-    [self reloadTableView];
+    //[self reloadTableView];
+    [dataTableView reloadData];
     
     PPDebug(@"error domain: %@", error.domain);
 //    PPDebug(@"error code: %@", error.code);

@@ -17,8 +17,9 @@
 #import "SelectAirCityController.h"
 #import "UIViewController+Travel.h"
 #import "LoginController.h"
+#import "AirHotelService.h"
 
-@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate, LoginControllerDelegate>
+@interface AirHotelController : PPTableViewController <MakeHotelOrderCellDelegate, CommonMonthControllerDelegate, SelectHotelControllerDelegate, MakeOrderHeaderDelegate, MakeAirOrderCellDelegate, SelectAirCityControllerDelegate, FlightDetailControllerDelegate, UIActionSheetDelegate, LoginControllerDelegate, AirHotelServiceDelegate>
 @property (retain, nonatomic) IBOutlet UIButton *memberButton;
 @property (retain, nonatomic) IBOutlet UIButton *nonMemberButton;
 @property (retain, nonatomic) IBOutlet UIView *tipsView;

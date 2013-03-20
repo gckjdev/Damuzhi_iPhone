@@ -1137,6 +1137,7 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
 @property BOOL hotCity;
 @property (retain) NSMutableArray* mutableLocationInfoList;
 @property BOOL hasAirport;
+@property int32_t regionId;
 @end
 
 @implementation City
@@ -1244,6 +1245,13 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
 - (void) setHasAirport:(BOOL) value {
   hasAirport_ = !!value;
 }
+- (BOOL) hasRegionId {
+  return !!hasRegionId_;
+}
+- (void) setHasRegionId:(BOOL) value {
+  hasRegionId_ = !!value;
+}
+@synthesize regionId;
 - (void) dealloc {
   self.cityName = nil;
   self.latestVersion = nil;
@@ -1271,6 +1279,7 @@ static CityLocationInfo* defaultCityLocationInfoInstance = nil;
     self.groupId = 0;
     self.hotCity = NO;
     self.hasAirport = NO;
+    self.regionId = 0;
   }
   return self;
 }
@@ -1369,6 +1378,9 @@ static City* defaultCityInstance = nil;
   if (self.hasHasAirport) {
     [output writeBool:60 value:self.hasAirport];
   }
+  if (self.hasRegionId) {
+    [output writeInt32:65 value:self.regionId];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -1422,6 +1434,9 @@ static City* defaultCityInstance = nil;
   }
   if (self.hasHasAirport) {
     size += computeBoolSize(60, self.hasAirport);
+  }
+  if (self.hasRegionId) {
+    size += computeInt32Size(65, self.regionId);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -1549,6 +1564,9 @@ static City* defaultCityInstance = nil;
   if (other.hasHasAirport) {
     [self setHasAirport:other.hasAirport];
   }
+  if (other.hasRegionId) {
+    [self setRegionId:other.regionId];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1632,6 +1650,10 @@ static City* defaultCityInstance = nil;
       }
       case 480: {
         [self setHasAirport:[input readBool]];
+        break;
+      }
+      case 520: {
+        [self setRegionId:[input readInt32]];
         break;
       }
     }
@@ -1901,6 +1923,22 @@ static City* defaultCityInstance = nil;
 - (City_Builder*) clearHasAirport {
   result.hasHasAirport = NO;
   result.hasAirport = NO;
+  return self;
+}
+- (BOOL) hasRegionId {
+  return result.hasRegionId;
+}
+- (int32_t) regionId {
+  return result.regionId;
+}
+- (City_Builder*) setRegionId:(int32_t) value {
+  result.hasRegionId = YES;
+  result.regionId = value;
+  return self;
+}
+- (City_Builder*) clearRegionId {
+  result.hasRegionId = NO;
+  result.regionId = 0;
   return self;
 }
 @end
@@ -3751,6 +3789,7 @@ static CityGroup* defaultCityGroupInstance = nil;
 @property int32_t cityId;
 @property (retain) NSString* cityName;
 @property BOOL hotCity;
+@property (retain) NSMutableArray* mutableLocationInfoList;
 @end
 
 @implementation AirCity
@@ -3781,8 +3820,10 @@ static CityGroup* defaultCityGroupInstance = nil;
 - (void) setHotCity:(BOOL) value {
   hotCity_ = !!value;
 }
+@synthesize mutableLocationInfoList;
 - (void) dealloc {
   self.cityName = nil;
+  self.mutableLocationInfoList = nil;
   [super dealloc];
 }
 - (id) init {
@@ -3805,6 +3846,13 @@ static AirCity* defaultAirCityInstance = nil;
 - (AirCity*) defaultInstance {
   return defaultAirCityInstance;
 }
+- (NSArray*) locationInfoList {
+  return mutableLocationInfoList;
+}
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index {
+  id value = [mutableLocationInfoList objectAtIndex:index];
+  return value;
+}
 - (BOOL) isInitialized {
   if (!self.hasCityId) {
     return NO;
@@ -3824,6 +3872,9 @@ static AirCity* defaultAirCityInstance = nil;
   if (self.hasHotCity) {
     [output writeBool:3 value:self.hotCity];
   }
+  for (CityLocationInfo* element in self.locationInfoList) {
+    [output writeMessage:4 value:element];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (int32_t) serializedSize {
@@ -3841,6 +3892,9 @@ static AirCity* defaultAirCityInstance = nil;
   }
   if (self.hasHotCity) {
     size += computeBoolSize(3, self.hotCity);
+  }
+  for (CityLocationInfo* element in self.locationInfoList) {
+    size += computeMessageSize(4, element);
   }
   size += self.unknownFields.serializedSize;
   memoizedSerializedSize = size;
@@ -3926,6 +3980,12 @@ static AirCity* defaultAirCityInstance = nil;
   if (other.hasHotCity) {
     [self setHotCity:other.hotCity];
   }
+  if (other.mutableLocationInfoList.count > 0) {
+    if (result.mutableLocationInfoList == nil) {
+      result.mutableLocationInfoList = [NSMutableArray array];
+    }
+    [result.mutableLocationInfoList addObjectsFromArray:other.mutableLocationInfoList];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3957,6 +4017,12 @@ static AirCity* defaultAirCityInstance = nil;
       }
       case 24: {
         [self setHotCity:[input readBool]];
+        break;
+      }
+      case 34: {
+        CityLocationInfo_Builder* subBuilder = [CityLocationInfo builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addLocationInfo:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4008,6 +4074,35 @@ static AirCity* defaultAirCityInstance = nil;
 - (AirCity_Builder*) clearHotCity {
   result.hasHotCity = NO;
   result.hotCity = NO;
+  return self;
+}
+- (NSArray*) locationInfoList {
+  if (result.mutableLocationInfoList == nil) { return [NSArray array]; }
+  return result.mutableLocationInfoList;
+}
+- (CityLocationInfo*) locationInfoAtIndex:(int32_t) index {
+  return [result locationInfoAtIndex:index];
+}
+- (AirCity_Builder*) replaceLocationInfoAtIndex:(int32_t) index with:(CityLocationInfo*) value {
+  [result.mutableLocationInfoList replaceObjectAtIndex:index withObject:value];
+  return self;
+}
+- (AirCity_Builder*) addAllLocationInfo:(NSArray*) values {
+  if (result.mutableLocationInfoList == nil) {
+    result.mutableLocationInfoList = [NSMutableArray array];
+  }
+  [result.mutableLocationInfoList addObjectsFromArray:values];
+  return self;
+}
+- (AirCity_Builder*) clearLocationInfoList {
+  result.mutableLocationInfoList = nil;
+  return self;
+}
+- (AirCity_Builder*) addLocationInfo:(CityLocationInfo*) value {
+  if (result.mutableLocationInfoList == nil) {
+    result.mutableLocationInfoList = [NSMutableArray array];
+  }
+  [result.mutableLocationInfoList addObject:value];
   return self;
 }
 @end

@@ -160,11 +160,13 @@ static AirHotelService *_airHotelService = nil;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([delegate respondsToSelector:@selector(findFlightsDone:result:resultInfo:flightList:)]) {
+            if ([delegate respondsToSelector:@selector(findFlightsDone:result:resultInfo:flightList:flightDate:flightType:)]) {
                 [delegate findFlightsDone:output.resultCode
                                    result:result
-                               resultInfo:resultInfo
-                               flightList:flightList];
+                               resultInfo:resultInfo 
+                               flightList:flightList
+                               flightDate:departDate
+                               flightType:flightType];
                 
                 }
         });

@@ -64,6 +64,8 @@ message City {
   repeated CityLocationInfo locationInfo = 55;       // 城市定位信息
   
   optional bool hasAirport = 60;                     //是否有机场
+  
+  optional int32 regionId = 65;                     // 区域Id
 }
 
 message CityList {
@@ -102,7 +104,7 @@ message RouteCity {
 
 message Region{
   required int32 regionId = 1;          // 区域Id
-  required string regionName = 2;       // 区域名称，如"东南亚", "港澳台"等
+  required string regionName = 2;       // 区域名称 (亚洲,欧洲,美洲,大洋洲,非洲)
 }
 
 message CityGroup {
@@ -115,6 +117,7 @@ message AirCity {
   required int32 cityId = 1;                        //城市id
   required string cityName = 2;                     //城市名
   optional bool hotCity = 3 [default = false];      // 是否是热门城市
+  repeated CityLocationInfo locationInfo = 4;       // 城市定位信息
 }
 
 // 应用相关的基础数据，和城市无关

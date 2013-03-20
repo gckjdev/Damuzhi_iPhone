@@ -289,6 +289,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 hasInputTips:NO
                   radio1Title:NSLS(@"成人")
                   radio2Title:NSLS(@"儿童")
                radio1Selected:isAdult
@@ -302,6 +303,7 @@
                         title:cellTitle
                     inputText:_personBuilder.name
              inputPlaceholder:NSLS(@"请输入姓名")
+                 hasInputTips:YES
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
@@ -322,6 +324,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
@@ -336,6 +339,7 @@
                         title:cellTitle
                     inputText:_personBuilder.cardNumber
              inputPlaceholder:NSLS(@"请输入证件号码")
+                 hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
@@ -356,6 +360,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 hasInputTips:NO
                   radio1Title:NSLS(@"男")
                   radio2Title:NSLS(@"女")
                radio1Selected:isMale
@@ -377,6 +382,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
                radio1Selected:NO
@@ -429,6 +435,13 @@
     }
     //[self resetViewSite];
     [dataTableView reloadData];
+}
+
+- (void)didClickInputTipsButton:(NSIndexPath *)indexPath
+{
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLS(@"英文姓名填写格式") message:NSLS(@"姓名填写必须用字母，与登机所持证件一直（按“姓/名”）的格式填写，例如zhang/sansan") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLS(@"确定"), nil];
+    [myAlertView show];
+    [myAlertView release];
 }
 
 

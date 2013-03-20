@@ -500,9 +500,9 @@ UITextField * alertTextField;
     
     if ([self isNearbyFromCityCenter] == NO) {
         [self findCity];
-    } else {
-        [self findNearbyPlaces];
     }
+    
+    [self findNearbyPlaces];
 }
 
 - (void)didFailUpdateLocation
@@ -518,6 +518,8 @@ UITextField * alertTextField;
     CLLocation *userCurrentLocation =  [[AppService defaultService] currentLocation];
     for (CityLocationInfo *info in infoList) {
         CLLocation *lotation = [[[CLLocation alloc] initWithLatitude:info.latitude longitude:info.longitude] autorelease];
+        
+        PPDebug(@"city info:%f %f", lotation.coordinate.latitude, lotation.coordinate.longitude);
         
         CLLocationDistance distance = [userCurrentLocation distanceFromLocation:lotation];
         if (distance < DISTANCE_NEARBY) {

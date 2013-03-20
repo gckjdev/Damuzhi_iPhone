@@ -203,10 +203,25 @@
     [self updatePrice];
 }
 
+#define TAG_BACK_ALERTVIEW      2013032001
+#define TAG_ORDER_ALERTVIEW     2013032002
 - (void)clickBack:(id)sender
 {
-    [self clearPersons];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    NSString *message = nil;
+    if (_isMember) {
+        message = NSLS(@"订单未完成，是否离开？");
+    } else {
+        message = NSLS(@"您的订单尚未完成，离开页面将放弃已填写的信息");
+    }
+    
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:nil
+                                                          message:message
+                                                         delegate:self
+                                                cancelButtonTitle:NSLS(@"取消")
+                                                otherButtonTitles:NSLS(@"离开"), nil];
+    myAlertView.tag = TAG_BACK_ALERTVIEW;
+    [myAlertView show];
+    [myAlertView release];
 }
 
 - (IBAction)clickOrderButton:(id)sender {
@@ -238,6 +253,7 @@
         
     NSString *message = NSLS(@"是否预订？");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:message delegate:self cancelButtonTitle: NSLS(@"取消")otherButtonTitles:NSLS(@"确定"),nil];
+    alert.tag = TAG_ORDER_ALERTVIEW;
     [alert show];
     [alert release];
 }
@@ -258,9 +274,14 @@
     if (buttonIndex == theAlertView.cancelButtonIndex) {
         return;
     } else{
-        AirHotelOrder *order = [_airHotelOrderBuilder build];
-        [self showActivityWithText:NSLS(@"正在预订...")];
-        [[AirHotelService defaultService] order:order delegate:self];
+        if (theAlertView.tag == TAG_ORDER_ALERTVIEW) {
+            AirHotelOrder *order = [_airHotelOrderBuilder build];
+            [self showActivityWithText:NSLS(@"正在预订...")];
+            [[AirHotelService defaultService] order:order delegate:self];
+        } else if (theAlertView.tag == TAG_BACK_ALERTVIEW) {
+            [self clearPersons];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
 }
 

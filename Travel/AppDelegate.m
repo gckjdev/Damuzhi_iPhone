@@ -179,7 +179,8 @@ typedef enum{
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"91"];
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"PP"];
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"TongBu"];
-    
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"LiQu"];
+    //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"Other"];
     
     [MobClick updateOnlineConfig];
     

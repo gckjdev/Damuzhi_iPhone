@@ -8,6 +8,7 @@
 
 #import "AddPersonCell.h"
 #import "LogUtil.h"
+#import "UIViewUtils.h"
 
 @interface AddPersonCell()
 @property (assign, nonatomic) AddPersonCellType type;
@@ -27,6 +28,7 @@
     [_radioHolderView release];
     [_selectHolderView release];
     [_topLineView release];
+    [_inputTipsButton release];
     [super dealloc];
 }
 
@@ -66,6 +68,7 @@
                   title:(NSString *)title
               inputText:(NSString *)inputText
        inputPlaceholder:(NSString *)inputPlaceholder
+           hasInputTips:(BOOL)hasInputTips
             radio1Title:(NSString *)radio1Title
             radio2Title:(NSString *)radio2Title
          radio1Selected:(BOOL)radio1Selected
@@ -80,6 +83,15 @@
     
     self.inputTextField.text = inputText;
     self.inputTextField.placeholder = inputPlaceholder;
+    
+    if (hasInputTips == YES) {
+        self.inputTipsButton.hidden = NO;
+        [self.inputTextField updateWidth:158];
+    } else {
+        self.inputTipsButton.hidden = YES;
+        [self.inputTextField updateWidth:214];
+    }
+    
     
     self.radio1Title.text = radio1Title;
     self.radio2Title.text = radio2Title;
@@ -118,6 +130,11 @@
     }
 }
 
+- (IBAction)clickInputTipsButton:(id)sender {
+    if ([delegate respondsToSelector:@selector(didClickInputTipsButton:)]) {
+        [delegate didClickInputTipsButton:indexPath];
+    }
+}
 
 #pragma mark -
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

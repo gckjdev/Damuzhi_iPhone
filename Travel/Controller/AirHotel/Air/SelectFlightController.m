@@ -64,6 +64,7 @@
                 flightType:(FlightType)flightType
               flightNumber:(NSString *)flightNumber
                   delegate:(id<FlightDetailControllerDelegate>)delegate
+                flightList:(NSArray *)flightList
 {
     self = [super init];
     if (self) {
@@ -73,6 +74,8 @@
         self.flightType = flightType;
         self.flightNumber = flightNumber;
         self.delegate = delegate;
+        self.allDataList = flightList;
+        self.dataList = flightList;
         
         if (_flightType == FlightTypeGo || _flightType == FlightTypeGoOfDouble) {
             self.leftName = [[AppManager defaultManager] getAirCityName:_departCityId];
@@ -119,13 +122,12 @@
     self.countLabel.text = nil;
     
     //[self testData];
-    [self findFlights];
+    //[self findFlights];
 }
 
 - (void)findFlights
 {
     [self showActivityWithText:NSLS(@"数据加载中......")];
-    
     [[AirHotelService  defaultService] findFlightsWithDepartCityId:_departCityId
                                                      destinationCityId:_destinationCityId
                                                             departDate:_flightDate
@@ -171,7 +173,12 @@
 
 #pragma mark -
 #pragma AirHotelServiceDelegate methods
-- (void)findFlightsDone:(int)resultCode result:(int)result resultInfo:(NSString *)resultInfo flightList:(NSArray *)flightList
+- (void)findFlightsDone:(int)resultCode
+                 result:(int)result
+             resultInfo:(NSString *)resultInfo
+             flightList:(NSArray *)flightList
+             flightDate:(NSDate *)flightDate
+             flightType:(int)flightType
 {
     [self hideActivity];
     [self dataSourceDidFinishLoadingNewData];
