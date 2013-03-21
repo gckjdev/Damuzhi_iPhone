@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AirHotel.pb.h"
+#import "App.pb.h"
 
 typedef enum{
     FlightTypeGo = 1,
@@ -63,5 +64,9 @@ enum AirHotelOrderStatus{
 - (UIColor *)orderStatusColor:(int)status;
 
 - (NSArray *)getStatusItemList:(NSArray *)airHotelOrderList;
+
+- (AirCity *)getDefaultDepartCity:(NSString *)cityName
+                         latitude:(double)latitude
+                        longitude:(double)longitude;
 
 @end

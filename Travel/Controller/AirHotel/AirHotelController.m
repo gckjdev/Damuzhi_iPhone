@@ -19,6 +19,7 @@
 #import "AppManager.h"
 #import "UserManager.h"
 #import "CommonWebController.h"
+#import "TravelLoadingView.h"
 
 enum HOTEL_FLIGHT_DATE_TAG{
     GO_DATE = 0,
@@ -38,6 +39,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
 @property (assign, nonatomic) AirType airType;
 @property (retain, nonatomic) AirHotelManager *manager;
 @property (retain, nonatomic) AirCity *departCity;
+@property (retain, nonatomic) TravelLoadingView *travelLoadingView;
+
 @end
 
 @implementation AirHotelController
@@ -54,6 +57,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [_memberButton release];
     [_nonMemberButton release];
     [_tipsView release];
+    [_travelLoadingView release];
     [super dealloc];
 }
 
@@ -66,6 +70,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
         self.hotelOrderBuilderList = [[[NSMutableArray alloc] init] autorelease];
         [self createDefaultData];
         self.sectionStat = [[[NSMutableArray alloc] init] autorelease];
+        
+        self.travelLoadingView = [TravelLoadingView createTravelLoadingView];
     }
     return self;
 }
@@ -153,6 +159,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self updateAirTypeToBuilder];
     
     [self setDefaultFlightDate];
+    [self setDefaultDepartCity];
 }
 
 - (void)setDefaultFlightDate
@@ -163,6 +170,16 @@ enum HOTEL_FLIGHT_DATE_TAG{
     
     if ([_backAirOrderBuiler hasFlightDate] == NO) {
         [_backAirOrderBuiler setFlightDate:[[NSDate date] timeIntervalSince1970] + 2 * 24 * 60 * 60];
+    }
+}
+
+- (void)setDefaultDepartCity
+{
+    if (_departCity == nil) {
+        NSString *currentCityName = [[AppService defaultService] currentCityChineseName];
+        CLLocation *userCurrentLocation = [[AppService defaultService] currentLocation];
+        
+        self.departCity = [_manager getDefaultDepartCity:currentCityName latitude:userCurrentLocation.coordinate.latitude longitude:userCurrentLocation.coordinate.longitude];
     }
 }
 
@@ -735,8 +752,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    [self addActivityBackgroundView];
-    [self showActivityWithText:NSLS(@"数据加载中......")];
+    [_travelLoadingView showLoading:NSLS(@"数据加载中......")];
     [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
                                                 destinationCityId:destinationCityId
                                                        departDate:flightDate
@@ -774,8 +790,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    [self addActivityBackgroundView];
-    [self showActivityWithText:NSLS(@"数据加载中......")];
+    [_travelLoadingView showLoading:NSLS(@"数据加载中......")];
     [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
                                                 destinationCityId:destinationCityId
                                                        departDate:flightDate
@@ -784,22 +799,22 @@ enum HOTEL_FLIGHT_DATE_TAG{
                                                          delegate:self];
 }
 
-#define TAG_ACTIVITY_BACKGROUND_VIEW    2013032001
-- (void)addActivityBackgroundView
-{
-    UIView *bgView = [[UIView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.frame];
-    bgView.backgroundColor = [UIColor blackColor];
-    bgView.alpha = 0.5;
-    bgView.tag = TAG_ACTIVITY_BACKGROUND_VIEW;
-    [[UIApplication sharedApplication].keyWindow addSubview:bgView];
-    [bgView release];
-}
-
-- (void)removeActivityBackgroundView
-{
-    UIView *bgView = [[UIApplication sharedApplication].keyWindow viewWithTag:TAG_ACTIVITY_BACKGROUND_VIEW];
-    [bgView removeFromSuperview];
-}
+//#define TAG_ACTIVITY_BACKGROUND_VIEW    2013032001
+//- (void)addActivityBackgroundView
+//{
+//    UIView *bgView = [[UIView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.frame];
+//    bgView.backgroundColor = [UIColor blackColor];
+//    bgView.alpha = 0.5;
+//    bgView.tag = TAG_ACTIVITY_BACKGROUND_VIEW;
+//    [[UIApplication sharedApplication].keyWindow addSubview:bgView];
+//    [bgView release];
+//}
+//
+//- (void)removeActivityBackgroundView
+//{
+//    UIView *bgView = [[UIApplication sharedApplication].keyWindow viewWithTag:TAG_ACTIVITY_BACKGROUND_VIEW];
+//    [bgView removeFromSuperview];
+//}
 
 - (void)didClickClearDepartCity
 {
@@ -951,11 +966,17 @@ enum HOTEL_FLIGHT_DATE_TAG{
              flightDate:(NSDate *)flightDate
              flightType:(int)flightType
 {
-    [self removeActivityBackgroundView];
-    [self hideActivity];
+    [_travelLoadingView hideLoading];
+    if (_travelLoadingView.isClickCloseButton == YES) {
+        return;
+    }
     
     if (resultCode == 0 ) {
         if ([flightList count] > 0) {
+            if ([self.navigationController.topViewController isKindOfClass:[SelectFlightController class]]) {
+                return;
+            }
+            
             int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
             SelectFlightController *controller = [[SelectFlightController alloc] initWithDepartCityId:_departCity.cityId destinationCityId:destinationCityId flightDate:flightDate flightType:flightType flightNumber:_goAirOrderBuiler.flightNumber delegate:self flightList:flightList];
             [self.navigationController pushViewController:controller animated:YES];

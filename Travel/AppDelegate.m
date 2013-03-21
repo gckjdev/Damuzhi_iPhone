@@ -31,8 +31,6 @@
 #import "UserManager.h"
 
 
-#import "PlaceService.h"
-
 typedef enum{
     NotificationTypeNone = 0,
     NotificationTypeNormal,
@@ -183,6 +181,9 @@ typedef enum{
     //[MobClick startWithAppkey:UMENG_KEY reportPolicy:BATCH channelId:@"Other"];
     
     [MobClick updateOnlineConfig];
+    
+    [self startUpdatingLocation];
+    
     
     if ([DeviceDetection isOS5]){
         [[UINavigationBar appearance] setBackgroundImage:[[ImageManager defaultManager] navigationBgImage] forBarMetrics:UIBarMetricsDefault];
@@ -395,6 +396,29 @@ typedef enum{
 - (void)didClickCancelButton
 {
     return;
+}
+
+
+#pragma mark -
+#pragma CLLocationManagerDelegate methods
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    [super locationManager:manager didUpdateToLocation:newLocation fromLocation:oldLocation];
+    
+    [[AppService defaultService] setCurrentLocation:newLocation];
+    [[PlaceService defaultService] findCityWithLatitude:newLocation.coordinate.latitude
+                                              longitude:newLocation.coordinate.longitude
+                                               delegate:self];
+}
+
+#pragma mark -
+#pragma PlaceServiceDelegate methods
+- (void)findCityDone:(int)result
+            cityName:(NSString *)cityName
+         countryCode:(NSString *)countryCode
+{
+    if (result == 0) {
+        [[AppService defaultService] setCurrentCityChineseName:cityName];
+    }
 }
 
 @end

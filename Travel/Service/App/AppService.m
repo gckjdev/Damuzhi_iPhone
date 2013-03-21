@@ -33,6 +33,7 @@ static AppService* _defaultAppService = nil;
 - (void)dealloc
 {
     [_currentLocation release];
+    [_currentCityChineseName release];
     [super dealloc];
 }
 

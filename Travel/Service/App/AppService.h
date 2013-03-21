@@ -16,6 +16,7 @@
 + (AppService*)defaultService;
 
 @property (retain, nonatomic) CLLocation *currentLocation;
+@property (retain, nonatomic) NSString *currentCityChineseName;
 
 - (void)loadAppData;
 - (void)updateAppData;

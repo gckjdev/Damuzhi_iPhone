@@ -14,6 +14,7 @@
 #import "Item.h"
 #import "AppConstants.h"
 #import "LocaleUtils.h"
+#import <CoreLocation/CoreLocation.h>
 
 static AirHotelManager *_airHotelManager = nil;
 
@@ -350,6 +351,48 @@ static AirHotelManager *_airHotelManager = nil;
     }
     
     return statusList;
+}
+
+- (AirCity *)getDefaultDepartCity:(NSString *)cityName
+                         latitude:(double)latitude
+                        longitude:(double)longitude
+{
+    NSArray *cityList = [[[AppManager defaultManager] app] airDepartCitiesList];
+    for (AirCity *city in cityList) {
+        for (CityLocationInfo *info in city.locationInfoList) {
+            if ([info.cityName isEqualToString:cityName]) {
+                return city;
+            }
+        }
+    }
+    
+    CLLocation *userCurrentLocation = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
+    
+    double minDistance = 0;
+    int index = 0;
+    AirCity *resultCity = nil;
+    for (AirCity *city in cityList) {
+        for (CityLocationInfo *info in city.locationInfoList) {
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+            CLLocationDistance distance = [userCurrentLocation distanceFromLocation:location];
+            if (index == 0) {
+                minDistance = distance;
+                resultCity = city;
+            }
+            
+            if (minDistance > distance) {
+                minDistance = distance;
+                resultCity = city;
+            }
+            
+            [location release];
+            
+            PPDebug(@"city:%@", city.cityName);
+        }
+        index ++;
+    }
+    
+    return resultCity;
 }
 
 @end
