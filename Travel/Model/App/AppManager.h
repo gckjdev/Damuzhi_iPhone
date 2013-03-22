@@ -12,6 +12,8 @@
 #import "LocalCity.h"
 #import "Package.pb.h"
 
+#define HOT_CITY @"热门"
+
 @protocol AppManagerProtocol <NSObject>
 
 @optional 
@@ -136,5 +138,12 @@
 - (NSString *)getBankName:(int)bankId;
 
 - (BOOL)isChinaCity:(int)cityId;
+
+- (NSArray *)getFirstLetterList:(NSArray *)cityList;
+- (NSArray *)getCityListByFirstLetter:(NSString *)firstLetter
+                        basicCityList:(NSArray *)basicCityList;
+- (NSArray *)getCityListByRegionId:(int)regionId
+                     basicCityList:(NSArray *)basicCityList;
+- (BOOL)hasHotCity:(NSArray *)basicCityList;
 
 @end

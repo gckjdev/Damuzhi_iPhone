@@ -29,6 +29,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *promptLabel;
 
 @property (retain, nonatomic) IBOutlet UISearchBar *citySearchBar;
+@property (retain, nonatomic) IBOutlet UIView *regionHolderView;
 
 @property (retain, nonatomic) UIButton *cityListBtn;
 @property (retain, nonatomic) UIButton *downloadListBtn;

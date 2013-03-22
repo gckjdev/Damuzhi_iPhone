@@ -86,4 +86,7 @@
 
 - (UIImage *)waitForPayBgImage;
 
+- (UIImage *)regionNormalBgImage;
+- (UIImage *)regionSelectedBgImage;
+
 @end

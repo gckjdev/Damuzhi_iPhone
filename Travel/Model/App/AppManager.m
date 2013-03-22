@@ -1148,7 +1148,7 @@ static AppManager* _defaultAppManager = nil;
             [hotCities addObject:city];
         }
     }
-    [dic setObject:hotCities forKey:NSLS(@"热门")];
+    [dic setObject:hotCities forKey:HOT_CITY];
 
     for (NSString *countryName in [self getCountryNameList]) {
         NSArray *cities = [self getCitiesOfCountry:countryName];
@@ -1172,7 +1172,7 @@ static AppManager* _defaultAppManager = nil;
 - (NSArray *)getGroupNameList
 {
     NSMutableArray *groupName = [NSMutableArray array];
-    [groupName addObject:NSLS(@"热门")];
+    [groupName addObject:HOT_CITY];
     [groupName addObjectsFromArray:[self getCountryNameList]];
     
     return groupName;
@@ -1487,6 +1487,67 @@ static AppManager* _defaultAppManager = nil;
     return ([city.countryName isEqualToString:@"中国"] ||
             [city.countryName isEqualToString:@"中國"] ||
             [city.countryName isEqualToString:@"China"]);
+}
+
+- (NSArray *)getFirstLetterList:(NSArray *)cityList
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    
+    for (City *city in cityList) {
+        [dic setObject:NSLS(@"") forKey:[city.cityName pinyinFirstLetter]];
+    }
+    
+    NSArray *letterList =  [[dic allKeys] sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSString *letter1 = (NSString *)obj1;
+        NSString *letter2 = (NSString *)obj2;
+        
+        return [letter1 compare:letter2 options:NSCaseInsensitiveSearch];
+    }];
+    
+    return letterList;
+}
+
+- (NSArray *)getCityListByFirstLetter:(NSString *)firstLetter
+                        basicCityList:(NSArray *)basicCityList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (City *city in basicCityList) {
+        if ([firstLetter isEqualToString:[city.cityName pinyinFirstLetter]]) {
+            [mutableArray addObject:city];
+        }
+        
+        if ([firstLetter isEqualToString:HOT_CITY] && city.hotCity) {
+            [mutableArray addObject:city];
+        }
+    }
+    
+    return mutableArray;
+}
+
+- (NSArray *)getCityListByRegionId:(int)regionId
+                     basicCityList:(NSArray *)basicCityList
+{
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    
+    for (City *city in basicCityList) {
+        if (regionId == city.regionId) {
+            [mutableArray addObject:city];
+        }
+    }
+    
+    return mutableArray;
+}
+
+- (BOOL)hasHotCity:(NSArray *)basicCityList
+{
+    for (City *city in basicCityList) {
+        if (city.hotCity) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

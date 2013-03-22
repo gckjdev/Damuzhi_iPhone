@@ -424,4 +424,14 @@ static ImageManager *_defaultManager = nil;
     }
 }
 
+- (UIImage *)regionNormalBgImage
+{
+    return [UIImage strectchableImageName:@"city_t1_off.png"];
+}
+
+- (UIImage *)regionSelectedBgImage
+{
+    return [UIImage strectchableImageName:@"city_t1_on.png"];
+}
+
 @end

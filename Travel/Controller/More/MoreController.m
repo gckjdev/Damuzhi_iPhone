@@ -26,6 +26,8 @@
 #import "FontSize.h"
 #import "FollowLocalRouteController.h"
 #import "ImageManager.h"
+#import "FileUtil.h"
+#import "CacheManager.h"
 
 @interface MoreController ()
 
@@ -504,6 +506,21 @@
 - (void)didClickCancelButton
 {
     
+}
+
+
+- (IBAction)clickClearCacheButton:(id)sender {
+    
+    NSArray *cacheArray = [NSArray arrayWithObjects:@"imgcache", nil];
+    
+    __block MoreController* fc = self;
+    [self showActivityWithText:NSLS(@"正在清除缓存...")];
+    [[CacheManager defaultManager] removeCachePathsArray:cacheArray succBlock:^(long long fileSize) {
+        
+        PPDebug(@"size:%d", fileSize);
+        [fc hideActivity];
+        [fc popupMessage:NSLS(@"清除完毕") showSeconds:3];
+    }];
 }
 
 @end

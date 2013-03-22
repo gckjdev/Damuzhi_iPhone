@@ -13,7 +13,10 @@
 #import "StringUtil.h"
 #import "FontSize.h"
 #import "UIImageUtil.h"
+#import "ImageManager.h"
+#import "UIViewUtils.h"
 
+#define REGION_BUTTON_HEIGHT    30
 #define PROMPT_LABEL_HEIGHT 30
 #define CITY_SEARCH_BAR_HEIGHT 44
 #define SELF_VIEW_WIDTH 320
@@ -28,10 +31,15 @@
 @property (retain, nonatomic) NSDictionary *groupCitysDic;
 @property (retain, nonatomic) NSArray *groupNameList;
 @property (retain, nonatomic) NSArray *countryNameList;
-@property (retain, nonatomic) NSArray *firstPinyinList;
-@property (nonatomic, retain) NSMutableArray *filteredListContent;
 
+@property (nonatomic, retain) NSMutableArray *filteredListContent;
+@property (retain, nonatomic) NSArray *regions;
 @property(retain, nonatomic) UILabel *label;
+
+@property (retain, nonatomic) AppManager *appManager;
+@property (retain, nonatomic) NSArray *allCitys;
+@property (retain, nonatomic) NSArray *showCitys;
+@property (retain, nonatomic) NSArray *firstPinyinList;
 @end
 
 @implementation CityManagementController 
@@ -78,37 +86,49 @@ static CityManagementController *_instance;
     [_filteredListContent release];
     [_label release];
     [_cityListBackgroundImageView release];
+    [_regionHolderView release];
+    [_regions release];
+    
+    [_appManager release];
+    [_allCitys release];
+    [_showCitys release];
     [super dealloc];
-} 
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.appManager = [AppManager defaultManager];
+    }
+    return self;
+}
 
 - (void)getCityData
 {
     self.downloadList = [[PackageManager defaultManager] getDownLoadLocalCityList];
     self.countryNameList = [[PackageManager defaultManager] getDownLoadCountryGroupList];
     
-    self.groupCitysDic = [[AppManager defaultManager] getGroupCitysDicList];
-    self.groupNameList = [[AppManager defaultManager] getGroupNameList];
+    self.groupCitysDic = [_appManager getGroupCitysDicList];
+    self.groupNameList = [_appManager getGroupNameList];
     
     self.label.hidden = ([self.downloadList count] == 0)? NO:YES;
     [self.downloadTableView addSubview:self.label];
     
     self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
-
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    [mutableArray addObject:@"热门"];
-    for (int index = 0 ; index < 26 ; index ++) 
-    {
-        char c = 'A';
-        NSString *letter = [NSString stringWithFormat:@"%c", c + index];
-        [mutableArray addObject:letter];
-    }
-    self.firstPinyinList = mutableArray;
+    
+    
+    // add at 2013.03.22
+    self.regions = [[_appManager app] regionsList];
+    self.allCitys = [_appManager getCityList];
+    self.showCitys = [_appManager getCityList];
+    
+    [self updateFirstPinyinList];
 }
 
 
 - (void)viewDidLoad
 {
-    //[self setBackgroundImageName:IMAGE_CITY_MAIN_BOTTOM];
     [super viewDidLoad];
     [self.cityListBackgroundImageView setImage:[UIImage imageNamed:IMAGE_CITY_MAIN_BOTTOM]];
     
@@ -124,7 +144,8 @@ static CityManagementController *_instance;
     _cityListBtn.selected = YES;
     
     self.promptLabel.backgroundColor = [UIColor colorWithRed:121.0/255.0 green:164.0/255.0 blue:180.0/255.0 alpha:1]; 
-    dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
+    dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT - REGION_BUTTON_HEIGHT);
+    [_regionHolderView updateOriginY:PROMPT_LABEL_HEIGHT];
     
     [self.view addSubview:self.promptLabel];
     
@@ -140,14 +161,19 @@ static CityManagementController *_instance;
                         imageName:@"back.png"
                            action:@selector(clickBack:)];
     
-    [self setNavigationRightButton:@"" 
+    [self setNavigationRightButton:@""
                           fontSize:FONT_SIZE
                          imageName:@"search_btn.png"
                             action:@selector(clickSearch:)];
     
     UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 26)] autorelease];
     [imageView setImage:[UIImage imageNamed:@"city_ing.png"]];
-    dataTableView.tableFooterView = imageView; 
+    dataTableView.tableFooterView = imageView;
+    
+    [self addRegionButtons];
+    
+    [self.dataTableView reloadData];
+    [self.dataTableView reloadSectionIndexTitles];
 }
 
 
@@ -159,9 +185,11 @@ static CityManagementController *_instance;
     self.promptLabel.hidden = !self.promptLabel.hidden;
     self.citySearchBar.hidden = !self.citySearchBar.hidden;
     if (self.promptLabel.hidden == YES) {
-        dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT);
+        dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT - REGION_BUTTON_HEIGHT);
+        [_regionHolderView updateOriginY:CITY_SEARCH_BAR_HEIGHT];
     }else {
-        dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
+        dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT - REGION_BUTTON_HEIGHT);
+        [_regionHolderView updateOriginY:PROMPT_LABEL_HEIGHT];
     }
 }
 
@@ -189,7 +217,7 @@ static CityManagementController *_instance;
 {
 	[self.filteredListContent removeAllObjects];
     
-    for (NSString *group in _groupNameList) 
+    for (NSString *group in _groupNameList)
     {
         NSMutableArray *citys = [_groupCitysDic objectForKey:group];
         citys = [[[AppManager defaultManager] getNonRepeatedGroupCitysDicList]objectForKey:group]; 
@@ -225,12 +253,10 @@ static CityManagementController *_instance;
 
 - (void)viewDidUnload
 {
-    // Release any retained subviews of the main view
-    // e.g. self.myOutlet = nil;
-//    [self setTipsLabel:nil];
     [self setPromptLabel:nil];
     [self setCitySearchBar:nil];
     [self setCityListBackgroundImageView:nil];
+    [self setRegionHolderView:nil];
     [super viewDidUnload];
 }
 
@@ -240,10 +266,8 @@ static CityManagementController *_instance;
 }
 
 
-
 #define WIDTH_BUTTON  80
 #define HEIGHT_BUTTON  30
-
 -(void)addCityManageButtons
 {
     UIView *buttonView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, WIDTH_BUTTON*2, HEIGHT_BUTTON)];
@@ -295,7 +319,7 @@ static CityManagementController *_instance;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == dataTableView) {
-        return [self.groupNameList count];
+        return [self.firstPinyinList count];
     } else if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     }
@@ -313,8 +337,8 @@ static CityManagementController *_instance;
         return [downLoadCityListFromCountry count];
     }
     else if (tableView == dataTableView){
-        NSString *groupName = [_groupNameList objectAtIndex:section];
-        NSArray *citys = [_groupCitysDic valueForKey:groupName];
+        NSString *firstLetter = [_firstPinyinList objectAtIndex:section];
+        NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
         return [citys count];
     }else if (tableView == self.searchDisplayController.searchResultsTableView){
         return [_filteredListContent count];
@@ -326,47 +350,13 @@ static CityManagementController *_instance;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (tableView == dataTableView) {
-        NSString *groupName = [self.groupNameList objectAtIndex:section];
-        return groupName;
+        return [self.firstPinyinList objectAtIndex:section];
     } else if (tableView == self.searchDisplayController.searchResultsTableView){
         return nil;
     } else {
         return  [self.countryNameList objectAtIndex:section];
     }
 }
-
-//The following delegate method is used to change the attributes of the Header(font size .e.g)
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    if (tableView == self.searchDisplayController.searchResultsTableView)
-//    {
-//        return nil;
-//    }
-//    
-//    NSString * groupName;
-//    if (tableView == dataTableView) 
-//    {
-//        groupName = [self.groupNameList objectAtIndex:section];
-//
-//    } 
-//    else 
-//    {
-//        groupName =  [self.countryNameList objectAtIndex:section];
-//    }
-//    
-//    UIView* headerView = [[[UIView alloc] init] autorelease];
-//    headerView.backgroundColor = [UIColor clearColor];
-//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -1, 320, 23)];
-//    titleLabel.textColor=[UIColor whiteColor];
-//    titleLabel.font = [UIFont boldSystemFontOfSize:15];
-//    titleLabel.backgroundColor = [UIColor colorWithRed:157/255.0 green:170/255.0 blue:179/255.0 alpha:1.0];
-//    titleLabel.text = [NSString stringWithFormat:@"   %@",groupName];
-//    [headerView addSubview:titleLabel];
-//    [titleLabel release];
-//    return headerView;
-//}
-
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
@@ -375,20 +365,6 @@ static CityManagementController *_instance;
     }else {
         return nil;
     }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
-{
-    int reSection = 0;
-    for (NSString *groupName in _groupNameList) {        
-        if ([groupName isEqualToString:title] 
-            || ([[groupName pinyinFirstLetter] isEqualToString:[title lowercaseString]] && ![groupName isEqualToString:@"热门"]) ) {
-            break;
-        }
-        reSection ++;
-    }
-    
-    return reSection;
 }
 
 // Customize the appearance of table view cells.
@@ -440,8 +416,8 @@ static CityManagementController *_instance;
         
         City *city = nil;
         if (theTableView == dataTableView) {
-            NSString *groupName = [_groupNameList objectAtIndex:indexPath.section];
-            NSArray *citys = [_groupCitysDic valueForKey:groupName];
+            NSString *firstLetter = [_firstPinyinList objectAtIndex:indexPath.section];
+            NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
             city = [citys objectAtIndex:indexPath.row];
         }else if (theTableView == self.searchDisplayController.searchResultsTableView){
             city = [_filteredListContent objectAtIndex:indexPath.row];
@@ -459,7 +435,6 @@ static CityManagementController *_instance;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    
     if (tableView == self.downloadTableView) {
         
     } else {
@@ -494,17 +469,20 @@ static CityManagementController *_instance;
     _cityListBtn.selected = YES;
     
     // Show city list table view.
+    self.regionHolderView.hidden = NO;
     self.dataTableView.hidden = NO;
     self.downloadTableView.hidden = YES;
     
     int downloadListButtonClickedFlag1 = 0;
     int downloadListButtonClickedFlag2 = 1;
     if (self.promptLabel.hidden == NO) {
-        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
+        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT - REGION_BUTTON_HEIGHT);
+        [_regionHolderView updateOriginY:PROMPT_LABEL_HEIGHT];
         downloadListButtonClickedFlag1 = 1;
     }
     if (self.citySearchBar.hidden == NO) {
-        self.dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT);
+        self.dataTableView.frame = CGRectMake(0, CITY_SEARCH_BAR_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - CITY_SEARCH_BAR_HEIGHT - REGION_BUTTON_HEIGHT);
+        [_regionHolderView updateOriginY:CITY_SEARCH_BAR_HEIGHT];
         downloadListButtonClickedFlag2 = 0;
     }
     if (downloadListButtonClickedFlag1 < downloadListButtonClickedFlag2)
@@ -514,11 +492,13 @@ static CityManagementController *_instance;
          In this case(and only in this case), downloadListButtonClickedFlag1 is 0,downloadListButtonClickedFlag2 is 1.
         */
         self.promptLabel.hidden = NO;
-        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT);
+        self.dataTableView.frame = CGRectMake(0, PROMPT_LABEL_HEIGHT + REGION_BUTTON_HEIGHT, SELF_VIEW_WIDTH, SELF_VIEW_HEIGHT - PROMPT_LABEL_HEIGHT - REGION_BUTTON_HEIGHT);
+        [_regionHolderView updateOriginY:PROMPT_LABEL_HEIGHT];
     } 
     
     // reload city list table view
     [self.dataTableView reloadData];
+    [self.dataTableView reloadSectionIndexTitles];
 }
 
 - (void)clickDownloadListButton:(id)sender
@@ -536,6 +516,7 @@ static CityManagementController *_instance;
 
     self.promptLabel.hidden = YES;
     self.citySearchBar.hidden = YES;
+    self.regionHolderView.hidden = YES;
     
     //necessary
     [self getCityData];
@@ -728,6 +709,86 @@ static CityManagementController *_instance;
     [self getCityData];
     [dataTableView reloadData];
     [_downloadTableView reloadData];
+}
+
+#define COUNT_REGION_BUTTON 6
+- (void)addRegionButtons
+{
+    int count = [self.regions count];
+    
+    CGFloat x = 0;
+    CGFloat y = 0;
+    CGFloat width = 320 / COUNT_REGION_BUTTON;
+    CGFloat height = 30;
+    
+    if (count > COUNT_REGION_BUTTON){
+        width = 320.00 / count;
+    }
+    
+    int index = 0;
+    for(Region *region in self.regions)
+    {
+        x = index * width;
+        CGRect frame =  CGRectMake(x, y, width, height);
+        UIButton *button = [self createRegionButton:frame buttonTitle:[region regionName]];
+        button.tag = region.regionId;
+        [button addTarget:self action:@selector(clickRegionButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.regionHolderView addSubview:button];
+        index++;
+    }
+}
+
+- (void)clickRegionButton:(id)sender
+{
+    NSArray *subviews = [self.regionHolderView subviews];
+    for(UIView *view in subviews) {
+        if ([view isKindOfClass:[UIButton class]])
+        {
+            UIButton *oneButton = (UIButton *)view;
+            oneButton.selected = NO;
+        }
+    }
+    
+    UIButton *button = (UIButton *)sender;
+    button.selected = YES;
+    
+    [self filterByRegion:button.tag];
+}
+
+- (void)filterByRegion:(int)regionId
+{
+    self.showCitys = [_appManager getCityListByRegionId:regionId basicCityList:_allCitys];
+    [self updateFirstPinyinList];
+    
+    [self.dataTableView reloadData];
+}
+
+- (void)updateFirstPinyinList
+{
+    NSMutableArray *mutableArray =  [NSMutableArray arrayWithArray:[_appManager getFirstLetterList:_showCitys]];
+    if ([_appManager hasHotCity:_showCitys]) {
+        [mutableArray insertObject:HOT_CITY atIndex:0];
+    }
+    
+    self.firstPinyinList = mutableArray;
+}
+
+#define COLOR_REGION_TITLE [UIColor colorWithRed:85.0/255.0 green:85.0/255.0 blue:85.0/255.0 alpha:1]
+- (UIButton *)createRegionButton:(CGRect)frame buttonTitle:(NSString *)buttonTitle
+{
+    UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+    ;
+    
+    [button setTitle:buttonTitle  forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:12];
+    
+    [button setTitleColor:COLOR_REGION_TITLE forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    
+    [button setBackgroundImage:[[ImageManager defaultManager] regionNormalBgImage] forState:UIControlStateNormal];
+    [button setBackgroundImage:[[ImageManager defaultManager] regionSelectedBgImage] forState:UIControlStateSelected];
+    
+    return button;
 }
 
 @end
