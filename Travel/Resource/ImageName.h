@@ -46,8 +46,9 @@
 #define     IMAGE_NEARBY_MAP_BTN        @"map_btn.png"
 #define     IMAGE_NEARBY_MAP_BTNON      @"map_btnon.png"
 
-#define     IMAGE_CITY_CELL_BG          @"td_bg.png"
-
+//#define     IMAGE_CITY_CELL_BG          @"td_bg.png"
+#define     IMAGE_CITY_CELL_BG            @"city_new_bg1.png"
+#define     IMAGE_HOT_CITY_CELL_BG        @"city_new_bg2.png"
 
 #pragma mark -
 #pragma mark favorite

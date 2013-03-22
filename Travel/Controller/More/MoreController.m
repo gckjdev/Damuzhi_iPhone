@@ -519,7 +519,7 @@
         
         PPDebug(@"size:%d", fileSize);
         [fc hideActivity];
-        [fc popupMessage:NSLS(@"清除完毕") showSeconds:3];
+        [fc popupMessage:NSLS(@"清除完毕") title:nil];
     }];
 }
 
