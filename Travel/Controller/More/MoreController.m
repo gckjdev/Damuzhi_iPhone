@@ -516,10 +516,10 @@
     __block MoreController* fc = self;
     [self showActivityWithText:NSLS(@"正在清除缓存...")];
     [[CacheManager defaultManager] removeCachePathsArray:cacheArray succBlock:^(long long fileSize) {
-        
         PPDebug(@"size:%d", fileSize);
         [fc hideActivity];
-        [fc popupMessage:NSLS(@"清除完毕") title:nil];
+        NSString *message = [NSString stringWithFormat:@"已成功清除缓存内容(%.2lfM)", fileSize / 1024.0 / 1024.0];
+        [fc popupMessage:message title:nil];
     }];
 }
 

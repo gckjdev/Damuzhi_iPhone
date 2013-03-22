@@ -439,7 +439,7 @@
 
 - (void)didClickInputTipsButton:(NSIndexPath *)indexPath
 {
-    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLS(@"英文姓名填写格式") message:NSLS(@"姓名填写必须用字母，与登机所持证件一直（按“姓/名”）的格式填写，例如zhang/sansan") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLS(@"确定"), nil];
+    UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:NSLS(@"英文姓名填写格式") message:NSLS(@"姓名填写必须用字母，与登机所持证件一致（按“姓/名”）的格式填写，例如zhang/sansan") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLS(@"确定"), nil];
     [myAlertView show];
     [myAlertView release];
 }

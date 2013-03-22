@@ -808,6 +808,7 @@
 		EA62797A168776FB00F92630 /* AddCheckInPersonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA627978168776FA00F92630 /* AddCheckInPersonController.xib */; };
 		EA62797D1688577D00F92630 /* PriceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EA62797C1688577D00F92630 /* PriceUtils.m */; };
 		EA8423BF168A368A0058ACB0 /* CreditCardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8423BE168A368A0058ACB0 /* CreditCardManager.m */; };
+		EA9AB7A016FCA5DE005F4DE7 /* libUPPayPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA9AB79F16FCA5DE005F4DE7 /* libUPPayPlugin.a */; };
 		EAA6A16715CA73ED0094B122 /* line_n_t4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */; };
 		EAA6A16815CA73ED0094B122 /* line_n_t5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */; };
 		EAA6A16915CA73ED0094B122 /* line_n_t7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */; };
@@ -882,7 +883,6 @@
 		EAF6D44316FAEE0F00F986EF /* TravelLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = EAF6D44216FAEE0F00F986EF /* TravelLoadingView.m */; };
 		EAF6D44516FAEE2400F986EF /* TravelLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAF6D44416FAEE2400F986EF /* TravelLoadingView.xib */; };
 		EAF6D44716FAEE8400F986EF /* loading_pop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EAF6D44616FAEE8400F986EF /* loading_pop@2x.png */; };
-		EAF6D44D16FB036600F986EF /* libUPPayPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF6D44C16FB036600F986EF /* libUPPayPlugin.a */; };
 		EAFAAE1D1669F45A00250123 /* ConfirmHotelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFAAE1C1669F45900250123 /* ConfirmHotelCell.m */; };
 		EAFAAE1F1669F46F00250123 /* ConfirmHotelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EAFAAE1E1669F46F00250123 /* ConfirmHotelCell.xib */; };
 		EAFE21E4152855DB0013D040 /* TravelUtilityDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EAFE21E3152855DB0013D040 /* TravelUtilityDataSource.m */; };
@@ -2103,6 +2103,7 @@
 		EA62797C1688577D00F92630 /* PriceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceUtils.m; sourceTree = "<group>"; };
 		EA8423BD168A36890058ACB0 /* CreditCardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardManager.h; sourceTree = "<group>"; };
 		EA8423BE168A368A0058ACB0 /* CreditCardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardManager.m; sourceTree = "<group>"; };
+		EA9AB79F16FCA5DE005F4DE7 /* libUPPayPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUPPayPlugin.a; sourceTree = "<group>"; };
 		EAA6A16415CA73ED0094B122 /* line_n_t4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t4@2x.png"; sourceTree = "<group>"; };
 		EAA6A16515CA73ED0094B122 /* line_n_t5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t5@2x.png"; sourceTree = "<group>"; };
 		EAA6A16615CA73ED0094B122 /* line_n_t7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "line_n_t7@2x.png"; sourceTree = "<group>"; };
@@ -2220,7 +2221,6 @@
 		EAF6D44416FAEE2400F986EF /* TravelLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TravelLoadingView.xib; sourceTree = "<group>"; };
 		EAF6D44616FAEE8400F986EF /* loading_pop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loading_pop@2x.png"; sourceTree = "<group>"; };
 		EAF6D44B16FAF5A500F986EF /* AutoCreateViewByXib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCreateViewByXib.h; sourceTree = "<group>"; };
-		EAF6D44C16FB036600F986EF /* libUPPayPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUPPayPlugin.a; sourceTree = "<group>"; };
 		EAFAAE1B1669F45900250123 /* ConfirmHotelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmHotelCell.h; sourceTree = "<group>"; };
 		EAFAAE1C1669F45900250123 /* ConfirmHotelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmHotelCell.m; sourceTree = "<group>"; };
 		EAFAAE1E1669F46F00250123 /* ConfirmHotelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmHotelCell.xib; sourceTree = "<group>"; };
@@ -2256,7 +2256,7 @@
 				CA4906F914F5F05B00228C37 /* UIKit.framework in Frameworks */,
 				CA4906FB14F5F05B00228C37 /* Foundation.framework in Frameworks */,
 				A3CD5AE7152803A80049D2F3 /* libMobClickLibrary.a in Frameworks */,
-				EAF6D44D16FB036600F986EF /* libUPPayPlugin.a in Frameworks */,
+				EA9AB7A016FCA5DE005F4DE7 /* libUPPayPlugin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4970,7 +4970,7 @@
 		EAD38CC316B95FBC0072D045 /* Release-iphonesimulator */ = {
 			isa = PBXGroup;
 			children = (
-				EAF6D44C16FB036600F986EF /* libUPPayPlugin.a */,
+				EA9AB79F16FCA5DE005F4DE7 /* libUPPayPlugin.a */,
 			);
 			path = "Release-iphonesimulator";
 			sourceTree = "<group>";

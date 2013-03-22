@@ -157,9 +157,16 @@ static CityManagementController *_instance;
     dataTableView.tableFooterView = imageView;
     
     [self addRegionButtons];
-    
-    [self.dataTableView reloadData];
-    [self.dataTableView reloadSectionIndexTitles];
+    [self setDefaultSelectRegion];
+}
+
+- (void)setDefaultSelectRegion
+{
+    if ([_regions count] > 0) {
+        Region *region = [_regions objectAtIndex:0];
+        UIButton *button = (UIButton *)[self.regionHolderView viewWithTag:region.regionId];
+        [self clickRegionButton:button];
+    }
 }
 
 
@@ -478,7 +485,6 @@ static CityManagementController *_instance;
     
     // reload city list table view
     [self.dataTableView reloadData];
-    [self.dataTableView reloadSectionIndexTitles];
 }
 
 - (void)clickDownloadListButton:(id)sender
