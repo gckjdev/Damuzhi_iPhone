@@ -159,7 +159,6 @@ enum HOTEL_FLIGHT_DATE_TAG{
     [self updateAirTypeToBuilder];
     
     [self setDefaultFlightDate];
-    [self setDefaultDepartCity];
 }
 
 - (void)setDefaultFlightDate
@@ -207,6 +206,8 @@ enum HOTEL_FLIGHT_DATE_TAG{
     } else {
         self.tipsView.hidden = YES;
     }
+    
+    [self setDefaultDepartCity];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -743,6 +744,11 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
+    if ([_departCity.cityName isEqualToString:[[AppManager defaultManager] getCurrentCityName]]) {
+        [self popupHappyMessage:NSLS(@"出发城市和到达城市不能相同") title:nil];
+        return;
+    }
+    
     NSDate *flightDate = [NSDate dateWithTimeIntervalSince1970:_goAirOrderBuiler.flightDate];
     FlightType flightType;
     if (_airType == AirGoAndBack) {
@@ -752,7 +758,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    [_travelLoadingView showLoading:NSLS(@"数据加载中......")];
+    [_travelLoadingView showLoading:NSLS(@"正在加载航班信息...")];
     [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
                                                 destinationCityId:destinationCityId
                                                        departDate:flightDate
@@ -790,7 +796,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
     }
     
     int destinationCityId = [[AppManager defaultManager] getCurrentCityId];
-    [_travelLoadingView showLoading:NSLS(@"数据加载中......")];
+    [_travelLoadingView showLoading:NSLS(@"正在加载航班信息...")];
     [[AirHotelService defaultService] findFlightsWithDepartCityId:_departCity.cityId
                                                 destinationCityId:destinationCityId
                                                        departDate:flightDate
@@ -971,7 +977,7 @@ enum HOTEL_FLIGHT_DATE_TAG{
         return;
     }
     
-    if (resultCode == 0 ) {
+    if (result == 0 ) {
         if ([flightList count] > 0) {
             if ([self.navigationController.topViewController isKindOfClass:[SelectFlightController class]]) {
                 return;

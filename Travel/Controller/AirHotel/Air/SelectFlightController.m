@@ -119,7 +119,12 @@
     self.flightDateLabel.text =  dateToChineseStringByFormat(_flightDate, @"yyyy-MM-dd");
     
     self.cityLabel.text = [NSString stringWithFormat:@"%@ - %@",_leftName,_rightName];
-    self.countLabel.text = nil;
+    
+    if ([dataList count] > 0) {
+        self.countLabel.text = [NSString stringWithFormat:@"共%d条",[dataList count]];
+    } else {
+        self.countLabel.text = nil;
+    }
     
     //[self testData];
     //[self findFlights];

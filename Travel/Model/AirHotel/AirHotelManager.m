@@ -357,11 +357,12 @@ static AirHotelManager *_airHotelManager = nil;
                          latitude:(double)latitude
                         longitude:(double)longitude
 {
+    PPDebug(@"user location la:%f lo:%f", latitude, longitude);
     NSArray *cityList = [[[AppManager defaultManager] app] airDepartCitiesList];
     for (AirCity *city in cityList) {
         for (CityLocationInfo *info in city.locationInfoList) {
             if ([info.cityName isEqualToString:cityName]) {
-                return city;
+                //return city;
             }
         }
     }
@@ -373,7 +374,7 @@ static AirHotelManager *_airHotelManager = nil;
     AirCity *resultCity = nil;
     for (AirCity *city in cityList) {
         for (CityLocationInfo *info in city.locationInfoList) {
-            CLLocation *location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:info.latitude longitude:info.longitude];
             CLLocationDistance distance = [userCurrentLocation distanceFromLocation:location];
             if (index == 0) {
                 minDistance = distance;
@@ -387,7 +388,8 @@ static AirHotelManager *_airHotelManager = nil;
             
             [location release];
             
-            PPDebug(@"city:%@", city.cityName);
+            
+            PPDebug(@"c:%@ d:%f la:%f lo:%f", city.cityName, distance, info.latitude, info.longitude);
         }
         index ++;
     }

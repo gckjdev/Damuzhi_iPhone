@@ -15,5 +15,6 @@
 
 @interface MoreController : PPTableViewController <UIActionSheetDelegate,UserServiceDelegate, CommonDialogDelegate, UIAlertViewDelegate>
 
+@property (retain, nonatomic) IBOutlet UIButton *clearCacheButton;
 
 @end

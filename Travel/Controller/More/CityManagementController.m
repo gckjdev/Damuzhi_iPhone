@@ -226,8 +226,7 @@ static CityManagementController *_instance;
         {
             [self.filteredListContent addObject:city];
         }
-        
-    } // end for (City *city in citys)
+    }
 }
 
 #pragma mark -
@@ -697,7 +696,7 @@ static CityManagementController *_instance;
     [_downloadTableView reloadData];
 }
 
-#define COUNT_REGION_BUTTON 6
+#define COUNT_REGION_BUTTON 6.0
 - (void)addRegionButtons
 {
     int count = [self.regions count];
@@ -746,6 +745,8 @@ static CityManagementController *_instance;
     self.showCitys = [_appManager getCityListByRegionId:regionId basicCityList:_allCitys];
     [self updateFirstPinyinList];
     
+    PPDebug(@"total:%d %d:%d", [_allCitys count], regionId, [_showCitys count]);
+    
     [self.dataTableView reloadData];
 }
 
@@ -766,7 +767,7 @@ static CityManagementController *_instance;
     ;
     
     [button setTitle:buttonTitle  forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:13];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
     
     [button setTitleColor:COLOR_REGION_TITLE forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];

@@ -63,6 +63,7 @@
     [_loginoutButton release];
     [showImageSwitch release];
     [dataDictionary release];
+    [_clearCacheButton release];
     [super dealloc];
 }
 
@@ -99,6 +100,8 @@
 {
     [self hideTabBar:NO];
     [super viewWillAppear:animated];
+    
+    [self updateCacheSize];
 }
 
 
@@ -172,6 +175,7 @@
 - (void)viewDidUnload
 {
     [self setShowImageSwitch:nil];
+    [self setClearCacheButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -509,6 +513,15 @@
 }
 
 
+- (void)updateCacheSize
+{
+    NSString* cachePath = [NSString stringWithFormat:@"%@/%@",[FileUtil getAppCacheDir], @"imgcache"];
+    long long size = [FileUtil fileSizeForDir:cachePath];
+    
+    NSString *buttonTitle = [NSString stringWithFormat:@"清除缓存（%.2lfM）", size / 1024.0 / 1024.0];
+    [self.clearCacheButton setTitle:buttonTitle forState:UIControlStateNormal];
+}
+
 - (IBAction)clickClearCacheButton:(id)sender {
     
     NSArray *cacheArray = [NSArray arrayWithObjects:@"imgcache", nil];
@@ -518,8 +531,9 @@
     [[CacheManager defaultManager] removeCachePathsArray:cacheArray succBlock:^(long long fileSize) {
         PPDebug(@"size:%d", fileSize);
         [fc hideActivity];
-        NSString *message = [NSString stringWithFormat:@"已成功清除缓存内容(%.2lfM)", fileSize / 1024.0 / 1024.0];
-        [fc popupMessage:message title:nil];
+        [fc popupMessage:NSLS(@"已成功清除缓存内容") title:nil];
+        
+        [self updateCacheSize];
     }];
 }
 

@@ -60,7 +60,7 @@
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="IBUIContentMode">3</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBPlaceholder">请输入城市名称或首字母</string>
+						<string key="IBPlaceholder">请输入城市名称或拼音的首位字母</string>
 						<object class="NSColor" key="IBTintColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC43ODQzMTM3MjU1IDAuNzg0MzEzNzI1NSAwLjc4NDMxMzcyNTUAA</bytes>
@@ -141,7 +141,7 @@
 					</object>
 					<object class="IBUITableView" id="239316675">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{0, 74}, {320, 342}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -331,12 +331,12 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="239316675"/>
 							<reference ref="574810026"/>
 							<reference ref="76559667"/>
 							<reference ref="46045940"/>
 							<reference ref="120277803"/>
 							<reference ref="899076441"/>
+							<reference ref="239316675"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
