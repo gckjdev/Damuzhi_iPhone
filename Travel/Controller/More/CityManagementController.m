@@ -15,6 +15,7 @@
 #import "UIImageUtil.h"
 #import "ImageManager.h"
 #import "UIViewUtils.h"
+#import "DeviceDetection.h"
 
 #define REGION_BUTTON_HEIGHT    30
 #define PROMPT_LABEL_HEIGHT 30
@@ -37,6 +38,8 @@
 @property (retain, nonatomic) NSArray *allCitys;
 @property (retain, nonatomic) NSArray *showCitys;
 @property (retain, nonatomic) NSArray *firstPinyinList;
+
+@property (retain, nonatomic) NSArray *twentySixLetters;
 @end
 
 @implementation CityManagementController 
@@ -85,6 +88,7 @@ static CityManagementController *_instance;
     [_appManager release];
     [_allCitys release];
     [_showCitys release];
+    [_twentySixLetters release];
     [super dealloc];
 }
 
@@ -110,6 +114,18 @@ static CityManagementController *_instance;
     self.allCitys = [_appManager getCityList];
     self.showCitys = [_appManager getCityList];
     [self updateFirstPinyinList];
+    
+    
+    
+    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+    [mutableArray addObject:HOT_CITY];
+    for (int index = 0 ; index < 26 ; index ++)
+    {
+        char c = 'A';
+        NSString *letter = [NSString stringWithFormat:@"%c", c + index];
+        [mutableArray addObject:letter];
+    }
+    self.twentySixLetters = mutableArray;
 }
 
 
@@ -222,7 +238,9 @@ static CityManagementController *_instance;
             continue;
         }
         
-        if (cityLocation < [city.cityName length] || [searchText isEqualToString:[city.cityName pinyinFirstLetter]])
+        if (cityLocation < [city.cityName length]
+            || [searchText isEqualToString:[city.cityName pinyinFirstLetter]]
+            || [searchText isEqualToString:[[city.cityName pinyinFirstLetter] uppercaseString]])
         {
             [self.filteredListContent addObject:city];
         }
@@ -344,14 +362,38 @@ static CityManagementController *_instance;
     }
 }
 
+#define COUNT_ONE_PAGE ([DeviceDetection isIPhone5] ? (8) : (6) )
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     if (tableView == self.dataTableView) {
-        return _firstPinyinList;
+        NSArray *showHotCitys = [_appManager getCityListByFirstLetter:HOT_CITY basicCityList:_showCitys];
+        int allCount = [_showCitys count] + [showHotCitys count];
+        
+        if (allCount > COUNT_ONE_PAGE) {
+            return _twentySixLetters;
+        } else {
+            return nil;
+        }
     }else {
         return nil;
     }
 }
+
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    int reSection = 0;
+    for (NSString *sectionName in _firstPinyinList) {
+        if ([sectionName isEqualToString:title]
+            || ([[sectionName pinyinFirstLetter] isEqualToString:[title lowercaseString]] && ![sectionName isEqualToString:HOT_CITY]) ) {
+            break;
+        }
+        reSection ++;
+    }
+    
+    return reSection;
+}
+
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)theTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

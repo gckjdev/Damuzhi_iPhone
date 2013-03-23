@@ -1494,7 +1494,7 @@ static AppManager* _defaultAppManager = nil;
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     for (City *city in cityList) {
-        [dic setObject:NSLS(@"") forKey:[city.cityName pinyinFirstLetter]];
+        [dic setObject:NSLS(@"") forKey:[[city.cityName pinyinFirstLetter] uppercaseString]];
     }
     
     NSArray *letterList =  [[dic allKeys] sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -1513,7 +1513,7 @@ static AppManager* _defaultAppManager = nil;
     NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
     
     for (City *city in basicCityList) {
-        if ([firstLetter isEqualToString:[city.cityName pinyinFirstLetter]]) {
+        if ([firstLetter isEqualToString:[[city.cityName pinyinFirstLetter] uppercaseString]]) {
             [mutableArray addObject:city];
         }
         

@@ -68,6 +68,7 @@
                   title:(NSString *)title
               inputText:(NSString *)inputText
        inputPlaceholder:(NSString *)inputPlaceholder
+           keyboardType:(UIKeyboardType)keyboardType
            hasInputTips:(BOOL)hasInputTips
             radio1Title:(NSString *)radio1Title
             radio2Title:(NSString *)radio2Title
@@ -83,6 +84,7 @@
     
     self.inputTextField.text = inputText;
     self.inputTextField.placeholder = inputPlaceholder;
+    self.inputTextField.keyboardType = keyboardType;
     
     if (hasInputTips == YES) {
         self.inputTipsButton.hidden = NO;

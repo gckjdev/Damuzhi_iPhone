@@ -289,6 +289,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 keyboardType:UIKeyboardTypeDefault
                  hasInputTips:NO
                   radio1Title:NSLS(@"成人")
                   radio2Title:NSLS(@"儿童")
@@ -303,6 +304,7 @@
                         title:cellTitle
                     inputText:_personBuilder.name
              inputPlaceholder:NSLS(@"请输入姓名")
+                 keyboardType:UIKeyboardTypeDefault
                  hasInputTips:YES
                   radio1Title:nil
                   radio2Title:nil
@@ -324,6 +326,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 keyboardType:UIKeyboardTypeDefault
                  hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
@@ -339,6 +342,7 @@
                         title:cellTitle
                     inputText:_personBuilder.cardNumber
              inputPlaceholder:NSLS(@"请输入证件号码")
+                 keyboardType:UIKeyboardTypeNamePhonePad
                  hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
@@ -360,6 +364,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 keyboardType:UIKeyboardTypeDefault
                  hasInputTips:NO
                   radio1Title:NSLS(@"男")
                   radio2Title:NSLS(@"女")
@@ -382,6 +387,7 @@
                         title:cellTitle
                     inputText:nil
              inputPlaceholder:nil
+                 keyboardType:UIKeyboardTypeDefault
                  hasInputTips:NO
                   radio1Title:nil
                   radio2Title:nil
