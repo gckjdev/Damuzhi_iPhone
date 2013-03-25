@@ -7,7 +7,6 @@
 //
 
 #import "CommonService.h"
-#import "UPPayPluginDelegate.h"
 
 #define ERROR_NO_FLIGHT_DATA            10001
 #define TIME_OUT                        10002

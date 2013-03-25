@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UPPayPluginDelegate.h"
+#import "Umpay.h"
 
 @interface PayView : UIView
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityView;
@@ -19,6 +19,6 @@
 - (void)show:(NSString *)tips
 serialNumber:(NSString *)serialNumber
   controller:(UIViewController *)controller
-    delegate:(id<UPPayPluginDelegate>)delegate;
+    delegate:(id<UmpayDelegate>)delegate;
 
 @end

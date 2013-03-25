@@ -13,7 +13,6 @@
 #import "PlaceService.h"
 #import "CommonPlaceDetailController.h"
 #import "CommonWebController.h"
-#import "PayView.h"
 #import "AirHotelManager.h"
 #import "PriceUtils.h"
 #import "TimeUtils.h"
@@ -319,6 +318,31 @@
 - (void)handleTimer:(id)sender
 {
     [[AirHotelService defaultService] findOrder:_airHotelOrder.orderId delegate:self];
+}
+
+#pragma mark -
+#pragma UmpayDelegate methods
+- (void)onPayResult:(NSString*)orderId
+         resultCode:(NSString*)resultCode
+      resultMessage:(NSString*)resultMessage
+{
+    PPDebug(@"onPayResult orderId:%@ resultCode:%@ resultMessage:%@", orderId, resultCode, resultMessage);
+    
+    if ([resultCode isEqualToString:@"0000"]) {
+        //for test query pay result
+        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+        
+        [self showActivityWithText:NSLS(@"已经完成支付，正在刷新订单...")];
+        [NSTimer scheduledTimerWithTimeInterval:1.0
+                                         target:self
+                                       selector:@selector(handleTimer:)
+                                       userInfo:nil
+                                        repeats:NO];
+    } else if ([resultCode isEqualToString:@"1002"]){
+        [self popupMessage:NSLS(@"支付失败") title:nil];
+    } else if ([resultCode isEqualToString:@"1001"]){
+        [self popupMessage:NSLS(@"已取消支付") title:nil];
+    }
 }
 
 @end

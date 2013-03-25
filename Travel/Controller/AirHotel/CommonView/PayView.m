@@ -7,14 +7,13 @@
 //
 
 #import "PayView.h"
-#import "UPPayPluginUtil.h"
 #import "TravelNetworkConstants.h"
 #import "ImageManager.h"
 
 @interface PayView()
 @property (retain, nonatomic) NSString *serialNumber;
 @property (retain, nonatomic) UIViewController *controller;
-@property (assign, nonatomic) id<UPPayPluginDelegate> delegate;
+@property (retain, nonatomic) id<UmpayDelegate> delegate;
 
 @end
 
@@ -43,7 +42,7 @@
 - (void)show:(NSString *)tips
 serialNumber:(NSString *)serialNumber
   controller:(UIViewController *)controller
-    delegate:(id<UPPayPluginDelegate>)delegate
+    delegate:(id<UmpayDelegate>)delegate
 {
     UIImage *image = [[ImageManager defaultManager] waitForPayBgImage];
     self.backgroundImageView.image = image;
@@ -52,7 +51,7 @@ serialNumber:(NSString *)serialNumber
     self.controller = controller;
     self.delegate = delegate;
     self.tipsLabel.text = tips;
-
+    
     [self.activityView startAnimating];
     self.frame = controller.view.frame;
     self.backgroundImageView.frame = self.frame;
@@ -69,12 +68,10 @@ serialNumber:(NSString *)serialNumber
     [self.activityView stopAnimating];
     [self removeFromSuperview];
     
-    [UPPayPluginUtil startPay:_serialNumber
-                   sysProvide:nil
-                         spId:nil
-                         mode:UNION_PAY_MODE
-               viewController:_controller
-                     delegate:_delegate];
+    [Umpay pay:_serialNumber
+       payType:@"9"
+        window:_controller.view.window
+      delegate:_delegate];
 }
 
 @end

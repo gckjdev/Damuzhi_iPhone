@@ -12,7 +12,7 @@
 #import "AirOrderDetailCell.h"
 #import "HotelOrderDetailCell.h"
 #import "AirHotelService.h"
-#import "UPPayPluginDelegate.h"
+#import "PayView.h"
 
 @class AirHotelOrder;
 
@@ -21,7 +21,7 @@
 - (void)didUpdateOrder:(AirHotelOrder *)order;
 @end
 
-@interface AirHotelOrderDetailController : PPTableViewController <OrderHotelViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate, AirHotelServiceDelegate,UPPayPluginDelegate>
+@interface AirHotelOrderDetailController : PPTableViewController <OrderHotelViewDelegate, PlaceServiceDelegate, OrderFlightViewDelegate, AirHotelServiceDelegate, UmpayDelegate>
 @property (retain, nonatomic) IBOutlet UIView *footerView;
 @property (retain, nonatomic) IBOutlet UILabel *shouldPayPriceLabel;
 @property (retain, nonatomic) IBOutlet UIButton *payButton;

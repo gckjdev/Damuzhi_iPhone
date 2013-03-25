@@ -20,10 +20,10 @@
 
 
 // for test service
-//#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
+#define URL_SERVICE                 @"http://59.34.17.68:8012/service/"
 
 // for formal service
-#define URL_SERVICE                 @"http://api.trip8888.com/service/"
+//#define URL_SERVICE                 @"http://api.trip8888.com/service/"
 
 // URL
 #define URL_TRAVEL_REGISTER_USER        (URL_SERVICE@"RegisterUser.aspx?")
@@ -62,7 +62,7 @@
 
 #define URL_TRAVEL_ORDER_PAYMENT_INFO   (URL_SERVICE@"orderPaymentInfo.aspx?")
 
-#define URL_TRAVEL_SERIAL_NUMBER        (URL_SERVICE@"serialNumber.aspx?")
+#define URL_TRAVEL_SERIAL_NUMBER        (URL_SERVICE@"serialNumber2.aspx?")
 
 //just for test
 #define URL_TRAVEL_QUERY_PAY_ORDER      (URL_SERVICE@"QueryPayOrder.aspx?")

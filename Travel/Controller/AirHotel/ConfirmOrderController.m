@@ -19,7 +19,6 @@
 #import "CommonPlaceDetailController.h"
 #import "PersonManager.h"
 #import "AirHotelOrderDetailController.h"
-#import "PayView.h"
 #import "PersonsView.h"
 
 @interface ConfirmOrderController ()
@@ -612,25 +611,25 @@
     [super viewDidUnload];
 }
 
-#pragma mark - 
-#pragma mark UPPayPluginDelegate
--(void)UPPayPluginResult:(NSString*)result
-{
-    //for test query pay result
-    [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
-    
-    //success、fail、cancel
-    PPDebug(@"UPPayPluginResult:%@", result);
-    [self showActivityWithText:NSLS(@"正在生成订单...")];
-    [NSTimer scheduledTimerWithTimeInterval:1.0
-                                     target:self
-                                   selector:@selector(handleTimer:)
-                                   userInfo:nil
-                                    repeats:NO];
-}
+//#pragma mark - 
+//#pragma mark UPPayPluginDelegate
+//-(void)UPPayPluginResult:(NSString*)result
+//{
+//    //for test query pay result
+//    [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+//    
+//    //success、fail、cancel
+//    PPDebug(@"UPPayPluginResult:%@", result);
+//    [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                     target:self
+//                                   selector:@selector(handleTimer:)
+//                                   userInfo:nil
+//                                    repeats:NO];
+//}
 
 - (void)handleTimer:(id)sender
 {
+    [self showActivityWithText:NSLS(@"正在生成订单...")];
     [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
 }
 
@@ -704,5 +703,22 @@
     }
     [self updatePrice];
 }
+
+#pragma mark -
+#pragma UmpayDelegate methods
+- (void)onPayResult:(NSString*)orderId
+         resultCode:(NSString*)resultCode
+      resultMessage:(NSString*)resultMessage
+{
+    PPDebug(@"onPayResult orderId:%@ resultCode:%@ resultMessage:%@", orderId, resultCode, resultMessage);
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.0
+                                     target:self
+                                   selector:@selector(handleTimer:)
+                                   userInfo:nil
+                                    repeats:NO];
+}
+
+
 
 @end
