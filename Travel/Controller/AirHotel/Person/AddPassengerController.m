@@ -14,6 +14,7 @@
 #import "AppManager.h"
 #import "PersonManager.h"
 #import "IdCardUtil.h"
+#import "StringUtil.h"
 
 @interface AddPassengerController ()
 
@@ -207,19 +208,24 @@
         }
     }
     
-    NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
-    [mutableSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
-    if ([_personBuilder.cardNumber rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
+    if ([_personBuilder.cardNumber isOnlyNumberAndLetter] == NO) {
         [self popupMessage:NSLS(@"证件号码含有非法字符") title:nil];
         return;
     }
+    
+    //    if ([_personBuilder.cardNumber rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
+    //        [self popupMessage:NSLS(@"证件号码含有非法字符") title:nil];
+    //        return;
+    //    }
+    
+    NSMutableCharacterSet *mutableSet = [NSCharacterSet symbolCharacterSet];
+    [mutableSet formUnionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
     
     [mutableSet removeCharactersInString:@"/"];
     if ([_personBuilder.name rangeOfCharacterFromSet:mutableSet].location != NSNotFound) {
         [self popupMessage:NSLS(@"姓名含有非法字符") title:nil];
         return;
     }
-    
     
     if ([cardTypeName isEqualToString:@"身份证"]) {
         NSString *resultTips = @"";

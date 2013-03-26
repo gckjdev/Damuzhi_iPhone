@@ -293,27 +293,27 @@
 
 #pragma mark -
 #pragma mark UPPayPluginDelegate
--(void)UPPayPluginResult:(NSString*)result
-{
-    //value is @"success" or @"fail" or @"cancel"
-    
-    PPDebug(@"UPPayPluginResult:%@", result);
-    if ([result isEqualToString:@"success"]) {
-        //for test query pay result
-        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
-        
-        [self showActivityWithText:NSLS(@"已经完成支付，正在刷新订单...")];
-        [NSTimer scheduledTimerWithTimeInterval:1.0
-                                         target:self
-                                       selector:@selector(handleTimer:)
-                                       userInfo:nil
-                                        repeats:NO];
-    } else if ([result isEqualToString:@"fail"]){
-        [self popupMessage:NSLS(@"支付失败") title:nil];
-    } else if ([result isEqualToString:@"cancel"]){
-        [self popupMessage:NSLS(@"已取消支付") title:nil];
-    }
-}
+//-(void)UPPayPluginResult:(NSString*)result
+//{
+//    //value is @"success" or @"fail" or @"cancel"
+//    
+//    PPDebug(@"UPPayPluginResult:%@", result);
+//    if ([result isEqualToString:@"success"]) {
+//        //for test query pay result
+//        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
+//        
+//        [self showActivityWithText:NSLS(@"已经完成支付，正在刷新订单...")];
+//        [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                         target:self
+//                                       selector:@selector(handleTimer:)
+//                                       userInfo:nil
+//                                        repeats:NO];
+//    } else if ([result isEqualToString:@"fail"]){
+//        [self popupMessage:NSLS(@"支付失败") title:nil];
+//    } else if ([result isEqualToString:@"cancel"]){
+//        [self popupMessage:NSLS(@"已取消支付") title:nil];
+//    }
+//}
 
 - (void)handleTimer:(id)sender
 {
@@ -329,9 +329,6 @@
     PPDebug(@"onPayResult orderId:%@ resultCode:%@ resultMessage:%@", orderId, resultCode, resultMessage);
     
     if ([resultCode isEqualToString:@"0000"]) {
-        //for test query pay result
-        [[AirHotelService defaultService] queryPayOrder:_unionPayOrderNumber];
-        
         [self showActivityWithText:NSLS(@"已经完成支付，正在刷新订单...")];
         [NSTimer scheduledTimerWithTimeInterval:1.0
                                          target:self

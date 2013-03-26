@@ -629,7 +629,6 @@
 
 - (void)handleTimer:(id)sender
 {
-    [self showActivityWithText:NSLS(@"正在生成订单...")];
     [[AirHotelService defaultService] findOrder:_resultOrderId delegate:self];
 }
 
@@ -712,6 +711,7 @@
 {
     PPDebug(@"onPayResult orderId:%@ resultCode:%@ resultMessage:%@", orderId, resultCode, resultMessage);
     
+    [self showActivityWithText:NSLS(@"正在生成订单...")];
     [NSTimer scheduledTimerWithTimeInterval:1.0
                                      target:self
                                    selector:@selector(handleTimer:)

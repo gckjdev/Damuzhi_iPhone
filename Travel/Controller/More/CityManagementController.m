@@ -323,7 +323,11 @@ static CityManagementController *_instance;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (tableView == dataTableView) {
-        return [self.firstPinyinList count];
+        if ([self hasSection]) {
+            return [self.firstPinyinList count];
+        } else {
+            return 1;
+        }
     } else if (tableView == self.searchDisplayController.searchResultsTableView) {
         return 1;
     }
@@ -341,9 +345,13 @@ static CityManagementController *_instance;
         return [downLoadCityListFromCountry count];
     }
     else if (tableView == dataTableView){
-        NSString *firstLetter = [_firstPinyinList objectAtIndex:section];
-        NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
-        return [citys count];
+        if ([self hasSection]) {
+            NSString *firstLetter = [_firstPinyinList objectAtIndex:section];
+            NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
+            return [citys count];
+        } else {
+            return [_showCitys count];
+        }
     }else if (tableView == self.searchDisplayController.searchResultsTableView){
         return [_filteredListContent count];
     }else {
@@ -354,7 +362,11 @@ static CityManagementController *_instance;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (tableView == dataTableView) {
-        return [self.firstPinyinList objectAtIndex:section];
+        if ([self hasSection]) {
+            return [self.firstPinyinList objectAtIndex:section];
+        } else {
+            return nil;
+        }
     } else if (tableView == self.searchDisplayController.searchResultsTableView){
         return nil;
     } else {
@@ -363,13 +375,19 @@ static CityManagementController *_instance;
 }
 
 #define COUNT_ONE_PAGE ([DeviceDetection isIPhone5] ? (8) : (6) )
+- (BOOL)hasSection
+{
+    NSArray *showHotCitys = [_appManager getCityListByFirstLetter:HOT_CITY basicCityList:_showCitys];
+    int allCount = [_showCitys count] + [showHotCitys count];
+    
+    return allCount > COUNT_ONE_PAGE;
+}
+
+
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     if (tableView == self.dataTableView) {
-        NSArray *showHotCitys = [_appManager getCityListByFirstLetter:HOT_CITY basicCityList:_showCitys];
-        int allCount = [_showCitys count] + [showHotCitys count];
-        
-        if (allCount > COUNT_ONE_PAGE) {
+        if ([self hasSection]) {
             return _twentySixLetters;
         } else {
             return nil;
@@ -436,12 +454,18 @@ static CityManagementController *_instance;
         NSString *cellBgImageName = IMAGE_CITY_CELL_BG;
         City *city = nil;
         if (theTableView == dataTableView) {
-            NSString *firstLetter = [_firstPinyinList objectAtIndex:indexPath.section];
-            NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
-            city = [citys objectAtIndex:indexPath.row];
             
-            if ([firstLetter isEqualToString:HOT_CITY]) {
-                cellBgImageName = IMAGE_HOT_CITY_CELL_BG;
+            if ([self hasSection]) {
+                NSString *firstLetter = [_firstPinyinList objectAtIndex:indexPath.section];
+                NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
+                city = [citys objectAtIndex:indexPath.row];
+                
+                if ([firstLetter isEqualToString:HOT_CITY]) {
+                    cellBgImageName = IMAGE_HOT_CITY_CELL_BG;
+                }
+                
+            } else {
+                city = [_showCitys objectAtIndex:indexPath.row];
             }
         }else if (theTableView == self.searchDisplayController.searchResultsTableView){
             city = [_filteredListContent objectAtIndex:indexPath.row];
@@ -462,17 +486,19 @@ static CityManagementController *_instance;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if (tableView == self.downloadTableView) {
         
     } else {
-        
         City *city = nil;
         if (tableView == self.dataTableView) 
         {
-            NSString *firstLetter = [_firstPinyinList objectAtIndex:indexPath.section];
-            NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
-            city = [citys objectAtIndex:indexPath.row];
+            if ([self hasSection]) {
+                NSString *firstLetter = [_firstPinyinList objectAtIndex:indexPath.section];
+                NSArray *citys = [_appManager getCityListByFirstLetter:firstLetter basicCityList:_showCitys];
+                city = [citys objectAtIndex:indexPath.row];
+            } else {
+                city = [_showCitys objectAtIndex:indexPath.row];
+            }
         } else if (tableView == self.searchDisplayController.searchResultsTableView) {
             city = [_filteredListContent objectAtIndex:indexPath.row];
         }
