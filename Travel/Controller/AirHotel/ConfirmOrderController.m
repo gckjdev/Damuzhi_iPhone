@@ -711,8 +711,15 @@
 {
     PPDebug(@"onPayResult orderId:%@ resultCode:%@ resultMessage:%@", orderId, resultCode, resultMessage);
     
-    [self showActivityWithText:NSLS(@"正在生成订单...")];
-    [NSTimer scheduledTimerWithTimeInterval:1.0
+    if ([resultCode isEqualToString:@"0000"]) {
+        [self showActivityWithText:NSLS(@"已经完成支付，正加载订单信息...")];
+    } else if ([resultCode isEqualToString:@"1002"]){
+        [self showActivityWithText:NSLS(@"支付失败，正加载订单信息...")];
+    } else if ([resultCode isEqualToString:@"1001"]){
+        [self showActivityWithText:NSLS(@"已取消支付，正加载订单信息...")];
+    }
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.8
                                      target:self
                                    selector:@selector(handleTimer:)
                                    userInfo:nil

@@ -336,9 +336,9 @@
                                        userInfo:nil
                                         repeats:NO];
     } else if ([resultCode isEqualToString:@"1002"]){
-        [self popupMessage:NSLS(@"支付失败") title:nil];
+        [self popupMessage:NSLS(@"支付失败") showSeconds:2];
     } else if ([resultCode isEqualToString:@"1001"]){
-        [self popupMessage:NSLS(@"已取消支付") title:nil];
+        [self popupMessage:NSLS(@"已取消支付") showSeconds:2];
     }
 }
 
