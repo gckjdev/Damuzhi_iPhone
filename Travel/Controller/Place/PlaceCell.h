@@ -12,7 +12,6 @@
 
 @interface PlaceCell : CommonPlaceCell<HJManagedImageVDelegate>
 
-
 @property (retain, nonatomic) IBOutlet UIView *summaryView;
 @property (retain, nonatomic) IBOutlet UILabel *nameLabel;
 @property (retain, nonatomic) IBOutlet UILabel *priceLable;

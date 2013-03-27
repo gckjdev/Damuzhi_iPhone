@@ -25,22 +25,19 @@
 #define SELF_VIEW_HEIGHT ([[UIScreen mainScreen] bounds].size.height- 20 - NAVIGATION_BAR_HEIGHT)
 
 
-
 @interface CityManagementController ()
-
 @property (retain, nonatomic) NSMutableArray *downloadingCities;
 @property (retain, nonatomic) NSArray *countryNameList;
 @property (nonatomic, retain) NSMutableArray *filteredListContent;
 @property(retain, nonatomic) UILabel *label;
-
 @property (retain, nonatomic) NSArray *regions;
 @property (retain, nonatomic) AppManager *appManager;
 @property (retain, nonatomic) NSArray *allCitys;
 @property (retain, nonatomic) NSArray *showCitys;
 @property (retain, nonatomic) NSArray *firstPinyinList;
-
 @property (retain, nonatomic) NSArray *twentySixLetters;
 @end
+
 
 @implementation CityManagementController 
 
@@ -76,7 +73,6 @@ static CityManagementController *_instance;
     [_promptLabel release];
     [_citySearchBar release];
     [_downloadingCities release];
-    
     [_countryNameList release];
     [_firstPinyinList release];
     [_filteredListContent release];
@@ -84,7 +80,6 @@ static CityManagementController *_instance;
     [_cityListBackgroundImageView release];
     [_regionHolderView release];
     [_regions release];
-    
     [_appManager release];
     [_allCitys release];
     [_showCitys release];
@@ -97,37 +92,34 @@ static CityManagementController *_instance;
     self = [super init];
     if (self) {
         self.appManager = [AppManager defaultManager];
+        
+        self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
+        self.regions = [[_appManager app] regionsList];
+        self.allCitys = [_appManager getCityList];
+        self.showCitys = [_appManager getCityList];
+        [self updateFirstPinyinList];
+        
+        NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
+        [mutableArray addObject:HOT_CITY];
+        for (int index = 0 ; index < 26 ; index ++)
+        {
+            char c = 'A';
+            NSString *letter = [NSString stringWithFormat:@"%c", c + index];
+            [mutableArray addObject:letter];
+        }
+        self.twentySixLetters = mutableArray;
     }
     return self;
 }
 
-- (void)getCityData
+- (void)getDownloadCityData
 {
     self.downloadList = [[PackageManager defaultManager] getDownLoadLocalCityList];
     self.countryNameList = [[PackageManager defaultManager] getDownLoadCountryGroupList];
     
     self.label.hidden = ([self.downloadList count] == 0)? NO:YES;
     [self.downloadTableView addSubview:self.label];
-    self.filteredListContent = [[[NSMutableArray alloc] init] autorelease];
-    
-    self.regions = [[_appManager app] regionsList];
-    self.allCitys = [_appManager getCityList];
-    self.showCitys = [_appManager getCityList];
-    [self updateFirstPinyinList];
-    
-    
-    
-    NSMutableArray *mutableArray = [[[NSMutableArray alloc] init] autorelease];
-    [mutableArray addObject:HOT_CITY];
-    for (int index = 0 ; index < 26 ; index ++)
-    {
-        char c = 'A';
-        NSString *letter = [NSString stringWithFormat:@"%c", c + index];
-        [mutableArray addObject:letter];
-    }
-    self.twentySixLetters = mutableArray;
 }
-
 
 - (void)viewDidLoad
 {
@@ -137,7 +129,7 @@ static CityManagementController *_instance;
     self.downloadingCities = [NSMutableArray array];
     
     self.label = [self labelWithTitle:NSLS(@"您暂未下载离线城市数据")];
-    [self getCityData];
+    [self getDownloadCityData];
     
     [self addCityManageButtons];
     
@@ -572,7 +564,7 @@ static CityManagementController *_instance;
     self.regionHolderView.hidden = YES;
     
     //necessary
-    [self getCityData];
+    [self getDownloadCityData];
     
     // Reload download table view
     [_downloadTableView reloadData];
@@ -688,7 +680,7 @@ static CityManagementController *_instance;
 #pragma mark: implementation of DownloadListCellDelegate
 - (void)didDeleteCity:(City*)city
 {
-    [self getCityData];
+    [self getDownloadCityData];
     [self.downloadTableView reloadData];
 }
 
@@ -732,7 +724,7 @@ static CityManagementController *_instance;
     [alert show];
     [alert release];
     
-    [self getCityData];
+    [self getDownloadCityData];
     [_downloadTableView reloadData];
 }
 
@@ -759,7 +751,7 @@ static CityManagementController *_instance;
 
 - (void)didFinishUnzip:(City*)city 
 {
-    [self getCityData];
+    [self getDownloadCityData];
     [dataTableView reloadData];
     [_downloadTableView reloadData];
 }
