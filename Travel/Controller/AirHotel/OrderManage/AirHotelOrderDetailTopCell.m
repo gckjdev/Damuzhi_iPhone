@@ -54,6 +54,20 @@
     return goAirOrder;
 }
 
++ (AirOrder *)getBackAirOrder:(AirHotelOrder *)order
+{
+    AirOrder *backAirOrder = nil;
+    for (AirOrder *airOrderTemp in order.airOrdersList)
+    {
+        if (airOrderTemp.flightType == FlightTypeBack || airOrderTemp.flightType == FlightTypeBackOfDouble) {
+            backAirOrder = airOrderTemp;
+            break;
+        }
+    }
+    
+    return backAirOrder;
+}
+
 #define FRAME_HOLDER_1  CGRectMake(0, 45, 302, HEIGHT_HOLDER_VIEW)
 #define FRAME_HOLDER_2  CGRectMake(0, 67, 302, HEIGHT_HOLDER_VIEW)
 #define FRAME_HOLDER_3  CGRectMake(0, 89, 302, HEIGHT_HOLDER_VIEW)
@@ -75,7 +89,9 @@
             NSDate *departDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:goAirOrder.flightDate]];
             self.departDateLabel.text = dateToChineseStringByFormat(departDate, @"yyyy-MM-dd");
         } else {
-            self.departDateLabel.text = @"";
+            AirOrder *backOrder = [AirHotelOrderDetailTopCell getBackAirOrder:order];
+            NSDate *backDate = [NSDate dateWithTimeIntervalSince1970:[AppUtils standardTimeFromBeijingTime:backOrder.flightDate]];
+            self.departDateLabel.text = dateToChineseStringByFormat(backDate, @"yyyy-MM-dd");
         }
         self.departCityHolderView.frame = FRAME_HOLDER_1;
         self.arrvieCityHolderView.frame = FRAME_HOLDER_2;

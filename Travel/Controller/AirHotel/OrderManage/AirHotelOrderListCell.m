@@ -105,7 +105,7 @@
     self.airPriceLabel.text = [PriceUtils priceToStringCNY:_airHotelOrder.airPrice];
     
     NSString *ariLine = [[AppManager defaultManager] getAirlineName:_airOrder.flight.airlineId];
-    self.airlineAndFlightNumberLabel = [NSString stringWithFormat:@"%@ %@", ariLine, _airOrder.flightNumber];
+    self.airlineAndFlightNumberLabel.text = [NSString stringWithFormat:@"%@ %@", ariLine, _airOrder.flightNumber];
     
     self.planeTypeLabel.text = [NSString stringWithFormat:@"机型:%@", _airOrder.flight.planeType];
     self.seatLabel.text = _airOrder.flightSeat.name;

@@ -240,8 +240,13 @@ static int kObservingContentSizeChangesContext;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (context == &kObservingContentSizeChangesContext) {
         
-        UIImageView *subView = (UIImageView *)[webView.scrollView viewWithTag:TAG_FOOTER_BACKGROUND];
-        [subView removeFromSuperview];
+        
+        NSArray *subViews = [webView.scrollView subviews];
+        for (UIView *subView in subViews) {
+            if ([subView isKindOfClass:[UIImageView class]]&& subView.tag == TAG_FOOTER_BACKGROUND) {
+                [subView removeFromSuperview];
+            }
+        }
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, webView.scrollView.contentSize.height, 320, 250)];
         imageView.tag = TAG_FOOTER_BACKGROUND;
