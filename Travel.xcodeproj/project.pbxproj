@@ -6288,8 +6288,8 @@
 					armv6,
 				);
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
@@ -6306,8 +6306,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8B0D3C62-2335-4630-9639-B7D9FF8C732E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B0D3C62-2335-4630-9639-B7D9FF8C732E";
+				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
@@ -6322,8 +6322,8 @@
 					armv6,
 				);
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Zhonghan Pei (7DWV8HMYHX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: TopTrip Co.Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: TopTrip Co.Ltd";
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Travel/Travel-Prefix.pch";
@@ -6340,8 +6340,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8B0D3C62-2335-4630-9639-B7D9FF8C732E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8B0D3C62-2335-4630-9639-B7D9FF8C732E";
+				PROVISIONING_PROFILE = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E49365D9-4B6C-4DB2-8093-5E8A164D8134";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "../Common_iPhone_20/Components/Component-Network/ProtocolBuffer/objectivec/Classes/ ../Common_iPhone_20/3PP-SDK/QWeiboSDK4iOS/QWeiboSDK4iOS";
 				WRAPPER_EXTENSION = app;
